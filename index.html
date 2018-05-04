@@ -1,0 +1,237 @@
+---
+title: Home
+layout: default
+---
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+<section>
+  <h1 style="font-size:50px"><b>M</b>osquito <b>G</b>ene <b>Driv</b>e <b>E</b>xplorer</h1>
+  <!--<p style="font-size:17px" align="right"><i>"Someday, malaria will become a disease like smallpox, like polio, that won't be killing anyone." <br><br>- Bill Gates</i></p>-->
+
+
+  <!--<p style="font-size:10px">Inheritance cube example. Each layer of this flattened cube represents the ratio of eggs that inherit a certain allele combination according to their parents' genotypes.</p>-->
+  <hr><h1>Brief Description</h1>
+    <p>
+      <b>MGDrivE</b> is a framework designed to serve as a testbed in which gene-drive releases for mosquito-borne diseases control can be tested. It is being developed to accommodate
+      various mosquito-specific gene drive systems within a population dynamics model that allows migration of individuals between nodes in a spatial landscape.
+    </p>
+
+  <img src="https://chipdelmal.github.io/MGDrivE/images/crispr.jpg"><br><br>
+
+  <hr><h1>Demonstration</h1>
+  <p>
+    In this demo, we are releasing a total of 100 mosquitoes homozygous for the CRISPR/CAS9 and one with a mutation that makes the mosquito resistant to the construct. Each node in the network represents a mosquito population laid down in a spatial scenario (this could be though of as a household, house block or even city if needed). We simulate how the genetic construct would propagate across the nodes of the network if mosquitoes were slowly migrating between populations with a probability based on proximity. To watch more videos take look at our <a href="https://www.youtube.com/watch?v=sZXuUtToszw&list=PLRzY6w7pvIWqFJi94ZfhPkSVnazlUylpN">youtube playlist</a>.
+  </p>
+
+
+<!--<div>
+    <iframe width="100%" height="500px" src="https://www.youtube.com/embed/sZXuUtToszw?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>-->
+
+<div style="width:100%; margin-left:auto; margin-right:auto;">
+  <video data-autoplay width=100% controls><source src="https://chipdelmal.github.io/MGDrivE/Documents/NCCB_MGDrivE/images/CRISPR_R.mp4" type="video/mp4"></video>
+</div>
+
+
+
+<!--  <p style="font-size:10px">
+    Homing CRISPR releases with no resistant alleles.
+    The width of the connections between the networks of cities represents the probability of mosquito migration. The nodes (cities) sizes the total size of the mosquito population, while the fraction of the surface is colored with the proportion of mosquitoes with each genotype (color code is provided in the population counts table).
+    Total genotypes counts are also shown; being <b>H</b> the homing allele, <b>R</b> the resistant allele and <b>h</b> wild-type mosquitoes.
+  </p>
+
+  <p>
+    Our second tests includes resistant alleles being introduced in the mosquito populations. This results in population quantities initially declining but bouncing back to equilibrium as the resistanta alleles fixate in the mosquito populations.
+  </p>
+
+  <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/YE_p0DlImyo?list=PLRzY6w7pvIWqFJi94ZfhPkSVnazlUylpN?ecver=2" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe></div>
+  <p style="font-size:10px">
+    Homing CRISPR releases with no resistant alleles.
+    The width of the connections between the networks of cities represents the probability of mosquito migration. The nodes (cities) sizes the total size of the mosquito population, while the fraction of the surface is colored with the proportion of mosquitoes with each genotype (color code is provided in the population counts table).
+    Total genotypes counts are also shown; being <b>H</b> the homing allele, <b>R</b> the resistant allele and <b>h</b> wild-type mosquitoes.
+  </p>
+-->
+    <hr><h1>How does it work?</h1>
+      <p>
+        The main idea behind this model is to consider the inheritance matrix of genotypes a three-dimensional structure
+        in which each intersection point determines the ratio/probability of a specific offspring genotype (z axis) provided that a certain combination of
+        male-female genotypes (x and y axis). This allows us to use tensors as the basis for our calculations which has many advantages, some of them being: computational speed,
+        model's transparency and extendability.
+      </p>
+      <p>
+        The second novel idea in our framework is to consider the spatial layout as a network of inter-connected breeding habitats. By performing this abstraction we are able to
+        transform these landscapes into distances matrices, and then into transition probabilities matrices (through the use of movement kernels).
+        This allows our framework to be able to model arbitrary topologies in which we can simulate mosquito populations mating and migrating in realistic geographical settings.
+      </p>
+      <!--<iframe src="./images/3pop.html" width="800px" height="500px" class="foo" scrolling="no"></iframe>-->
+<!--      <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/graph01401.png" width="100%">
+      <p style="font-size:10px">
+        Release of CRISPR homing alleles with resistance, with migration (left column shows male populations in three cities, right column shows female populations).
+        CRISPR mosquitoes are being released in the first city and their migration slowly transmits their genes to the other two populations (showing a delay in the responses of their dynamics).
+        After the initial decline, the appearance of resistant alleles causes the population sizes to bounce back to their initial conditions.
+      </p>-->
+<!--
+      <p>
+        This also allows us to change the type of gene-drives as required, so it gives us flexibility to compare different approaches to mosquito-borne diseases elimination.
+      </p>
+
+    -->
+      <!--<img src="https://chipdelmal.github.io/MGDrivE/images/tensors.png">-->
+
+      <img src="https://chipdelmal.github.io/MGDrivE/images/flow.jpg"><br>
+
+  <hr><h1>Project's Status: Writing the paper</h1>
+  <p>
+    Most of the software development has been finished. Testing and debugging are almost done too. Writing is our last step towards the release of the package.
+  </p>
+
+  <hr><h1>News</h1>
+  <p>
+    We have successfully run simulations in medium-sized spatial landscapes! To see these preliminary results take a look at our <a href="./YorkeysKnobReport.html">Yorkeys Knob server/cluster report</a>.
+  </p>
+
+<!--  <center>
+    <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/MGDrivE_error.png" width="50%">
+  </center>
+  <p style="font-size:10px">
+    MGDrivE first validation.
+    These plots show a comparison between the expected responses between two different implementations of the model: the new MGDrivE one using tensors, and the one used in our previous publication.
+    The differences between the responses can be explained with stochastic events that cause a delay in the fixation of the resistant alleles. The next step is to finish MGDrivE's stochastic version of the model and compare it to the baseline.
+  </p>-->
+
+  <!--<img src="https://chipdelmal.github.io/MGDrivE/images/BenchmarkNodes.png" width="70%">-->
+<!--
+  <hr><h1>Use Example: A Tale of Two Cities</h1>
+  <p>
+    In this example we use MGDrivE for an exploration of how translocations and UDMel spread spatially in two abstract neighboring cities. We will test male-only releases schemes of genotypic variants with refractory capabilities.
+    This comparison will be performed in terms of how confinable they are, how they fixate in the landscape, and if they can be removed from the environment.
+  </p>
+
+  <iframe width="800" height="600" src="https://www.youtube.com/embed/?listType=playlist&list=PLRzY6w7pvIWqKYnJno8xGCOrPNDQBlvQE" frameborder="0" allowfullscreen></iframe>
+
+  <p>For more examples of use take a look at our <a href="https://www.youtube.com/playlist?list=PLRzY6w7pvIWqFJi94ZfhPkSVnazlUylpN">youtube playlist!</a></p>
+-->
+
+  <hr><h1>Companion Project: <a href="https://chipdelmal.github.io/MoNeT/">MoNeT</a></h1>
+  <p>
+    As the mosquito-movement in the system is modeled with migration networks, it is natural to think about using network theory to obtain valuable information about the system, and spatial gene-flows. To this end, we created a companion project:
+    <a href="https://chipdelmal.github.io/MoNeT/">MoNeT: Mosquito Networks Taskforce</a>; dedicated to the study of mosquito movement across landscapes.
+  </p>
+  <center>
+  <img src="https://chipdelmal.github.io/MoNeT/media/MoroniPoint.jpg" width="30%" align="middle"><img src="https://chipdelmal.github.io/MoNeT/media/MoroniHex.jpg" width="30%" align="middle">
+</center>
+
+  <br><br>
+  <hr>
+  <h1>Publications and Presentations</h1>
+  <ul style="font-size:8px">
+    <li>[Talk]: Héctor M. Sánchez C., Sean L. Wu, Jared B. Bennett, John M. Marshall. MGDrivE: A simulation framework for gene drive in spatially-explicit mosquito populations and its application to threshold-dependent systems. Annual Meeting of the Society for Mathematical Biology & the Japanese Society for Mathematical Biology (July 2018).</li>
+    <li>[Poster]: <a href="https://chipdelmal.github.io/MGDrivE/Documents/NCCB_MGDrivE/#/">Héctor M. Sánchez C., Sean L. Wu, Jared Bennett, John M. Marshall, (2017). A Tale of Two Cities: Confinability and Remediation Potential of UDMel and Translocation Gene-Drives in Spatially Explicit Aedes aegypti Populations. University of California, Berkeley Compitational Biology Retreat (November 2017).</a></li>
+    <li>[Talk]: <a href="https://chipdelmal.github.io/MGDrivE/Documents/NCCB_MGDrivE/#/">Héctor M. Sánchez C., Sean L. Wu, Jared Bennett, John M. Marshall, (2017). MGDrivE: A Mosquito Population Framework to Evaluate and Optimize Gene-Drive Releases for Vector-Borne Diseases Control. NorCal CompBio Symposium, (October 2017).</a></li>
+  </ul>
+  <h1>Related Publications</h1>
+  <ul style="font-size:8px">
+    <li>[Pre-Print]: Mohammad KaramiNejadRanjbara, Kolja N. Eckermanna, Hassan M. M. Ahmeda, Héctor M. Sánchez C., Stefan Dippela, John M. Marshall, Ernst A. Wimmera. Consequences of instant induction of resistance evolution on a sex conversion-based suppression gene drive for insect pest management (2018).</li>
+    <li>[Paper]: <a href="https://www.nature.com/articles/s41598-017-02744-7">John M. Marshall, Anna Buchman, Héctor M. Sánchez C., Omar S. Akbari (2017). Overcoming evolved resistance to population-suppressing homing-based gene drives. Nature Scientific Reports, (June 2017), 1–46. https://doi.org/https://doi.org/10.1101/088427</a></li>
+  </ul>
+
+
+
+<!--  <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/migration.png"><br><br>-->
+
+<!--  <hr><h1>Design Requirements</h1>
+    <ul>
+      <li>"N" Genotypes support</li>
+      <li>Multiple Populations</li>
+      <li>Shiny GUI</li>
+      <li>Various Gene Drives Incorporated</li>
+    </ul>
+
+    <img src="https://chipdelmal.github.io/MGDrivE/images/fsRIDL.png"><br><br>
+
+    <hr><h1>Model</h1>
+-->
+
+<!--
+<h2>Population Dynamics</h2>
+Main set of equations for mosquito populations.
+$$
+\begin{align*}
+\overline{E^{'}}=
+&\overline{\beta} * (\overline{\overline{Af_{(t-T_e-T_l-T_p)}}} \circ \overline{\overline{\overline{Ih}}})\\ \\
+\overline{L_{(t)}}=
+&\overline{L_{(t-1)}} * (1-\mu_{l}) * F(\overline{L_{(t-1)}})\\
+&+\overline{\beta}* \theta_{e} * (\overline{\overline{Af_{(t-T_e)}}} \circ \overline{\overline{\overline{Ih}}})\\
+&-\overline{\beta}* \theta_{e} * \theta_{l} * (\overline{\overline{Af_{(t-T_e-T_l)}}} \circ \overline{\overline{\overline{Ih}}}) * \prod_{i=1}^{T_l} F(\overline{L_{t-i}})\\ \\
+\overline{Am_{(t)}}=
+&\overline{Am_{(t-1)}} * (1-\mu_{ad})*\overline{\omega_m}\\
+&+(1-\overline{\phi}) * \overline{\xi_m}  * \overline{E^{'}} * \theta_{e} * \theta_{l} * \theta_{p} * (1-\mu_{ad}) * \prod_{i=1}^{T_l} F(\overline{L_{t-i-T_{p}}})\\
+&+ \overline{\nu_m(t-1)} \\ \\
+\overline{\overline{Af_{(t)}}}=
+&\overline{\overline{Af_{(t-1)}}} * (1-\overline{\mu_{ad}})\\
+&+\overline{\phi} *  \overline{\xi_f} * \Bigg( (\overline{E^{'}}+\overline{\nu_f(t-1)})^T * \frac{\overline{\eta}*\overline{Am_{(t)}}}{\sum{\overline{Am_{(t)}}}}\Bigg) * \theta_{e} * \theta_{l} * \theta_{p} * (1-\mu_{ad}) * \prod_{i=1}^{T_l} F(\overline{L_{t-i-T_{p}}})\\
+\end{align*}
+$$
+<br><br>
+<h2>Migration</h2>
+This set takes care of mosquito migration processes in a network structure.
+$$
+\begin{align*}
+\overline{\overline{Am_{(t)}^{i}}}=
+&\sum{\overline{A_{m}^j} \otimes \overline{\overline{\tau}}} \\
+\overline{\overline{\overline{Af_{(t)}^{i}}}}=
+&\sum{\overline{\overline{A_{f}^j}} \otimes \overline{\overline{\tau}}}
+\end{align*}
+$$
+<br><br>
+<h2>Auxiliary Equations</h2>
+Needed for the population dynamics to work
+$$
+\begin{align*}
+L_{eq}=&\alpha*\lfloor R_m -1\rfloor
+&
+F=&\Bigg(\frac{\alpha}{\alpha+\sum{\overline{L(t)}}}\Bigg)\\
+g=&T_e+T_l+T_p+\frac{1}{\mu_ad}
+&
+R_m=&(r_m)^g\\
+\mu_l=&1-\Bigg( \frac{R_m * \mu_{ad}}{1/2 * \beta_k * (1-\mu_m)} \Bigg)^{\frac{1}{T_e+T_l+T_p}}
+&
+\theta_st=&(1-\mu_{st})^{T_{st}}\\
+\alpha=&\Bigg( \frac{1/2 * \beta * \theta_e * Ad_{eq}}{Rm-1} \Bigg) * \Bigg( \frac{1-(\theta_l / R_m)}{1-(\theta_l / R_m)^{1/T_l}} \Bigg)
+\end{align*}
+$$
+<br><br>
+<h2>Nomenclature</h2>
+
+<center>
+    <img src="https://chipdelmal.github.io/MGDrivE/images/nomenclature.png" width=65%>
+</center>
+-->
+<!--
+    <hr><h1>Quick Installation Instructions</h1>
+      <p>
+        To install the R package in your computer run the following line of code in your R console:
+        <code>devtools::install_github(repo="chipdelmal/MGDrivE")</code>
+      </p>
+-->
+      <hr><br>
+      <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/berkeley.jpg" height="50px"> &nbsp &nbsp &nbsp &nbsp
+      <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/UCD.jpg" height="50px"> &nbsp &nbsp &nbsp &nbsp
+      <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/UCI.png" height="50px"> &nbsp &nbsp &nbsp &nbsp
+      <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/UCLA.png" height="50px"> &nbsp &nbsp &nbsp &nbsp
+      <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/UCR.jpg" height="50px"> &nbsp &nbsp &nbsp &nbsp
+      <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/UCSD.png" height="50px"> &nbsp &nbsp &nbsp &nbsp
+      <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/JPL.png" height="50px"> &nbsp &nbsp &nbsp &nbsp
+      <img src="https://chipdelmal.github.io/MGDrivE/public/minimal-jekyll-ghp/images/DARPA.jpg" height="50px"> &nbsp &nbsp &nbsp &nbsp
+      <br><br><br>
+      <!--<p>This project is maintained by <br><a href="http://chipdelmal.github.io">Héctor Manuel Sánchez Castellanos</a>.</p>
+      <p><small>Hosted on GitHub Pages<br />Original theme by <a href="https://github.com/orderedlist">orderedlist</a>.<br />Forked for Jekyll + GitHub Pages by <a href="http://chipdelmal.github.io">chipdelmal</a></small>.</p>-->
+
+</section>
