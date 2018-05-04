@@ -1,0 +1,91 @@
+---
+title: Yorkeys Knob Report
+layout: default
+---
+
+
+<section>
+<h1 style="font-size:50px"><b>M</b>osquito <b>G</b>ene <b>Driv</b>e <b>E</b>xplorer</h1><hr>
+<h1> Yorkeys Knob: Homing Drive & <i>Wolbachia</i>  Simulations</h1>
+
+One of the questions we are interested in answering in terms of gene-drives, is the capability these constructs have in spreading across spatial landscapes. Taking the tests of the [*MGDrivE*](https://chipdelmal.github.io/MGDrivE/) framework to the next step of realism, we chose to run a simulation of releases  in Yorkeys Knob with _Aedes aegypti_ being the mosquito species present in the area.
+
+<br>
+<center>
+  <img src="./images/20180410ANALYSIS_00.png" width="100%">
+</center>
+
+
+<h2>Purpose and Results</h2>
+The main purpose of this test was to continue our tests upon our framework in larger, more complex, landscapes. On top of this, we wanted to test our ability to run our model in both our lab's server, and the [TACC](https://www.tacc.utexas.edu/) cluster.
+
+<h3>Homing drive</h3>
+
+In this test, we released a homing drive in the environment. The releases scheme used was:<br>
+<ul>
+  <li>Releases Number: 10</li>
+  <li>Releases Interval: 30 days</li>
+  <li>Release Size:</li>
+  <li>Release Cluster: Yorkeys Knob</li>
+</ul>
+
+<br>
+The aggregated population dynamics can be summarized by the following plot:
+
+<br>
+<center>
+  <img src="./images/20180406ANALYSIS_02.png" width="95%"><img src="./images/20180406ANALYSIS_03.png" width="5%">
+</center>
+
+In which we can see that the homing drive (H) did get fixated in the part of the population, but not in all of it. A fraction of the mosquito population remained as wild-type (W). To understand why this happened, we have to look at how the drive spread spatio-temporally across the landscape:
+<center>
+  <img src="./images/20180406ANALYSIS_01.png" width="100%">
+</center>
+In this plot, the _x-axis_ represents time, while the _y-axis_ represents the house's ID number. Colors are mapped to the total amount of mosquitos with a given genotype present in each location. Houses are grouped together according to the spatial clustering shown in the first figure of this document (horizontal dashed lines delimit the COLOR_A,B,C areas). Horizontal dashed lines denote the beginning and end of the drive's releases.
+
+Through close examination, we can see that our homing drive did spread in the geographical cluster in which we released it, and that it stayed confined within that cluster. We can also get a sense of the speed at which it spread by looking how each "row" in our plot becomes more "purple", which indicates the presence of our homing construct.
+
+
+<br>
+<center>
+  <img src="./images/YorkeysKnob_CompositeMap.jpg" width="100%">
+</center>
+
+
+
+<h3><i>Wolbachia</i></h3>
+
+<i>Wolbachia</i> releases have already been tested in the field, so it makes sense for us to use it as a base-case in testing our model. For this test, we used the following releases scheme:
+<ul>
+  <li>Releases Number: 10</li>
+  <li>Releases Interval: 14 days</li>
+  <li>Release Size:</li>
+  <li>Release Cluster: Trinity Park</li>
+</ul>
+<br><br>
+
+
+Again, we can analyse the results of the aggregate population in our allele frequencies counts plot:
+<br>
+<center>
+  <img src="./images/20180410ANALYSIS_02.png" width="95%"><img src="./images/20180410ANALYSIS_03.png" width="5%">
+</center>
+And analyze its spread in the spatio-temporal presence plot:
+<br>
+<center>
+  <img src="./images/20180410ANALYSIS_01.png" width="100%">
+</center>
+In this case, we achieved fixation in our target cluster much quicker. This is due to both, an increase in the number of releases, and the fact that we released in many locations at the same time (as opposed to releasing in just one house).
+
+
+<h2>Conclusions and Limitations</h2>
+
+This test allowed us to move one step closer to more comprehensive and realistic tests. Both "drives" behaved as expected, and the use of the server/cluster will greatly enhance our capabilities in terms of running larger-scale scenarios.
+
+The main limitation to overcome in the short-term, is the low rate of long-distance migration; which biases our results in favor of gene-drives confinability as opposed to spillovers.
+
+
+<h2>Authors</h2>
+
+Jared Bennett*, Héctor M. Sánchez C.*, Sean L. Wu, Sarafina Smith, Sabrina Wong, John M. Marshall
+</section>

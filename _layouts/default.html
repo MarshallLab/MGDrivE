@@ -1,0 +1,4 @@
+---
+layout: wrapper
+---
+{{ content }}
