@@ -1,1 +1,21 @@
-theme: jekyll-theme-merlot
+title: MGDrivE
+email: sanchez.hmsc@berkeley.edu
+description: Mosquito Gene Drive Explorer
+
+# HEADS UP: Change these for your use
+baseurl: ""
+url: "https://marshalllab.github.io/testGHPages/"
+
+
+# Build settings
+markdown: kramdown
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - /tmp/
+  - config.ru
+
+
+# Development Parameter for Puma
+destination: "public/minimal-jekyll-ghp"
