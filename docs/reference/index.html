@@ -11,7 +11,7 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Function reference" />
 
 
@@ -35,8 +38,6 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
 
 
   </head>
@@ -54,7 +55,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0</span>
       </span>
     </div>
 
@@ -91,6 +92,7 @@
     <table class="ref-index">
 
     <colgroup>
+      
       <col class="alias" />
       <col class="title" />
     </colgroup>
@@ -98,1180 +100,1066 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-overview" class="hasAnchor"><a href="#section-overview" class="anchor"></a>Overview</h2>
-          <p class="section-desc"><p>Overview articles of the major components of the MGDrivE modelling framework.</p></p>
+          <h2 id="section-model-description-and-initialization" class="hasAnchor"><a href="#section-model-description-and-initialization" class="anchor"></a>Model Description and Initialization</h2>
+          <p class="section-desc"><p>Description of the model mathematics and initialization functions controlling stochastic versus deterministic simulation.</p></p>
         </th>
       </tr>
       <tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="MGDrivE.html">MGDrivE</a></code> </p>
         </td>
         <td><p>MGDrivE: Mosquito Gene Drive Explorer</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="MGDrivE-Model.html">MGDrivE-Model</a></code> </p>
         </td>
         <td><p>MGDrivE: Model's Mathematical Description</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="MGDrivE-Cube.html">MGDrivE-Cube</a></code> </p>
+          <p><code><a href="MGDrivE.Setup.html">MGDrivE.Setup()</a></code> </p>
         </td>
-        <td><p>MGDrivE: Inheritance Cube</p></td>
+        <td><p>Setup MGDrivE</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-inheritance-cubes" class="hasAnchor"><a href="#section-inheritance-cubes" class="anchor"></a>Inheritance Cubes</h2>
-          <p class="section-desc"><p>Functions to generate and manipulate cube objects</p></p>
+          <p class="section-desc"><p>A description of the available inheritance cubes for simulation.</p></p>
         </th>
       </tr>
       <tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ConfineableHoming.html">Cube_ConfineableHoming()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Confineable Homing</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ConfineableHomingJOHN.html">Cube_ConfineableHomingJOHN()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Confineable Homing Drive, John</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ConfineableHomingX.html">Cube_ConfineableHomingX()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Confineable Homing, X-Linked</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_Homing1RA.html">Cube_Homing1RA()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Homing Drive with 1 Resistance Allele</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_HomingDrive.html">Cube_HomingDrive()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: CRISPR (Clustered Regularly Interspaced SWort Palindromic Repeats) witW 2 Resistance Allele</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ImmunizingReversalMF.html">Cube_ImmunizingReversalMF()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Immunizing Reversal/Basic Reversal</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ImmunizingReversalX.html">Cube_ImmunizingReversalX()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Immunizing Reversal</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_KillerRescue.html">Cube_KillerRescue()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Killer-Rescue System</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_MEDEA.html">Cube_MEDEA()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: MEDEA (Maternal Effect Dominant Embryonic Arrest)</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_Mendelian.html">Cube_Mendelian()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Mendelian</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_RIDL.html">Cube_RIDL()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: RIDL (Release of Insects with Dominant Lethality)</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ReciprocalTranslocations.html">Cube_ReciprocalTranslocations()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Reciprocal Translocation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_Wolbachia.html">Cube_Wolbachia()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Wolbachia</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_eCHACR.html">Cube_eCHACR()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: ECHACR</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_oneLocusTA.html">Cube_oneLocusTA()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: 1 Locus Maternal-Toxin/Zygotic-Antidote System</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_twoLocusTA.html">Cube_twoLocusTA()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: 2 Locus Maternal-Toxin/Zygotic-Antidote System</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="cube2csv.html">cube2csv()</a></code> </p>
-        </td>
-        <td><p>Export a Cube to .csv</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="cubeModifiers.html">cubeModifiers()</a></code> </p>
-        </td>
-        <td><p>Generate and Modify Default Genotype-specific Parameters</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-data" class="hasAnchor"><a href="#section-data" class="anchor"></a>Data</h2>
-          <p class="section-desc"><p>Data files used for simuations</p></p>
-        </th>
-      </tr>
-      <tr>
-        <!--  -->
-        <td>
-          <p><code><a href="AnalyzeQuantiles.html">AnalyzeQuantiles()</a></code> </p>
-        </td>
-        <td><p>Summary Statistics for Stochastic MGDrivE</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ConfineableHoming.html">Cube_ConfineableHoming()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Confineable Homing</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ConfineableHomingJOHN.html">Cube_ConfineableHomingJOHN()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Confineable Homing Drive, John</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ConfineableHomingX.html">Cube_ConfineableHomingX()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Confineable Homing, X-Linked</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_Homing1RA.html">Cube_Homing1RA()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Homing Drive with 1 Resistance Allele</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_HomingDrive.html">Cube_HomingDrive()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: CRISPR (Clustered Regularly Interspaced SWort Palindromic Repeats) witW 2 Resistance Allele</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ImmunizingReversalMF.html">Cube_ImmunizingReversalMF()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Immunizing Reversal/Basic Reversal</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ImmunizingReversalX.html">Cube_ImmunizingReversalX()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Immunizing Reversal</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_KillerRescue.html">Cube_KillerRescue()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Killer-Rescue System</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_MEDEA.html">Cube_MEDEA()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: MEDEA (Maternal Effect Dominant Embryonic Arrest)</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_Mendelian.html">Cube_Mendelian()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Mendelian</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_RIDL.html">Cube_RIDL()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: RIDL (Release of Insects with Dominant Lethality)</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_ReciprocalTranslocations.html">Cube_ReciprocalTranslocations()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Reciprocal Translocation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_Wolbachia.html">Cube_Wolbachia()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: Wolbachia</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_eCHACR.html">Cube_eCHACR()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: ECHACR</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_oneLocusTA.html">Cube_oneLocusTA()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: 1 Locus Maternal-Toxin/Zygotic-Antidote System</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Cube_twoLocusTA.html">Cube_twoLocusTA()</a></code> </p>
-        </td>
-        <td><p>Inheritance Cube: 2 Locus Maternal-Toxin/Zygotic-Antidote System</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="JaredDirichlet.html">JaredDirichlet()</a></code> </p>
-        </td>
-        <td><p>Dirichlet Distribution</p></td>
-      </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="MGDrivE-Cube.html">MGDrivE-Cube</a></code> </p>
         </td>
         <td><p>MGDrivE: Inheritance Cube</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="MGDrivE-Model.html">MGDrivE-Model</a></code> </p>
+          <p><code><a href="Cube_Homing1RA.html">Cube_Homing1RA()</a></code> </p>
         </td>
-        <td><p>MGDrivE: Model's Mathematical Description</p></td>
+        <td><p>Inheritance Cube: Homing Drive with 1 Resistance Allele</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="MGDrivE.html">MGDrivE</a></code> </p>
+          <p><code><a href="Cube_HomingDrive.html">Cube_HomingDrive()</a></code> </p>
         </td>
-        <td><p>MGDrivE: Mosquito Gene Drive Explorer</p></td>
+        <td><p>Inheritance Cube: CRISPR (Clustered Regularly Interspaced SWort Palindromic Repeats) witW 2 Resistance Allele</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="MGDrivE.Setup.html">MGDrivE.Setup()</a></code> </p>
+          <p><code><a href="Cube_KillerRescue.html">Cube_KillerRescue()</a></code> </p>
         </td>
-        <td><p>Setup MGDrivE</p></td>
+        <td><p>Inheritance Cube: Killer-Rescue System</p></td>
       </tr><tr>
-        <!--  -->
+        
+        <td>
+          <p><code><a href="Cube_MEDEA.html">Cube_MEDEA()</a></code> </p>
+        </td>
+        <td><p>Inheritance Cube: MEDEA (Maternal Effect Dominant Embryonic Arrest)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Cube_Mendelian.html">Cube_Mendelian()</a></code> </p>
+        </td>
+        <td><p>Inheritance Cube: Mendelian</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Cube_RIDL.html">Cube_RIDL()</a></code> </p>
+        </td>
+        <td><p>Inheritance Cube: RIDL (Release of Insects with Dominant Lethality)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Cube_ReciprocalTranslocations.html">Cube_ReciprocalTranslocations()</a></code> </p>
+        </td>
+        <td><p>Inheritance Cube: Reciprocal Translocation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Cube_Wolbachia.html">Cube_Wolbachia()</a></code> </p>
+        </td>
+        <td><p>Inheritance Cube: Wolbachia</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Cube_oneLocusTA.html">Cube_oneLocusTA()</a></code> </p>
+        </td>
+        <td><p>Inheritance Cube: 1 Locus Maternal-Toxin/Zygotic-Antidote System</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Cube_twoLocusTA.html">Cube_twoLocusTA()</a></code> </p>
+        </td>
+        <td><p>Inheritance Cube: 2 Locus Maternal-Toxin/Zygotic-Antidote System</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cube2csv.html">cube2csv()</a></code> </p>
+        </td>
+        <td><p>Export a Cube to .csv</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-population-dynamics-model-parameters" class="hasAnchor"><a href="#section-population-dynamics-model-parameters" class="anchor"></a>Population Dynamics Model Parameters</h2>
+          <p class="section-desc"><p>A description of model parameters governing population dynamics, not including inheritance, which is described in ‘Inheritance Cubes’, and functions to generate mosquito releases.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
         <td>
           <p><code><a href="Network.Parameters.html">Network.Parameters()</a></code> </p>
         </td>
         <td><p>Network Parameters</p></td>
       </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Network.html">Network</a></code> </p>
-        </td>
-        <td><p>Network Class Definition</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Patch.html">Patch</a></code> </p>
-        </td>
-        <td><p>Patch Class Definition</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="Release_basicRepeatedReleases.html">Release_basicRepeatedReleases()</a></code> </p>
-        </td>
-        <td><p>Make List of Modified Mosquito Releases</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="SymCubeC.html">SymCubeC()</a></code> </p>
-        </td>
-        <td><p>Make a Symmetric Cube</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="accumulate_ADMnew_Patch.html">accumulate_ADMnew_Patch()</a></code> </p>
-        </td>
-        <td><p>Accumulate ADMnew</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="aggregateFemales.html">aggregateFemales()</a></code> </p>
-        </td>
-        <td><p>Aggregate Female Output by Genotype</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="calcAquaticStageSurvivalProbability.html">calcAquaticStageSurvivalProbability()</a></code> </p>
-        </td>
-        <td><p>Calculate Aquatic Stage Surival Probability</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="calcAquaticStagesSurvivalProbability.html">calcAquaticStagesSurvivalProbability()</a></code> </p>
-        </td>
-        <td><p>Calculate Survival Probability of entire Aquatic Stage Life-cycle</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="calcAverageGenerationTime.html">calcAverageGenerationTime()</a></code> </p>
-        </td>
-        <td><p>Calculate Average Generation Time</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="calcDensityDependentDeathRate.html">calcDensityDependentDeathRate()</a></code> </p>
-        </td>
-        <td><p>Calculate Density-dependent Larval Mortality</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="calcLarvalPopEquilibrium.html">calcLarvalPopEquilibrium()</a></code> </p>
-        </td>
-        <td><p>Calculate Equilibrium Larval Population</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="calcLarvalStageMortalityRate.html">calcLarvalStageMortalityRate()</a></code> </p>
-        </td>
-        <td><p>Calculate Larval Stage Mortality Rate</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="calcMemoryWindow.html">calcMemoryWindow()</a></code> </p>
-        </td>
-        <td><p>Calculate Memory Window</p></td>
-      </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="calcPopulationGrowthRate.html">calcPopulationGrowthRate()</a></code> </p>
         </td>
         <td><p>Calculate Population Growth Rate</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="calc_ExpKernel.html">calc_ExpKernel()</a></code> </p>
+          <p><code><a href="calcAquaticStageSurvivalProbability.html">calcAquaticStageSurvivalProbability()</a></code> </p>
         </td>
-        <td><p>Calculate Exponential Stochastic Matrix</p></td>
+        <td><p>Calculate Aquatic Stage Surival Probability</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="calc_GammaKernel.html">calc_GammaKernel()</a></code> </p>
+          <p><code><a href="calcAquaticStagesSurvivalProbability.html">calcAquaticStagesSurvivalProbability()</a></code> </p>
         </td>
-        <td><p>Calculate Gamma Stochastic Matrix</p></td>
+        <td><p>Calculate Survival Probability of entire Aquatic Stage Life-cycle</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="calc_HurdleExpKernel.html">calc_HurdleExpKernel()</a></code> </p>
+          <p><code><a href="calcAverageGenerationTime.html">calcAverageGenerationTime()</a></code> </p>
         </td>
-        <td><p>Calculate Hurdle Exponential Stochastic Matrix</p></td>
+        <td><p>Calculate Average Generation Time</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="calc_LognormalKernel.html">calc_LognormalKernel()</a></code> </p>
+          <p><code><a href="calcDensityDependentDeathRate.html">calcDensityDependentDeathRate()</a></code> </p>
         </td>
-        <td><p>Calculate Lognormal Stochastic Matrix</p></td>
+        <td><p>Calculate Density-dependent Larval Mortality</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="calc_haversine.html">calc_haversine()</a></code> </p>
+          <p><code><a href="calcLarvalPopEquilibrium.html">calcLarvalPopEquilibrium()</a></code> </p>
         </td>
-        <td><p>Calculate Haversine Distance</p></td>
+        <td><p>Calculate Equilibrium Larval Population</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="close_allConnections_Network.html">close_allConnections_Network()</a></code> </p>
+          <p><code><a href="calcLarvalStageMortalityRate.html">calcLarvalStageMortalityRate()</a></code> </p>
         </td>
-        <td><p>Close all Output Connections</p></td>
+        <td><p>Calculate Larval Stage Mortality Rate</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
-          <p><code><a href="createNamedPopMatrix.html">createNamedPopMatrix()</a></code> </p>
+          <p><code><a href="calcMemoryWindow.html">calcMemoryWindow()</a></code> </p>
         </td>
-        <td><p>Create a Named Matrix</p></td>
+        <td><p>Calculate Memory Window</p></td>
       </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="createNamedPopVector.html">createNamedPopVector()</a></code> </p>
-        </td>
-        <td><p>Create a Named Vector</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="cube2csv.html">cube2csv()</a></code> </p>
-        </td>
-        <td><p>Export a Cube to .csv</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="cubeModifiers.html">cubeModifiers()</a></code> </p>
-        </td>
-        <td><p>Generate and Modify Default Genotype-specific Parameters</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="eraseDirectory.html">eraseDirectory()</a></code> </p>
-        </td>
-        <td><p>Erase all files in a directory</p></td>
-      </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="generateReleaseVector.html">generateReleaseVector()</a></code> </p>
         </td>
         <td><p>Make List of Modified Mosquito Releases</p></td>
       </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_ADM_Patch.html">get_ADM_Patch()</a></code> </p>
-        </td>
-        <td><p>Get ADM</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_ADMdly_Patch.html">get_ADMdly_Patch()</a></code> </p>
-        </td>
-        <td><p>Get ADMdly</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_ADMnew_Patch.html">get_ADMnew_Patch()</a></code> </p>
-        </td>
-        <td><p>Get ADMnew</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_AF1_Patch.html">get_AF1_Patch()</a></code> </p>
-        </td>
-        <td><p>Get AF1</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_AF1dly_Patch.html">get_AF1dly_Patch()</a></code> </p>
-        </td>
-        <td><p>Get AF1dly</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_AF1new_Patch.html">get_AF1new_Patch()</a></code> </p>
-        </td>
-        <td><p>Get AF1new</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_AdPopEQ_Network.html">get_AdPopEQ_Network()</a></code> </p>
-        </td>
-        <td><p>Get AdPopEQ</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_EGG_Patch.html">get_EGG_Patch()</a></code> </p>
-        </td>
-        <td><p>Get EGG</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_EGGdly_Patch.html">get_EGGdly_Patch()</a></code> </p>
-        </td>
-        <td><p>Get EGGdly</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_LAR_Patch.html">get_LAR_Patch()</a></code> </p>
-        </td>
-        <td><p>Get LAR</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_LARdly_Patch.html">get_LARdly_Patch()</a></code> </p>
-        </td>
-        <td><p>Get LARdly</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_Leq_Network.html">get_Leq_Network()</a></code> </p>
-        </td>
-        <td><p>Get Leq</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_NetworkPointer_Patch.html">get_NetworkPointer_Patch()</a></code> </p>
-        </td>
-        <td><p>Get Network Pointer</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_PUP_Patch.html">get_PUP_Patch()</a></code> </p>
-        </td>
-        <td><p>Get PUP</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_PUPdly_Patch.html">get_PUPdly_Patch()</a></code> </p>
-        </td>
-        <td><p>Get PUP</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_alpha_Network.html">get_alpha_Network()</a></code> </p>
-        </td>
-        <td><p>Get alpha</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_beta_Network.html">get_beta_Network()</a></code> </p>
-        </td>
-        <td><p>Get beta</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_conADM_Network.html">get_conADM_Network()</a></code> </p>
-        </td>
-        <td><p>Get conADM</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_conAF1_Network.html">get_conAF1_Network()</a></code> </p>
-        </td>
-        <td><p>Get conAF1</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_directory_Network.html">get_directory_Network()</a></code> </p>
-        </td>
-        <td><p>Get directory</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_driveCube_genotype_Network.html">get_driveCube_genotype_Network()</a></code> </p>
-        </td>
-        <td><p>Get Element(s) of Drive Cube by Genotype</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_driveCube_index_Network.html">get_driveCube_index_Network()</a></code> </p>
-        </td>
-        <td><p>Get Element(s) of Drive Cube by Index</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_eta_Network.html">get_eta_Network()</a></code> </p>
-        </td>
-        <td><p>Get eta</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_femaleMigration_Patch.html">get_femaleMigration_Patch()</a></code> </p>
-        </td>
-        <td><p>Get maleMigration</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_g_Network.html">get_g_Network()</a></code> </p>
-        </td>
-        <td><p>Get g</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_genotypesID_Network.html">get_genotypesID_Network()</a></code> </p>
-        </td>
-        <td><p>Get genotypesID</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_genotypesN_Network.html">get_genotypesN_Network()</a></code> </p>
-        </td>
-        <td><p>Get genotypesN</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_maleMigration_Patch.html">get_maleMigration_Patch()</a></code> </p>
-        </td>
-        <td><p>Get maleMigration</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_migrationFemaleRow_Network.html">get_migrationFemaleRow_Network()</a></code> </p>
-        </td>
-        <td><p>Get Row of Female Migration Matrix</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_migrationFemale_Network.html">get_migrationFemale_Network()</a></code> </p>
-        </td>
-        <td><p>Get Female Migration Matrix</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_migrationMaleRow_Network.html">get_migrationMaleRow_Network()</a></code> </p>
-        </td>
-        <td><p>Get Row of Male Migration Matrix</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_migrationMale_Network.html">get_migrationMale_Network()</a></code> </p>
-        </td>
-        <td><p>Get Male Migration Matrix</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_moveVar_Network.html">get_moveVar_Network()</a></code> </p>
-        </td>
-        <td><p>Get moveVar</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_muAd_Network.html">get_muAd_Network()</a></code> </p>
-        </td>
-        <td><p>Get muAd</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_muAq_Network.html">get_muAq_Network()</a></code> </p>
-        </td>
-        <td><p>Get muAq</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_nPatch_Network.html">get_nPatch_Network()</a></code> </p>
-        </td>
-        <td><p>Get nPatch</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_omega_Network.html">get_omega_Network()</a></code> </p>
-        </td>
-        <td><p>Get omega</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_patchID_Patch.html">get_patchID_Patch()</a></code> </p>
-        </td>
-        <td><p>Get patchID</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_patchReleases_Network.html">get_patchReleases_Network()</a></code> </p>
-        </td>
-        <td><p>Get Patch Release Schedule</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_patch_Network.html">get_patch_Network()</a></code> </p>
-        </td>
-        <td><p>Get Patch</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_patches_Network.html">get_patches_Network()</a></code> </p>
-        </td>
-        <td><p>Get all Patches</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_phi_Network.html">get_phi_Network()</a></code> </p>
-        </td>
-        <td><p>Get phi</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_releaseType_Network.html">get_releaseType_Network()</a></code> </p>
-        </td>
-        <td><p>Get releaseType</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_rm_Network.html">get_Rm_Network()</a></code> </p>
-        </td>
-        <td><p>Get Rm</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_s_Network.html">get_s_Network()</a></code> </p>
-        </td>
-        <td><p>Get s</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_simTime_Network.html">get_simTime_Network()</a></code> </p>
-        </td>
-        <td><p>Get simTime</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_tNow_Network.html">get_tNow_Network()</a></code> </p>
-        </td>
-        <td><p>Get tNow</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_tau_Network.html">get_tau_Network()</a></code> </p>
-        </td>
-        <td><p>Get Viability Mash (tau)</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_thetaAq_Network.html">get_thetaAq_Network()</a></code> </p>
-        </td>
-        <td><p>Get thetaAq</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_timeAq_Network.html">get_timeAq_Network()</a></code> </p>
-        </td>
-        <td><p>Get timeAq</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_wildType_Network.html">get_wildType_Network()</a></code> </p>
-        </td>
-        <td><p>Get wildType</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_windowSize_Network.html">get_windowSize_Network()</a></code> </p>
-        </td>
-        <td><p>Get windowSize</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_xiF_Network.html">get_xiF_Network()</a></code> </p>
-        </td>
-        <td><p>Get xiF</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="get_xiM_Network.html">get_xiM_Network()</a></code> </p>
-        </td>
-        <td><p>Get xiM</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="ggCol_utility.html">ggCol_utility()</a></code> </p>
-        </td>
-        <td><p>Utility to Imitate ggplot2 Colors</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="initPopMatrixArray.html">initPopMatrixArray()</a></code> </p>
-        </td>
-        <td><p>Create a population array of matrices</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="initPopVectorArray.html">initPopVectorArray()</a></code> </p>
-        </td>
-        <td><p>Create a population array of vectors</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="initStagesDurations.html">initStagesDurations()</a></code> </p>
-        </td>
-        <td><p>Initialize Aquatic Stages Durations</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="kernels.html">kernels</a></code> </p>
-        </td>
-        <td><p>Kernels Parameters</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="moveMatAll2.html">moveMatAll2</a></code> </p>
-        </td>
-        <td><p>Movement Matrix: All 2</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="moveMatCascade3.html">moveMatCascade3</a></code> </p>
-        </td>
-        <td><p>Movement Matrix: Cascade 3</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="moveMatDiag.html">moveMatDiag</a></code> </p>
-        </td>
-        <td><p>Movement Matrix: Diagonal</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="moveMatDiagOneCity.html">moveMatDiagOneCity</a></code> </p>
-        </td>
-        <td><p>Movement Matrix: Diagonal One City</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="moveMatDie.html">moveMatDie</a></code> </p>
-        </td>
-        <td><p>Movement Matrix: Die</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="moveMatIndependent3.html">moveMatIndependent3</a></code> </p>
-        </td>
-        <td><p>Movement Matrix: Independent 3</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="moveMatMixedSpil.html">moveMatMixedSpil</a></code> </p>
-        </td>
-        <td><p>Movement Matrix: Mixed Spill</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="moveMatTaleOfTwoCities.html">moveMatTaleOfTwoCities</a></code> </p>
-        </td>
-        <td><p>Movement Matrix: Tale of Two Cities</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="moveMatTriDiagonal.html">moveMatTriDiagonal</a></code> </p>
-        </td>
-        <td><p>Movement Matrix: Tri-diagonal</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="moveMatTriple.html">moveMatTriple</a></code> </p>
-        </td>
-        <td><p>Movement Matrix: Triple</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="normalise.html">normalise()</a></code> </p>
-        </td>
-        <td><p>Normalise a Numeric Vector</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_Migration_Network.html">oneDay_Migration_Network()</a></code> </p>
-        </td>
-        <td><p>Inter-Patch Migration</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_Network.html">oneDay_Network()</a></code> </p>
-        </td>
-        <td><p>Run a Single Day on a Network</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_PopDynamics_Patch.html">oneDay_PopDynamics_Patch()</a></code> </p>
-        </td>
-        <td><p>Daily Population Dynamics for a Patch</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_admPupating_deterministic_Patch.html">oneDay_admPupating_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Adult Male Pupation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_admPupating_stochastic_Patch.html">oneDay_admPupating_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Adult Male Pupation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_admSurvival_deterministic_Patch.html">oneDay_admSurvival_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Adult Male Survival</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_admSurvival_stochastic_Patch.html">oneDay_admSurvival_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Adult Male Survival</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_af1Mating_deterministic_Patch.html">oneDay_af1Mating_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Mating</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_af1Mating_stochastic_Patch.html">oneDay_af1Mating_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Mating</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_af1Pupation_deterministic_Patch.html">oneDay_af1Pupation_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Adult Female Pupation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_af1Pupation_stochastic_Patch.html">oneDay_af1Pupation_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Adult Female Pupation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_af1Survival_deterministic_Patch.html">oneDay_af1Survival_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Adult Female Survival</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_af1Survival_stochastic_Patch.html">oneDay_af1Survival_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Adult Female Survival</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_calcCumulativeLarvalDensityDependentFactor_Patch.html">oneDay_calcCumulativeLarvalDensityDependentFactor_Patch()</a></code> </p>
-        </td>
-        <td><p>Calculate Cumulative Larval density-dependent Mortality</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_calcCumulativePupaDensityDependentFactor_Patch.html">oneDay_calcCumulativePupaDensityDependentFactor_Patch()</a></code> </p>
-        </td>
-        <td><p>Calculate Cumulative Pupae density-dependent Mortality</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_calcLarvalDensityDependentFactor_Patch.html">oneDay_calcLarvalDensityDependentFactor_Patch()</a></code> </p>
-        </td>
-        <td><p>Calculate Larval density-dependent Mortality</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_eggsFract2_deterministic_Patch.html">oneDay_eggsFract2_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Larval Pupation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_eggsFract2_stochastic_Patch.html">oneDay_eggsFract2_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Larval Pupation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_femaleReleases_Patch.html">oneDay_femaleReleases_Patch()</a></code> </p>
-        </td>
-        <td><p>Release Female Mosquitoes in a Patch</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_hatchingFract_deterministic_Patch.html">oneDay_hatchingFract_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Fraction of Eggs Maturing to Hatch</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_hatchingFract_stochastic_Patch.html">oneDay_hatchingFract_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Fraction of Eggs Maturing to Hatch</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_initOutput_Patch.html">oneDay_initOutput_Patch()</a></code> </p>
-        </td>
-        <td><p>Initialize Output from Focal Patch</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_larHatching_deterministic_Patch.html">oneDay_larHatching_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Egg Hatching to Larval Stage</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_larHatching_stochastic_Patch.html">oneDay_larHatching_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Egg Hatching to Larval Stage</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_larPupating_deterministic_Patch.html">oneDay_larPupating_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Larval Pupation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_larPupating_stochastic_Patch.html">oneDay_larPupating_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Larval Pupation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_larSurvival_deterministic_Patch.html">oneDay_larSurvival_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Larval Survival</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_larSurvival_stochastic_Patch.html">oneDay_larSurvival_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Larval Survival</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_maleReleases_Patch.html">oneDay_maleReleases_Patch()</a></code> </p>
-        </td>
-        <td><p>Release Male Mosquitoes in a Patch</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_migrationIn_Patch.html">oneDay_migrationIn_Patch()</a></code> </p>
-        </td>
-        <td><p>Inbound Migration</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_migrationOut_deterministic_Patch.html">oneDay_migrationOut_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministic Oubound Migration from a Patch</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_migrationOut_stochastic_Patch.html">oneDay_migrationOut_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Oubound Migration</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_numMaleFemale_deterministic_Patch.html">oneDay_numMaleFemale_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Sex Ratio</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_numMaleFemale_stochastic_Patch.html">oneDay_numMaleFemale_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Sex Ratio</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_ovipositG1_deterministic_Patch.html">oneDay_ovipositG1_deterministic_Patch()</a></code> </p>
-        </td>
-        <td><p>Deterministc Oviposition</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_ovipositG1_stochastic_Patch.html">oneDay_ovipositG1_stochastic_Patch()</a></code> </p>
-        </td>
-        <td><p>Stochastic Oviposition</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_updatePopulation_Patch.html">oneDay_updatePopulation_Patch()</a></code> </p>
-        </td>
-        <td><p>Shift Population</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneDay_writeOutput_Patch.html">oneDay_writeOutput_Patch()</a></code> </p>
-        </td>
-        <td><p>Write Output from Focal Patch</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="oneRun_Network.html">oneRun_Network()</a></code> </p>
-        </td>
-        <td><p>Run Simulation</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="primePopMatrixArray.html">primePopMatrixArray()</a></code> </p>
-        </td>
-        <td><p>Create a primed population array of matrices</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="primePopVectorArray.html">primePopVectorArray()</a></code> </p>
-        </td>
-        <td><p>Create a primed population array of vectors</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="quantileC.html">quantileC()</a></code> </p>
-        </td>
-        <td><p>Quantiles Function</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="reset_Network.html">reset_Network()</a></code> </p>
-        </td>
-        <td><p>Reset Network</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="reset_Patch.html">reset_Patch()</a></code> </p>
-        </td>
-        <td><p>Reset Patch to Initial Conditions</p></td>
-      </tr><tr>
-        <!--  -->
+        
+        <td>
+          <p><code><a href="Release_basicRepeatedReleases.html">Release_basicRepeatedReleases()</a></code> </p>
+        </td>
+        <td><p>Make List of Modified Mosquito Releases</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-analysis-of-output" class="hasAnchor"><a href="#section-analysis-of-output" class="anchor"></a>Analysis of Output</h2>
+          <p class="section-desc"><p>The Patch object class handles all population dynamic simulation within a node.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="aggregateFemales.html">aggregateFemales()</a></code> </p>
+        </td>
+        <td><p>Aggregate Female Output by Genotype</p></td>
+      </tr><tr>
+        
         <td>
           <p><code><a href="retrieveOutput.html">retrieveOutput()</a></code> </p>
         </td>
         <td><p>Retrieve Output</p></td>
       </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="set_ADMnew_Patch.html">set_ADMnew_Patch()</a></code> </p>
-        </td>
-        <td><p>Set ADMnew</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="set_AF1new_Patch.html">set_AF1new_Patch()</a></code> </p>
-        </td>
-        <td><p>Set AF1new</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="set_NetworkPointer_Patch.html">set_NetworkPointer_Patch()</a></code> </p>
-        </td>
-        <td><p>Set Network Pointer</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="set_migrationFemale_Network.html">set_migrationFemale_Network()</a></code> </p>
-        </td>
-        <td><p>Set Female Migration Matrix</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="set_migrationMale_Network.html">set_migrationMale_Network()</a></code> </p>
-        </td>
-        <td><p>Set Male Migration Matrix</p></td>
-      </tr><tr>
-        <!--  -->
-        <td>
-          <p><code><a href="shiftAndUpdatePopVector.html">shiftAndUpdatePopVector()</a></code> </p>
-        </td>
-        <td><p>Shift a Vector</p></td>
-      </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="splitOutput.html">splitOutput()</a></code> </p>
         </td>
         <td><p>Split Output by Patch</p></td>
       </tr><tr>
-        <!--  -->
+        
+        <td>
+          <p><code><a href="AnalyzeQuantiles.html">AnalyzeQuantiles()</a></code> </p>
+        </td>
+        <td><p>Summary Statistics for Stochastic MGDrivE</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="quantileC.html">quantileC()</a></code> </p>
+        </td>
+        <td><p>Quantiles Function</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data" class="hasAnchor"><a href="#section-data" class="anchor"></a>Data</h2>
+          <p class="section-desc"><p>Data files included in MGDrivE, contains fitted parameters for parameteric mosquito dispersal kernels and movement matrices for illustrative simulations.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="kernels.html">kernels</a></code> </p>
+        </td>
+        <td><p>Kernels Parameters</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moveMatAll2.html">moveMatAll2</a></code> </p>
+        </td>
+        <td><p>Movement Matrix: All 2</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moveMatCascade3.html">moveMatCascade3</a></code> </p>
+        </td>
+        <td><p>Movement Matrix: Cascade 3</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moveMatDiag.html">moveMatDiag</a></code> </p>
+        </td>
+        <td><p>Movement Matrix: Diagonal</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moveMatDiagOneCity.html">moveMatDiagOneCity</a></code> </p>
+        </td>
+        <td><p>Movement Matrix: Diagonal One City</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moveMatDie.html">moveMatDie</a></code> </p>
+        </td>
+        <td><p>Movement Matrix: Die</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moveMatIndependent3.html">moveMatIndependent3</a></code> </p>
+        </td>
+        <td><p>Movement Matrix: Independent 3</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moveMatMixedSpil.html">moveMatMixedSpil</a></code> </p>
+        </td>
+        <td><p>Movement Matrix: Mixed Spill</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moveMatTaleOfTwoCities.html">moveMatTaleOfTwoCities</a></code> </p>
+        </td>
+        <td><p>Movement Matrix: Tale of Two Cities</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moveMatTriDiagonal.html">moveMatTriDiagonal</a></code> </p>
+        </td>
+        <td><p>Movement Matrix: Tri-diagonal</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="moveMatTriple.html">moveMatTriple</a></code> </p>
+        </td>
+        <td><p>Movement Matrix: Triple</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-kernel-geographic-distance" class="hasAnchor"><a href="#section-kernel-geographic-distance" class="anchor"></a>Kernel &amp; Geographic Distance</h2>
+          <p class="section-desc"><p>Functions to generate movement matrices based on parameteric dispersal kernels and function to calculate Haversine distance matrix between latitude/longitude pairs of points.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="calc_ExpKernel.html">calc_ExpKernel()</a></code> </p>
+        </td>
+        <td><p>Calculate Exponential Stochastic Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calc_GammaKernel.html">calc_GammaKernel()</a></code> </p>
+        </td>
+        <td><p>Calculate Gamma Stochastic Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calc_HurdleExpKernel.html">calc_HurdleExpKernel()</a></code> </p>
+        </td>
+        <td><p>Calculate Hurdle Exponential Stochastic Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calc_LognormalKernel.html">calc_LognormalKernel()</a></code> </p>
+        </td>
+        <td><p>Calculate Lognormal Stochastic Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="calc_haversine.html">calc_haversine()</a></code> </p>
+        </td>
+        <td><p>Calculate Haversine Distance</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-network-class" class="hasAnchor"><a href="#section-network-class" class="anchor"></a>Network Class</h2>
+          <p class="section-desc"><p>The Network object class which is the main object with which to interact with the MGDrivE simulation, and manages the metapopulation dynamics upon which the simulation runs.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="Network.html">Network</a></code> </p>
+        </td>
+        <td><p>Network Class Definition</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_Migration_Network.html">oneDay_Migration_Network()</a></code> </p>
+        </td>
+        <td><p>Inter-Patch Migration</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_Network.html">oneDay_Network()</a></code> </p>
+        </td>
+        <td><p>Run a Single Day on a Network</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneRun_Network.html">oneRun_Network()</a></code> </p>
+        </td>
+        <td><p>Run Simulation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="reset_Network.html">reset_Network()</a></code> </p>
+        </td>
+        <td><p>Reset Network</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="set_migrationFemale_Network.html">set_migrationFemale_Network()</a></code> </p>
+        </td>
+        <td><p>Set Female Migration Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="set_migrationMale_Network.html">set_migrationMale_Network()</a></code> </p>
+        </td>
+        <td><p>Set Male Migration Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_g_Network.html">get_g_Network()</a></code> </p>
+        </td>
+        <td><p>Get g</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_genotypesID_Network.html">get_genotypesID_Network()</a></code> </p>
+        </td>
+        <td><p>Get genotypesID</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_genotypesN_Network.html">get_genotypesN_Network()</a></code> </p>
+        </td>
+        <td><p>Get genotypesN</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_migrationFemaleRow_Network.html">get_migrationFemaleRow_Network()</a></code> </p>
+        </td>
+        <td><p>Get Row of Female Migration Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_migrationFemale_Network.html">get_migrationFemale_Network()</a></code> </p>
+        </td>
+        <td><p>Get Female Migration Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_migrationMaleRow_Network.html">get_migrationMaleRow_Network()</a></code> </p>
+        </td>
+        <td><p>Get Row of Male Migration Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_migrationMale_Network.html">get_migrationMale_Network()</a></code> </p>
+        </td>
+        <td><p>Get Male Migration Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_moveVar_Network.html">get_moveVar_Network()</a></code> </p>
+        </td>
+        <td><p>Get moveVar</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_muAd_Network.html">get_muAd_Network()</a></code> </p>
+        </td>
+        <td><p>Get muAd</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_muAq_Network.html">get_muAq_Network()</a></code> </p>
+        </td>
+        <td><p>Get muAq</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_nPatch_Network.html">get_nPatch_Network()</a></code> </p>
+        </td>
+        <td><p>Get nPatch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_omega_Network.html">get_omega_Network()</a></code> </p>
+        </td>
+        <td><p>Get omega</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_patchReleases_Network.html">get_patchReleases_Network()</a></code> </p>
+        </td>
+        <td><p>Get Patch Release Schedule</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_patch_Network.html">get_patch_Network()</a></code> </p>
+        </td>
+        <td><p>Get Patch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_patches_Network.html">get_patches_Network()</a></code> </p>
+        </td>
+        <td><p>Get all Patches</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_phi_Network.html">get_phi_Network()</a></code> </p>
+        </td>
+        <td><p>Get phi</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_releaseType_Network.html">get_releaseType_Network()</a></code> </p>
+        </td>
+        <td><p>Get releaseType</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_rm_Network.html">get_Rm_Network()</a></code> </p>
+        </td>
+        <td><p>Get Rm</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_s_Network.html">get_s_Network()</a></code> </p>
+        </td>
+        <td><p>Get s</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_simTime_Network.html">get_simTime_Network()</a></code> </p>
+        </td>
+        <td><p>Get simTime</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_tNow_Network.html">get_tNow_Network()</a></code> </p>
+        </td>
+        <td><p>Get tNow</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_tau_Network.html">get_tau_Network()</a></code> </p>
+        </td>
+        <td><p>Get Viability Mash (tau)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_thetaAq_Network.html">get_thetaAq_Network()</a></code> </p>
+        </td>
+        <td><p>Get thetaAq</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_timeAq_Network.html">get_timeAq_Network()</a></code> </p>
+        </td>
+        <td><p>Get timeAq</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_wildType_Network.html">get_wildType_Network()</a></code> </p>
+        </td>
+        <td><p>Get wildType</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_windowSize_Network.html">get_windowSize_Network()</a></code> </p>
+        </td>
+        <td><p>Get windowSize</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_xiF_Network.html">get_xiF_Network()</a></code> </p>
+        </td>
+        <td><p>Get xiF</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_xiM_Network.html">get_xiM_Network()</a></code> </p>
+        </td>
+        <td><p>Get xiM</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="close_allConnections_Network.html">close_allConnections_Network()</a></code> </p>
+        </td>
+        <td><p>Close all Output Connections</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_AdPopEQ_Network.html">get_AdPopEQ_Network()</a></code> </p>
+        </td>
+        <td><p>Get AdPopEQ</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_Leq_Network.html">get_Leq_Network()</a></code> </p>
+        </td>
+        <td><p>Get Leq</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_alpha_Network.html">get_alpha_Network()</a></code> </p>
+        </td>
+        <td><p>Get alpha</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_beta_Network.html">get_beta_Network()</a></code> </p>
+        </td>
+        <td><p>Get beta</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_conADM_Network.html">get_conADM_Network()</a></code> </p>
+        </td>
+        <td><p>Get conADM</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_conAF1_Network.html">get_conAF1_Network()</a></code> </p>
+        </td>
+        <td><p>Get conAF1</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_directory_Network.html">get_directory_Network()</a></code> </p>
+        </td>
+        <td><p>Get directory</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_driveCube_genotype_Network.html">get_driveCube_genotype_Network()</a></code> </p>
+        </td>
+        <td><p>Get Element(s) of Drive Cube by Genotype</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_driveCube_index_Network.html">get_driveCube_index_Network()</a></code> </p>
+        </td>
+        <td><p>Get Element(s) of Drive Cube by Index</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_eta_Network.html">get_eta_Network()</a></code> </p>
+        </td>
+        <td><p>Get eta</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-patch-class" class="hasAnchor"><a href="#section-patch-class" class="anchor"></a>Patch Class</h2>
+          <p class="section-desc"><p>The Patch object class handles all population dynamic simulation within a node.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="Patch.html">Patch</a></code> </p>
+        </td>
+        <td><p>Patch Class Definition</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_maleMigration_Patch.html">get_maleMigration_Patch()</a></code> </p>
+        </td>
+        <td><p>Get maleMigration</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_patchID_Patch.html">get_patchID_Patch()</a></code> </p>
+        </td>
+        <td><p>Get patchID</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="accumulate_ADMnew_Patch.html">accumulate_ADMnew_Patch()</a></code> </p>
+        </td>
+        <td><p>Accumulate ADMnew</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_ADM_Patch.html">get_ADM_Patch()</a></code> </p>
+        </td>
+        <td><p>Get ADM</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_ADMdly_Patch.html">get_ADMdly_Patch()</a></code> </p>
+        </td>
+        <td><p>Get ADMdly</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_ADMnew_Patch.html">get_ADMnew_Patch()</a></code> </p>
+        </td>
+        <td><p>Get ADMnew</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_AF1_Patch.html">get_AF1_Patch()</a></code> </p>
+        </td>
+        <td><p>Get AF1</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_AF1dly_Patch.html">get_AF1dly_Patch()</a></code> </p>
+        </td>
+        <td><p>Get AF1dly</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_AF1new_Patch.html">get_AF1new_Patch()</a></code> </p>
+        </td>
+        <td><p>Get AF1new</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_EGG_Patch.html">get_EGG_Patch()</a></code> </p>
+        </td>
+        <td><p>Get EGG</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_EGGdly_Patch.html">get_EGGdly_Patch()</a></code> </p>
+        </td>
+        <td><p>Get EGGdly</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_LAR_Patch.html">get_LAR_Patch()</a></code> </p>
+        </td>
+        <td><p>Get LAR</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_LARdly_Patch.html">get_LARdly_Patch()</a></code> </p>
+        </td>
+        <td><p>Get LARdly</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_NetworkPointer_Patch.html">get_NetworkPointer_Patch()</a></code> </p>
+        </td>
+        <td><p>Get Network Pointer</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_PUP_Patch.html">get_PUP_Patch()</a></code> </p>
+        </td>
+        <td><p>Get PUP</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_PUPdly_Patch.html">get_PUPdly_Patch()</a></code> </p>
+        </td>
+        <td><p>Get PUP</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_femaleMigration_Patch.html">get_femaleMigration_Patch()</a></code> </p>
+        </td>
+        <td><p>Get maleMigration</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_PopDynamics_Patch.html">oneDay_PopDynamics_Patch()</a></code> </p>
+        </td>
+        <td><p>Daily Population Dynamics for a Patch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_admPupating_deterministic_Patch.html">oneDay_admPupating_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Adult Male Pupation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_admPupating_stochastic_Patch.html">oneDay_admPupating_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Adult Male Pupation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_admSurvival_deterministic_Patch.html">oneDay_admSurvival_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Adult Male Survival</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_admSurvival_stochastic_Patch.html">oneDay_admSurvival_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Adult Male Survival</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_af1Mating_deterministic_Patch.html">oneDay_af1Mating_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Mating</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_af1Mating_stochastic_Patch.html">oneDay_af1Mating_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Mating</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_af1Pupation_deterministic_Patch.html">oneDay_af1Pupation_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Adult Female Pupation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_af1Pupation_stochastic_Patch.html">oneDay_af1Pupation_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Adult Female Pupation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_af1Survival_deterministic_Patch.html">oneDay_af1Survival_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Adult Female Survival</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_af1Survival_stochastic_Patch.html">oneDay_af1Survival_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Adult Female Survival</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_calcCumulativeLarvalDensityDependentFactor_Patch.html">oneDay_calcCumulativeLarvalDensityDependentFactor_Patch()</a></code> </p>
+        </td>
+        <td><p>Calculate Cumulative Larval density-dependent Mortality</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_calcCumulativePupaDensityDependentFactor_Patch.html">oneDay_calcCumulativePupaDensityDependentFactor_Patch()</a></code> </p>
+        </td>
+        <td><p>Calculate Cumulative Pupae density-dependent Mortality</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_calcLarvalDensityDependentFactor_Patch.html">oneDay_calcLarvalDensityDependentFactor_Patch()</a></code> </p>
+        </td>
+        <td><p>Calculate Larval density-dependent Mortality</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_eggsFract2_deterministic_Patch.html">oneDay_eggsFract2_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Larval Pupation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_eggsFract2_stochastic_Patch.html">oneDay_eggsFract2_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Larval Pupation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_femaleReleases_Patch.html">oneDay_femaleReleases_Patch()</a></code> </p>
+        </td>
+        <td><p>Release Female Mosquitoes in a Patch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_hatchingFract_deterministic_Patch.html">oneDay_hatchingFract_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Fraction of Eggs Maturing to Hatch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_hatchingFract_stochastic_Patch.html">oneDay_hatchingFract_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Fraction of Eggs Maturing to Hatch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_initOutput_Patch.html">oneDay_initOutput_Patch()</a></code> </p>
+        </td>
+        <td><p>Initialize Output from Focal Patch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_larHatching_deterministic_Patch.html">oneDay_larHatching_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Egg Hatching to Larval Stage</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_larHatching_stochastic_Patch.html">oneDay_larHatching_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Egg Hatching to Larval Stage</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_larPupating_deterministic_Patch.html">oneDay_larPupating_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Larval Pupation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_larPupating_stochastic_Patch.html">oneDay_larPupating_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Larval Pupation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_larSurvival_deterministic_Patch.html">oneDay_larSurvival_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Larval Survival</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_larSurvival_stochastic_Patch.html">oneDay_larSurvival_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Larval Survival</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_maleReleases_Patch.html">oneDay_maleReleases_Patch()</a></code> </p>
+        </td>
+        <td><p>Release Male Mosquitoes in a Patch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_migrationIn_Patch.html">oneDay_migrationIn_Patch()</a></code> </p>
+        </td>
+        <td><p>Inbound Migration</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_migrationOut_deterministic_Patch.html">oneDay_migrationOut_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministic Oubound Migration from a Patch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_migrationOut_stochastic_Patch.html">oneDay_migrationOut_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Oubound Migration</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_numMaleFemale_deterministic_Patch.html">oneDay_numMaleFemale_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Sex Ratio</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_numMaleFemale_stochastic_Patch.html">oneDay_numMaleFemale_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Sex Ratio</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_ovipositG1_deterministic_Patch.html">oneDay_ovipositG1_deterministic_Patch()</a></code> </p>
+        </td>
+        <td><p>Deterministc Oviposition</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_ovipositG1_stochastic_Patch.html">oneDay_ovipositG1_stochastic_Patch()</a></code> </p>
+        </td>
+        <td><p>Stochastic Oviposition</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_updatePopulation_Patch.html">oneDay_updatePopulation_Patch()</a></code> </p>
+        </td>
+        <td><p>Shift Population</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="oneDay_writeOutput_Patch.html">oneDay_writeOutput_Patch()</a></code> </p>
+        </td>
+        <td><p>Write Output from Focal Patch</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="reset_Patch.html">reset_Patch()</a></code> </p>
+        </td>
+        <td><p>Reset Patch to Initial Conditions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="set_ADMnew_Patch.html">set_ADMnew_Patch()</a></code> </p>
+        </td>
+        <td><p>Set ADMnew</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="set_AF1new_Patch.html">set_AF1new_Patch()</a></code> </p>
+        </td>
+        <td><p>Set AF1new</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="set_NetworkPointer_Patch.html">set_NetworkPointer_Patch()</a></code> </p>
+        </td>
+        <td><p>Set Network Pointer</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-auxiliary" class="hasAnchor"><a href="#section-auxiliary" class="anchor"></a>Auxiliary</h2>
+          <p class="section-desc"><p>Auxiliary functions for internal use.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="SymCubeC.html">SymCubeC()</a></code> </p>
+        </td>
+        <td><p>Make a Symmetric Cube</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="createNamedPopMatrix.html">createNamedPopMatrix()</a></code> </p>
+        </td>
+        <td><p>Create a Named Matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="createNamedPopVector.html">createNamedPopVector()</a></code> </p>
+        </td>
+        <td><p>Create a Named Vector</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="cubeModifiers.html">cubeModifiers()</a></code> </p>
+        </td>
+        <td><p>Generate and Modify Default Genotype-specific Parameters</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="eraseDirectory.html">eraseDirectory()</a></code> </p>
+        </td>
+        <td><p>Erase all files in a directory</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ggCol_utility.html">ggCol_utility()</a></code> </p>
+        </td>
+        <td><p>Utility to Imitate ggplot2 Colors</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="initPopMatrixArray.html">initPopMatrixArray()</a></code> </p>
+        </td>
+        <td><p>Create a population array of matrices</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="initPopVectorArray.html">initPopVectorArray()</a></code> </p>
+        </td>
+        <td><p>Create a population array of vectors</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="initStagesDurations.html">initStagesDurations()</a></code> </p>
+        </td>
+        <td><p>Initialize Aquatic Stages Durations</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="normalise.html">normalise()</a></code> </p>
+        </td>
+        <td><p>Normalise a Numeric Vector</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="primePopMatrixArray.html">primePopMatrixArray()</a></code> </p>
+        </td>
+        <td><p>Create a primed population array of matrices</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="primePopVectorArray.html">primePopVectorArray()</a></code> </p>
+        </td>
+        <td><p>Create a primed population array of vectors</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="rDirichlet.html">rDirichlet()</a></code> </p>
+        </td>
+        <td><p>Dirichlet Distribution</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shiftAndUpdatePopVector.html">shiftAndUpdatePopVector()</a></code> </p>
+        </td>
+        <td><p>Shift a Vector</p></td>
+      </tr><tr>
+        
         <td>
           <p><code><a href="turnStochasticityOnOrOff.html">turnStochasticityOnOrOff()</a></code> </p>
         </td>
@@ -1284,9 +1172,15 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-overview">Overview</a></li>
+      <li><a href="#section-model-description-and-initialization">Model Description and Initialization</a></li>
       <li><a href="#section-inheritance-cubes">Inheritance Cubes</a></li>
+      <li><a href="#section-population-dynamics-model-parameters">Population Dynamics Model Parameters</a></li>
+      <li><a href="#section-analysis-of-output">Analysis of Output</a></li>
       <li><a href="#section-data">Data</a></li>
+      <li><a href="#section-kernel-geographic-distance">Kernel &amp; Geographic Distance</a></li>
+      <li><a href="#section-network-class">Network Class</a></li>
+      <li><a href="#section-patch-class">Patch Class</a></li>
+      <li><a href="#section-auxiliary">Auxiliary</a></li>
     </ul>
   </div>
 </div>
