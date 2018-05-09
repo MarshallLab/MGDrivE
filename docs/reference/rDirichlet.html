@@ -6,25 +6,36 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Inheritance Cube: CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 1 Resistance Allele — Cube_CRISPROneResistantAllele • MGDrivE</title>
+<title>Dirichlet Distribution — rDirichlet • MGDrivE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Dirichlet Distribution — rDirichlet" />
+
+<meta property="og:description" content="Make a single draw from a dirichlet distribution with the shape parameter
+one. This replaces the MCMCpack rDirichlet function, which was wholly written
+in R." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">MGDrivE</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">MGDrivE</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -65,6 +80,7 @@
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -72,55 +88,30 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Inheritance Cube: CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 1 Resistance Allele</h1>
+    <h1>Dirichlet Distribution</h1>
+    
+    <div class="hidden name"><code>rDirichlet.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>This function creates an inheritance cube to model a CRISPR-Cas9 gene drive system
-that creates 1 type of resistance allele. This technology is used for current
-homing-based gene drives</p>
+    <p>Make a single draw from a dirichlet distribution with the shape parameter
+one. This replaces the MCMCpack rDirichlet function, which was wholly written
+in R.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>Cube_CRISPROneResistantAllele</span>(<span class='kw'>e</span> <span class='kw'>=</span> <span class='fl'>0.98</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>eta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>phi</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>omega</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xiF</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xiM</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>s</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>rDirichlet</span>(<span class='no'>migrationPoint</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>e</th>
-      <td><p>homing rate</p></td>
-    </tr>
-    <tr>
-      <th>p</th>
-      <td><p>write me!</p></td>
-    </tr>
-    <tr>
-      <th>eta</th>
-      <td><p>genotype-specific mating fitness</p></td>
-    </tr>
-    <tr>
-      <th>phi</th>
-      <td><p>genotype-specific sex ratio at emergence</p></td>
-    </tr>
-    <tr>
-      <th>omega</th>
-      <td><p>genotype-specific multiplicative modifier of adult mortality</p></td>
-    </tr>
-    <tr>
-      <th>xiF</th>
-      <td><p>genotype-specific female pupatory success</p></td>
-    </tr>
-    <tr>
-      <th>xiM</th>
-      <td><p>genotype-specific male pupatory success</p></td>
-    </tr>
-    <tr>
-      <th>s</th>
-      <td><p>genotype-specific fractional reduction(increase) in fertility</p></td>
+      <th>migrationPoint</th>
+      <td><p>Vector of weights for draws. Must be positive.</p></td>
     </tr>
     </table>
     
@@ -147,5 +138,8 @@ homing-based gene drives</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -11,7 +11,7 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="MGDrivE: Inheritance Cube — MGDrivE-Cube" />
 
 <meta property="og:description" content="To model an arbitrary number of genotypes efficiently in the same mathematical framework we use a 3-dimensional array structure (cube) where each axis represents the following information:
@@ -44,8 +47,6 @@ z: proportion of the offspring that inherits a given genotype (layer)
 <![endif]-->
 
 
-
-
   </head>
 
   <body>
@@ -61,7 +62,7 @@ z: proportion of the offspring that inherits a given genotype (layer)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0</span>
       </span>
     </div>
 
@@ -97,6 +98,7 @@ z: proportion of the offspring that inherits a given genotype (layer)
     <div class="hidden name"><code>MGDrivE-Cube.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>To model an arbitrary number of genotypes efficiently in the same mathematical framework we use a 3-dimensional array structure (cube) where each axis represents the following information:</p><ul>
 <li><p>x: female adult mate genotype</p></li>
@@ -104,6 +106,7 @@ z: proportion of the offspring that inherits a given genotype (layer)
 <li><p>z: proportion of the offspring that inherits a given genotype (layer)</p></li>
 </ul>
     
+    </div>
 
         
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -122,13 +125,8 @@ The summation of the transposed resulting matrix returns us the total fraction o
 stratified by male and female parent genotypes. MGDrivE provides the following cubes to model different gene drive systems:</p><ul>
 <li><p><code><a href='Cube_oneLocusTA.html'>Cube_oneLocusTA</a></code>: 1 Locus Maternal-Toxin/Zygotic-Antidote System</p></li>
 <li><p><code><a href='Cube_twoLocusTA.html'>Cube_twoLocusTA</a></code>: 2 Locus Maternal-Toxin/Zygotic-Antidote System</p></li>
-<li><p><code><a href='Cube_ConfineableHoming.html'>Cube_ConfineableHoming</a></code>: Confineable Homing</p></li>
-<li><p><code><a href='Cube_ConfineableHomingX.html'>Cube_ConfineableHomingX</a></code>: Confineable Homing, X-Linked</p></li>
 <li><p><code><a href='Cube_Homing1RA.html'>Cube_Homing1RA</a></code>: Homing Drive with 1 Resistance Allele</p></li>
 <li><p><code><a href='Cube_HomingDrive.html'>Cube_HomingDrive</a></code>: CRISPR (Clustered Regularly Interspaced SWort Palindromic Repeats) witW 2 Resistance Allele</p></li>
-<li><p><code><a href='Cube_eCHACR.html'>Cube_eCHACR</a></code>: ECHACR</p></li>
-<li><p><code><a href='Cube_ImmunizingReversalMF.html'>Cube_ImmunizingReversalMF</a></code>: Immunizing Reversal/Basic Reversal</p></li>
-<li><p><code><a href='Cube_ImmunizingReversalX.html'>Cube_ImmunizingReversalX</a></code>: Immunizing Reversal</p></li>
 <li><p><code><a href='Cube_KillerRescue.html'>Cube_KillerRescue</a></code>: Killer-Rescue System</p></li>
 <li><p><code><a href='Cube_MEDEA.html'>Cube_MEDEA</a></code>: MEDEA (Maternal Effect Dominant Embryonic Arrest)</p></li>
 <li><p><code><a href='Cube_ReciprocalTranslocations.html'>Cube_ReciprocalTranslocations</a></code>: Reciprocal Translocation</p></li>

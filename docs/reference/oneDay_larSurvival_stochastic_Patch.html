@@ -11,7 +11,7 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Stochastic Larval Survival — oneDay_larSurvival_stochastic_Patch" />
 
 <meta property="og:description" content="Calculate the number of larvae surviving from day to day, given by:
@@ -43,8 +46,6 @@ genotype of larvae." />
 <![endif]-->
 
 
-
-
   </head>
 
   <body>
@@ -60,7 +61,7 @@ genotype of larvae." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0</span>
       </span>
     </div>
 
@@ -96,12 +97,14 @@ genotype of larvae." />
     <div class="hidden name"><code>oneDay_larSurvival_stochastic_Patch.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Calculate the number of larvae surviving from day to day, given by:
 $$\overline{L_{[t-1]}} * (1-\mu_{l}) * F(\overline{L_{[t-1]})}$$
 Stochasticity is introduced by assuming \((1-\mu_{l}) * F(\overline{L_{[t-1]})}\) defines binomial likelihood of survival for each
 genotype of larvae.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>oneDay_larSurvival_stochastic_Patch</span>()</pre>
         
