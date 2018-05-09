@@ -33,5 +33,10 @@ This model is being supported and developed as part of the following projects:
 
 ## Research Centers
 
-<img src="https://marshall.github.io/MGDrivE/images/berkeley.jpg" height="40px" align="middle"> <img src="https://marshall.github.io/MGDrivE/images/UCI.png" height="40px" align="middle"> <img src="https://marshall.github.io/MGDrivE/images/UCD.jpg" height="40px" align="middle"><img src="https://marshall.github.io/MGDrivE/images/UCSD.png" height="40px" align="middle"> <img src="https://marshall.github.io/MGDrivE/images/UCLA.png" height="40px" align="middle"> <img src="https://marshall.github.io/MGDrivE/images/JPL.png" height="40px" align="middle">
-<img src="https://marshall.github.io/MGDrivE/images/IGI.png" height="40px" align="middle">
+<img src="https://marshalllab.github.io/MGDrivE/images/berkeley.jpg" height="40px" align="middle">
+<img src="https://marshalllab.github.io/MGDrivE/images/UCI.png" height="40px" align="middle">
+<img src="https://marshalllab.github.io/MGDrivE/images/UCD.jpg" height="40px" align="middle">
+<img src="https://marshalllab.github.io/MGDrivE/images/UCSD.png" height="40px" align="middle">
+<img src="https://marshalllab.github.io/MGDrivE/images/UCLA.png" height="40px" align="middle">
+<img src="https://marshalllab.github.io/MGDrivE/images/JPL.png" height="40px" align="middle">
+<img src="https://marshalllab.github.io/MGDrivE/images/IGI.png" height="40px" align="middle">
