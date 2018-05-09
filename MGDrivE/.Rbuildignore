@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+DEV-NOTES.txt
+TEST-MGDrivE.R
+TEST-Parallel.R
+^docs$
+^_pkgdown\.yml$
