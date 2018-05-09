@@ -20,3 +20,5 @@ ByteCompile: true
 LazyData: true
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
+URL: https://marshalllab.github.io/MGDrivE/
+BugReports: https://github.com/MarshallLab/MGDrivE/issues

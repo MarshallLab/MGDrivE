@@ -10,5 +10,5 @@ MGDrivE.Setup(stochasticityON = FALSE)
 \item{stochasticityON}{enable/disable stochastic simulation.}
 }
 \description{
-Initialize methods in \code{\link{Patch}} to run deterministic or stochastic simulations.
+Initialize methods in \code{\link{Patch}} to run deterministic or stochastic simulations. This function must be called prior to any objects being created.
 }

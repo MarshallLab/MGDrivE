@@ -13,7 +13,7 @@
 
 #' Setup MGDrivE
 #'
-#' Initialize methods in \code{\link{Patch}} to run deterministic or stochastic simulations.
+#' Initialize methods in \code{\link{Patch}} to run deterministic or stochastic simulations. This function must be called prior to any objects being created.
 #'
 #' @param stochasticityON enable/disable stochastic simulation.
 #'
