@@ -85,8 +85,8 @@ NULL
 #' Along with a density dependent process dependent on the number of larvae in the environment:
 #' \deqn{F(L[t])=\Bigg(\frac{\alpha}{\alpha+\sum{\overline{L[t]}}}\Bigg)^{1/T_l}}
 #' where \eqn{\alpha} represents the strength of the density-dependent process. This parameter  is calculated with:
-#' \deqn{\alpha=\Bigg( \frac{1/2 * \beta_k * \theta_e * Ad_{eq}}{R_m-1} \Bigg) * \Bigg( \frac{1-(\theta_l / R_m)}{1-(\theta_l / R_m)^{1/T_l}} \Bigg)}
-#' in which \eqn{\beta_{k}} is the species' fertility in the absence of gene-drives, \eqn{Ad_{eq}} is the adult mosquito population equilibrium size, and \eqn{R_{m}} is the population growth in the absence of density-dependent mortality.
+#' \deqn{\alpha=\Bigg( \frac{1/2 * \beta * \theta_e * Ad_{eq}}{R_m-1} \Bigg) * \Bigg( \frac{1-(\theta_l / R_m)}{1-(\theta_l / R_m)^{1/T_l}} \Bigg)}
+#' in which \eqn{\beta} is the species' fertility in the absence of gene-drives, \eqn{Ad_{eq}} is the adult mosquito population equilibrium size, and \eqn{R_{m}} is the population growth in the absence of density-dependent mortality.
 #' This population growth is calculated with the average generation time (\eqn{g}), the adult mortality rate (\eqn{\mu_{ad}}), and the daily population growth rate (\eqn{r_{m}}):
 #' \deqn{	g=T_{e}+T_{l}+T_{p}+\frac{1}{\mu_{ad}}\\R_{m}=(r_{m})^{g}}
 #'
@@ -107,7 +107,7 @@ NULL
 #' \deqn{
 #' 	%L_{eq}=&\alpha*\lfloor R_{m} -1\rfloor
 #' 	%&
-#' 	\mu_{l}=1-\Bigg( \frac{R_{m} * \mu_{ad}}{1/2 * \beta_{k} * (1-\mu_{m})} \Bigg)^{\frac{1}{T_{e}+T_{l}+T_{p}}}
+#' 	\mu_{l}=1-\Bigg( \frac{R_{m} * \mu_{ad}}{1/2 * \beta * (1-\mu_{m})} \Bigg)^{\frac{1}{T_{e}+T_{l}+T_{p}}}
 #' }
 #' With these mortality processes, we are now able to calculate the larval population:
 #' \deqn{
