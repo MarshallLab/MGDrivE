@@ -151,9 +151,9 @@ calcMemoryWindow <- function(stagesDuration){
 
 #' Calculate Density-dependent Larval Mortality
 #'
-#' Calculate \eqn{\alpha}, the strength of density-dependent mortality during the larval stage, given by: \deqn{\alpha=\Bigg( \frac{1/2 * \beta_k * \theta_e * Ad_{eq}}{R_m-1} \Bigg) * \Bigg( \frac{1-(\theta_l / R_m)}{1-(\theta_l / R_m)^{1/T_l}} \Bigg)}
+#' Calculate \eqn{\alpha}, the strength of density-dependent mortality during the larval stage, given by: \deqn{\alpha=\Bigg( \frac{1/2 * \beta * \theta_e * Ad_{eq}}{R_m-1} \Bigg) * \Bigg( \frac{1-(\theta_l / R_m)}{1-(\theta_l / R_m)^{1/T_l}} \Bigg)}
 #'
-#' @param fertility number of eggs per oviposition for wild-type females, \eqn{\beta_{k}}
+#' @param fertility number of eggs per oviposition for wild-type females, \eqn{\beta}
 #' @param thetaAq vector of density-independent survival probabilities of aquatic stages, \eqn{\theta_{e}, \theta_{l}}
 #' @param tAq vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}
 #' @param adultPopSizeEquilibrium adult population size at equilbrium, \eqn{Ad_{eq}}
@@ -206,11 +206,11 @@ calcAquaticStageSurvivalProbability <- function(mortalityRate, stageDuration){
 
 #' Calculate Larval Stage Mortality Rate
 #'
-#' Calculate \eqn{\mu_{l}}, the larval mortality, given by \deqn{\mu_l=1-\Bigg( \frac{R_m * \mu_{ad}}{1/2 * \beta_k * (1-\mu_m)} \Bigg)^{\frac{1}{T_e+T_l+T_p}}}
+#' Calculate \eqn{\mu_{l}}, the larval mortality, given by \deqn{\mu_l=1-\Bigg( \frac{R_m * \mu_{ad}}{1/2 * \beta * (1-\mu_m)} \Bigg)^{\frac{1}{T_e+T_l+T_p}}}
 #'
 #' @param generationPopGrowthRate see \code{\link{calcPopulationGrowthRate}}
 #' @param adultMortality adult mortality rate, \eqn{\mu_{ad}}
-#' @param fertility number of eggs per oviposition for wild-type females, \eqn{\beta_{k}}
+#' @param fertility number of eggs per oviposition for wild-type females, \eqn{\beta}
 #' @param aquaticStagesDuration vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}
 #'
 #' @export
