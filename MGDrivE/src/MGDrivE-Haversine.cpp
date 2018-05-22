@@ -34,16 +34,16 @@ inline double gcd_hf(const double& long1, const double& lat1, const double& long
 //'
 //' Calculate the great-circle distance (Haversine distance) between sets of longitude - latitude points, see \url{https://en.wikipedia.org/wiki/Haversine_formula}
 //'
-//' @param longlats numeric matrix where first column is vector of longitudes and second column is vector of latitudes
+//' @param latlongs numeric matrix where first column is vector of latitudes and second column is vector of longitudes
 //'
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericMatrix calc_haversine(const Rcpp::NumericMatrix& longlats){
-  size_t n = longlats.nrow();
+Rcpp::NumericMatrix calc_haversine(const Rcpp::NumericMatrix& latlongs){
+  size_t n = latlongs.nrow();
   Rcpp::NumericMatrix zz = Rcpp::NumericMatrix(n,n);
   for(size_t i=0; i<n; i++){
     for(size_t j=0; j<n; j++){
-      zz(i,j) = gcd_hf(deg2rad(longlats(i,1)), deg2rad(longlats(i,0)),deg2rad(longlats(j,1)), deg2rad(longlats(j,0)));
+      zz(i,j) = gcd_hf(deg2rad(latlongs(i,1)), deg2rad(latlongs(i,0)),deg2rad(latlongs(j,1)), deg2rad(latlongs(j,0)));
     }
   }
   return zz;
