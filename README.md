@@ -13,19 +13,10 @@ _Click the image to watch a video description._
 
 ## Installing
 
-**MGDrivE** depends upon the following third-party packages:
-
-* [RCPP](https://cran.r-project.org/web/packages/Rcpp/index.html)
-* [RCPPArmadillo](https://cran.r-project.org/web/packages/RcppArmadillo/index.html)
-* [data.table](https://cran.r-project.org/web/packages/data.table/index.html)
-* [R6](https://cran.r-project.org/web/packages/R6/index.html)
-* [Rdpack](https://cran.r-project.org/web/packages/Rdpack/index.html)
-* [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html)
-
-which can be installed with the following command (in the _R_ console):
+**MGDrivE** depends upon the following third-party packages: [RCPP](https://cran.r-project.org/web/packages/Rcpp/index.html), [RCPPArmadillo](https://cran.r-project.org/web/packages/RcppArmadillo/index.html), [data.table](https://cran.r-project.org/web/packages/data.table/index.html), [R6](https://cran.r-project.org/web/packages/R6/index.html), [Rdpack](https://cran.r-project.org/web/packages/Rdpack/index.html), [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html); which can be installed with the following command (in the _R_ console):
 
 ```R
-install.packages(c("Rcpp", "RcppArmadillo","data.table","R6","Rdpack","roxygen2"))
+install.packages(c("Rcpp","RcppArmadillo","data.table","R6","Rdpack","roxygen2"))
 ```
 
 Additionally **Windows** users need to install [RTools](https://cran.r-project.org/bin/windows/Rtools/).
@@ -38,10 +29,10 @@ To install the package directly from this repository make sure you have [devtool
 install.packages("devtools")
 ```
 
-Having installed "devtools", run the following commands in the _R_ terminal:
+Having installed [devtools](https://cran.r-project.org/web/packages/devtools/index.html), run the following commands in the _R_ terminal:
 
 ```R
-devtools::install_github("MarshallLab/MGDrivE",subdir="MGDrivE")
+devtools::install_github(repo="MarshallLab/MGDrivE",subdir="MGDrivE")
 ```
 
 And, finally, run the following command to test if the package installed correctly:
