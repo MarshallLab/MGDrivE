@@ -19,7 +19,7 @@ using namespace arma;
 // [[Rcpp::export]]
 void SymCubeC(arma::dcube& lowerMat){
 
-  for(int i=0; i<lowerMat.n_slices; i++){
+  for(size_t i=0; i<lowerMat.n_slices; i++){
     lowerMat.slice(i) = symmatl(lowerMat.slice(i));
   }
 
