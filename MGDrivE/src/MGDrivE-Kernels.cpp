@@ -94,7 +94,7 @@ Rcpp::NumericMatrix calc_ExpKernel(const Rcpp::NumericMatrix& distMat, const dou
 /* approximate equality */
 template<typename T>
 static bool approxEqual(T f1, T f2) {
-  return (std::fabs(f1 - f2) <= std::numeric_limits<T>::epsilon() * std::fmax(std::fabs(f1), std::fabs(f2)));
+  return (std::fabs(f1 - f2) <= std::numeric_limits<T>::epsilon() * fmax(std::fabs(f1), std::fabs(f2)));
 }
 
 /* truncated exponential distribution */
