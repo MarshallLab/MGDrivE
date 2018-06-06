@@ -1,7 +1,5 @@
 # Mosquito Gene Drive Explorer
 
-<hr>
-
 **MGDrivE** is a model designed to be a reliable testbed where various gene drive interventions for mosquito-borne diseases control. It is being developed to accommodate the use of various mosquito-specific gene drive systems within a population dynamics framework that allows migration of individuals between patches in landscape.
 
 For more information take a look at our <a href="https://marshalllab.github.io/MGDrivE/">website</a>; where you'll find a thorough description, documentation and examples.
@@ -23,7 +21,7 @@ install.packages(c("Rcpp","RcppArmadillo","data.table","R6","Rdpack","roxygen2")
 
 Additionally **Windows** users need to install [RTools](https://cran.r-project.org/bin/windows/Rtools/).
 
-### Github
+### A) Github
 
 To install the package directly from this repository make sure you have [devtools](https://cran.r-project.org/web/packages/devtools/index.html) installed:
 
@@ -43,7 +41,7 @@ And, finally, run the following command to test if the package installed correct
 library(MGDrivE)
 ```
 
-### Download
+### B) Download
 
 Alternatively, __MGDrivE__ can be installed by downloading the source code and following these instructions:
 
@@ -62,17 +60,18 @@ Alternatively, __MGDrivE__ can be installed by downloading the source code and f
 * Movement Kernels: Partow Imani<br>
 * PI: <a href="http://www.marshalllab.com/">John M. Marshall</a>
 
-## Projects
 
-This model is being supported and developed as part of the following research projects:
+## License
 
-* [UCI Malaria Initiative](https://news.uci.edu/7517/05/08/uci-establishes-malaria-initiative-to-fight-deadly-disease-in-africa/)
-* [DARPA: Safe Genes](https://www.darpa.mil/program/safe-genes)
-* [IGI](https://innovativegenomics.org/)
+This software is freely available under the [GPL3 License](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 <hr>
 
-## Research Centers
+## Projects
+
+This model is being supported and developed as part of the following research projects: [UCI Malaria Initiative](https://news.uci.edu/7517/05/08/uci-establishes-malaria-initiative-to-fight-deadly-disease-in-africa/), [DARPA: Safe Genes](https://www.darpa.mil/program/safe-genes), [IGI](https://innovativegenomics.org/)
+
+<hr>
 
 <img src="https://marshalllab.github.io/MGDrivE/images/berkeley.jpg" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/UCI.png" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/UCD.jpg" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/UCSD.png" height="40px" align="middle" vspace="5" hspace="5">
 
