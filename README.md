@@ -65,7 +65,6 @@ Alternatively, __MGDrivE__ can be installed by downloading the source code and f
 
 This software is freely available under the [GPL3 License](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
-<hr>
 
 ## Projects
 
