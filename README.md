@@ -19,7 +19,7 @@ _Click the image to watch a video description._
 install.packages(c("Rcpp","RcppArmadillo","data.table","R6","Rdpack","roxygen2"))
 ```
 
-Additionally **Windows** users need to install [RTools](https://cran.r-project.org/bin/windows/Rtools/).
+Additionally **Windows** users **need** to install [RTools](https://cran.r-project.org/bin/windows/Rtools/).
 
 ### A) Github
 
