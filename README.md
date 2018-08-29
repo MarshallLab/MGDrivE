@@ -1,4 +1,5 @@
-# Mosquito Gene Drive Explorer
+# Mosquito Gene Drive Explorer ([website] (https://marshalllab.github.io/MGDrivE/))
+
 
 **MGDrivE** is a model designed to be a reliable testbed where various gene drive interventions for mosquito-borne diseases control. It is being developed to accommodate the use of various mosquito-specific gene drive systems within a population dynamics framework that allows migration of individuals between patches in landscape.
 
@@ -51,15 +52,6 @@ Alternatively, __MGDrivE__ can be installed by downloading the source code and f
 4. Click on the _Build>Install and Restart_ toolbar.
 
 <hr>
-
-## Authors
-
-* Lead: <a href="https://chipdelmal.github.io/">Héctor M. Sánchez C.</a>,<br>
-* Core Development: <a href="https://slwu89.github.io/">Sean L. Wu</a>,Jared Bennett<br>
-* Spatial Analysis: Biyonka Liang, Sarafina Smith, Sabrina Wong<br>
-* Movement Kernels: Partow Imani<br>
-* PI: <a href="http://www.marshalllab.com/">John M. Marshall</a>
-
 
 ## License
 
