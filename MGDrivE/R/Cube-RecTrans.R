@@ -34,7 +34,7 @@
 #' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
 #' and all genotype-specific parameters.
 #' @export
-Cube_ReciprocalTranslocations <- function(eta = NULL, phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
+cubeReciprocalTranslocations <- function(eta = NULL, phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
 
   ## define matrices
   ## Matrix Dimensions Key: [femaleGenotype,maleGenotype,offspringGenotype]
@@ -100,14 +100,20 @@ Cube_ReciprocalTranslocations <- function(eta = NULL, phi = NULL, omega = NULL, 
 
 
   ## set the other half of the matrix
-  SymCubeC(lowerMat = tMatrix)
+  # Boolean matrix for subsetting, used several times
+  boolMat <- upper.tri(x = tMatrix[ , ,1], diag = FALSE)
+  # loop over depth, set upper triangle
+  for(z in 1:size){tMatrix[ , ,z][boolMat] <- t(tMatrix[ , ,z])[boolMat]}
+
 
   ## initialize viability mask.
-  viabilityMask <- matrix(data = 1, nrow = size, ncol = size, dimnames = list(gtype, gtype))
+  viabilityMask <- array(data = 1, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## set viability based on what chromosomes are inherited.
   ## This is not mother based, just based on child genotype.
-  viabilityMask[] <- matrix( c( 1, 0, 0, 0, 1, 0, 0, 0, 1), nrow = 9, ncol = size, byrow = TRUE )
+  for(slice in 1:size){
+    viabilityMask[ ,slice, ] <- matrix( c( 1, 0, 0, 0, 1, 0, 0, 0, 1), nrow = 9, ncol = size, byrow = TRUE )
+  }
 
   ## genotype-specific modifiers
   modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)

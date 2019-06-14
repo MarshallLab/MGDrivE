@@ -7,11 +7,7 @@
 calcMemoryWindow(stagesDuration)
 }
 \arguments{
-\item{egg}{length of egg stage (days)}
-
-\item{larva}{length of larval stage (days)}
-
-\item{pupa}{length of pupal stage (days)}
+\item{stagesDuration}{vector of aquatic stages length (egg/larva/pupa in days)}
 }
 \description{
 Calculates the necessary window of population history required for the model to work

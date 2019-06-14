@@ -36,7 +36,7 @@
 #' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
 #' and all genotype-specific parameters.
 #' @export
-Cube_twoLocusTA <- function(TAEfficacy = 1.0, TBEfficacy = 1.0, eta = NULL,
+cubeTwoLocusTA <- function(TAEfficacy = 1.0, TBEfficacy = 1.0, eta = NULL,
                                phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
 
   ## safety checks in case someone is dumb
@@ -110,18 +110,22 @@ Cube_twoLocusTA <- function(TAEfficacy = 1.0, TBEfficacy = 1.0, eta = NULL,
   tMatrix['aabb','aabb', 'aabb'] <- 1
 
   ## set the other half of the matrix
-  SymCubeC(lowerMat = tMatrix)
+  # Boolean matrix for subsetting, used several times
+  boolMat <- upper.tri(x = tMatrix[ , ,1], diag = FALSE)
+  # loop over depth, set upper triangle
+  for(z in 1:size){tMatrix[ , ,z][boolMat] <- t(tMatrix[ , ,z])[boolMat]}
 
 
   ## initialize viability mask.
-  viabilityMask <- matrix(data = 1, nrow = size, ncol = size, dimnames = list(gtype, gtype))
+  viabilityMask <- array(data = 1, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## fill mother/offspring specific death, then muliply by efficacy of toxins
   mixed <- (1-TAEfficacy)+(1-TBEfficacy)-(1-TAEfficacy)*(1-TBEfficacy)
-  viabilityMask[c('AABB','AABb', 'AaBB', 'AaBb'), ] <- matrix( c( 1, 1, 1-TAEfficacy, 1, 1, 1-TAEfficacy, 1-TBEfficacy, 1-TBEfficacy, mixed), nrow = 4, ncol = size, byrow = TRUE )
-  viabilityMask[c('AAbb','Aabb'), ] <- matrix( c( 1, 1, 1-TAEfficacy, 1, 1, 1-TAEfficacy, 1, 1, 1-TAEfficacy), nrow = 2, ncol = size, byrow = TRUE )
-  viabilityMask[c('aaBB','aaBb'), ] <- matrix( c( 1, 1, 1, 1, 1, 1, 1-TBEfficacy, 1-TBEfficacy, 1-TBEfficacy), nrow = 2, ncol = size, byrow = TRUE )
-
+  for(slice in 1:size){
+    viabilityMask[c('AABB','AABb', 'AaBB', 'AaBb'),slice, ] <- matrix( c( 1, 1, 1-TAEfficacy, 1, 1, 1-TAEfficacy, 1-TBEfficacy, 1-TBEfficacy, mixed), nrow = 4, ncol = size, byrow = TRUE )
+    viabilityMask[c('AAbb','Aabb'),slice, ] <- matrix( c( 1, 1, 1-TAEfficacy, 1, 1, 1-TAEfficacy, 1, 1, 1-TAEfficacy), nrow = 2, ncol = size, byrow = TRUE )
+    viabilityMask[c('aaBB','aaBb'),slice, ] <- matrix( c( 1, 1, 1, 1, 1, 1, 1-TBEfficacy, 1-TBEfficacy, 1-TBEfficacy), nrow = 2, ncol = size, byrow = TRUE )
+  }
 
   ## genotype-specific modifiers
   modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)

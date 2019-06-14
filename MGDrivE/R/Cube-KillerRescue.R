@@ -40,7 +40,7 @@
 #' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
 #' and all genotype-specific parameters.
 #' @export
-Cube_KillerRescue <- function(eR = 0, Keff = 1.0, Aeff = 1.0, eta = NULL,
+cubeKillerRescue <- function(eR = 0, Keff = 1.0, Aeff = 1.0, eta = NULL,
                               phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
 
   #safety checks
@@ -419,20 +419,25 @@ Cube_KillerRescue <- function(eR = 0, Keff = 1.0, Aeff = 1.0, eta = NULL,
                                  0, 0, 0, 0, 0, 0, 0, 0, 1)
 
   ## set the other half of the matrix
-  SymCubeC(lowerMat = tMatrix)
+  # Boolean matrix for subsetting, used several times
+  boolMat <- upper.tri(x = tMatrix[ , ,1], diag = FALSE)
+  # loop over depth, set upper triangle
+  for(z in 1:size){tMatrix[ , ,z][boolMat] <- t(tMatrix[ , ,z])[boolMat]}
+
   tMatrix[tMatrix < .Machine$double.eps] <- 0 #protection from underflow errors
 
+
   ## initialize basic viability mask.
-  viabilityMask <- matrix(data = 1, nrow = size, ncol = size, dimnames = list(gtype, gtype))
+  viabilityMask <- array(data = 1, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## fill in offspring genotype specific death. Toxin and Antidote both have
   ##  predicted efficacies. The unions below represent the offspring that live.
-  viabilityMask[ , c('TKWW', 'KRWW')] <- 1-Keff
-  viabilityMask[ , c('TKWA', 'KRWA')] <- 1-Keff*(1-Aeff)
-  viabilityMask[ , c('TKAA', 'KRAA')] <- 1-Keff*(1-Aeff)^2
-  viabilityMask[ , 'KKWW'] <- 2*(1-Keff)-(1-Keff)^2
-  viabilityMask[ , 'KKWA'] <- 1-Keff^2*(1-Aeff)
-  viabilityMask[ , 'KKAA'] <- 1-Keff^2*(1-Aeff)^2
+  viabilityMask[ , ,c('TKWW', 'KRWW')] <- 1-Keff
+  viabilityMask[ , ,c('TKWA', 'KRWA')] <- 1-Keff*(1-Aeff)
+  viabilityMask[ , ,c('TKAA', 'KRAA')] <- 1-Keff*(1-Aeff)^2
+  viabilityMask[ , ,'KKWW'] <- 2*(1-Keff)-(1-Keff)^2
+  viabilityMask[ , ,'KKWA'] <- 1-Keff^2*(1-Aeff)
+  viabilityMask[ , ,'KKAA'] <- 1-Keff^2*(1-Aeff)^2
 
 
   ## genotype-specific modifiers

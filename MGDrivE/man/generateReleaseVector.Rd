@@ -16,5 +16,28 @@ releasesInterval, and releaseProportion named values.}
 \item{sex}{character in 'M','F'}
 }
 \description{
-Sets up a release schedule for a single patch, calls \code{\link{Release_basicRepeatedReleases}} internally.
+Sets up a release schedule for a single patch, calls \code{\link{basicRepeatedReleases}} internally.
+}
+\examples{
+# setup a drive cube, using Mendelian as the example
+cube <- cubeMendelian()
+
+# setup release parameter list
+#  releasesStart is the time of first release
+#  releasesNumber is the number of releases
+#  releasesInterval is the number of days between releases
+#  releaseProportion is the number of mosquitoes released
+relParams <- list(releasesStart = 25, releasesNumber = 1,
+                  releasesInterval = 0, releaseProportion = 10)
+
+# generate male releases
+mRelVec <- generateReleaseVector(driveCube = cube,
+                                 releasesParameters = relParams,
+                                 sex = "M")
+
+# generate female releases
+fRelVec <- generateReleaseVector(driveCube = cube,
+                                 releasesParameters = relParams,
+                                 sex = "F")
+
 }

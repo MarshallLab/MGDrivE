@@ -33,7 +33,7 @@
 #' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
 #' and all genotype-specific parameters.
 #' @export
-Cube_RIDL <- function(eta = NULL, phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
+cubeRIDL <- function(eta = NULL, phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
 
   gtype <- c('WW', 'WR', 'RR')
   size <- length(gtype) #because I use it several times
@@ -51,10 +51,13 @@ Cube_RIDL <- function(eta = NULL, phi = NULL, omega = NULL, xiF = NULL, xiM = NU
   tMatrix['RR','RR', ] <- c( 0, 0, 1)
 
   ## set the other half of the matrix
-  SymCubeC(lowerMat = tMatrix)
+  # Boolean matrix for subsetting, used several times
+  boolMat <- upper.tri(x = tMatrix[ , ,1], diag = FALSE)
+  # loop over depth, set upper triangle
+  for(z in 1:size){tMatrix[ , ,z][boolMat] <- t(tMatrix[ , ,z])[boolMat]}
 
   ## initialize viability mask. No mother-specific death, so use basic mask
-  viabilityMask <- matrix(data = 1, nrow = size, ncol = size, dimnames = list(gtype, gtype))
+  viabilityMask <- array(data = 1L, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## genotype-specific modifiers
   modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)

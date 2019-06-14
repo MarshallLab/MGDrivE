@@ -32,16 +32,16 @@
 #'
 #' An inheritance cube in an array object that specifies inheritance probabilities (offspring genotype probability)
 #' stratified by male and female parent genotypes. MGDrivE provides the following cubes to model different gene drive systems:
-#'  * \code{\link{Cube_oneLocusTA}}: 1 Locus Maternal-Toxin/Zygotic-Antidote System
-#'  * \code{\link{Cube_twoLocusTA}}: 2 Locus Maternal-Toxin/Zygotic-Antidote System
-#'  * \code{\link{Cube_Homing1RA}}: Homing Drive with 1 Resistance Allele
-#'  * \code{\link{Cube_HomingDrive}}: CRISPR (Clustered Regularly Interspaced SWort Palindromic Repeats) witW 2 Resistance Allele
-#'  * \code{\link{Cube_KillerRescue}}: Killer-Rescue System
-#'  * \code{\link{Cube_MEDEA}}: MEDEA (Maternal Effect Dominant Embryonic Arrest)
-#'  * \code{\link{Cube_ReciprocalTranslocations}}: Reciprocal Translocation
-#'  * \code{\link{Cube_RIDL}}: RIDL (Release of Insects with Dominant Lethality)
-#'  * \code{\link{Cube_Mendelian}}: Mendelian
-#'  * \code{\link{Cube_Wolbachia}}: Wolbachia
+#'  * \code{\link{cubeOneLocusTA}}: 1 Locus Maternal-Toxin/Zygotic-Antidote System
+#'  * \code{\link{cubeTwoLocusTA}}: 2 Locus Maternal-Toxin/Zygotic-Antidote System
+#'  * \code{\link{cubeHoming1RA}}: Homing Drive with 1 Resistance Allele
+#'  * \code{\link{cubeHomingDrive}}: CRISPR (Clustered Regularly Interspaced SWort Palindromic Repeats) witW 2 Resistance Allele
+#'  * \code{\link{cubeKillerRescue}}: Killer-Rescue System
+#'  * \code{\link{cubeMEDEA}}: MEDEA (Maternal Effect Dominant Embryonic Arrest)
+#'  * \code{\link{cubeReciprocalTranslocations}}: Reciprocal Translocation
+#'  * \code{\link{cubeRIDL}}: RIDL (Release of Insects with Dominant Lethality)
+#'  * \code{\link{cubeMendelian}}: Mendelian
+#'  * \code{\link{cubeWolbachia}}: Wolbachia
 #'
 #' @section Functions for Cubes:
 #'
@@ -55,10 +55,24 @@ NULL
 #' Export a Cube to .csv
 #'
 #' Export a cube as multiple .csv files (one for each genotype; slices of z-axis).
+#' This function will create the directory if it doesn't  exist. Files are stored
+#' as slice_(z-slice)_(genotype).csv
 #'
-#' @param cube a cube object (see \code{\link{MGDrivE-Cube}} for options)
-#' @param directory directory to write .csv files to
-#' @param digits number of significant digits to retain in .csv output
+#' @param cube A cube object (see \code{\link{MGDrivE-Cube}} for options)
+#' @param directory Directory to write .csv files to
+#' @param digits Number of significant digits to retain in .csv output
+#'
+#' @examples
+#' \dontrun{
+#' # output directory
+#' oPath <- "path/to/write/output"
+#'
+#' # setup inheritance cube for export, using Mendelian as the example
+#' cube <- cubeMendelian()
+#'
+#' # write out
+#' cube2csv(cube = cube, directory = oPath, digits = 3)
+#' }
 #'
 #' @export
 cube2csv <- function(cube, directory, digits = 3){
@@ -70,7 +84,9 @@ cube2csv <- function(cube, directory, digits = 3){
   }
   for(i in 1:dims[3]){
     fname = paste0("slice_",formatC(x=i,width=6,format="d",flag="0"),"_",names[i],".csv")
-    write.table(x = format(cube$ih[,,i],digits=digits,scientific = FALSE),file = file.path(dir,fname),append = FALSE,quote = FALSE,sep = ",",row.names = TRUE,col.names = NA)
+    write.table(x = format(cube$ih[,,i],digits=digits,scientific = FALSE),
+                file = file.path(dir,fname), append = FALSE, quote = FALSE,
+                sep = ",", row.names = TRUE, col.names = NA)
   }
 }
 
@@ -88,15 +104,13 @@ cube2csv <- function(cube, directory, digits = 3){
 #'
 cubeModifiers <- function(gtype, eta = NULL, phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
 
-  # check all numeric arguments bounded by [0,1]
-  args = as.list(environment())
-  invisible(lapply(args[2:length(args)],function(x){
-    if(!is.null(x)){
-      if(any(x > 1) || any(x < 0)){
-        stop("all genotype-specific parameters must be between [0,1]")
-      }
-    }
-  }))
+  # check all numeric arguments to have proper bounds
+  if(any(eta < 0)) stop("eta values must be positive [X>0]")
+  if(any(phi > 1) || any(phi < 0)) stop("phi values must be between [0,1]")
+  if(any(omega < 0)) stop("omega values must be positive [X>0]")
+  if(any(xiF > 1) || any(xiF < 0)) stop("xiF values must be between [0,1]")
+  if(any(xiM > 1) || any(xiM < 0)) stop("xiM values must be between [0,1]")
+  if(any(s < 0)) stop("s values must be positive [X>0]")
 
   # add parameters in the right place
   set <- function(gtype,vector,vectorNew){
@@ -106,7 +120,15 @@ cubeModifiers <- function(gtype, eta = NULL, phi = NULL, omega = NULL, xiF = NUL
       if(any(!names(vectorNew) %in% gtype)){
         stop("genotype(s) do not match genotypes in cube; please check names of input genotype-specific parameters")
       }
-      vector[names(vectorNew)] = vectorNew
+      if(length(vectorNew)==1L){
+        if(is.null(names(vectorNew))){
+          vector[1:length(vector)] = unname(vectorNew)
+        } else {
+          vector[names(vectorNew)] = vectorNew
+        }
+      } else {
+        vector[names(vectorNew)] = vectorNew
+      }
       return(vector)
     }
   }

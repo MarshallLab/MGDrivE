@@ -2,7 +2,7 @@
 % Please edit documentation in R/Network-Parameters.R
 \name{calcPopulationGrowthRate}
 \alias{calcPopulationGrowthRate}
-\title{Calculate Population Growth Rate}
+\title{Calculate Generational Population Growth Rate}
 \usage{
 calcPopulationGrowthRate(dailyPopGrowthRate, averageGenerationTime)
 }

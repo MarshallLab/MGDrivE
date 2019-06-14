@@ -4,17 +4,43 @@
 \alias{aggregateFemales}
 \title{Aggregate Female Output by Genotype}
 \usage{
-aggregateFemales(directory, genotypes, remove = FALSE, multiCore = FALSE)
+aggregateFemales(readDir, writeDir = NULL, genotypes, remFile = FALSE,
+  numCores = 1, verbose = TRUE)
 }
 \arguments{
-\item{directory}{Directory where output was written to; must not end in path seperator}
+\item{readDir}{Directory to read input from}
+
+\item{writeDir}{Directory to write output to. Default is readDir}
 
 \item{genotypes}{Character vector of possible genotypes; found in \code{driveCube$genotypesID}}
 
-\item{remove}{Boolean flag to remove original (unaggregated) file}
+\item{remFile}{Boolean flag to remove original (unaggregated) file}
 
-\item{multiCore}{Write output using multiple cores? Default is FALSE}
+\item{numCores}{Number of cores when reading/writing. Default is 1.}
+
+\item{verbose}{Chatty? Default is TRUE}
 }
 \description{
 Aggregate over male mate genotype to convert female matrix output into vector output.
+}
+\examples{
+\dontrun{
+# This example assumes user has already run MGDrivE and generated output.
+#  This also assumes that the user has already split output by patch
+# See vignette for complete example
+
+# set read/write directory
+fPath <- "path/to/data/containing/folder"
+
+# Need genotypes from the cube run in the simulation
+#  This is dependent on the simulation run
+#  Using Mendelian cube for this example
+cube <- cubeMendelian()
+
+# no return value from function
+# numCores uses data.table::setDTthreads internally
+aggregateFemales(readDir= fPath, writeDi = NULL, genotypes = cube$genotypesID,
+                 remFile = FALSE, numCores = 1)
+}
+
 }

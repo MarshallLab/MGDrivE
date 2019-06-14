@@ -28,16 +28,16 @@ Note: For inheritance operations to be consistent within the framework the summa
 An inheritance cube in an array object that specifies inheritance probabilities (offspring genotype probability)
 stratified by male and female parent genotypes. MGDrivE provides the following cubes to model different gene drive systems:
 \itemize{
-\item \code{\link{Cube_oneLocusTA}}: 1 Locus Maternal-Toxin/Zygotic-Antidote System
-\item \code{\link{Cube_twoLocusTA}}: 2 Locus Maternal-Toxin/Zygotic-Antidote System
-\item \code{\link{Cube_Homing1RA}}: Homing Drive with 1 Resistance Allele
-\item \code{\link{Cube_HomingDrive}}: CRISPR (Clustered Regularly Interspaced SWort Palindromic Repeats) witW 2 Resistance Allele
-\item \code{\link{Cube_KillerRescue}}: Killer-Rescue System
-\item \code{\link{Cube_MEDEA}}: MEDEA (Maternal Effect Dominant Embryonic Arrest)
-\item \code{\link{Cube_ReciprocalTranslocations}}: Reciprocal Translocation
-\item \code{\link{Cube_RIDL}}: RIDL (Release of Insects with Dominant Lethality)
-\item \code{\link{Cube_Mendelian}}: Mendelian
-\item \code{\link{Cube_Wolbachia}}: Wolbachia
+\item \code{\link{cubeOneLocusTA}}: 1 Locus Maternal-Toxin/Zygotic-Antidote System
+\item \code{\link{cubeTwoLocusTA}}: 2 Locus Maternal-Toxin/Zygotic-Antidote System
+\item \code{\link{cubeHoming1RA}}: Homing Drive with 1 Resistance Allele
+\item \code{\link{cubeHomingDrive}}: CRISPR (Clustered Regularly Interspaced SWort Palindromic Repeats) witW 2 Resistance Allele
+\item \code{\link{cubeKillerRescue}}: Killer-Rescue System
+\item \code{\link{cubeMEDEA}}: MEDEA (Maternal Effect Dominant Embryonic Arrest)
+\item \code{\link{cubeReciprocalTranslocations}}: Reciprocal Translocation
+\item \code{\link{cubeRIDL}}: RIDL (Release of Insects with Dominant Lethality)
+\item \code{\link{cubeMendelian}}: Mendelian
+\item \code{\link{cubeWolbachia}}: Wolbachia
 }
 }
 

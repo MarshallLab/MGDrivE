@@ -36,7 +36,7 @@
 #' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
 #' and all genotype-specific parameters.
 #' @export
-Cube_oneLocusTA <- function(TAEfficacy = 1.0, TBEfficacy = 1.0,
+cubeOneLocusTA <- function(TAEfficacy = 1.0, TBEfficacy = 1.0,
                                     eta = NULL, phi = NULL, omega = NULL,
                                     xiF = NULL, xiM = NULL, s = NULL){
 
@@ -84,17 +84,20 @@ Cube_oneLocusTA <- function(TAEfficacy = 1.0, TBEfficacy = 1.0,
   tMatrix['BB','BB', 'BB'] <- 1
 
   ## set the other half of the matrix
-  SymCubeC(lowerMat = tMatrix)
+  # Boolean matrix for subsetting, used several times
+  boolMat <- upper.tri(x = tMatrix[ , ,1], diag = FALSE)
+  # loop over depth, set upper triangle
+  for(z in 1:size){tMatrix[ , ,z][boolMat] <- t(tMatrix[ , ,z])[boolMat]}
 
 
   ## initialize viability mask.
-  viabilityMask <- matrix(data = 1, nrow = size, ncol = size, dimnames = list(gtype, gtype))
+  viabilityMask <- array(data = 1L, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## fill mother/offspring specific death, then muliply by efficacy of toxins
   mixed <- (1-TAEfficacy)+(1-TBEfficacy)-(1-TAEfficacy)*(1-TBEfficacy)
-  viabilityMask[c('WA','AA'), ] <- matrix( c( 1-TAEfficacy, 1-TAEfficacy, 1, 1-TAEfficacy, 1, 1), nrow = 2, ncol = size, byrow = TRUE )
-  viabilityMask[c('WB','BB'), ] <- matrix( c( 1-TBEfficacy, 1, 1-TBEfficacy, 1, 1, 1-TBEfficacy), nrow = 2, ncol = size, byrow = TRUE )
-  viabilityMask['AB', ] <- c( mixed, 1-TAEfficacy, 1-TBEfficacy, 1-TAEfficacy, 1, 1-TBEfficacy)
+  viabilityMask[c('WA','AA'), , ] <- matrix( c( 1-TAEfficacy, 1-TAEfficacy, 1, 1-TAEfficacy, 1, 1), nrow = 2, ncol = size, byrow = TRUE )
+  viabilityMask[c('WB','BB'), , ] <- matrix( c( 1-TBEfficacy, 1, 1-TBEfficacy, 1, 1, 1-TBEfficacy), nrow = 2, ncol = size, byrow = TRUE )
+  viabilityMask['AB', , ] <- c( mixed, 1-TAEfficacy, 1-TBEfficacy, 1-TAEfficacy, 1, 1-TBEfficacy)
 
   ## genotype-specific modifiers
   modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)

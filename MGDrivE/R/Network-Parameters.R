@@ -5,13 +5,13 @@
 #    / /|  /  __/ /_ | |/ |/ / /_/ / /  / ,<
 #   /_/ |_/\___/\__/ |__/|__/\____/_/  /_/|_|
 #
-#   Network Parameters
+#   parameterizeMGDrivE
 #   Marshall Lab
 #   November 2017
 #
 ########################################################################
 
-#' Network Parameters
+#' parameterizeMGDrivE
 #'
 #' Generate parameters for simulation on a \code{\link{Network}}.
 #' Parameters average generation time \eqn{g}, population growth rate \eqn{R_{m}},
@@ -23,6 +23,7 @@
 #' are calculated for each patch by \code{\link{calcDensityDependentDeathRate}}
 #' and \code{\link{calcLarvalPopEquilibrium}}.
 #'
+#' @param runID begin counting runs with this set of parameters from this value
 #' @param nPatch number of \code{\link{Patch}}
 #' @param simTime maximum time to run simulation
 #' @param parallel append process id (see \code{link[base]{Sys.getpid}}) to output files for running in parallel
@@ -34,10 +35,20 @@
 #' @param muAd wild-type daily adult mortality (1/muAd is average wild-type lifespan)
 #' @param popGrowth daily population growth rate (used to calculate equilibrium)
 #' @param AdPopEQ vector of adult population size at equilibrium
-#' @param runID begin counting runs with this set of parameters from this value
+#' @param LarPopRatio may be \code{NULL}; if not, gives the wildtype gene frequencies among larval stages at the beginning of simulation
+#' @param AdPopRatio_F may be \code{NULL}; if not, gives the wildtype gene frequencies among adult females at the beginning of simulation
+#' @param AdPopRatio_M may be \code{NULL}; if not, gives the wildtype gene frequencies among adult males at the beginning of simulation
+#'
+#' @examples
+#' # using default parameters for 2 patches
+#' #  using different population sizes for patches
+#' simPars <- parameterizeMGDrivE(nPatch = 2, simTime = 365,
+#'                                AdPopEQ = c(100,200))
+#'
 #'
 #' @export
-Network.Parameters <- function(
+parameterizeMGDrivE <- function(
+  runID = 1L,
   nPatch,
   simTime,
   parallel = FALSE,
@@ -49,7 +60,9 @@ Network.Parameters <- function(
   muAd = 0.123,
   popGrowth = 1.096,
   AdPopEQ,
-  runID = 1L
+  LarPopRatio = NULL,
+  AdPopRatio_F = NULL,
+  AdPopRatio_M = NULL
 ){
 
   # make empty parameter list
@@ -64,34 +77,71 @@ Network.Parameters <- function(
 
   # biological parameters
   pars$timeAq = initStagesDurations(egg = tEgg,larva = tLarva,pupa = tPupa)
+  pars$timeE = pars$timeAq[1]
+  pars$timeL = pars$timeAq[2]
+  pars$timeP = pars$timeAq[3]
   pars$windowSize = calcMemoryWindow(pars$timeAq)
   pars$beta = beta
 
   # initial parameters
   pars$muAd = muAd
-  pars$rm = popGrowth
+  pars$dayPopGrowth = popGrowth
 
   if(length(AdPopEQ)!=nPatch){
     stop("length of AdPopEQ vector must equal nPatch (number of patches)")
   }
   pars$AdPopEQ = AdPopEQ
 
+  # if not \code{NULL} add initial pop ratios
+  if(!is.null(LarPopRatio)){
+    if(sum(LarPopRatio)!=1){
+      stop("if 'LarPopRatio' specified, it must sum to 1!")
+    }
+    pars$LarPopRatio = LarPopRatio
+  } else {
+    pars$LarPopRatio <- 1.0
+  }
+
+  if(!is.null(AdPopRatio_F)){
+    if(sum(AdPopRatio_F)!=1){
+      stop("if 'AdPopRatio_F' specified, it must sum to 1!")
+    }
+    pars$AdPopRatio_F = AdPopRatio_F
+  } else {
+    pars$AdPopRatio_F <- 1.0
+  }
+
+  if(!is.null(AdPopRatio_M)){
+    if(sum(AdPopRatio_M)!=1){
+      stop("if 'AdPopRatio_M' specified, it must sum to 1!")
+    }
+    pars$AdPopRatio_M = AdPopRatio_M
+  } else {
+    pars$AdPopRatio_M <- 1.0
+  }
+
   # derived parameters
   pars$g = calcAverageGenerationTime(pars$timeAq,muAd)
-  pars$Rm = calcPopulationGrowthRate(popGrowth,pars$g)
-  pars$muAq = calcLarvalStageMortalityRate(pars$Rm,muAd,beta,pars$timeAq)
+  pars$genPopGrowth = calcPopulationGrowthRate(popGrowth,pars$g)
+  pars$muAq = calcLarvalStageMortalityRate(pars$genPopGrowth,muAd,beta,pars$timeAq)
   pars$thetaAq = calcAquaticStagesSurvivalProbability(
                     calcAquaticStageSurvivalProbability(pars$muAq,tEgg),
                     calcAquaticStageSurvivalProbability(pars$muAq,tLarva),
                     calcAquaticStageSurvivalProbability(pars$muAq,tPupa)
-                  )
+  )
+  pars$thetaE = pars$thetaAq[1]
+  pars$thetaL = pars$thetaAq[2]
+  pars$thetaP = pars$thetaAq[3]
 
   # patch-specific derived parameters
   pars$alpha = rep(0,nPatch)
   pars$Leq = rep(0,nPatch)
   for(i in 1:nPatch){
-    pars$alpha[i] = calcDensityDependentDeathRate(beta,pars$thetaAq,pars$timeAq,AdPopEQ[i],pars$Rm)
-    pars$Leq[i] = calcLarvalPopEquilibrium(pars$alpha[i],pars$Rm)
+    pars$alpha[i] = calcDensityDependentDeathRate(beta,pars$thetaAq,
+                                                  pars$timeAq,
+                                                  AdPopEQ[i],
+                                                  pars$genPopGrowth)
+    pars$Leq[i] = calcLarvalPopEquilibrium(pars$alpha[i],pars$genPopGrowth)
   }
 
   # check for positive parameter values
@@ -118,7 +168,7 @@ Network.Parameters <- function(
 }
 
 ########################################################################
-# Equations and Equilibrium Parameters for Network.Parameters()
+# Equations and Equilibrium Parameters for parameterizeMGDrivE()
 ########################################################################
 
 #' Initialize Aquatic Stages Durations
@@ -129,7 +179,6 @@ Network.Parameters <- function(
 #' @param larva length of larval stage (days)
 #' @param pupa length of pupal stage (days)
 #'
-#' @export
 initStagesDurations <- function(egg=1,larva=14,pupa=1){
   out = c(egg,larva,pupa)
   names(out) = c("E","L","P")
@@ -140,11 +189,8 @@ initStagesDurations <- function(egg=1,larva=14,pupa=1){
 #'
 #' Calculates the necessary window of population history required for the model to work
 #'
-#' @param egg length of egg stage (days)
-#' @param larva length of larval stage (days)
-#' @param pupa length of pupal stage (days)
+#' @param stagesDuration vector of aquatic stages length (egg/larva/pupa in days)
 #'
-#' @export
 calcMemoryWindow <- function(stagesDuration){
   return(sum(stagesDuration))
 }
@@ -159,7 +205,6 @@ calcMemoryWindow <- function(stagesDuration){
 #' @param adultPopSizeEquilibrium adult population size at equilbrium, \eqn{Ad_{eq}}
 #' @param populationGrowthRate population growth in absence of density-dependent mortality \eqn{R_{m}}
 #'
-#' @export
 calcDensityDependentDeathRate <- function(fertility, thetaAq, tAq, adultPopSizeEquilibrium, populationGrowthRate){
     prodA = (fertility * thetaAq[["E"]] * (adultPopSizeEquilibrium/2)) / (populationGrowthRate-1)
     prodB_numerator = (1 - (thetaAq[["L"]] / populationGrowthRate))
@@ -174,19 +219,17 @@ calcDensityDependentDeathRate <- function(fertility, thetaAq, tAq, adultPopSizeE
 #' @param stagesDuration vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}
 #' @param adultMortality adult mortality rate, \eqn{\mu_{ad}}
 #'
-#' @export
 calcAverageGenerationTime <- function(stagesDuration, adultMortality){
   return(sum(stagesDuration) + (1.0 / adultMortality))
 }
 
-#' Calculate Population Growth Rate
+#' Calculate Generational Population Growth Rate
 #'
 #' Calculate \eqn{R_{m}}, population growth in absence of density-dependent mortality, given by: \deqn{(r_{m})^{g}}
 #'
 #' @param dailyPopGrowthRate daily population growth rate, \eqn{r_{m}}
 #' @param averageGenerationTime see \code{\link{calcAverageGenerationTime}}
 #'
-#' @export
 calcPopulationGrowthRate <- function(dailyPopGrowthRate, averageGenerationTime){
   return(dailyPopGrowthRate^averageGenerationTime)
 }
@@ -198,7 +241,6 @@ calcPopulationGrowthRate <- function(dailyPopGrowthRate, averageGenerationTime){
 #' @param mortalityRate daily mortality probability, \eqn{\mu_{st}}
 #' @param stageDuration duration of aquatic stage, \eqn{T^{st}}
 #'
-#' @export
 calcAquaticStageSurvivalProbability <- function(mortalityRate, stageDuration){
   # return(exp(-mortalityRate)^stageDuration)
   return((1-mortalityRate)^stageDuration)
@@ -213,7 +255,6 @@ calcAquaticStageSurvivalProbability <- function(mortalityRate, stageDuration){
 #' @param fertility number of eggs per oviposition for wild-type females, \eqn{\beta}
 #' @param aquaticStagesDuration vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}
 #'
-#' @export
 calcLarvalStageMortalityRate <- function(generationPopGrowthRate, adultMortality, fertility, aquaticStagesDuration){
     a = generationPopGrowthRate*adultMortality
     b = (fertility/2)*(1-adultMortality)
@@ -229,7 +270,6 @@ calcLarvalStageMortalityRate <- function(generationPopGrowthRate, adultMortality
 #' @param larvaSurvivalProbability see \code{\link{calcAquaticStageSurvivalProbability}}
 #' @param pupaSurvivalProbability see \code{\link{calcAquaticStageSurvivalProbability}}
 #'
-#' @export
 calcAquaticStagesSurvivalProbability <- function(eggSurvivalProbability, larvaSurvivalProbability, pupaSurvivalProbability){
   out = c(eggSurvivalProbability,larvaSurvivalProbability,pupaSurvivalProbability)
   names(out) = c("E","L","P")
@@ -243,7 +283,6 @@ calcAquaticStagesSurvivalProbability <- function(eggSurvivalProbability, larvaSu
 #' @param alpha see \code{\link{calcDensityDependentDeathRate}}
 #' @param Rm see \code{\link{calcPopulationGrowthRate}}
 #'
-#' @export
 calcLarvalPopEquilibrium <- function(alpha,Rm){
   return(as.integer(round(alpha * (Rm-1))))
 }

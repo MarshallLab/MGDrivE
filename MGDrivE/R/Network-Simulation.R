@@ -11,36 +11,15 @@
 #
 ########################################################################
 
-#' Reset Network
-#'
-#' Reset a \code{\link{Network}} between runs, useful for Monte Carlo simulation. This calls \code{\link{reset_Patch}} on each patch
-#' and resets \code{tNow = 2} and increments the \code{runID}.
-#'
-reset_Network <- function(){
-
-  cat("reset network\n",sep="")
-
-  for(i in 1:private$nPatch){
-    private$patches[[i]]$reset()
-  }
-
-  private$tNow = 2L
-  private$runID = private$runID + 1L
-
-}
-
-Network$set(which = "public",name = "reset",
-          value = reset_Network, overwrite = TRUE
-)
-
 #' Run Simulation
 #'
 #' Run a single simulation on this network.
 #'
-#' @param conADM an optional \code{\link[base]{connection}} to write male population dynamics to, if \code{NULL} use the directory specified in the constructor of \code{\link{Network}} with the current runID appended to the file.
-#' @param conAF1 an optional \code{\link[base]{connection}} to write female population dynamics to, if \code{NULL} use the directory specified in the constructor of \code{\link{Network}} with the current runID appended to the file.
+#' @param conADM Optional \code{\link[base]{connection}} to write male population dynamics to
+#' @param conAF1 Optional \code{\link[base]{connection}} to write female population dynamics to
+#' @param verbose Chatty? Default is TRUE
 #'
-oneRun_Network <- function(conADM = NULL, conAF1 = NULL){
+oneRun_Network <- function(conADM = NULL, conAF1 = NULL, verbose = TRUE){
 
   # open connections & write headers
   # parallel
@@ -48,43 +27,43 @@ oneRun_Network <- function(conADM = NULL, conAF1 = NULL){
 
     pid = Sys.getpid()
     if(is.null(conADM)){
-      private$conADM = file(description = paste0(private$directory,
+      private$conADM = file(description = paste0(private$directory[1],
                                                  .Platform$file.sep,
-                                                 "ADM_pid_",
+                                                 "M_pid_",
                                                  pid,
                                                  "_Run",
-                                                 formatC(x = private$runID, width = 6, format = "d", flag = "0"),
+                                                 formatC(x = private$runID, width = 3, format = "d", flag = "0"),
                                                  ".csv"),
                             open = "wt")
     } else {
-      private$conADM = file(description = file.path(private$directory, conADM),open = "wt")
+      private$conADM = file(description = file.path(private$directory[1], conADM),open = "wt")
     }
 
     if(is.null(conAF1)){
-      private$conAF1 = file(description = paste0(private$directory,
+      private$conAF1 = file(description = paste0(private$directory[1],
                                                  .Platform$file.sep,
-                                                 "AF1_pid_",
+                                                 "F_pid_",
                                                  pid,
                                                  "_Run",
-                                                 formatC(x = private$runID, width = 6, format = "d", flag = "0"),
+                                                 formatC(x = private$runID, width = 3, format = "d", flag = "0"),
                                                  ".csv"),
                             open = "wt")
     } else {
-      private$conAF1 = file(description = file.path(private$directory, conAF1),open = "wt")
+      private$conAF1 = file(description = file.path(private$directory[1], conAF1),open = "wt")
     }
 
   # serial
   } else {
-    private$conADM = file(description = paste0(private$directory,
+    private$conADM = file(description = paste0(private$directory[1],
                                                .Platform$file.sep,
-                                               "ADM_Run",
-                                               formatC(x = private$runID, width = 6, format = "d", flag = "0"),
+                                               "M_Run",
+                                               formatC(x = private$runID, width = 3, format = "d", flag = "0"),
                                                ".csv"),
                           open = "wt")
-    private$conAF1 = file(description = paste0(private$directory,
+    private$conAF1 = file(description = paste0(private$directory[1],
                                                .Platform$file.sep,
-                                               "AF1_Run",
-                                               formatC(x = private$runID, width = 6, format = "d", flag = "0"),
+                                               "F_Run",
+                                               formatC(x = private$runID, width = 3, format = "d", flag = "0"),
                                                ".csv"),
                           open = "wt")
   }
@@ -96,33 +75,147 @@ oneRun_Network <- function(conADM = NULL, conAF1 = NULL){
   femaleCrosses = c(t(outer(self$get_genotypesID(),self$get_genotypesID(),FUN = paste0)))
   writeLines(text = paste0(c("Time","Patch",femaleCrosses),collapse = ","),con = private$conAF1,sep = "\n")
 
-  cat("begin run ",private$runID,"\n",sep="")
+  if(verbose){cat("begin run ",private$runID,"\n",sep="")}
 
   # setup output
   for(i in 1:private$nPatch){
     private$patches[[i]]$oneDay_initOutput()
   }
 
-  pb = txtProgressBar(min = 0,max = private$simTime,style = 3)
+  if(verbose){pb = txtProgressBar(min = 0,max = private$simTime,style = 3)}
 
   while(private$simTime >= private$tNow){
+
+    # if(private$tNow==116){browser()}
+
+    # cat("day ",private$tNow," of ",private$simTime,"\n",sep="")
 
     self$oneDay()
 
     private$tNow = private$tNow + 1L
-    setTxtProgressBar(pb,value = private$tNow)
+    if(verbose){setTxtProgressBar(pb,value = private$tNow)}
   }
 
   close(private$conADM)
   close(private$conAF1)
 
-  cat("run ",private$runID," over\n",sep="")
+  if(verbose){cat("run ",private$runID," over\n",sep="")}
 
 }
 
 Network$set(which = "public",name = "oneRun",
           value = oneRun_Network, overwrite = TRUE
 )
+
+#' Run Simulation
+#'
+#' Run multiple simulations on this network
+#'
+#' @param conM Optional vector of \code{\link[base]{connection}} to write male population dynamics to
+#' @param conF Optional vector of \code{\link[base]{connection}} to write female population dynamics to
+#' @param verbose Chatty? Default is TRUE
+#'
+multRun_Network <- function(conM = NULL, conF = NULL, verbose = TRUE){
+
+  ####################
+  # safety check
+  ####################
+  if(length(conM) != length(conF)){
+    stop("Length of output folders must be the same length for males and females")
+  }
+
+  ####################
+  # setup loop over number of runs
+  ####################
+  for(run in 1:length(private$directory)){
+    ####################
+    # open connections
+    ####################
+    private$conADM = file(description = paste0(private$directory[run],
+                                               .Platform$file.sep,
+                                               "M_Run",
+                                               formatC(x = private$runID, width = 3, format = "d", flag = "0"),
+                                               ".csv"),
+                          open = "wt")
+    private$conAF1 = file(description = paste0(private$directory[run],
+                                               .Platform$file.sep,
+                                               "F_Run",
+                                               formatC(x = private$runID, width = 3, format = "d", flag = "0"),
+                                               ".csv"),
+                          open = "wt")
+
+
+    ####################
+    # write headers
+    ####################
+    # males
+    writeLines(text = paste0(c("Time","Patch",self$get_genotypesID()),collapse = ","),
+               con = private$conADM, sep = "\n")
+
+    # females
+    femaleCrosses = c(t(outer(self$get_genotypesID(),self$get_genotypesID(),FUN = paste0)))
+    writeLines(text = paste0(c("Time","Patch",femaleCrosses),collapse = ","),
+               con = private$conAF1, sep = "\n")
+
+
+    ####################
+    # Begin Runs!
+    ####################
+    if(verbose){cat("begin run ",private$runID,"\n",sep="")}
+
+    ####################
+    # setup output
+    ####################
+    for(i in 1:private$nPatch){
+      private$patches[[i]]$oneDay_initOutput()
+    }
+
+    if(verbose){pb = txtProgressBar(min = 0,max = private$simTime,style = 3)}
+
+    while(private$simTime >= private$tNow){
+
+      self$oneDay()
+
+      private$tNow = private$tNow + 1L
+      if(verbose){setTxtProgressBar(pb,value = private$tNow)}
+    }# end rest of sim
+
+    ####################
+    # close connections
+    ####################
+    close(private$conADM)
+    close(private$conAF1)
+
+    if(verbose){cat("run ",private$runID," over\n",sep="")}
+
+    ####################
+    # reset everything
+    ####################
+    for(i in 1:private$nPatch){
+      private$patches[[i]]$reset(verbose = verbose)
+    }
+
+    private$tNow = 2L
+    private$runID = private$runID + 1L
+
+  }# end repetition loop
+
+}# end function
+
+Network$set(which = "public",name = "multRun",
+          value = multRun_Network, overwrite = TRUE
+)
+
+
+
+
+
+
+
+
+
+
+
 
 
 #' Run a Single Day on a Network
@@ -151,4 +244,28 @@ oneDay_Network <- function(){
 
 Network$set(which = "public",name = "oneDay",
           value = oneDay_Network, overwrite = TRUE
+)
+
+#' Reset Network
+#'
+#' Reset a \code{\link{Network}} between runs, useful for Monte Carlo simulation. This calls \code{\link{reset_Patch}} on each patch
+#' and resets \code{tNow = 2} and increments the \code{runID}.
+#'
+#' @param verbose Chatty? Default is TRUE
+#'
+reset_Network <- function(verbose = TRUE){
+
+  if(verbose){cat("reset network\n",sep="")}
+
+  for(i in 1:private$nPatch){
+    private$patches[[i]]$reset()
+  }
+
+  private$tNow = 2L
+  private$runID = private$runID + 1L
+
+}
+
+Network$set(which = "public",name = "reset",
+          value = reset_Network, overwrite = TRUE
 )

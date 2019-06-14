@@ -4,15 +4,32 @@
 \alias{retrieveOutput}
 \title{Retrieve Output}
 \usage{
-retrieveOutput(directory, genotypes)
+retrieveOutput(readDir, verbose = TRUE)
 }
 \arguments{
-\item{directory}{directory where output was written to; must not end in path seperator}
+\item{readDir}{directory where output was written to; must not end in path seperator}
 
-\item{genotypes}{character vector of possible genotypes; found in \code{driveCube$genotypesID}}
+\item{verbose}{Chatty? Default is TRUE}
+}
+\value{
+Nested List
 }
 \description{
 Read in output from directory. The resulting object will be a nested list;
 outermost nesting dimension indexes runID, within runID elements are split by sex
 and innermost nesting is over patches.
+}
+\examples{
+\dontrun{
+# Example assumes user has run and analyzed MGDrivE.
+#  See vignette for examples of how to do that.
+
+# set read directory
+fPath <- "path/to/split/aggregated/output"
+
+# read in data as nested lists
+dataList <- retrieveOutput(readDir = fPath)
+}
+
+
 }

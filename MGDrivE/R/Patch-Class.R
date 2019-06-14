@@ -31,7 +31,8 @@
 #'  * ADMt0: initial adult male population, \eqn{Ad_{eq}}
 #'  * AF1t0: initial adult female population, \eqn{Ad_{eq}}
 #'  * maleReleases: integer ID of this patch
-#'  * femaleReleases: female release schedule for this patch, see \code{\link{Release_basicRepeatedReleases}}
+#'  * femaleReleases: female release schedule for this patch, see \code{\link{basicRepeatedReleases}}
+#'  * larvaeReleases: male release schedule for this patch, see \code{\link{basicRepeatedReleases}}
 #'
 #' @section **Methods**:
 #'  * get_patchID: see \code{\link{get_patchID_Patch}}
@@ -43,8 +44,8 @@
 #'  * get_EGG: see \code{\link{get_EGG_Patch}}
 #'  * get_LAR: see \code{\link{get_LAR_Patch}}
 #'  * get_PUP: see \code{\link{get_PUP_Patch}}
-#'  * get_ADM: see \code{\link{get_ADM_Patch}}
-#'  * get_AF1: see \code{\link{get_AF1_Patch}}
+#'  * get_ADM: see \code{\link{get_M_Patch}}
+#'  * get_AF1: see \code{\link{get_F_Patch}}
 #'  * get_EGGdly: see \code{\link{get_EGGdly_Patch}}
 #'  * get_LARdly: see \code{\link{get_LARdly_Patch}}
 #'  * get_PUPdly: see \code{\link{get_PUPdly_Patch}}
@@ -116,12 +117,12 @@
 #'  * larDDMortal: larval mortality
 #'  * f: density dependent factor in larval mortality
 #'
-#' @export
 Patch <- R6::R6Class(classname = "Patch",
             portable = TRUE,
             cloneable = FALSE,
             lock_class = FALSE,
             lock_objects = FALSE,
+            class = FALSE,
 
             # public memebers
             public = list(
@@ -132,17 +133,26 @@ Patch <- R6::R6Class(classname = "Patch",
 
                 initialize = function(patchID, genotypesID, simTime, windowSize,
                                       EGGt0, LARt0, PUPt0, ADMt0, AF1t0,
-                                      maleReleases = NULL, femaleReleases = NULL){
+                                      maleReleases = NULL, femaleReleases = NULL,
+                                      eggReleases = NULL, numPatches){
 
                   # ID of this patch
                   private$patchID = patchID
 
                   # Population Array
-                  private$EGG =  initPopVectorArray(genotypesID,simTime)
-                  private$LAR =  initPopVectorArray(genotypesID,simTime)
-                  private$PUP =  initPopVectorArray(genotypesID,simTime)
-                  private$ADM =  initPopVectorArray(genotypesID,simTime)
-                  private$AF1 =  initPopMatrixArray(genotypesID,simTime)
+                  private$EGG = initPopVectorArray(genotypesID,simTime)
+                  private$LAR = initPopVectorArray(genotypesID,simTime)
+                  private$PUP = initPopVectorArray(genotypesID,simTime)
+                  private$ADM = initPopVectorArray(genotypesID,simTime)
+                  private$AF1 = initPopMatrixArray(genotypesID,simTime)
+
+                  #initialize objects for simulation. This way, they have dimensions and names done once.
+                  private$ovipositG1 = setNames(object = numeric(length = length(genotypesID)), nm = genotypesID)
+                  private$hatchingFract = setNames(object = numeric(length = length(genotypesID)), nm = genotypesID)
+                  private$eggsFract2 = setNames(object = numeric(length = length(genotypesID)), nm = genotypesID)
+                  private$numMaleFemale = matrix(data = 0, nrow = 2, ncol = length(genotypesID), dimnames = list(c("M","F"), genotypesID))
+                  private$maleMigration = matrix(data=0,nrow=length(genotypesID),ncol=numPatches)
+                  private$femaleMigration = array(data = 0,dim=c(length(genotypesID),length(genotypesID),numPatches))
 
                   # Population Initial Sizes
                   private$EGGt0 = EGGt0
@@ -167,6 +177,7 @@ Patch <- R6::R6Class(classname = "Patch",
                   # Mosquito Releases
                   private$maleReleases = maleReleases
                   private$femaleReleases = femaleReleases
+                  private$eggReleases = eggReleases
 
                 } # end constructor
               ),
@@ -223,7 +234,6 @@ Patch <- R6::R6Class(classname = "Patch",
               femaleMatrix = NULL, # migration probabilities
               larDDMortal = numeric(1),
               f = numeric(1)
-
             )
 )
 
@@ -346,20 +356,20 @@ Patch$set(which = "public",name = "get_PUP",
 #'
 #' Return adult male stage population
 #'
-get_ADM_Patch <- function(){return(private$ADM)}
+get_M_Patch <- function(){return(private$ADM)}
 
 Patch$set(which = "public",name = "get_ADM",
-  value = get_ADM_Patch,overwrite = TRUE
+  value = get_M_Patch,overwrite = TRUE
 )
 
 #' Get AF1
 #'
 #' Return adult female stage population
 #'
-get_AF1_Patch <- function(){return(private$AF1)}
+get_F_Patch <- function(){return(private$AF1)}
 
 Patch$set(which = "public",name = "get_AF1",
-  value = get_AF1_Patch,overwrite = TRUE
+  value = get_F_Patch,overwrite = TRUE
 )
 
 # population delay windows

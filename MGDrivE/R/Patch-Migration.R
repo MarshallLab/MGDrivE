@@ -20,20 +20,16 @@
 #' Deterministc model of outbound migration of \code{AF1new} females from this patch, fills up the \code{femaleMigration} array.
 #'
 oneDay_migrationOut_deterministic_Patch <- function(){
-  genotypesID = private$NetworkPointer$get_genotypesID()
-  genotypesN = private$NetworkPointer$get_genotypesN()
 
   # male migration
   maleMatrix = private$NetworkPointer$get_migrationMaleRow(private$patchID)
   # maleMigration is the matrix of migration to be exposed to the network
-  private$maleMigration = matrix(data=private$ADMnew,nrow=genotypesN,dimnames=list(genotypesID,NULL)) %*% maleMatrix
+  private$maleMigration[] = private$ADMnew %*% maleMatrix
 
 
   # female migration
   femaleMatrix = private$NetworkPointer$get_migrationFemaleRow(private$patchID)
   # femaleMigration is the matrix of migration to be exposed to the network
-  private$femaleMigration = array(data = rep(0,private$NetworkPointer$get_nPatch()),dim=c(genotypesN,genotypesN,private$NetworkPointer$get_nPatch()),
-                                      dimnames = list(genotypesID,genotypesID,NULL))
   for(ix in 1:private$NetworkPointer$get_nPatch()){
     private$femaleMigration[,,ix] = private$AF1new %x% femaleMatrix[1,ix]
   }
@@ -44,43 +40,88 @@ oneDay_migrationOut_deterministic_Patch <- function(){
 #'
 #' Stochastic model of migration of \code{AF1new} females from this patch, fills up the \code{femaleMigration} array.
 #' Migration is modeled as a Dirichlet-Multinomial process parameterized by \code{moveVar} multiplied by the row corresponding to this
-#' patch from the stochastic matrix. A Dirichlet distributed random variate is sampled from \code{\link[MCMCpack]{rdirichlet}} according to that
+#' patch from the stochastic matrix. A Dirichlet distributed random variate is sampled from \code{rDirichlet} according to that
 #' parameter vector and then movement is sampled from \code{\link[stats]{rmultinom}}.
 #'
 oneDay_migrationOut_stochastic_Patch <- function(){
 
-  genotypesID = private$NetworkPointer$get_genotypesID()
   genotypesN = private$NetworkPointer$get_genotypesN()
 
-  # Males
   # Dirchlet sampling of probabilities
-  maleMatrix = private$NetworkPointer$get_migrationMaleRow(private$patchID)
+  maleProb = rDirichlet(migrationPoint = private$NetworkPointer$get_migrationMaleRow(private$patchID) *
+                          private$NetworkPointer$get_moveVar())
+  femaleProb = rDirichlet(migrationPoint = private$NetworkPointer$get_migrationFemaleRow(private$patchID) *
+                            private$NetworkPointer$get_moveVar())
 
-  maleProb = rDirichlet(migrationPoint = maleMatrix*private$NetworkPointer$get_moveVar())
-  private$maleMigration = matrix(data=0,nrow=genotypesN,ncol=private$NetworkPointer$get_nPatch())
-  for(i in 1:nrow(private$maleMigration)){
-    if(private$ADMnew[i]<.Machine$double.eps){
-      next()
-    } else {
-      private$maleMigration[i,] = t(rmultinom(n = 1,size = private$ADMnew[i],prob = maleProb))
-    }
-  }
-
-  # Females
-  # Dirchlet sampling of probabilities
-  femaleMatrix = private$NetworkPointer$get_migrationFemaleRow(private$patchID)
-
-  private$femaleMigration = array(data = rep(0,private$NetworkPointer$get_nPatch()),dim=c(genotypesN,genotypesN,private$NetworkPointer$get_nPatch()),
-                                      dimnames = list(genotypesID,genotypesID,NULL))
+  # for each genotype, multinomial over which patch to migrate to
   for(i in 1:genotypesN){
     for(j in 1:genotypesN){
-      femaleProb = rDirichlet(migrationPoint = as.vector(femaleMatrix)*private$NetworkPointer$get_moveVar())
-      private$femaleMigration[i,j,] = t(rmultinom(n = 1,size = private$AF1new[i,j],prob = femaleMatrix))
+      # pull females
+      if(private$AF1new[i,j] < .Machine$double.eps){
+        private$femaleMigration[i,j,] = 0
+      } else {
+        private$femaleMigration[i,j,] = rmultinom(n = 1,size = private$AF1new[i,j],prob = femaleProb)
+      }
     }
-  }
+    # pull males
+    if(private$ADMnew[i] < .Machine$double.eps){
+      private$maleMigration[i,] = 0
+    } else {
+      private$maleMigration[i,] = rmultinom(n = 1,size = private$ADMnew[i],prob = maleProb)
+    }
+  }# end migration loops
+
+
+  # Batch migration
+  if(rbinom(n = 1, size = 1, prob = private$NetworkPointer$get_batchProbs(private$patchID))){
+
+    # probs vecs
+    mProb <- private$NetworkPointer$get_batchSex(private$patchID, 1)
+
+    fProb <- private$NetworkPointer$get_batchSex(private$patchID, 2)
+
+
+    # hold structures
+    maleHold <- matrix(data = 0L, nrow = genotypesN, ncol = 2L)
+    femaleHold <- array(data = 0L, dim = c(genotypesN,genotypesN,2L))
+
+    # pull over males/females
+    for(row in 1:genotypesN){
+      for(col in 1:genotypesN){
+        # pull over females
+        if(private$femaleMigration[row,col,private$patchID] < .Machine$double.eps){
+          femaleHold[row,col, ] = 0
+        } else {
+          femaleHold[row,col, ] <- rmultinom(n = 1L,
+                                             size = private$femaleMigration[row,col,private$patchID],
+                                             prob = fProb)
+        }
+      }
+      # pull over males
+      if(private$maleMigration[row,private$patchID] < .Machine$double.eps){
+        maleHold[row, ] = 0
+      } else {
+        maleHold[row, ] <- rmultinom(n = 1L,
+                                     size = private$maleMigration[row,private$patchID],
+                                     prob = mProb)
+      }
+    }# end sampling loops
+
+    # sample over patches, given their relative probabilities
+    whichPatch <- sample(x = 1:private$NetworkPointer$get_nPatch(),
+                         size = 1, replace = FALSE,
+                         prob = private$NetworkPointer$get_batchLocations(private$patchID))
+
+    # combine with regular migration
+    private$maleMigration[ ,private$patchID] <- maleHold[ ,1L]
+    private$maleMigration[, whichPatch] <- private$maleMigration[, whichPatch] + maleHold[ ,2L]
+
+    private$femaleMigration[ , ,private$patchID] <- femaleHold[ , ,1L]
+    private$femaleMigration[ , ,whichPatch] <- private$femaleMigration[ , ,whichPatch] + femaleHold[ , ,2L]
+
+  }# end batch migration
 
 }
-
 
 ########################################################################
 # Inbound Migration

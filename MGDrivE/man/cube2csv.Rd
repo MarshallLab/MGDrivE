@@ -7,12 +7,27 @@
 cube2csv(cube, directory, digits = 3)
 }
 \arguments{
-\item{cube}{a cube object (see \code{\link{MGDrivE-Cube}} for options)}
+\item{cube}{A cube object (see \code{\link{MGDrivE-Cube}} for options)}
 
-\item{directory}{directory to write .csv files to}
+\item{directory}{Directory to write .csv files to}
 
-\item{digits}{number of significant digits to retain in .csv output}
+\item{digits}{Number of significant digits to retain in .csv output}
 }
 \description{
 Export a cube as multiple .csv files (one for each genotype; slices of z-axis).
+This function will create the directory if it doesn't  exist. Files are stored
+as slice_(z-slice)_(genotype).csv
+}
+\examples{
+\dontrun{
+# output directory
+oPath <- "path/to/write/output"
+
+# setup inheritance cube for export, using Mendelian as the example
+cube <- cubeMendelian()
+
+# write out
+cube2csv(cube = cube, directory = oPath, digits = 3)
+}
+
 }

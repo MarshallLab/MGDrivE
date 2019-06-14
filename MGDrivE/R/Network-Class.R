@@ -25,9 +25,9 @@
 #' @keywords R6 class
 #'
 #' @section **Constructor**:
-#'  * networkParameters: see \code{\link{Network.Parameters}}
-#'  * driveCube: an inheritance cube, see \code{\link{MGDrivE-Cube}} for available cubes
-#'  * patchReleases: see \code{\link{Release_basicRepeatedReleases}} for examples on how to set up release schedules
+#'  * params: see \code{\link{parameterizeMGDrivE}}
+#'  * driveCube: an inheritance cube
+#'  * patchReleases: see \code{\link{basicRepeatedReleases}} for examples on how to set up release schedules
 #'  * migrationMale: a stochastic matrix whose dimensions conform to the number of patches
 #'  * migrationFemale: a stochastic matrix whose dimensions conform to the number of patches
 #'  * directory: character string of output directory
@@ -39,22 +39,22 @@
 #'  * get_windowSize: see \code{\link{get_windowSize_Network}}
 #'  * get_beta: see \code{\link{get_beta_Network}}
 #'  * get_muAd: see \code{\link{get_muAd_Network}}
-#'  * get_rm: see \code{\link{get_rm_Network}}
+#'  * get_dayPopGrowth: see \code{\link{get_dayPopGrowth_Network}}
 #'  * get_AdPopEQ: see \code{\link{get_AdPopEQ_Network}}
 #'  * get_g: see \code{\link{get_g_Network}}
-#'  * get_Rm: see \code{\link{get_Rm_Network}}
+#'  * get_genPopGrowth: see \code{\link{get_genPopGrowth_Network}}
 #'  * get_muAq: see \code{\link{get_muAq_Network}}
 #'  * get_alpha: see \code{\link{get_alpha_Network}}
 #'  * get_Leq_Network: see \code{\link{get_Leq_Network}}
-#'  * get_driveCube_genotype: see \code{\link{get_driveCube_genotype_Network}}
-#'  * get_driveCube_index: see \code{\link{get_driveCube_index_Network}}
+#'  * get_drivecubegenotype: see \code{\link{get_drivecubegenotype_Network}}
+#'  * get_drivecubeindex: see \code{\link{get_drivecubeindex_Network}}
 #'  * get_tau: see \code{\link{get_tau_Network}}
 #'  * get_genotypesID: see \code{\link{get_genotypesID_Network}}
 #'  * get_genotypesN: see \code{\link{get_genotypesN_Network}}
 #'  * get_wildType: see \code{\link{get_wildType_Network}}
 #'  * get_eta: see \code{\link{get_eta_Network}}
 #'  * get_phi: see \code{\link{get_phi_Network}}
-#'  * get_omega: see \code{\link{get_omega_Network}}
+#'  * getOmega: see \code{\link{getOmega_Network}}
 #'  * get_xiF: see \code{\link{get_xiF_Network}}
 #'  * get_xiM: see \code{\link{get_xiM_Network}}
 #'  * get_s: see \code{\link{get_s_Network}}
@@ -64,8 +64,8 @@
 #'  * get_nPatch: see \code{\link{get_nPatch_Network}}
 #'  * get_directory: see \code{\link{get_directory_Network}}
 #'  * get_simTime: see \code{\link{get_simTime_Network}}
-#'  * get_conADM: see \code{\link{get_conADM_Network}}
-#'  * get_conAF1: see \code{\link{get_conAF1_Network}}
+#'  * get_conADM: see \code{\link{get_conM_Network}}
+#'  * get_conAF1: see \code{\link{get_conF_Network}}
 #'  * close_allConnections: see \code{\link{close_allConnections_Network}}
 #'  * get_tNow: see \code{\link{get_tNow_Network}}
 #'  * get_migrationMale: see \code{\link{get_migrationMale_Network}}
@@ -78,10 +78,11 @@
 #'  * oneDay_Migration: see \code{\link{oneDay_Migration_Network}}
 #'  * reset: see \code{\link{reset_Network}}
 #'  * oneRun: see \code{\link{oneRun_Network}}
+#'  * multRun: see \code{\link{multRun_Network}}
 #'  * oneDay: see \code{\link{oneDay_Network}}
 #'
 #' @section **Fields**:
-#'  * parameters: see \code{\link{Network.Parameters}}
+#'  * params: see \code{\link{parameterizeMGDrivE}}
 #'  * patches: a list of \code{\link{Patch}} objects
 #'  * nPatch: number of patches
 #'  * simTime: maximum time of simulation
@@ -93,7 +94,12 @@
 #'  * conAF1: a \code{\link[base]{connection}} to write female population dynamics out to
 #'  * migrationMale: a stochastic matrix whose dimensions conform to the number of patches
 #'  * migrationFemale: a stochastic matrix whose dimensions conform to the number of patches
+#'  * migrationBatch: list of items for batch migration in stochastic sim.
 #'  * patchReleases: a list of release schedules for each patch
+#'  * verbose: Chatty? Default is TRUE
+#'
+#'  @examples
+#'  # see vignette for complete examples
 #'
 #' @export
 Network <- R6::R6Class(classname = "Network",
@@ -101,6 +107,7 @@ Network <- R6::R6Class(classname = "Network",
             cloneable = FALSE,
             lock_class = FALSE,
             lock_objects = FALSE,
+            class = FALSE,
 
             # public memebers
             public = list(
@@ -109,22 +116,25 @@ Network <- R6::R6Class(classname = "Network",
                 # Constructor
                 #################################################
 
-                initialize = function(networkParameters, driveCube, patchReleases, migrationMale, migrationFemale, directory){
+                initialize = function(params, driveCube, patchReleases,
+                                      migrationMale, migrationFemale, migrationBatch = NULL,
+                                      directory, verbose = TRUE){
 
-                  if(length(patchReleases) != networkParameters$nPatch){
-                    stop("length of patchReleases must equal number of patches in networkParameters!")
+                  if(length(patchReleases) != params$nPatch){
+                    stop("length of patchReleases must equal number of patches in params!")
                   }
 
-                  private$parameters = networkParameters
-                  private$nPatch = networkParameters$nPatch
+                  private$parameters = params
+                  private$nPatch = params$nPatch
                   private$patches = vector(mode="list",length=private$nPatch)
-                  private$simTime = networkParameters$simTime
+                  private$simTime = params$simTime
                   private$driveCube = driveCube
                   private$directory = directory
-                  private$runID = networkParameters$runID
+                  private$runID = params$runID
 
                   private$migrationMale = migrationMale
                   private$migrationFemale = migrationFemale
+                  private$migrationBatch = migrationBatch
 
                   private$patchReleases = patchReleases
 
@@ -132,31 +142,35 @@ Network <- R6::R6Class(classname = "Network",
                   for(i in 1:private$nPatch){
 
                     # initialize patch i
-                    cat("initializing patch: ",i," of ",private$nPatch,"\n")
+                    if(verbose){cat("initializing patch: ", i, " of ",
+                                    private$nPatch, "\n")}
 
                     # initial aquatic populations
                     EGGt0 = createNamedPopVector(driveCube$genotypesID)
-                    EGGt0[driveCube$wildType] = networkParameters$Leq[i]
+                    EGGt0[driveCube$wildType] = params$Leq[i]
 
                     # initial adult male population
                     ADMt0 = createNamedPopVector(driveCube$genotypesID)
-                    ADMt0[driveCube$wildType] = networkParameters$AdPopEQ[i]/2
+                    ADMt0[driveCube$wildType] = params$AdPopEQ[i]/2
 
                     # initial adult female population
                     AF1t0 = createNamedPopMatrix(driveCube$genotypesID)
-                    AF1t0[driveCube$wildType,driveCube$wildType] = networkParameters$AdPopEQ[i]/2
+                    AF1t0[driveCube$wildType,driveCube$wildType] = params$AdPopEQ[i]/2
 
+                    # initialize patch
                     private$patches[[i]] = Patch$new(patchID = i,
                                                      genotypesID = driveCube$genotypesID,
                                                      simTime = private$simTime,
-                                                     windowSize = networkParameters$windowSize,
+                                                     windowSize = params$windowSize,
                                                      EGGt0 = EGGt0,
                                                      LARt0 = EGGt0,
                                                      PUPt0 = EGGt0,
                                                      ADMt0 = ADMt0,
                                                      AF1t0 = AF1t0,
                                                      maleReleases = patchReleases[[i]]$maleReleases,
-                                                     femaleReleases = patchReleases[[i]]$femaleReleases
+                                                     femaleReleases = patchReleases[[i]]$femaleReleases,
+                                                     eggReleases = patchReleases[[i]]$eggReleases,
+                                                     numPatches = private$nPatch
                                                    )
 
                     # set pointers
@@ -164,14 +178,16 @@ Network <- R6::R6Class(classname = "Network",
                   }
 
                   # Output
-                  if(!dir.exists(directory)){
-                    dir.create(directory)
+                  if(!all(dir.exists(directory))){
+                    for(f in directory){suppressWarnings(dir.create(f))}
                   } else {
                     # if running in serial remove files, else do nothing
-                    if(!networkParameters$parallel){
+                    if(!params$parallel){
                       dirFiles = list.files(path = directory)
                       if(length(dirFiles)>0){
-                        cat("warning: ",length(dirFiles)," files found in the output directory; please move files to avoid being overwritten\n",sep="")
+                        if(verbose){cat("warning: ", length(dirFiles),
+                            " files found in the output directory; please move files to avoid being overwritten\n",
+                            sep="")}
                       }
 
                     }
@@ -201,6 +217,7 @@ Network <- R6::R6Class(classname = "Network",
                 # inter-patch migration
                 migrationMale = NULL,
                 migrationFemale = NULL,
+                migrationBatch = NULL,
 
                 # release schedule
                 patchReleases = NULL
@@ -285,14 +302,14 @@ Network$set(which = "public",name = "get_muAd",
   value = get_muAd_Network,overwrite = TRUE
 )
 
-#' Get rm
+#' Get dayPopGrowth
 #'
-#' Return population growth
+#' Return daily population growth rate (rm)
 #'
-get_rm_Network <- function(){return(private$parameters$rm)}
+get_dayPopGrowth_Network <- function(){return(private$parameters$dayPopGrowth)}
 
-Network$set(which = "public",name = "get_rm",
-  value = get_rm_Network,overwrite = TRUE
+Network$set(which = "public",name = "get_dayPopGrowth",
+  value = get_dayPopGrowth_Network,overwrite = TRUE
 )
 
 #' Get AdPopEQ
@@ -317,14 +334,14 @@ Network$set(which = "public",name = "get_g",
   value = get_g_Network,overwrite = TRUE
 )
 
-#' Get Rm
+#' Get genPopGrowth
 #'
 #' Return population growth rate, see \code{\link{calcPopulationGrowthRate}}
 #'
-get_Rm_Network <- function(){return(private$parameters$Rm)}
+get_genPopGrowth_Network <- function(){return(private$parameters$genPopGrowth)}
 
-Network$set(which = "public",name = "get_Rm",
-  value = get_Rm_Network,overwrite = TRUE
+Network$set(which = "public",name = "get_genPopGrowth",
+  value = get_genPopGrowth_Network,overwrite = TRUE
 )
 
 #' Get muAq
@@ -373,15 +390,15 @@ Network$set(which = "public",name = "get_Leq_Network",
 #' @param mG male genotype
 #' @param oG offspring genotype
 #'
-get_driveCube_genotype_Network <- function(fG=NULL,mG=NULL,oG=NULL){
+get_drivecubegenotype_Network <- function(fG=NULL,mG=NULL,oG=NULL){
   if(is.null(fG)){fG = private$driveCube$genotypesID}
   if(is.null(mG)){mG = private$driveCube$genotypesID}
   if(is.null(oG)){oG = private$driveCube$genotypesID}
   return(private$driveCube$ih[fG,mG,oG])
 }
 
-Network$set(which = "public",name = "get_driveCube_genotype",
-  value = get_driveCube_genotype_Network,overwrite = TRUE
+Network$set(which = "public",name = "get_drivecubegenotype",
+  value = get_drivecubegenotype_Network,overwrite = TRUE
 )
 
 #' Get Element(s) of Drive Cube by Index
@@ -392,22 +409,31 @@ Network$set(which = "public",name = "get_driveCube_genotype",
 #' @param mG male genotype index
 #' @param oG offspring genotype index
 #'
-get_driveCube_index_Network <- function(fG=NULL,mG=NULL,oG=NULL){
+get_drivecubeindex_Network <- function(fG=NULL,mG=NULL,oG=NULL){
   if(is.null(fG)){fG = 1:private$driveCube$genotypesN}
   if(is.null(mG)){mG = 1:private$driveCube$genotypesN}
   if(is.null(oG)){oG = 1:private$driveCube$genotypesN}
   return(private$driveCube$ih[fG,mG,oG])
 }
 
-Network$set(which = "public",name = "get_driveCube_index",
-  value = get_driveCube_index_Network,overwrite = TRUE
+Network$set(which = "public",name = "get_drivecubeindex",
+  value = get_drivecubeindex_Network,overwrite = TRUE
 )
 
-#' Get Viability Mash (tau)
+#' Get Female Viability Mask (tau)
+#'
+#' @param fG Number for which female genotype to get
+#' @param mG Number for which male genotype to get
+#' @param oG Number for which offspring genotype to get
 #'
 #' Return matrix
 #'
-get_tau_Network <- function(){return(private$driveCube$tau)}
+get_tau_Network <- function(fG=NULL,mG=NULL,oG=NULL){
+  if(is.null(fG)){fG = 1:private$driveCube$genotypesN}
+  if(is.null(mG)){mG = 1:private$driveCube$genotypesN}
+  if(is.null(oG)){oG = 1:private$driveCube$genotypesN}
+  return(private$driveCube$tau[fG,mG,oG])
+}
 
 Network$set(which = "public",name = "get_tau",
   value = get_tau_Network,overwrite = TRUE
@@ -467,10 +493,10 @@ Network$set(which = "public",name = "get_phi",
 #'
 #' Return genotype-specific multiplicative modifier of adult mortality
 #'
-get_omega_Network <- function(){return(private$driveCube$omega)}
+getOmega_Network <- function(){return(private$driveCube$omega)}
 
-Network$set(which = "public",name = "get_omega",
-  value = get_omega_Network,overwrite = TRUE
+Network$set(which = "public",name = "getOmega",
+  value = getOmega_Network,overwrite = TRUE
 )
 
 #' Get xiF
@@ -574,20 +600,20 @@ Network$set(which = "public",name = "get_simTime",
 #'
 #' Return \code{\link[base]{connection}} where adult male dynamics are written to
 #'
-get_conADM_Network <- function(){return(private$conADM)}
+get_conM_Network <- function(){return(private$conADM)}
 
 Network$set(which = "public",name = "get_conADM",
-  value = get_conADM_Network,overwrite = TRUE
+  value = get_conM_Network,overwrite = TRUE
 )
 
 #' Get conAF1
 #'
 #' Return \code{\link[base]{connection}} where adult female dynamics are written to
 #'
-get_conAF1_Network <- function(){return(private$conAF1)}
+get_conF_Network <- function(){return(private$conAF1)}
 
 Network$set(which = "public",name = "get_conAF1",
-  value = get_conAF1_Network,overwrite = TRUE
+  value = get_conF_Network,overwrite = TRUE
 )
 
 #' Close all Output Connections
@@ -700,3 +726,41 @@ get_patchReleases_Network <- function(ix, sex = "M"){
 Network$set(which = "public",name = "get_patchReleases",
   value = get_patchReleases_Network,overwrite = TRUE
 )
+
+#' Get Batch Migration Probability
+#'
+#' Return the probability of undergoing batch migration each day
+#'
+#' @param ix index of patch
+#'
+get_batchProbs_Network <- function(ix){return(private$migrationBatch[[1L]][ix])}
+
+Network$set(which = "public",name = "get_batchProbs",
+            value = get_batchProbs_Network,overwrite = TRUE
+)
+
+#' Get Batch Migration Sex
+#'
+#' Return the batch migration size for each sex
+#'
+#' @param ix index of patch
+#' @param sex number, M=1 and F=2
+#'
+get_batchSex_Network <- function(ix, sex){return(private$migrationBatch[[2]][ix,sex, ])}
+
+Network$set(which = "public",name = "get_batchSex",
+            value = get_batchSex_Network,overwrite = TRUE
+)
+
+#' Get Batch Location Distribution
+#'
+#' Return the distribution of location probabilities
+#'
+#' @param ix index of patch
+#'
+get_batchLocRow_Network <- function(ix){return(private$migrationBatch[[3]][ix, ,drop=FALSE])}
+
+Network$set(which = "public",name = "get_batchLocations",
+            value = get_batchLocRow_Network,overwrite = TRUE
+)
+

@@ -32,6 +32,7 @@ oneDay_PopDynamics_Patch <- function(){
   self$oneDay_calcLarvalDensityDependentFactor() # calculate larDDMortal
   self$oneDay_larSurvival() # survival
   self$oneDay_hatchingFract() # hatching
+  self$oneDay_eggReleases2eggs() # egg release to eggs
   self$oneDay_larHatching()
 
   # pupating
@@ -44,6 +45,9 @@ oneDay_PopDynamics_Patch <- function(){
 
   # bastard fix
   private$LARnew[private$LARnew < 0]  = 0L
+
+  # egg releases into adult pop
+  self$oneDay_eggReleases2adults()
 
   #######################
   #adult male population#
@@ -95,28 +99,21 @@ Patch$set(which = "public",name = "oneDay_PopDynamics",
 #'
 oneDay_ovipositG1_stochastic_Patch <- function(){
 
+  #used multiple times/get more complicated in other uses
   genotypesN = private$NetworkPointer$get_genotypesN()
-  genotypes = private$NetworkPointer$get_genotypesID()
   timeIndex = private$NetworkPointer$get_timeAq()
-  index = which(private$AF1dly[[timeIndex]] != 0) # indices which contain adult females for reproduction
-  offspring = array(data=0L,dim=c(genotypesN,genotypesN,genotypesN),dimnames=list(genotypes,genotypes,genotypes)) # temporary array to store new offspring by genotype
 
-  eggsNumber = rep.int(x = 0L,times = length(private$AF1dly[[timeIndex]])) # temporary vector for eggs produced
-  eggsNumber[index] = rpois(n=length(index),lambda=(private$AF1dly[[timeIndex]]*private$NetworkPointer$get_beta()*private$NetworkPointer$get_s())[index])
+  probsHold <- private$AF1dly[[timeIndex]] *
+    private$NetworkPointer$get_beta()*
+    private$NetworkPointer$get_s()
 
-  for(i in index){
-    index1 = (i-1L)%%genotypesN+1L
-    index2 = ceiling(i/genotypesN)
-    #if all probs are 0. This is for SIT.
-    if(all(private$NetworkPointer$get_driveCube_index(index1,index2,NULL)==0)){next}
-    offspring[index1,index2,] = rmultinom(n=1,size=eggsNumber[i],prob=private$NetworkPointer$get_driveCube_index(index1,index2,NULL))
+  for(depthInd in 1:genotypesN){
+    probs <- probsHold * private$NetworkPointer$get_drivecubeindex(NULL,NULL,depthInd) *
+      private$NetworkPointer$get_tau(NULL,NULL,depthInd)
+
+    private$ovipositG1[depthInd] <- sum(rpois(n = genotypesN*genotypesN, lambda = probs))
   }
 
-  offspring = vapply(X = 1:genotypesN,FUN = function(x){rowSums(offspring[,,x])},FUN.VALUE = numeric(genotypesN),USE.NAMES = TRUE)
-  offspring = round(offspring*private$NetworkPointer$get_tau())
-  storage.mode(offspring) = "integer"
-
-  private$ovipositG1 = colSums(offspring)
 }
 
 #' Deterministc Oviposition
@@ -125,18 +122,22 @@ oneDay_ovipositG1_stochastic_Patch <- function(){
 #' \deqn{\overline{O(T_x)} = \sum_{j=1}^{n} \Bigg( \bigg( (\beta*\overline{s} * \overline{ \overline{Af_{[t-T_x]}}}) * \overline{\overline{\overline{Ih}}} \bigg) * \Lambda  \Bigg)^{\top}_{ij}}
 #'
 oneDay_ovipositG1_deterministic_Patch <- function(){
-  genotypesN = private$NetworkPointer$get_genotypesN()
-  genotypes = private$NetworkPointer$get_genotypesID()
-  timeIndex = private$NetworkPointer$get_timeAq()
-  eggsNumber = matrix(data=0,nrow=genotypesN,ncol=genotypesN,dimnames=list(genotypes,genotypes))
 
-  for(i in 1:genotypesN){
-    eggsNumber[,i] = rowSums(private$NetworkPointer$get_beta()*private$NetworkPointer$get_s()*private$AF1dly[[timeIndex]]*private$NetworkPointer$get_driveCube_index(NULL,NULL,i))
+  genotypesN = private$NetworkPointer$get_genotypesN()
+  timeIndex = private$NetworkPointer$get_timeAq()
+
+  #fill offspring cube with parents
+  for(slice in 1:genotypesN){
+
+    private$ovipositG1[slice] = sum(private$AF1dly[[timeIndex]] *
+                                      private$NetworkPointer$get_beta() *
+                                      private$NetworkPointer$get_s() *
+                                      private$NetworkPointer$get_drivecubeindex(NULL,NULL,slice) *
+                                      private$NetworkPointer$get_tau(NULL,NULL,slice)
+                                    )
+
   }
 
-  eggsNumber = eggsNumber * private$NetworkPointer$get_tau()
-
-  private$ovipositG1 = colSums(eggsNumber)
 }
 
 ###############################################################################
@@ -190,28 +191,22 @@ oneDay_larSurvival_deterministic_Patch <- function(){
 #'
 oneDay_hatchingFract_stochastic_Patch <- function(){
 
+  #used multiple times/get more complicated in other uses
   genotypesN = private$NetworkPointer$get_genotypesN()
-  genotypes = private$NetworkPointer$get_genotypesID()
   timeIndex = private$NetworkPointer$get_timeAq("E")
-  index = which(private$AF1dly[[timeIndex]] != 0) # indices which contain adult females for reproduction
-  offspring = array(data=0L,dim=c(genotypesN,genotypesN,genotypesN),dimnames=list(genotypes,genotypes,genotypes)) # temporary array to store new offspring by genotype
 
-  eggsNumber = rep.int(x = 0L,times = length(private$AF1dly[[timeIndex]])) # temporary vector for eggs produced
-  eggsNumber[index] = rpois(n=length(index),lambda=(private$AF1dly[[timeIndex]]*private$NetworkPointer$get_beta()*private$NetworkPointer$get_s())[index])
+  probsHold <- private$AF1dly[[timeIndex]] *
+    private$NetworkPointer$get_beta()*
+    private$NetworkPointer$get_s()
 
-  for(i in index){
-    index1 = (i-1L)%%genotypesN+1L
-    index2 = ceiling(i/genotypesN)
-    #if all probs are zero. This is for SIT
-    if(all(private$NetworkPointer$get_driveCube_index(index1,index2,NULL)==0)){next}
-    offspring[index1,index2,] = rmultinom(n=1,size=eggsNumber[i],prob=private$NetworkPointer$get_driveCube_index(index1,index2,NULL))
+  for(depthInd in 1:genotypesN){
+    probs <- probsHold * private$NetworkPointer$get_drivecubeindex(NULL,NULL,depthInd) *
+      private$NetworkPointer$get_tau(NULL,NULL,depthInd)
+
+    private$hatchingFract[depthInd] <- sum(rpois(n = genotypesN*genotypesN, lambda = probs))
+
   }
 
-  offspring = vapply(X = 1:genotypesN,FUN = function(x){rowSums(offspring[,,x])},FUN.VALUE = numeric(genotypesN),USE.NAMES = TRUE)
-  offspring = round(offspring*private$NetworkPointer$get_tau())
-  storage.mode(offspring) = "integer"
-
-  private$hatchingFract = colSums(offspring)
 }
 
 #' Deterministc Fraction of Eggs Maturing to Hatch
@@ -221,17 +216,21 @@ oneDay_hatchingFract_stochastic_Patch <- function(){
 oneDay_hatchingFract_deterministic_Patch <- function(){
 
   genotypesN = private$NetworkPointer$get_genotypesN()
-  genotypes = private$NetworkPointer$get_genotypesID()
   timeIndex = private$NetworkPointer$get_timeAq("E")
-  eggsNumber = matrix(data=0,nrow=genotypesN,ncol=genotypesN,dimnames=list(genotypes,genotypes))
 
-  for(i in 1:genotypesN){
-    eggsNumber[,i] = rowSums(private$NetworkPointer$get_beta()*private$NetworkPointer$get_s()*private$AF1dly[[timeIndex]]*private$NetworkPointer$get_driveCube_index(NULL,NULL,i))
+
+  #fill offspring cube with parents
+  for(slice in 1:genotypesN){
+
+    private$hatchingFract[slice] = sum(private$AF1dly[[timeIndex]] *
+                                      private$NetworkPointer$get_beta() *
+                                      private$NetworkPointer$get_s() *
+                                      private$NetworkPointer$get_drivecubeindex(NULL,NULL,slice) *
+                                      private$NetworkPointer$get_tau(NULL,NULL,slice)
+    )
+
   }
 
-  eggsNumber = eggsNumber * private$NetworkPointer$get_tau()
-
-  private$hatchingFract = colSums(eggsNumber)
 }
 
 ###############################################################################
@@ -281,28 +280,22 @@ oneDay_larHatching_deterministic_Patch <- function(){
 #'
 oneDay_eggsFract2_stochastic_Patch <- function(){
 
+  #used multiple times/get more complicated in other uses
   genotypesN = private$NetworkPointer$get_genotypesN()
-  genotypes = private$NetworkPointer$get_genotypesID()
   timeIndex = private$NetworkPointer$get_timeAq("E") + private$NetworkPointer$get_timeAq("L")
-  index = which(private$AF1dly[[timeIndex]] != 0) # indices which contain adult females for reproduction
-  offspring = array(data=0L,dim=c(genotypesN,genotypesN,genotypesN),dimnames=list(genotypes,genotypes,genotypes)) # temporary array to store new offspring by genotype
 
-  eggsNumber = rep.int(x = 0L,times = length(private$AF1dly[[timeIndex]])) # temporary vector for eggs produced
-  eggsNumber[index] = rpois(n=length(index),lambda=(private$AF1dly[[timeIndex]]*private$NetworkPointer$get_beta()*private$NetworkPointer$get_s())[index])
 
-  for(i in index){
-    index1 = (i-1L)%%genotypesN+1L
-    index2 = ceiling(i/genotypesN)
-    #if all probs are zero. This is for SIT
-    if(all(private$NetworkPointer$get_driveCube_index(index1,index2,NULL)==0)){next}
-    offspring[index1,index2,] = rmultinom(n=1,size=eggsNumber[i],prob=private$NetworkPointer$get_driveCube_index(index1,index2,NULL))
+  probsHold <- private$AF1dly[[timeIndex]] *
+    private$NetworkPointer$get_beta()*
+    private$NetworkPointer$get_s()
+
+  for(depthInd in 1:genotypesN){
+    probs <- probsHold * private$NetworkPointer$get_drivecubeindex(NULL,NULL,depthInd) *
+      private$NetworkPointer$get_tau(NULL,NULL,depthInd)
+
+    #private$eggsCube[ , ,depthInd] <- rpois(n = genotypesN*genotypesN, lambda = probs)
+    private$eggsFract2[depthInd] <- sum(rpois(n = genotypesN*genotypesN, lambda = probs))
   }
-
-  offspring = vapply(X = 1:genotypesN,FUN = function(x){rowSums(offspring[,,x])},FUN.VALUE = numeric(genotypesN),USE.NAMES = TRUE)
-  offspring = round(offspring*private$NetworkPointer$get_tau())
-  storage.mode(offspring) = "integer"
-
-  private$eggsFract2 = colSums(offspring)
 
 }
 
@@ -313,17 +306,19 @@ oneDay_eggsFract2_stochastic_Patch <- function(){
 oneDay_eggsFract2_deterministic_Patch <- function(){
 
   genotypesN = private$NetworkPointer$get_genotypesN()
-  genotypes = private$NetworkPointer$get_genotypesID()
-  timeIndex = sum(private$NetworkPointer$get_timeAq("E"),private$NetworkPointer$get_timeAq("L"))
-  eggsNumber = matrix(data=0,nrow=genotypesN,ncol=genotypesN,dimnames=list(genotypes,genotypes))
+  timeIndex = private$NetworkPointer$get_timeAq("E") + private$NetworkPointer$get_timeAq("L")
 
-  for(i in 1:genotypesN){
-    eggsNumber[,i] = rowSums(private$NetworkPointer$get_beta()*private$NetworkPointer$get_s()*private$AF1dly[[timeIndex]]*private$NetworkPointer$get_driveCube_index(NULL,NULL,i))
+  #fill offspring cube with parents
+  for(slice in 1:genotypesN){
+
+    private$eggsFract2[slice] = sum(private$AF1dly[[timeIndex]] *
+                                         private$NetworkPointer$get_beta() *
+                                         private$NetworkPointer$get_s() *
+                                         private$NetworkPointer$get_drivecubeindex(NULL,NULL,slice) *
+                                         private$NetworkPointer$get_tau(NULL,NULL,slice)
+    )
+
   }
-
-  eggsNumber = eggsNumber * private$NetworkPointer$get_tau()
-
-  private$eggsFract2 = colSums(eggsNumber)
 
 }
 
@@ -363,7 +358,11 @@ oneDay_larPupating_stochastic_Patch <- function(){
 #' Calculate the number of larvae that have transformed into pupae given by \eqn{\overline{O(T_e+T_l)} * \theta_{e} * D(\theta_l,0)}
 #'
 oneDay_larPupating_deterministic_Patch <- function(){
+  # change to match code in. not sure if right; ask HMSC
+  # https://github.com/Chipdelmal/MGDrivE/commit/c5561a6a94d6f198b20ffb2c31d69726b371c4c3#diff-4c7332795848689b349b9716b1814472L240
+  # private$larPupating = private$NetworkPointer$get_thetaAq("E") * private$NetworkPointer$get_thetaAq("L") * private$f * private$eggsFract2
   private$larPupating = private$NetworkPointer$get_thetaAq("E") * private$f * private$eggsFract2
+
 }
 
 
@@ -383,12 +382,11 @@ oneDay_larPupating_deterministic_Patch <- function(){
 oneDay_numMaleFemale_stochastic_Patch <- function(){
 
   phi = private$NetworkPointer$get_phi()
-  size = length(phi)
-  sex_ratio = matrix(c(1-phi,phi),nrow=size,ncol=2)
+  sex_ratio = cbind(1-phi, phi)
 
-  private$numMaleFemale = vapply(X=1:size,FUN=function(x){rmultinom(1,private$ovipositG1[x],sex_ratio[x,])},FUN.VALUE=integer(2))
-  dimnames(private$numMaleFemale) = list(c("M","F"),private$NetworkPointer$get_genotypesID())
-
+  private$numMaleFemale[] = vapply(X=1:length(phi),
+                                   FUN=function(x){rmultinom(1,private$ovipositG1[x],sex_ratio[x,])},
+                                   FUN.VALUE=integer(2L))
 }
 
 #' Deterministc Sex Ratio
@@ -396,14 +394,12 @@ oneDay_numMaleFemale_stochastic_Patch <- function(){
 #' Calculate the number of males, \eqn{(1-\overline{\phi}) *  \overline{E^{'}}} and females, \eqn{\overline{\phi} *  \overline{E^{'}}}
 #'
 oneDay_numMaleFemale_deterministic_Patch <- function(){
+
   phi = private$NetworkPointer$get_phi()
-  private$numMaleFemale = mapply(FUN = function(prob,genotype,eggs){
-        out = numeric(2)
-        out[1] = eggs[genotype]*prob
-        out[2] = eggs[genotype]*(1-prob)
-        names(out) = c("M","F")
-        return(out)
-    },prob=phi,genotype=names(phi),MoreArgs = list(eggs=private$ovipositG1),SIMPLIFY = "array",USE.NAMES = TRUE)
+
+  private$numMaleFemale["M", ] = private$ovipositG1 * (1-phi)
+  private$numMaleFemale["F", ] = private$ovipositG1 * phi
+
 }
 
 ###############################################################################
@@ -418,7 +414,7 @@ oneDay_numMaleFemale_deterministic_Patch <- function(){
 oneDay_admSurvival_stochastic_Patch <- function(){
 
   size = length(private$ADMdly[[1]])
-  multipliedProbs = (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$get_omega()
+  multipliedProbs = (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$getOmega()
   genotypes = private$NetworkPointer$get_genotypesID()
 
   counter = which(private$ADMdly[[1]] != 0)
@@ -442,7 +438,7 @@ oneDay_admSurvival_stochastic_Patch <- function(){
 #' genotype-specific mortality effects.
 #'
 oneDay_admSurvival_deterministic_Patch <- function(){
-  private$admSurvival = private$ADMdly[[1]] * (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$get_omega()
+  private$admSurvival = private$ADMdly[[1]] * (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$getOmega()
 }
 
 ###############################################################################
@@ -501,7 +497,7 @@ oneDay_admPupating_deterministic_Patch <- function(){
 oneDay_af1Survival_stochastic_Patch <- function(){
 
   size = length(private$AF1dly[[1]])
-  multipliedProbs = (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$get_omega()
+  multipliedProbs = (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$getOmega()
   genotypes = private$NetworkPointer$get_genotypesID()
 
   counter = which(private$AF1dly[[1]] != 0)
@@ -525,7 +521,7 @@ oneDay_af1Survival_stochastic_Patch <- function(){
 #' genotype-specific mortality effects.
 #'
 oneDay_af1Survival_deterministic_Patch <- function(){
-  private$af1Survival = private$AF1dly[[1]] * (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$get_omega()
+  private$af1Survival = private$AF1dly[[1]] * (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$getOmega()
 }
 
 ########################################################################
@@ -565,6 +561,7 @@ oneDay_af1Pupation_stochastic_Patch <- function(){
 #'
 oneDay_af1Pupation_deterministic_Patch <- function(){
   private$af1Pupation = private$numMaleFemale["F",] * private$NetworkPointer$get_xiF() * private$NetworkPointer$get_thetaAq("E") * private$NetworkPointer$get_thetaAq("P") * (1-private$NetworkPointer$get_muAd()) * private$f
+
 }
 
 ########################################################################
@@ -603,6 +600,7 @@ oneDay_af1Mating_stochastic_Patch <- function(){
 #' Mating is calculated as the outer product of newly emerging adult females and adult males, modulated by \eqn{\overline{\eta}}, genotype-specific male mating fitness.
 #'
 oneDay_af1Mating_deterministic_Patch <- function(){
+
   private$af1Mating = private$af1Pupation %o% normalise(private$ADMnew * private$NetworkPointer$get_eta())
   private$AF1new = private$af1Survival + private$af1Mating
 }
@@ -640,6 +638,7 @@ Patch$set(which = "public",name = "oneDay_updatePopulation",
 #' the effect of density-dependence on larval mortality for one day.
 #'
 oneDay_calcLarvalDensityDependentFactor_Patch <- function(){
+  # browser()
   summedPop = sum(private$LARdly[[2]])
   alpha = private$NetworkPointer$get_alpha(private$patchID)
   L = private$NetworkPointer$get_timeAq("L")
@@ -655,6 +654,7 @@ Patch$set(which = "public",name = "oneDay_calcLarvalDensityDependentFactor",
 #' Calculate \deqn{F(L[t])=\Bigg(\frac{\alpha}{\alpha+\sum{\overline{L[t]}}}\Bigg)^{1/T_l}\\}, the cumulative effect of density-dependence on larval mortality over the entire duration of larval stage.
 #'
 oneDay_calcCumulativeLarvalDensityDependentFactor_Patch <- function(){
+  # browser()
   private$f = private$NetworkPointer$get_thetaAq("L")
 
   alpha = private$NetworkPointer$get_alpha(private$patchID)
@@ -663,6 +663,7 @@ oneDay_calcCumulativeLarvalDensityDependentFactor_Patch <- function(){
     summedPop = sum(private$LARdly[[1+i]])
     private$f = private$f * (alpha/(alpha+summedPop))^(1/larvalDuration)
   }
+  # print("hi")
 }
 
 Patch$set(which = "public",name = "oneDay_calcCumulativeLarvalDensityDependentFactor",
@@ -674,6 +675,7 @@ Patch$set(which = "public",name = "oneDay_calcCumulativeLarvalDensityDependentFa
 #' Calculate \deqn{D(\theta_l,T_{P}) = \left\{ \begin{array}{ll} \theta_{l[0]}^{'}=\theta_l 								& \quad i = 0 \\ \theta_{l[i+1]}^{'} = \theta_{l[i]}^{'} *F(\overline{L_{[t-i-T_P]}})	& \quad i \leq T_{P} \end{array} \right.}, the cumulative effect of density-dependence on larval mortality over the entire duration of larval and pupal stages.
 #'
 oneDay_calcCumulativePupaDensityDependentFactor_Patch <- function(){
+  # browser()
   private$f = private$NetworkPointer$get_thetaAq("L")
 
   alpha = private$NetworkPointer$get_alpha(private$patchID)

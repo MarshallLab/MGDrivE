@@ -4,9 +4,12 @@
 \alias{reset_Patch}
 \title{Reset Patch to Initial Conditions}
 \usage{
-reset_Patch()
+reset_Patch(verbose = TRUE)
+}
+\arguments{
+\item{verbose}{Chatty? Default is TRUE}
 }
 \description{
-Resets a patch to its initial configuration so that a new one does not have to be created and
-allocated in the network (for Monte Carlo simulation).
+Resets a patch to its initial configuration so that a new one does not have
+to be created and allocated in the network (for Monte Carlo simulation).
 }

@@ -4,8 +4,8 @@
 \alias{cubeModifiers}
 \title{Generate and Modify Default Genotype-specific Parameters}
 \usage{
-cubeModifiers(gtype, eta = NULL, phi = NULL, omega = NULL, xiF = NULL,
-  xiM = NULL, s = NULL)
+cubeModifiers(gtype, eta = NULL, phi = NULL, omega = NULL,
+  xiF = NULL, xiM = NULL, s = NULL)
 }
 \arguments{
 \item{gtype}{character vector of genotypes}

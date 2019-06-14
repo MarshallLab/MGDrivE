@@ -4,11 +4,22 @@
 \alias{eraseDirectory}
 \title{Erase all files in a directory}
 \usage{
-eraseDirectory(directory)
+eraseDirectory(directory, verbose = TRUE)
 }
 \arguments{
 \item{directory}{directory whose contents will be deleted}
+
+\item{verbose}{Chatty? Default is TRUE}
 }
 \description{
 Given a directory path, check it exists and if so delete all its contents.
+}
+\examples{
+# Path to directory, can tilde expand
+myPath <- ""
+
+# Erase directory
+#  No return value
+eraseDirectory(directory = myPath)
+
 }

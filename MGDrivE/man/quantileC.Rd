@@ -23,10 +23,3 @@ integer matrix. It uses method 8 of the stat::quantiles() function. It gives
 the same result, to numerical accuracy, and is designed to handle matrix input.
 It is only designed to work on integer matrices!
 }
-\examples{
-Trials <- matrix(data = sample(x=1:100, size = 150, replace = TRUE), nrow=15, ncol=10)
-DrawSize <- c(.25, .5, .75)
-
-quantileC(Trials, Probs)
-
-}

@@ -36,7 +36,7 @@
 #' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
 #' and all genotype-specific parameters.
 #' @export
-Cube_Wolbachia <- function(eta = NULL, phi = NULL, omega = NULL, xiF = NULL,
+cubeWolbachia <- function(eta = NULL, phi = NULL, omega = NULL, xiF = NULL,
                            xiM = NULL, s = NULL){
 
   ## define matrices
@@ -53,14 +53,17 @@ Cube_Wolbachia <- function(eta = NULL, phi = NULL, omega = NULL, xiF = NULL,
   tMatrix["w","w",] <- c( 0, 1)
 
   ## set the other half of the matrix
-  SymCubeC(lowerMat = tMatrix)
+  # Boolean matrix for subsetting, used several times
+  boolMat <- upper.tri(x = tMatrix[ , ,1], diag = FALSE)
+  # loop over depth, set upper triangle
+  for(z in 1:size){tMatrix[ , ,z][boolMat] <- t(tMatrix[ , ,z])[boolMat]}
 
 
   ## initialize viability mask.
-  viabilityMask <- matrix(data = 1, nrow = size, ncol = size, dimnames = list(gtype, gtype))
+  viabilityMask <- array(data = 1L, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## set cytoplasmic incompatability
-  viabilityMask["w", "W"] <- 0
+  viabilityMask["w", ,"W"] <- 0
 
 
   ## genotype-specific modifiers

@@ -4,12 +4,14 @@
 \alias{oneRun_Network}
 \title{Run Simulation}
 \usage{
-oneRun_Network(conADM = NULL, conAF1 = NULL)
+oneRun_Network(conADM = NULL, conAF1 = NULL, verbose = TRUE)
 }
 \arguments{
-\item{conADM}{an optional \code{\link[base]{connection}} to write male population dynamics to, if \code{NULL} use the directory specified in the constructor of \code{\link{Network}} with the current runID appended to the file.}
+\item{conADM}{Optional \code{\link[base]{connection}} to write male population dynamics to}
 
-\item{conAF1}{an optional \code{\link[base]{connection}} to write female population dynamics to, if \code{NULL} use the directory specified in the constructor of \code{\link{Network}} with the current runID appended to the file.}
+\item{conAF1}{Optional \code{\link[base]{connection}} to write female population dynamics to}
+
+\item{verbose}{Chatty? Default is TRUE}
 }
 \description{
 Run a single simulation on this network.

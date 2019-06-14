@@ -11,6 +11,40 @@
 #
 ########################################################################
 
+
+########################################################################
+# Calculate Parameter Values
+########################################################################
+
+#' Solve for Omega (additional genotype-specific mortality)
+#'
+#' Solves for root of equation of geometrically-distributed lifespan for value of omega.
+#'
+#' @param mu daily mortality probability (discrete-time hazard, called \code{muAd} in code)
+#' @param lifespanReduction percent reduction in lifespan from average lifespan
+#' (target average lifespan will be \eqn{\frac{1}{\mu_{Ad}} \times lifespanReduction})
+#'
+#' @examples
+#' # reduce lifespan by 10%
+#' #  Example mu is an average for Aedes
+#' newOmega <- getOmega(mu = 0.11, lifespanReduction = 0.90)
+#'
+#' @export
+getOmega <- function(mu, lifespanReduction){
+
+  if(lifespanReduction > 1 | lifespanReduction < 0){
+    stop("parameter 'lifespanReduction' must be in interval [0,1]")
+  }
+
+  lifespan <- (1/mu) * lifespanReduction
+
+  getOmega_f <- function(omega,mu,lifespan){
+    (1/(1-omega+(omega*mu)))-lifespan
+  }
+
+  return(uniroot(f=getOmega_f,interval=c(0,1),lifespan=lifespan,mu=mu,maxiter=1e4)$root)
+}
+
 ########################################################################
 # Delete files in a directory
 ########################################################################
@@ -20,20 +54,30 @@
 #' Given a directory path, check it exists and if so delete all its contents.
 #'
 #' @param directory directory whose contents will be deleted
+#' @param verbose Chatty? Default is TRUE
+#'
+#' @examples
+#' # Path to directory, can tilde expand
+#' myPath <- ""
+#'
+#' # Erase directory
+#' #  No return value
+#' eraseDirectory(directory = myPath)
 #'
 #' @export
-eraseDirectory <- function(directory){
+eraseDirectory <- function(directory, verbose = TRUE){
   # check directory exists
   if(!dir.exists(directory)){
-    cat("no such directory exists\n")
+    if(verbose){cat("no such directory exists\n")}
     return(NULL)
   }
   dirFiles = list.files(path = directory)
   # begin deleting contents
   if(length(dirFiles)>0){
       for(i in dirFiles){
-        cat("removing file: ",file.path(directory, i),"\n", sep = "")
-        file.remove(file.path(directory, i))
+        if(verbose){cat("removing file: ",file.path(directory, i),"\n", sep = "")}
+        #file.remove(file.path(directory, i))
+        unlink(x = file.path(directory, i), recursive = TRUE)
       }
   }
   # end deleting contents
@@ -47,73 +91,165 @@ eraseDirectory <- function(directory){
 #'
 #' Split output into multiple files by patches.
 #'
-#' @param directory Directory where output was written to; must not end in path seperator
-#' @param multiCore Write output using multiple cores? Default is FALSE
+#' @param readDir Directory where output was written to
+#' @param writeDir Directory to write output to. Default is readDir
+#' @param remFile Remove original output? Default is TRUE
+#' @param numCores How many cores to use when writing output. Default is 1
+#' @param verbose Chatty? Default is TRUE
+#'
+#' @import data.table
+#'
+#' @examples
+#' \dontrun{
+#' # This example assumes user has already run MGDrivE and generated output.
+#' #  If that's untree, see vignette for complete example
+#' fPath <- "path/to/data/containing/folder"
+#' oPath <- "path/to/write/output"
+#'
+#' # split data by patch, keep original files
+#' #  not return value
+#' #  numCores uses data.table::setDTthreads internally
+#' splitOutput(readDir = fPath, writeDir = oPath, remFile = FALSE, numCores = 1)
+#'
+#' # Alternatively, remove the original files and write new ones in their place
+#' fPath <- "path/to/data/containing/folder"
+#'
+#' splitOutput(readDir = fPath, writeDir = NULL, remFile = TRUE, numCores = 1)
+#' }
 #'
 #' @export
-splitOutput <- function(directory, multiCore=FALSE){
-  dirFiles = list.files(path = directory, pattern = ".*\\.csv$")
+splitOutput <- function(readDir, writeDir=NULL, remFile=TRUE, numCores=1, verbose=TRUE){
 
-  if(multiCore){
-    nThread <- getDTthreads()
-  } else{
-    nThread <- 1
+  # Set data.table thread use.
+  oldThread = data.table::getDTthreads(verbose = FALSE)
+  data.table::setDTthreads(threads = numCores)
+
+  # get all files in the read directory
+  dirFiles = list.files(path = readDir, pattern = "^[MF]_.*\\.csv$", full.names = TRUE)
+
+  # check write directory
+  if(is.null(writeDir)){writeDir <- readDir}
+
+  # initialize text, progress bar below
+  if(verbose){cat("  Splitting", length(dirFiles), "files.\n")}
+  if(remFile){
+    if(verbose){cat("  Removing original files.\n")}
+  } else {
+    if(verbose){cat("  Not removing original files.\n\n")}
   }
 
+  # loop over files
   for(selectFile in dirFiles){
-    cat("processing ",selectFile,"\n",sep="")
-    fileIn = data.table::fread(input = file.path(directory, selectFile))
-    # for each file, get all the patches and split into multiple files
 
-    for(patch in unique(fileIn$Patch)){
-      patchIn = fileIn[Patch==patch]
-      patchName = sub(pattern = ".csv",
-                      replacement = paste0("_Patch",formatC(x = patch, width = 4, format = "d", flag = "0"),".csv"),
-                      x = selectFile, fixed = TRUE)
-      data.table::fwrite(x = patchIn, file = file.path(directory, patchName), nThread = nThread)
+    # Read in files
+    fileIn = data.table::fread(input = selectFile, sep = ",",
+                               header = TRUE, verbose = FALSE, showProgress = FALSE,
+                               data.table = TRUE, logical01 = FALSE)
+
+    # progress bar stuff
+    if(verbose){
+      pb = txtProgressBar(min = 0,max = length(unique(fileIn$Patch)),style = 3)
     }
-    cat("removing ",selectFile,"\n",sep="")
-    file.remove(file.path(directory, selectFile))
-  }
+    pbVal = 0
+
+    # loop over patches, split and write out
+    for(patch in unique(fileIn$Patch)){
+
+      patchName = sub(pattern = ".csv",
+                      replacement = paste0("_Patch",formatC(x = patch, width = 3, format = "d", flag = "0"),".csv"),
+                      x = selectFile, fixed = TRUE)
+
+      data.table::fwrite(x = fileIn[Patch==patch][ ,Patch:=NULL],
+                         file = patchName, logical01 = FALSE,
+                         showProgress = FALSE, verbose = FALSE)
+
+      # some indication that it's working
+      pbVal = pbVal+1
+      if(verbose){setTxtProgressBar(pb = pb, value = pbVal)}
+    }
+
+    # check if removing original output
+    if(remFile){file.remove(selectFile)}
+
+  } # end loop over files
+
+  # Reset data.table thread use.
+  data.table::setDTthreads(threads = oldThread)
 }
 
 #' Aggregate Female Output by Genotype
 #'
 #' Aggregate over male mate genotype to convert female matrix output into vector output.
 #'
-#' @param directory Directory where output was written to; must not end in path seperator
+#' @param readDir Directory to read input from
+#' @param writeDir Directory to write output to. Default is readDir
 #' @param genotypes Character vector of possible genotypes; found in \code{driveCube$genotypesID}
-#' @param remove Boolean flag to remove original (unaggregated) file
-#' @param multiCore Write output using multiple cores? Default is FALSE
+#' @param remFile Boolean flag to remove original (unaggregated) file
+#' @param numCores Number of cores when reading/writing. Default is 1.
+#' @param verbose Chatty? Default is TRUE
+#'
+#' @examples
+#' \dontrun{
+#' # This example assumes user has already run MGDrivE and generated output.
+#' #  This also assumes that the user has already split output by patch
+#' # See vignette for complete example
+#'
+#' # set read/write directory
+#' fPath <- "path/to/data/containing/folder"
+#'
+#' # Need genotypes from the cube run in the simulation
+#' #  This is dependent on the simulation run
+#' #  Using Mendelian cube for this example
+#' cube <- cubeMendelian()
+#'
+#' # no return value from function
+#' # numCores uses data.table::setDTthreads internally
+#' aggregateFemales(readDir= fPath, writeDi = NULL, genotypes = cube$genotypesID,
+#'                  remFile = FALSE, numCores = 1)
+#' }
 #'
 #' @export
-aggregateFemales <- function(directory, genotypes, remove=FALSE, multiCore=FALSE){
+aggregateFemales <- function(readDir, writeDir=NULL, genotypes, remFile=FALSE,
+                             numCores=1, verbose=TRUE){
+
+  # Set data.table thread use.
+  oldThread = data.table::getDTthreads(verbose = FALSE)
+  data.table::setDTthreads(threads = numCores)
 
   #if the computer has the just-in-time compiler, it makes a huge difference in
   # string searches
   if(pcre_config()["JIT"]){options(PCRE_use_JIT = TRUE)}
 
-  if(multiCore){
-    nThread <- getDTthreads()
-  } else{
-    nThread <- 1
+  # check write directory
+  if(is.null(writeDir)){writeDir <- readDir}
+
+  #get female files
+  femaleFiles = list.files(path = readDir, pattern = "^F_.*\\.csv$", full.names = TRUE)
+
+  # initialize progress bar and text
+  if(verbose){cat("  Aggregating", length(femaleFiles), "files.\n")}
+  if(remFile){
+    if(verbose){cat("  Removing original files.\n")}
+  } else {
+    if(verbose){cat("  Not removing original files.\n\n")}
   }
 
-  #get files and subset females
-  dirFiles = list.files(path = directory, pattern = ".*\\.csv$")
-  femaleFiles = dirFiles[grep(pattern = "AF1",fixed = TRUE,x = dirFiles)]
+  if(verbose){
+    pb = txtProgressBar(min = 0,max = length(femaleFiles),style = 3)
+  }
+  pbVal = 0
 
   #loop over files
   for(selectFile in femaleFiles){
 
+
     #read in file
-    cat("processing ",selectFile,"\n",sep="")
-    thisPatch = regmatches(x = selectFile, m = regexpr(pattern = "Patch[0-9]+", text = selectFile, perl = TRUE))
-    thisOutput = data.table::fread(file = file.path(directory, selectFile))
+    thisOutput =  data.table::fread(input = selectFile, sep = ",",
+                                   header = TRUE, verbose = FALSE, showProgress = FALSE,
+                                   data.table = TRUE, logical01 = FALSE)
 
     #get time/patch and remove from data.table
-    timePatch = thisOutput[,c("Time", "Patch")]
-    thisOutput = thisOutput[,-c("Time", "Patch")]
+    timePatch = thisOutput[,"Time"] # this keeps object type too, useful later
     thisOutputNames = names(thisOutput)
 
     #aggregate output
@@ -124,16 +260,115 @@ aggregateFemales <- function(directory, genotypes, remove=FALSE, multiCore=FALSE
 
     #name file and write out
     fileName = sub(pattern = "_",replacement = "_Aggregate_",x = selectFile, fixed = TRUE)
-    cat("writing ",fileName,"\n",sep="")
     data.table::fwrite(x = cbind(timePatch,aggregateOut),
-                       file = file.path(directory, fileName), nThread = nThread)
+                       file = fileName, logical01 = FALSE,
+                       showProgress = FALSE, verbose = FALSE)
 
-    if(remove){
-      cat("removing ",selectFile,"\n",sep="")
-      file.remove(file.path(directory, selectFile))
-    }#end if
+    # check if removing file
+    if(remFile){file.remove(selectFile)}
+
+    # some indication that it's working
+    pbVal = pbVal+1
+    if(verbose){setTxtProgressBar(pb = pb, value = pbVal)}
+
   }#end file loop
+
+  # Reset data.table thread use.
+  data.table::setDTthreads(threads = oldThread)
+
 }#end program
+
+
+#' Aggregate Output Over Landscape
+#'
+#' This function aggregates the output of a run over the entire output, i.e., all
+#' of the patches. It writes the output one level above the folder pointed to by
+#' readDir, if writeDir is NULL. Output consists of 2 csv files, one for males and
+#' one for females, "...M_LandscapeAgg_Run...csv".
+#'
+#' @usage aggregateOutput(readDir, writeDir=NULL)
+#'
+#' @param readDir Directory where output was written to
+#' @param writeDir Directory to write output to. Default is one level above readDir
+#'
+#' @examples
+#' \dontrun{
+#' # This assumes user has run MGDrivE and output is in \code{readDir}
+#' #  See vignette for examples on how to run MGDrivE
+#'
+#' # read/write dirs
+#' fPath <- "folder/containing/output"
+#' oPath <- "folder/to/write/stuff"
+#'
+#' # first, split output by patch and aggregate females by mate genotype
+#' # remember, cube is for example and changes with simulation
+#' cube <- cubeMendelian()
+#'
+#' splitOutput(readDir = fPath, writeDir = NULL, remFile = TRUE, numCores = 1)
+#' aggregateFemales(readDir= fPath, writeDi = NULL, genotypes = cube$genotypesID,
+#'                  remFile = FALSE, numCores = 1)
+#'
+#' # aggregate mosquitoes over entire landscape
+#' #  no return value
+#' aggregateOutput(readDir = fPath, writeDir = NULL)
+#' }
+#'
+#' @export
+aggregateOutput <- function(readDir, writeDir=NULL){
+
+  # get all files in the read directory
+  mFiles = list.files(path = readDir, pattern = "^M_.*\\.csv$", full.names = TRUE)
+  fFiles = list.files(path = readDir, pattern = "^F_.*\\.csv$", full.names = TRUE)
+
+  # check write directory
+  hold <- strsplit(x = readDir, split = "/", fixed = TRUE)[[1]]
+  if(is.null(writeDir)){
+    writeDir <- paste0(hold[-length(hold)], collapse = "/")
+  }
+
+  # set object sizes for males and females
+  columnNames <- scan(file = mFiles[1], what = character(), sep = ",",
+                      quiet = TRUE, nlines = 1)
+
+  mMat <- matrix(data = scan(file = mFiles[1], what = integer(), sep = ",", skip = 1, quiet = TRUE),
+                 ncol = length(columnNames), byrow = TRUE, dimnames = list(NULL,columnNames))
+
+
+  columnNames <- scan(file = fFiles[1], what = character(), sep = ",",
+                      quiet = TRUE, nlines = 1)
+
+  fMat <- matrix(data = scan(file = fFiles[1], what = integer(), sep = ",", skip = 1, quiet = TRUE),
+                 ncol = length(columnNames), byrow = TRUE, dimnames = list(NULL,columnNames))
+
+
+  # aggregate files
+  for(sFile in 2:length(mFiles)){
+
+    # males
+    mMat <- mMat + matrix(data = scan(file = mFiles[sFile], what = integer(), sep = ",", skip = 1, quiet = TRUE),
+                          ncol = length(columnNames), byrow = TRUE, dimnames = list(NULL,columnNames))
+
+    # females
+    fMat <- fMat + matrix(data = scan(file = fFiles[sFile], what = integer(), sep = ",", skip = 1, quiet = TRUE),
+                          ncol = length(columnNames), byrow = TRUE, dimnames = list(NULL,columnNames))
+
+  } # end loop over files
+
+  # fix time addition
+  mMat[ ,1] <- fMat[ ,1] <- 1:dim(mMat)[1]
+
+  # print males
+  fileName <- file.path(writeDir, file.path("M_LandscapeAgg_Run", hold[length(hold)], ".csv", fsep = ""))
+  write.csv(x = mMat, file = fileName, row.names = FALSE)
+
+  # print females
+  fileName <- file.path(writeDir, file.path("F_LandscapeAgg_Run", hold[length(hold)], ".csv", fsep = ""))
+  write.csv(x = fMat, file = fileName, row.names = FALSE)
+
+} # end aggregate over landscape
+
+
+
 
 #' Retrieve Output
 #'
@@ -141,19 +376,34 @@ aggregateFemales <- function(directory, genotypes, remove=FALSE, multiCore=FALSE
 #' outermost nesting dimension indexes runID, within runID elements are split by sex
 #' and innermost nesting is over patches.
 #'
-#' @param directory directory where output was written to; must not end in path seperator
-#' @param genotypes character vector of possible genotypes; found in \code{driveCube$genotypesID}
+#' @param readDir directory where output was written to; must not end in path seperator
+#' @param verbose Chatty? Default is TRUE
+#'
+#' @examples
+#' \dontrun{
+#' # Example assumes user has run and analyzed MGDrivE.
+#' #  See vignette for examples of how to do that.
+#'
+#' # set read directory
+#' fPath <- "path/to/split/aggregated/output"
+#'
+#' # read in data as nested lists
+#' dataList <- retrieveOutput(readDir = fPath)
+#' }
+#'
+#'
+#' @return Nested List
 #'
 #' @export
-retrieveOutput <- function(directory, genotypes){
-  dirFiles = list.files(path = directory)
+retrieveOutput <- function(readDir, verbose=TRUE){
+  dirFiles = list.files(path = readDir)
 
   runID = strsplit(x = dirFiles,split = "_")
   runID = unique(x = grep( pattern = "Run", x = unlist(x = runID), value = TRUE))
 
   output = setNames(object = vector(mode = "list",length = length(runID)), runID)
   for(run in runID){
-    cat("processing ",run,"\n",sep="")
+    if(verbose){cat("processing ",run,"\n",sep="")}
 
     runFiles = dirFiles[grep(pattern = run,x = dirFiles)]
     patches = regmatches(x = runFiles, m = regexpr(pattern = "Patch[0-9]+", text = runFiles))
@@ -165,21 +415,21 @@ retrieveOutput <- function(directory, genotypes){
                                nm = patches)
 
     # retrieve males for this run
-    males = runFiles[grep(pattern = "ADM",x = runFiles)]
+    males = runFiles[grep(pattern = "M_",x = runFiles, fixed = TRUE, useBytes = TRUE)]
     for(male in males){
       thisPatch = regmatches(x = male, m = regexpr(pattern = "Patch[0-9]+", text = male))
-      thisOutput = read.csv(file = file.path(directory, male))
+      thisOutput = read.csv(file = file.path(readDir, male))
       thisOutput = as.matrix(thisOutput)
       rownames(thisOutput) = NULL
-      output[[run]]$M[[thisPatch]] = thisOutput[,-c(1,2)]
+      output[[run]]$M[[thisPatch]] = thisOutput[,-1]
     }
 
     # retrieve females for this run
-    females = runFiles[grep(pattern = "AF1_Aggregate",x = runFiles)]
+    females = runFiles[grep(pattern = "F_Aggregate",x = runFiles)]
     for(female in females){
       thisPatch = regmatches(x = female, m = regexpr(pattern = "Patch[0-9]+", text = female))
-      thisOutput = read.csv(file = file.path(directory, female))
-      thisOutput = thisOutput[,-c(1,2)]
+      thisOutput = read.csv(file = file.path(readDir, female))
+      thisOutput = thisOutput[,-1]
       output[[run]]$F[[thisPatch]] = as.matrix(thisOutput)
     }
 
@@ -191,8 +441,7 @@ retrieveOutput <- function(directory, genotypes){
 #'
 #' This function reads in all repetitions for each patch and calculates either
 #' the mean, quantiles, or both. User chooses the quantiles, up to 4 decimal places,
-#' and enters them as a vector. (order does not matter)  \cr
-#'
+#' and enters them as a vector. Quantiles are calculated empirically. (order does not matter)  \cr
 #'
 #' Given the readDirectory, this function assumes the follow file structure: \cr
 #'  * readDirectory
@@ -206,29 +455,59 @@ retrieveOutput <- function(directory, genotypes){
 #'      * patch 3
 #'    * repetition 3
 #'    * repetition 4
-#'    * ...
+#'    * ... \cr
 #'
-#' @param readDirectory Directory to find repetition folders in
+#' Output files are *.csv contain the mean or quantile in the file name, i.e.
+#' {M/F}_Mean_(patchNum).csv and {M/F}_Quantile_(quantNum)_(patchNum).csv.
+#'
+#' @param readDir Directory to find repetition folders in
 #' @param writeDirectory Directory to write output
 #' @param mean Boolean, calculate mean or not. Default is TRUE
 #' @param quantiles Vector of quantiles to calculate. Default is NULL
+#' @param numCores Number of cores when reading/writing. Default is 1.
+#' @param verbose Chatty? Default is TRUE
+#'
+#' @examples
+#' \dontrun{
+#' # This function assumes network$multRun() has been performed, or several
+#' #  network$oneRun() have been performed and all of the data has been split
+#' #  and aggregated.
+#'
+#' # read/write paths
+#' fPath <- "path/to/folder/ofFolders/with/data"
+#' oPath <- "my/path/output"
+#'
+#' # here, only calculate mean, no quantiles
+#' #  no return value
+#' calcQuantiles(readDir = fPath, writeDirectory = oPath, mean = TRUE,
+#'               quantiles = NULL, numCores = 1)
+#'
+#' # here, calculate 2.5% and 97.5% quantiles
+#' calcQuantiles(readDir = fPath, writeDirectory = oPath, mean = FALSE,
+#'               quantiles = c(0.025, 0.975), numCores = 1)
+#' }
 #'
 #' @return Writes output to files in writeDirectory
 #' @export
-AnalyzeQuantiles <- function(readDirectory, writeDirectory, mean=TRUE, quantiles=NULL){
+calcQuantiles <- function(readDir, writeDirectory, mean=TRUE, quantiles=NULL,
+                          numCores=1, verbose=TRUE){
 
   #safety check
   if(!mean && is.null(quantiles)){
     stop("User needs to specify the mean or which quantiles to calculate. ")
   }
 
+  # Set data.table thread use.
+  oldThread = data.table::getDTthreads(verbose = FALSE)
+  data.table::setDTthreads(threads = numCores)
+
   #get files
-  repFiles = list.dirs(path = readDirectory, full.names = TRUE, recursive = FALSE)
-  patchFiles = lapply(X = repFiles, FUN = list.files, pattern = ".*\\.csv$")
+  repFiles = list.dirs(path = readDir, full.names = TRUE, recursive = FALSE)
+  patchFiles = lapply(X = repFiles, FUN = list.files, pattern = "^[FM].*\\.csv$")
 
   #subset females/males
-  malePatches <- lapply(X = patchFiles, FUN = grep, pattern = "ADM", fixed = TRUE, value=TRUE)
-  femalePatches <- lapply(X = patchFiles, FUN = grep, pattern = "AF1_Aggregate", fixed = TRUE, value=TRUE)
+  malePatches <- lapply(X = patchFiles, FUN = grep, pattern = "M_", fixed = TRUE, value=TRUE)
+  femalePatches <- lapply(X = patchFiles, FUN = grep, pattern = "F_Aggregate", fixed = TRUE, value=TRUE)
 
   #generate a list of all patches to run over
   patchList = unique(regmatches(x = patchFiles[[1]],
@@ -238,8 +517,8 @@ AnalyzeQuantiles <- function(readDirectory, writeDirectory, mean=TRUE, quantiles
 
   #read in a file initially to get variables and setup return array
   testFile <- data.table::fread(input = file.path(repFiles[1], patchFiles[[1]][1]),
-                                verbose = FALSE, showProgress = FALSE, drop = c("Time", "Patch"))
-
+                                header = TRUE, verbose = FALSE, showProgress = FALSE,
+                                logical01 = FALSE, sep = ",", drop = "Time")
 
   #bunch of constants that get used several times
   numReps <- length(repFiles)
@@ -267,12 +546,18 @@ AnalyzeQuantiles <- function(readDirectory, writeDirectory, mean=TRUE, quantiles
   outputDataFemale[,1,] <- 1:numRow
 
 
+  # write initial outputs and setup progress bar
+  if(verbose){cat("  Patches:", length(malePatches[[1]]), "\n")}
+  if(verbose){cat("  Repetitions:", numReps, "\n\n")}
+
+  if(verbose){
+    pb = txtProgressBar(min = 0,max = length(malePatches),style = 3)
+  }
+  pbVal = 0
+
 
   #loop over all patches and do stats.
   for(patch in patchList){
-
-    cat("Processing ", numReps, " reps of patch: ", patch,"\n",sep="")
-
     #get male and female files, all repetitions of this patch
     maleFiles <- vapply(X = malePatches,
                         FUN = grep, pattern = patch, fixed=TRUE, value=TRUE,
@@ -286,9 +571,11 @@ AnalyzeQuantiles <- function(readDirectory, writeDirectory, mean=TRUE, quantiles
     #Read in all repetitions for this patch
     for(repetition in 1:numReps){
       popDataMale[ ,repetition, ] <- as.matrix(data.table::fread(input = file.path(repFiles[repetition], maleFiles[repetition]),
-                                                                 verbose = FALSE, showProgress = FALSE, drop = c("Time", "Patch")))
+                                                                 header = TRUE, verbose = FALSE, showProgress = FALSE,
+                                                                 logical01 = FALSE, sep = ",", drop = "Time"))
       popDataFemale[ ,repetition, ] <- as.matrix(data.table::fread(input = file.path(repFiles[repetition], femaleFiles[repetition]),
-                                                                   verbose = FALSE, showProgress = FALSE, drop = c("Time", "Patch")))
+                                                                   header = TRUE, verbose = FALSE, showProgress = FALSE,
+                                                                   logical01 = FALSE, sep = ",", drop = "Time"))
     }
 
 
@@ -303,18 +590,18 @@ AnalyzeQuantiles <- function(readDirectory, writeDirectory, mean=TRUE, quantiles
 
       #write output
       maleFileName <- file.path(writeDirectory,
-                                file.path("ADM_Mean_", patch, ".csv", fsep = "")
+                                file.path("M_Mean_", patch, ".csv", fsep = "")
       )
       femaleFileName <- file.path(writeDirectory,
-                                  file.path("AF1_Mean_", patch, ".csv", fsep = "")
+                                  file.path("F_Mean_", patch, ".csv", fsep = "")
       )
 
       data.table::fwrite(x = as.data.frame(outputDataMale[ , ,1]),
-                         file = maleFileName, col.names = TRUE, verbose = FALSE,
-                         showProgress = FALSE, nThread = 1)
+                         file = maleFileName, verbose = FALSE,
+                         showProgress = FALSE, logical01 = FALSE)
       data.table::fwrite(x = as.data.frame(outputDataFemale[ , ,1]),
-                         file = femaleFileName, col.names = TRUE, verbose = FALSE,
-                         showProgress = FALSE, nThread = 1)
+                         file = femaleFileName, verbose = FALSE,
+                         showProgress = FALSE, logical01 = FALSE)
     }#end mean
 
 
@@ -333,14 +620,14 @@ AnalyzeQuantiles <- function(readDirectory, writeDirectory, mean=TRUE, quantiles
       for(whichQuant in 1:length(quantiles)){
         #file names
         maleFileName <- file.path(writeDirectory,
-                                  file.path("ADM_Quantile_",
+                                  file.path("M_Quantile_",
                                             formatC(x = quantiles[whichQuant], digits = 4,
                                                     format = "f", decimal.mark = "",
                                                     big.mark = NULL),
                                             "_", patch, ".csv", fsep = "")
         )
         femaleFileName <- file.path(writeDirectory,
-                                    file.path("AF1_Quantile_",
+                                    file.path("F_Quantile_",
                                               formatC(x = quantiles[whichQuant], digits = 4,
                                                       format = "f", decimal.mark = "",
                                                       big.mark = NULL),
@@ -349,17 +636,23 @@ AnalyzeQuantiles <- function(readDirectory, writeDirectory, mean=TRUE, quantiles
 
         #write output
         data.table::fwrite(x = as.data.frame(outputDataMale[ , ,whichQuant]),
-                           file = maleFileName, col.names = TRUE, verbose = FALSE,
-                           showProgress = FALSE, nThread = 1)
+                           file = maleFileName, verbose = FALSE,
+                           showProgress = FALSE, logical01 = FALSE)
         data.table::fwrite(x = as.data.frame(outputDataFemale[ , ,whichQuant]),
-                           file = femaleFileName, col.names = TRUE, verbose = FALSE,
-                           showProgress = FALSE, nThread = 1)
+                           file = femaleFileName, verbose = FALSE,
+                           showProgress = FALSE, logical01 = FALSE)
       }#end loop to write files
     }#end quantiles
 
-    cat("Done with patch ", patch,".\n",sep="")
+    # some indication that it's working
+    pbVal = pbVal+1
+    if(verbose){setTxtProgressBar(pb = pb, value = pbVal)}
 
   }#end loop over patches
+
+  # Reset data.table thread use.
+  data.table::setDTthreads(threads = oldThread)
+
 }#end function
 
 ########################################################################
@@ -372,7 +665,6 @@ AnalyzeQuantiles <- function(readDirectory, writeDirectory, mean=TRUE, quantiles
 #'
 #' @param vector numeric vector
 #'
-#' @export
 normalise <- function(vector){
   if(all(vector==0)){
     return(vector)
@@ -387,7 +679,6 @@ normalise <- function(vector){
 #'
 #' @param genotypesID character vector of possible genotypes
 #'
-#' @export
 createNamedPopVector <- function(genotypesID){
   out = rep(0,times=length(genotypesID))
   names(out) = genotypesID
@@ -400,7 +691,6 @@ createNamedPopVector <- function(genotypesID){
 #'
 #' @param genotypesID character vector of possible genotypes
 #'
-#' @export
 createNamedPopMatrix <- function(genotypesID){
   return(
     matrix(data=0,nrow=length(genotypesID),ncol=length(genotypesID),dimnames=list(genotypesID,genotypesID))
@@ -416,7 +706,6 @@ createNamedPopMatrix <- function(genotypesID){
 #' @param genotypesID character vector of possible genotypes
 #' @param memoryWindow integer size of list structure
 #'
-#' @export
 initPopVectorArray <- function(genotypesID,memoryWindow){
   array=vector(mode="list",length=memoryWindow)
   for(i in 1:length(array)){array[[i]]=createNamedPopVector(genotypesID)}
@@ -432,7 +721,6 @@ initPopVectorArray <- function(genotypesID,memoryWindow){
 #' @param genotypesID character vector of possible genotypes
 #' @param memoryWindow integer size of list structure
 #'
-#' @export
 initPopMatrixArray <- function(genotypesID,memoryWindow){
   array=vector(mode="list",length=memoryWindow)
   for(i in 1:length(array)){array[[i]]=createNamedPopMatrix(genotypesID)}
@@ -448,7 +736,6 @@ initPopMatrixArray <- function(genotypesID,memoryWindow){
 #' @param primingVector a named vector population
 #' @param memoryWindow integer size of list structure
 #'
-#' @export
 primePopVectorArray <- function(primingVector,memoryWindow){
   array=vector(mode="list",length=memoryWindow)
   for(i in 1:length(array)){array[[i]]=primingVector}
@@ -464,13 +751,11 @@ primePopVectorArray <- function(primingVector,memoryWindow){
 #' @param primingMatrix a named matrix population
 #' @param memoryWindow integer size of list structure
 #'
-#' @export
 primePopMatrixArray <- function(primingMatrix,memoryWindow){
   array=vector(mode="list",length=memoryWindow)
   for(i in 1:length(array)){array[[i]]=primingMatrix}
   return(array)
 }
-
 
 ########################################################################
 # Kernel-related
@@ -484,7 +769,24 @@ primePopMatrixArray <- function(primingMatrix,memoryWindow){
 #' @param stayThroughLifespanProbability Probability of a mosquito to spend its whole lifespan in the same node
 #' @param adultMortality Adult mortality rate
 #'
+#' @examples
+#' # setup distance matrix
+#' # two-column matrix with latitude/longitude, in degrees
+#' latLong = cbind(runif(n = 5, min = 0, max = 90),
+#'                 runif(n = 5, min = 0, max = 180))
+#'
+#' # Vincenty Ellipsoid  distance formula
+#' distMat = calcVinEll(latLongs = latLong)
+#'
+#' # get hurdle height
+#' # Lets assume 80% stay probs and adult mortality of 0.1
+#' hHeight <- calcZeroInflation(stayThroughLifespanProbability = 0.80,
+#'                              adultMortality = 0.1)
+#'
+#' # calculate hurdle exponential distribution over distances
+#' kernMat = calcHurdleExpKernel(distMat = distMat, rate = 10, pi = hHeight)
+#'
 #' @export
-calculateZeroInflation <- function(stayThroughLifespanProbability,adultMortality){
+calcZeroInflation <- function(stayThroughLifespanProbability,adultMortality){
   stayThroughLifespanProbability^(adultMortality)
 }
