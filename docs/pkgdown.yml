@@ -1,5 +1,8 @@
-pandoc: '2.2'
-pkgdown: 1.0.0.9000
-pkgdown_sha: 90867f97221e9bd1c7a997f870eff28eb1083411
-articles: []
+pandoc: '2.5'
+pkgdown: 1.3.0
+pkgdown_sha: ~
+articles:
+  mgdrive_examples: mgdrive_examples.html
+  mgdrive_math: mgdrive_math.html
+  mgdrive_run: mgdrive_run.html
 
