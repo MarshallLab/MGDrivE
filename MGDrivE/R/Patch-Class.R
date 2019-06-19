@@ -20,6 +20,8 @@
 #' @format An \code{\link{R6Class}} generator object
 #' @keywords R6 class
 #'
+#' @importFrom stats rbinom rmultinom rpois
+#'
 #' @section **Constructor**:
 #'  * patchID: integer ID of this patch
 #'  * genotypesID: character vector of genotypes

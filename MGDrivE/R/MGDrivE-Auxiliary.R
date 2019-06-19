@@ -24,6 +24,8 @@
 #' @param lifespanReduction percent reduction in lifespan from average lifespan
 #' (target average lifespan will be \eqn{\frac{1}{\mu_{Ad}} \times lifespanReduction})
 #'
+#' @importFrom stats uniroot
+#'
 #' @examples
 #' # reduce lifespan by 10%
 #' #  Example mu is an average for Aedes
@@ -98,6 +100,7 @@ eraseDirectory <- function(directory, verbose = TRUE){
 #' @param verbose Chatty? Default is TRUE
 #'
 #' @import data.table
+#' @importFrom utils setTxtProgressBar txtProgressBar
 #'
 #' @examples
 #' \dontrun{
@@ -291,6 +294,8 @@ aggregateFemales <- function(readDir, writeDir=NULL, genotypes, remFile=FALSE,
 #' @param readDir Directory where output was written to
 #' @param writeDir Directory to write output to. Default is one level above readDir
 #'
+#' @importFrom utils write.csv
+#'
 #' @examples
 #' \dontrun{
 #' # This assumes user has run MGDrivE and output is in \code{readDir}
@@ -378,6 +383,9 @@ aggregateOutput <- function(readDir, writeDir=NULL){
 #'
 #' @param readDir directory where output was written to; must not end in path seperator
 #' @param verbose Chatty? Default is TRUE
+#'
+#' @importFrom utils read.csv
+#' @importFrom stats setNames
 #'
 #' @examples
 #' \dontrun{

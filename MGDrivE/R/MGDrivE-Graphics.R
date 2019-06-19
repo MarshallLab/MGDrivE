@@ -21,6 +21,8 @@
 #' @param n number of colors
 #' @param alpha transparency
 #'
+#' @importFrom grDevices hcl
+#'
 ggColUtility <- function(n, alpha = .75) {
   hues = seq(15, 375, length = n + 1)
   hcl(h = hues, l = 65, c = 100, alpha = alpha)[1:n]
@@ -43,6 +45,8 @@ ggColUtility <- function(n, alpha = .75) {
 #' @param nonZeroGen Boolean, to plot genotypes that are always zero in simulation
 #' @param lwd Double, specify the line width for plotting
 #' @param alpha Double, specify the opacity for plotting
+#'
+#' @importFrom graphics box grid layout legend matplot mtext par plot.new title
 #'
 #' @details This function plots output from one run or one set of runs after being analyzed. Setting totalPop
 #' to FALSE keeps it from plotting the total population. NonZeroGen accounts for
@@ -261,6 +265,8 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
 #' @param nonZeroGen Boolean, to plot genotypes that are always zero in simulation
 #' @param lwd Double, specify the line width for plotting
 #' @param alpha Double, specify the opacity for plotting
+#'
+#' @importFrom graphics matlines
 #'
 #' @details This function plots output from one run or one set of runs after being analyzed. Setting totalPop
 #' to FALSE keeps it from plotting the total population. NonZeroGen accounts for

@@ -98,6 +98,6 @@ cubeMendelian <- function(gtype = c("AA", "Aa", "aa"), eta = NULL, phi = NULL,
     xiF = modifiers$xiF,
     xiM = modifiers$xiM,
     s = modifiers$s,
-    releaseType = tail(gtype, n = 1L)
+    releaseType = gtype[size]
   ))
 }

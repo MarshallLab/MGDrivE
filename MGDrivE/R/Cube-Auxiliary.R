@@ -62,6 +62,8 @@ NULL
 #' @param directory Directory to write .csv files to
 #' @param digits Number of significant digits to retain in .csv output
 #'
+#' @importFrom utils write.table
+#'
 #' @examples
 #' \dontrun{
 #' # output directory

@@ -27,7 +27,7 @@ We do this by treating the population dynamics, genetic inheritance operations, 
 **MGDrivE** is based on the idea that we can decouple the genotype inheritance process from the population dynamics equations.  This allows the system to be treated and developed in three semi-indpendent modules that come together to form the system.
 
 ```{r, echo=FALSE, fig.cap="Fig. 1: **MGDrivE** Conceptual Model Framework", out.width = "80%", fig.align='center'}
-knitr::include_graphics("diagram.jpg")
+knitr::include_graphics("diagram.png")
 ```
 
 ### Previous Work:
@@ -78,16 +78,16 @@ Note: For inheritance operations to be consistent within the framework the summa
 An inheritance cube in an array object that specifies inheritance probabilities (offspring genotype probability)
 stratified by male and female parent genotypes. **MGDrivE** provides the following cubes to model different gene drive systems:
 
-* 1 Locus Maternal-Toxin/Zygotic-Antidote System
-* 2 Locus Maternal-Toxin/Zygotic-Antidote System
-* Homing Drive with 1 Resistance Allele
-* CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Alleles and maternal deposition
-* Killer-Rescue System
-* MEDEA (Maternal Effect Dominant Embryonic Arrest)
-* Reciprocal Translocations
-* RIDL (Release of Insects with Dominant Lethality)
-* Mendelian
-* Wolbachia
+* [1 Locus Maternal-Toxin/Zygotic-Antidote System](../reference/cubeOneLocusTA.html)
+* [2 Locus Maternal-Toxin/Zygotic-Antidote System](../reference/cubeTwoLocusTA.html)
+* [Homing Drive with 1 Resistance Allele](../reference/cubeHoming1RA.html)
+* [CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Alleles and maternal deposition](../reference/cubeHomingDrive.html)
+* [Killer-Rescue System](../reference/cubeKillerRescue.html)
+* [MEDEA (Maternal Effect Dominant Embryonic Arrest)](../reference/cubeMEDEA.html)
+* [Reciprocal Translocations](../reference/cubeReciprocalTranslocations.html)
+* [RIDL (Release of Insects with Dominant Lethality)](../reference/cubeRIDL.html)
+* [Mendelian](../reference/cubeMendelian.html)
+* [Wolbachia](../reference/cubeWolbachia.html)
 
 ## Population Dynamics
 
@@ -225,6 +225,6 @@ Variance of stochastic movement (not used in diffusion model of migration). It a
 
 # References
 
-* Deredec A, Godfray HCJ, Burt A (2011). “Requirements for effective malaria control with homing endonuclease genes.” _Proceedings of the National Academy of Sciences of the United States of America_, 108(43), E874--80. ISSN 1091-6490, doi: 10.1073/pnas.1110717108 , <https://www.pnas.org/content/108/43/E874>. 
-* Hancock PA, Godfray HCJ (2007). “Application of the lumped age-class technique to studying the dynamics of malaria-mosquito-human interactions.” _Malaria Journal_, 6, 98. ISSN 1475-2875, doi: 10.1186/1475-2875-6-98 , <https://malariajournal.biomedcentral.com/articles/10.1186/1475-2875-6-98>. 
-* Marshall J, Buchman A, C. HMS, Akbari OS (2017). “Overcoming evolved resistance to population-suppressing homing-based gene drives.” _Nature Scientific Reports_, 1--46. ISSN 2045-2322, doi: https://doi.org/10.1101/088427 , <https://www.nature.com/articles/s41598-017-02744-7>
+* Deredec A, Godfray HCJ, Burt A (2011). “Requirements for effective malaria control with homing endonuclease genes.” _Proceedings of the National Academy of Sciences of the United States of America_, 108(43), E874--80. ISSN 1091-6490, doi: 10.1073/pnas.1110717108 , <http://www.ncbi.nlm.nih.gov/pubmed/21976487{%}5Cnhttp://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=PMC3203790>. 
+* Hancock PA, Godfray HCJ (2007). “Application of the lumped age-class technique to studying the dynamics of malaria-mosquito-human interactions.” _Malaria Journal_, 6, 98. ISSN 1475-2875, doi: 10.1186/1475-2875-6-98 , <http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=1971713{\&}tool=pmcentrez{\&}rendertype=abstract>. 
+* Marshall J, Buchman A, C. HMS, Akbari OS (2017). “Overcoming evolved resistance to population-suppressing homing-based gene drives.” _Nature Scientific Reports_, 1--46. ISSN 2045-2322, doi: https://doi.org/10.1101/088427
