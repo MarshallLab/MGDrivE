@@ -11,7 +11,7 @@ Authors@R: c(
 Maintainer: Héctor Manuel Sánchez Castellanos <sanchez.hmsc@berkeley.edu>
 URL: https://marshalllab.github.io/MGDrivE/, https://www.marshalllab.com/
 BugReports: https://github.com/MarshallLab/MGDrivE/issues
-Description: MGDrivE is a model designed to be a reliable testbed where various gene drive interventions for mosquito-borne diseases control.
+Description: The 'MGDrivE' package provides a model designed to be a reliable testbed where various gene drive interventions for mosquito-borne diseases control.
   It is being developed to accommodate the use of various mosquito-specific gene drive systems within a population dynamics framework that allows migration of individuals between patches in landscape.
 License: GPL-3
 Encoding: UTF-8
