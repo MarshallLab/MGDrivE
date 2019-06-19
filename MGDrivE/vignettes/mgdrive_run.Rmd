@@ -293,7 +293,7 @@ moveMat <- triDiag(upper = rep.int(x = 0.05, times = sitesNumber-1),
 moveMat
 ```
 
-Our landscape will be a line, with each population only connected to the populations on either side. We set a 5% per day migration rate. There are several examples in the other [vignette](../doc/mgdrive_examples.html) for setting up different landscapes.  
+Our landscape will be a line, with each population only connected to the populations on either side. We set a 5% per day migration rate. There are several examples in the other [vignette](mgdrive_examples.html) for setting up different landscapes.  
   
 Finally, there is the possibility of large-group movement facilitated by humans (using *Aedes* for example, this could be boats or water containers in truck beds, etc.). *MGDrivE* handles this through `basicBatchMigration()`. For simplicity, we are ignoring this possibility (by setting the probability of it to zero).
 
