@@ -9,28 +9,32 @@
 ###############################################################################################################
 ######################### LOAD AND SETUP PACKAGES #############################################################
 rm(list=ls());gc()
-library(stringr)
-library(data.table)
+library(foreach)
+library(doMC)
 library(MGDrivE)
+registerDoMC(4)
 ###############################################################################################################
 ######################### SETUP PATHS #########################################################################
-MGDrivE.Setup(stochasticityON=TRUE)
-setwd("/Users/sanchez.hmsc/Documents/GitHub/MGDrivE_Releases/Examples/")
-outputDirectory="/Users/sanchez.hmsc/Documents/GitHub/MGDrivE_Releases/Examples/OUTPUT/SuppressionStochastic/"
+setupMGDrivE(stochasticityON=TRUE)
+setwd("/Users/sanchez.hmsc/Documents/GitHub/MGDrivE/Main/")
+#outputDirectory="/Users/sanchez.hmsc/Documents/GitHub/MGDrivE/Main/OUT_SoftwarePaper/SuppressionStochastic/"
+outputDirectory="/Users/sanchez.hmsc/odrive/MGDrivE_Experiments/SoftwarePaper/SuppressionStochastic/"
 ###############################################################################################################
 ######################### SETUP SIMULATION ####################################################################
 simulationTime=5000 # Number of "days" run in the simulation
-repetitions=4       # Number of repetitions to run on each scenario (for stochastic version)
+repetitions=100     # Number of repetitions to run on each scenario (for stochastic version)
 ###############################################################################################################
 ######################### SETUP MOSQUITO BIOLOGY ##############################################################
 #bioParameters=list(betaK=8,tEgg=6,tLarva=11,tPupa=4,popGrowth=1.175,muAd=.09)
 bioParameters=list(betaK=2*10,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=.09)
 ###############################################################################################################
 ######################### SETUP LANDSCAPE #####################################################################
-distancesMatrix=as.matrix(read.csv("./GeoLandscapes/ATaleOfTwoCities_Distances.csv",sep=",",header=FALSE))
+distancesMatrix=as.matrix(read.csv("./GeoLandscapes/ATaleOfTwoCitiesScaled_Distances.csv",sep=",",header=FALSE))
+#movementKernel=as.matrix(read.table("./GeoLandscapes/ATaleOfTwoCities_Kernel.csv",sep=",",header=TRUE))
+#distancesMatrix=matrix(0)
 lifespanStayProbability=.90
 pulseHeight=lifespanStayProbability^(bioParameters$muAd)
-movementKernel=calc_HurdleExpKernel(distancesMatrix,MGDrivE::kernels$exp_rat,pulseHeight)
+movementKernel=calcHurdleExpKernel(distancesMatrix,MGDrivE::kernels$exp_rat,pulseHeight)
 write.table(movementKernel,file="./GeoLandscapes/ATaleOfTwoCitiesScaled_Kernel.csv",row.names=FALSE,col.names=FALSE,sep=",")
 sitesNumber=nrow(movementKernel)
 patchPops=rep(50,sitesNumber)
@@ -39,14 +43,17 @@ patchPops=rep(50,sitesNumber)
 sHet=.9
 eM=0.999
 eF=0.999
-driveCube=Cube_HomingDrive(
-  eM=eM,eF=eF,
-  rM=1/3*(1-eM), bM=2/3*(1-eM),
-  rF=1/3*(1-eF), bF=1/3*(1-eF),
+driveCube=cubeHomingDrive(cM = 1, cF = 1, chM = eM, crM = 1/3, chF = eF, crF = 1/3,
   s=c(
-    "WW"=1,"WH"=1-sHet,"WR"=1,"WB"=1-sHet,
-    "HH"=0,"HR"=1-sHet,"HB"=0,
-    "RR"=1,"RB"=1-sHet,
+    "WW"=1,
+    "WH"=1-sHet,
+    "WR"=1,
+    "WB"=1-sHet,
+    "HH"=0,
+    "HR"=1-sHet,
+    "HB"=0,
+    "RR"=1,
+    "RB"=1-sHet,
     "BB"=0
   )
 )
@@ -57,31 +64,33 @@ releasesParameters=list(
 )
 maleReleasesVector=generateReleaseVector(driveCube=driveCube,releasesParameters=releasesParameters,sex="M")
 for(i in 6:6){patchReleases[[i]]$maleReleases=maleReleasesVector}
+
+batchMigration=basicBatchMigration(batchProbs=0,sexProbs=c(.5,.5),numPatches=sitesNumber)
+
 ###############################################################################################################
 ################################ PREPARE THE FOLDERS ##########################################################
-folderNames=list()
-for(i in 1:repetitions){
-  folderName=paste0(outputDirectory,str_pad(i,4,"left","0"))
+folderNames=character(length = repetitions)
+for(i in 101:(101+repetitions)){
+  folderName=paste0(outputDirectory, formatC(x = i, width = 3, format = "d", flag = "0"))
   dir.create(folderName)
-  folderNames=c(folderNames,folderName)
+  folderNames[i]=folderName
 }
 ###############################################################################################################
 ################################ RUN THE MODEL ################################################################
-for (i in 1:repetitions){
-  outputFolder=folderNames[[i]]
-  netPar=Network.Parameters(
+foreach(i=101:(101+repetitions)) %dopar% {
+  netPar=parameterizeMGDrivE(
     runID=i,simTime=simulationTime,nPatch=sitesNumber,
     beta=bioParameters$betaK,muAd=bioParameters$muAd,popGrowth=bioParameters$popGrowth,
     tEgg=bioParameters$tEgg,tLarva=bioParameters$tLarva,tPupa=bioParameters$tPupa,
     AdPopEQ=patchPops
   )
   network=Network$new(
-    networkParameters=netPar,
+    params=netPar,
     driveCube=driveCube,
     patchReleases=patchReleases,
     migrationMale=movementKernel,
     migrationFemale=movementKernel,
-    directory=outputFolder
+    directory=folderNames[i]
   )
   network$oneRun()
   network$reset()
@@ -89,7 +98,14 @@ for (i in 1:repetitions){
 ###############################################################################################################
 ############################### POST-ANALYSIS #################################################################
 for(i in 1:repetitions){
-   splitOutput(directory=folderNames[[i]])
-   aggregateFemales(folderNames[[i]],driveCube$genotypesID,remove=FALSE)
+   splitOutput(readDir=folderNames[i])
+   aggregateFemales(readDir=folderNames[i], genotypes=driveCube$genotypesID, remove=FALSE)
 }
-AnalyzeQuantiles(outputDirectory,paste0("/Users/sanchez.hmsc/Documents/GitHub/MGDrivE/SampleRoutines/OUTPUT/SuppressionStochastic/","StochasticMedian"),mean=TRUE)
+calcQuantiles(outputDirectory,paste0("/Users/sanchez.hmsc/odrive/MGDrivE_Experiments/SoftwarePaper/","StochasticMedian"),mean=TRUE)
+
+###############################################################################################################
+############################### PLOTS #################################################################
+plotMGDrivESingle(readDir = folderName[1])
+plotMGDrivEMult(readDir = outputDirectory)
+
+

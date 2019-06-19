@@ -9,13 +9,13 @@
 ###############################################################################################################
 ######################### LOAD AND SETUP PACKAGES #############################################################
 rm(list=ls());gc()
-library(stringr)
 library(MGDrivE)
 ###############################################################################################################
 ######################### SETUP PATHS #########################################################################
-MGDrivE.Setup(stochasticityON=FALSE)
-setwd("/Users/sanchez.hmsc/Documents/GitHub/MGDrivE_Releases/Examples/")
-outputDirectory="/Users/sanchez.hmsc/Documents/GitHub/MGDrivE_Releases/Examples/OUTPUT/ReplacementDeterministic/"
+setupMGDrivE(stochasticityON=FALSE)
+setwd("/Users/sanchez.hmsc/Documents/GitHub/MGDrivE/Main/")
+#outputDirectory="/Users/sanchez.hmsc/Documents/GitHub/MGDrivE/Main/OUT_SoftwarePaper/ReplacementDeterministic/"
+outputDirectory="/Users/sanchez.hmsc/odrive/MGDrivE_Experiments/SoftwarePaper/ReplacementDeterministic/"
 ###############################################################################################################
 ######################### SETUP SIMULATION ####################################################################
 simulationTime=3000 # Number of "days" run in the simulation
@@ -25,10 +25,10 @@ repetitions=1       # Number of repetitions to run on each scenario (for stochas
 bioParameters=list(betaK=2*10,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=.09)
 ###############################################################################################################
 ######################### SETUP LANDSCAPE #####################################################################
-distancesMatrix=as.matrix(read.csv("./GeoLandscapes/ATaleOfTwoCities_Distances.csv",sep=",",header=FALSE))
+distancesMatrix=as.matrix(read.csv("./GeoLandscapes/ATaleOfTwoCitiesScaled_Distances.csv",sep=",",header=FALSE))
 lifespanStayProbability=.90
 pulseHeight=lifespanStayProbability^(bioParameters$muAd)
-movementKernel=calc_HurdleExpKernel(distancesMatrix,MGDrivE::kernels$exp_rat,pulseHeight)
+movementKernel=calcHurdleExpKernel(distancesMatrix,MGDrivE::kernels$exp_rat,pulseHeight)
 sitesNumber=nrow(movementKernel)
 patchPops=rep(50,sitesNumber)
 ###############################################################################################################
@@ -38,20 +38,29 @@ sR=.25
 sB=.50
 eM=0.9
 eF=0.5
-driveCube=Cube_HomingDrive(
-  eM=eM,eF=eF,
-  rM=1/3*(1-eM), bM=2/3*(1-eM),
-  rF=1/3*(1-eF), bF=1/3*(1-eF),
+driveCube=cubeHomingDrive(cM = 1, cF = 1, chM = eM, crM = 1/3, chF = eF, crF = 1/3,
   s=c(
-    "WW"=1,"WH"=1-sH,"WR"=1-sR,"WB"=1-sB,
-    "HH"=1-2*sH,"HR"=1-sH-sR,"HB"=1-sH-sB,
-    "RR"=1-2*sR,"RB"=1-sR-sB,
+    "WW"=1,
+    "WH"=1-sH,
+    "WR"=1-sR,
+    "WB"=1-sB,
+    "HH"=1-2*sH,
+    "HR"=1-sH-sR,
+    "HB"=1-sH-sB,
+    "RR"=1-2*sR,
+    "RB"=1-sR-sB,
     "BB"=1-2*sB
   ),
   eta=c(
-    "WW"=1,"WH"=1-sH,"WR"=1-sR,"WB"=1-sB,
-    "HH"=1-2*sH,"HR"=1-sH-sR,"HB"=1-sH-sB,
-    "RR"=1-2*sR,"RB"=1-sR-sB,
+    "WW"=1,
+    "WH"=1-sH,
+    "WR"=1-sR,
+    "WB"=1-sB,
+    "HH"=1-2*sH,
+    "HR"=1-sH-sR,
+    "HB"=1-sH-sB,
+    "RR"=1-2*sR,
+    "RB"=1-sR-sB,
     "BB"=1-2*sB
   )
 )
@@ -62,31 +71,33 @@ releasesParameters=list(
 )
 maleReleasesVector=generateReleaseVector(driveCube=driveCube,releasesParameters=releasesParameters,sex="M")
 for(i in 6:6){patchReleases[[i]]$maleReleases=maleReleasesVector}
+
+batchMigration=basicBatchMigration(batchProbs=0,sexProbs=c(.5,.5),numPatches=sitesNumber)
+
 ###############################################################################################################
 ################################ PREPARE THE FOLDERS ##########################################################
-folderNames=list()
+folderNames=character(length = repetitions)
 for(i in 1:repetitions){
-  folderName=paste0(outputDirectory,str_pad(i,4,"left","0"))
+  folderName=paste0(outputDirectory, formatC(x = i, width = 3, format = "d", flag = "0"))
   dir.create(folderName)
-  folderNames=c(folderNames,folderName)
+  folderNames[i]=folderName
 }
 ###############################################################################################################
 ################################ RUN THE MODEL ################################################################
 for(i in 1:repetitions){
-  outputFolder=folderNames[[i]]
-  netPar=Network.Parameters(
+  netPar=parameterizeMGDrivE(
     runID=i,simTime=simulationTime,nPatch=sitesNumber,
     beta=bioParameters$betaK,muAd=bioParameters$muAd,popGrowth=bioParameters$popGrowth,
     tEgg=bioParameters$tEgg,tLarva=bioParameters$tLarva,tPupa=bioParameters$tPupa,
     AdPopEQ=patchPops
   )
   network=Network$new(
-    networkParameters=netPar,
+    params=netPar,
     driveCube=driveCube,
     patchReleases=patchReleases,
     migrationMale=movementKernel,
     migrationFemale=movementKernel,
-    directory=outputFolder
+    directory=folderNames[i]
   )
   network$oneRun()
   network$reset()
@@ -94,6 +105,11 @@ for(i in 1:repetitions){
 ###############################################################################################################
 ############################### POST-ANALYSIS #################################################################
 for(i in 1:repetitions){
-  splitOutput(directory=folderNames[[i]])
-  aggregateFemales(folderNames[[i]],driveCube$genotypesID,remove=FALSE)
+  splitOutput(readDir=folderNames[i])
+  aggregateFemales(readDir=folderNames[i], genotypes=driveCube$genotypesID, remove=FALSE)
 }
+###############################################################################################################
+############################### PLOTS #################################################################
+plotMGDrivESingle(readDir = folderName[1])
+plotMGDrivEMult(readDir = outputDirectory)
+
