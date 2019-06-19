@@ -1,0 +1,101 @@
+destination: docs
+
+authors:
+  Héctor Manuel Sánchez Castellanos:
+    href: https://chipdelmal.github.io
+  Sean Wu:
+    href: https://slwu89.github.io
+  Jared Bennett:
+    href: https://github.com/GilChrist19
+  John M. Marshall:
+    href: https://www.marshalllab.com
+
+navbar:
+  left:
+    - text: "Vignettes"
+      menu:
+      - text: Example Simulations
+        href: articles/mgdrive_examples.html
+      - text: Mathematical Description
+        href: articles/mgdrive_math.html
+      - text: Detailed Run Example
+        href: articles/mgdrive_run.html
+    - text: "Functions"
+      href: reference/index.html
+  right:
+   - icon: fa-lg fa-github
+     href: https://github.com/MarshallLab/MGDrivE
+
+reference:
+- title: Inheritance Cubes
+  desc: >
+    A description of the available inheritance cubes for simulation, and some associated helper functions.
+  contents:
+  - '`cubeHoming1RA`'
+  - '`cubeHomingDrive`'
+  - '`cubeKillerRescue`'
+  - '`cubeMEDEA`'
+  - '`cubeMendelian`'
+  - '`cubeModifiers`'
+  - '`cubeOneLocusTA`'
+  - '`cubeRIDL`'
+  - '`cubeReciprocalTranslocations`'
+  - '`cubeTwoLocusTA`'
+  - '`cubeWolbachia`'
+  - '`cube2csv`'
+- title: Kernel & Geographic Distance
+  desc: >
+    Functions to generate movement matrices based on parameteric dispersal kernels and function to calculate distance matrices between latitude/longitude pairs of points.
+  contents:
+  - '`calcCos`'
+  - '`calcExpKernel`'
+  - '`calcGammaKernel`'
+  - '`calcHaversine`'
+  - '`calcHurdleExpKernel`'
+  - '`calcLognormalKernel`'
+  - '`calcVinEll`'
+  - '`calcVinSph`'
+  - '`calcZeroInflation`'
+- title: Population Dynamics Parameters
+  desc: >
+    A description of model parameters governing population dynamics, not including inheritance, which is described in its own section.
+    This section also includes functions that generate mosquito release events and set up probabilities for batch migration, and the functions which select between deterministic or stochastic simulation.
+  contents:
+  - '`parameterizeMGDrivE`'
+  - '`getOmega`'
+  - '`generateReleaseVector`'
+  - '`basicBatchMigration`'
+  - '`basicRepeatedReleases`'
+  - '`setupMGDrivE`'
+- title: Data
+  desc: >
+    Data files included in **MGDrivE**, contains fitted parameters for parameteric mosquito dispersal kernels and movement matrices for illustrative simulations.
+  contents:
+  - '`kernels`'
+  - '`moveMatAll2`'
+  - '`moveMatCascade3`'
+  - '`moveMatDiag`'
+  - '`moveMatDiagOneCity`'
+  - '`moveMatDie`'
+  - '`moveMatIndependent3`'
+  - '`moveMatMixedSpil`'
+  - '`moveMatTaleOfTwoCities`'
+  - '`moveMatTriDiagonal`'
+  - '`moveMatTriple`'
+- title: Analysis of Output
+  desc: >
+    Functions that allow the output to be summarized and plotted.
+  contents:
+  - '`splitOutput`'
+  - '`retrieveOutput`'
+  - '`aggregateFemales`'
+  - '`aggregateOutput`'
+  - '`calcQuantiles`'
+  - '`eraseDirectory`'
+  - '`plotMGDrivEMult`'
+  - '`plotMGDrivESingle`'
+- title: Network Class
+  desc: >
+    The Network object class which is the main object with which to interact with the **MGDrivE** simulation, and manages the metapopulation dynamics upon which the simulation runs.
+  contents:
+  - '`Network`'
