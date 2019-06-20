@@ -15,7 +15,7 @@ Description: Provides a model designed to be a reliable testbed where various ge
   It is being developed to accommodate the use of various mosquito-specific gene drive systems within a population dynamics framework that allows migration of individuals between patches in landscape.
 License: GPL-3
 Encoding: UTF-8
-Imports: R6, Rcpp, Rdpack, grDevices, graphics, stats, utils
+Imports: R6, Rcpp, Rdpack (>= 0.7), grDevices, graphics, stats, utils
 RdMacros: Rdpack
 LinkingTo: Rcpp
 Depends: R (>= 2.10), data.table
