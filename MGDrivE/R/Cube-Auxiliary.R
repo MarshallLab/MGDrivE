@@ -67,7 +67,7 @@ NULL
 #' @examples
 #' \dontrun{
 #' # output directory
-#' oPath <- "path/to/write/output"
+#' oPath <- tempdir() #"path/to/write/output"
 #'
 #' # setup inheritance cube for export, using Mendelian as the example
 #' cube <- cubeMendelian()
