@@ -35,7 +35,7 @@
 #'  * \code{\link{cubeOneLocusTA}}: 1 Locus Maternal-Toxin/Zygotic-Antidote System
 #'  * \code{\link{cubeTwoLocusTA}}: 2 Locus Maternal-Toxin/Zygotic-Antidote System
 #'  * \code{\link{cubeHoming1RA}}: Homing Drive with 1 Resistance Allele
-#'  * \code{\link{cubeHomingDrive}}: CRISPR (Clustered Regularly Interspaced SWort Palindromic Repeats) witW 2 Resistance Allele
+#'  * \code{\link{cubeHomingDrive}}: CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Allele
 #'  * \code{\link{cubeKillerRescue}}: Killer-Rescue System
 #'  * \code{\link{cubeMEDEA}}: MEDEA (Maternal Effect Dominant Embryonic Arrest)
 #'  * \code{\link{cubeReciprocalTranslocations}}: Reciprocal Translocation
