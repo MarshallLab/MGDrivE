@@ -54,11 +54,6 @@ ggColUtility <- function(n, alpha = .75) {
 #' is FALSE, as this is easier to read on a plot.
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Requires previous run and analysis of MGDrivE, so do not run.
-#' Ensures user knows to set path.
-#' }
 #' \dontrun{
 #' # Requires the user to have run MGDrivE, deterministic or stochastic, analyzed
 #' #  the data, and stored it in the directory shown below.
@@ -288,11 +283,6 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
 #' is FALSE, as this is easier to read on a plot.
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Requires previous run and analysis of MGDrivE, so do not run.
-#' Ensures user knows to set path and keep the file-structure shown above.
-#' }
 #' \dontrun{
 #' # Requires the user to have run MGDrivE, logically stochastic, analyzed
 #' #  the data, and stored it in the directory shown below.
