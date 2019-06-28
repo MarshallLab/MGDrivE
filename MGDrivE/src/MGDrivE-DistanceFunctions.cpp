@@ -49,6 +49,10 @@ inline double toDeg(const double& rad) {
 //' @param r Earth radius. Default is WGS-84 radius
 //'
 //' @examples
+//' \dontshow{
+//' Example for users.
+//' Executable in < 2 seconds.
+//' }
 //' # two-column matrix with latitude/longitude, in degrees
 //' latLong = cbind(runif(n = 5, min = 0, max = 90),
 //'                 runif(n = 5, min = 0, max = 180))
@@ -156,6 +160,10 @@ Rcpp::NumericMatrix calcCos(const Rcpp::NumericMatrix& latLongs, const double& r
 //' @param r Earth radius. Default is WGS-84 radius
 //'
 //' @examples
+//' \dontshow{
+//' Example for users.
+//' Executable in < 2 seconds.
+//' }
 //' # two-column matrix with latitude/longitude, in degrees
 //' latLong = cbind(runif(n = 5, min = 0, max = 90),
 //'                 runif(n = 5, min = 0, max = 180))
@@ -248,6 +256,10 @@ Rcpp::NumericMatrix calcHaversine(const Rcpp::NumericMatrix& latLongs, const dou
 //' @param r Earth radius. Default is WGS-84 radius
 //'
 //' @examples
+//' \dontshow{
+//' Example for users.
+//' Executable in < 2 seconds.
+//' }
 //' # two-column matrix with latitude/longitude, in degrees
 //' latLong = cbind(runif(n = 5, min = 0, max = 90),
 //'                 runif(n = 5, min = 0, max = 180))
@@ -391,6 +403,10 @@ Rcpp::NumericMatrix calcVinSph(const Rcpp::NumericMatrix& latLongs, const double
 //' @param iter Naximum number of iterations to attempt convergence
 //'
 //' @examples
+//' \dontshow{
+//' Example for users.
+//' Executable in < 10 seconds.
+//' }
 //' # two-column matrix with latitude/longitude, in degrees
 //' latLong = cbind(runif(n = 5, min = 0, max = 90),
 //'                 runif(n = 5, min = 0, max = 180))
