@@ -99,10 +99,6 @@
 #'  * verbose: Chatty? Default is TRUE
 #'
 #'  @examples
-#'  \dontshow{
-#'  There is no simple example for this, as it relies on many other objects.
-#'  Thus, provide the vignettes, but do not run.
-#'  }
 #'  \dontrun{
 #'  # There are no simple examples for this, so looking at the vignettes would be
 #'  #  most useful.
