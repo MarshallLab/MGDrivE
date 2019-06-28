@@ -54,9 +54,23 @@ ggColUtility <- function(n, alpha = .75) {
 #' is FALSE, as this is easier to read on a plot.
 #'
 #' @examples
-#' # Requires the user to have run MGDrivE with repetitions and keep them in the
-#' #  directory organization shown above.
+#' \dontshow{
+#' Example for users.
+#' Requires previous run and analysis of MGDrivE, so do not run.
+#' Ensures user knows to set path.
+#' }
+#' \dontrun{
+#' # Requires the user to have run MGDrivE, deterministic or stochastic, analyzed
+#' #  the data, and stored it in the directory shown below.
 #' # See vignette for complete example
+#'
+#' # Folder where single run is stored
+#' fPath <- "path/to/data/containing/folder"
+#'
+#' # plot output to see effect
+#' plotMGDrivESingle(readDir=fPath,totalPop = TRUE,lwd=3.5,alpha=1)
+#' }
+#'
 #'
 #' @export
 plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
@@ -274,9 +288,22 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
 #' is FALSE, as this is easier to read on a plot.
 #'
 #' @examples
-#' # Requires the user to have run MGDrivE with repetitions and keep them in the
-#' #  directory organization shown above.
+#' \dontshow{
+#' Example for users.
+#' Requires previous run and analysis of MGDrivE, so do not run.
+#' Ensures user knows to set path and keep the file-structure shown above.
+#' }
+#' \dontrun{
+#' # Requires the user to have run MGDrivE, logically stochastic, analyzed
+#' #  the data, and stored it in the directory shown below.
 #' # See vignette for complete example
+#'
+#' # Folder where single run is stored
+#' fPath <- "path/to/data/containing/folder"
+#'
+#' # plot output to see effect
+#' plotMGDrivEMult(readDir=fPath,totalPop = TRUE,lwd=3.5,alpha=1)
+#' }
 #'
 #' @export
 plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
