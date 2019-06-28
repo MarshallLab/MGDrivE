@@ -20,6 +20,10 @@
 #' @param verbose Chatty? Default is TRUE
 #'
 #' @examples
+#' \dontshow{
+#' Examples for users.
+#' Executable in < 1 second.
+#' }
 #' # run deterministic MGDrivE
 #' setupMGDrivE(stochasticityON = FALSE)
 #'
