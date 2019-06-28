@@ -24,10 +24,6 @@
 #' @param sex character in 'M','F','E'
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Executable in < 1 second.
-#' }
 #' # to setup for 3 patches but only release in the first with a defined release schedule:
 #'
 #' patchReleases = replicate(n = 3,expr = {
@@ -103,10 +99,6 @@ basicRepeatedReleases <- function(genotypes, releaseStart, releaseEnd,
 #' @param sex character in 'M','F'
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Executable in < 1 second.
-#' }
 #' # setup a drive cube, using Mendelian as the example
 #' cube <- cubeMendelian()
 #'
@@ -176,10 +168,6 @@ generateReleaseVector <- function(driveCube=driveCube,
 #' @param numPatches Number of patches in the simulation
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Executable in < 1 second.
-#' }
 #' # to setup for 3 patches
 #' batchMigration = basicBatchMigration(batchProbs = 1e-5, sexProbs = c(0.1, 0.01), numPatches = 3)
 #'
