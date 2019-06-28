@@ -65,10 +65,6 @@ NULL
 #' @importFrom utils write.table
 #'
 #' @examples
-#' \dontshow{
-#' Writes output, so do not run, but make it clear that the user must
-#' supply the output directory.
-#' }
 #' \dontrun{
 #' # output directory
 #' oPath <- "path/to/write/output"
