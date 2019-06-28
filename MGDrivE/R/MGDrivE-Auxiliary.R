@@ -27,10 +27,6 @@
 #' @importFrom stats uniroot
 #'
 #' @examples
-#' \dontshow{
-#' Examples for users.
-#' Executable in < 1 second.
-#' }
 #' # reduce lifespan by 10%
 #' #  Example mu is an average for Aedes
 #' newOmega <- getOmega(mu = 0.11, lifespanReduction = 0.90)
@@ -63,11 +59,6 @@ getOmega <- function(mu, lifespanReduction){
 #' @param verbose Chatty? Default is TRUE
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Potentially deletes directories, so do not run.
-#' Ensures user knows to set path.
-#' }
 #' \dontrun{
 #' # Path to directory, can tilde expand
 #' myPath <- "~/path/to/write/output"
@@ -114,11 +105,6 @@ eraseDirectory <- function(directory, verbose = TRUE){
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Requires data from a previous run of MGDrivE, so do not run.
-#' Describes where the data paths should be.
-#' }
 #' \dontrun{
 #' # This example assumes user has already run MGDrivE and generated output.
 #' #  If that's untree, see vignette for complete example
@@ -208,11 +194,6 @@ splitOutput <- function(readDir, writeDir=NULL, remFile=TRUE, numCores=1, verbos
 #' @param verbose Chatty? Default is TRUE
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Requires data from a previous run of MGDrivE, so do not run.
-#' Describes where the data paths should be.
-#' }
 #' \dontrun{
 #' # This example assumes user has already run MGDrivE and generated output.
 #' #  This also assumes that the user has already split output by patch.
@@ -318,11 +299,6 @@ aggregateFemales <- function(readDir, writeDir=NULL, genotypes, remFile=FALSE,
 #' @importFrom utils write.csv
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Requires data from a previous run and analysis of MGDrivE, so do not run.
-#' Describes where the data paths should be.
-#' }
 #' \dontrun{
 #' # This assumes user has run MGDrivE and output is in fPath.
 #' #  See vignette for examples on how to run MGDrivE
@@ -414,11 +390,6 @@ aggregateOutput <- function(readDir, writeDir=NULL){
 #' @importFrom stats setNames
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Requires data from a previous run and analysis of MGDrivE, so do not run.
-#' Describes where the data paths should be.
-#' }
 #' \dontrun{
 #' # Example assumes user has run and analyzed MGDrivE.
 #' #  See vignette for examples of how to do that.
@@ -507,11 +478,6 @@ retrieveOutput <- function(readDir, verbose=TRUE){
 #' @param verbose Chatty? Default is TRUE
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Requires data from a previous run and analysis of MGDrivE, so do not run.
-#' Describes where the data paths should be.
-#' }
 #' \dontrun{
 #' # This function assumes network$multRun() has been performed, or several
 #' #  network$oneRun() have been performed and all of the data has been split
