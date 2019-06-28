@@ -40,10 +40,6 @@
 #' @param AdPopRatio_M may be \code{NULL}; if not, gives the wildtype gene frequencies among adult males at the beginning of simulation
 #'
 #' @examples
-#' \dontshow{
-#' Example for users.
-#' Executable in < 1 second.
-#' }
 #' # using default parameters for 2 patches
 #' #  using different population sizes for patches
 #' simPars <- parameterizeMGDrivE(nPatch = 2, simTime = 365,
