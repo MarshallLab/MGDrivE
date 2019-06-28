@@ -65,9 +65,13 @@ NULL
 #' @importFrom utils write.table
 #'
 #' @examples
+#' \dontshow{
+#' Writes output, so do not run, but make it clear that the user must
+#' supply the output directory.
+#' }
 #' \dontrun{
 #' # output directory
-#' oPath <- tempdir() #"path/to/write/output"
+#' oPath <- "path/to/write/output"
 #'
 #' # setup inheritance cube for export, using Mendelian as the example
 #' cube <- cubeMendelian()
