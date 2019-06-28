@@ -55,10 +55,6 @@ inline double dtruncExp(double x, double r, double a, double b){
 //' @param sdlog log standard deviation of \code{\link[stats]{Lognormal}} distribution
 //'
 //' @examples
-//' \dontshow{
-//' Examples for users.
-//' Executable in < 5 seconds.
-//' }
 //' # setup distance matrix
 //' # two-column matrix with latitude/longitude, in degrees
 //' latLong = cbind(runif(n = 5, min = 0, max = 90),
@@ -103,10 +99,6 @@ Rcpp::NumericMatrix calcLognormalKernel(const Rcpp::NumericMatrix& distMat,
 //' @param rate rate parameter of \code{\link[stats]{GammaDist}} distribution
 //'
 //' @examples
-//' \dontshow{
-//' Examples for users.
-//' Executable in < 5 seconds.
-//' }
 //' # setup distance matrix
 //' # two-column matrix with latitude/longitude, in degrees
 //' latLong = cbind(runif(n = 5, min = 0, max = 90),
@@ -149,10 +141,6 @@ Rcpp::NumericMatrix calcGammaKernel(const Rcpp::NumericMatrix& distMat, const do
 //' @param rate rate parameter of \code{\link[stats]{Exponential}} distribution
 //'
 //' @examples
-//' \dontshow{
-//' Examples for users.
-//' Executable in < 5 seconds.
-//' }
 //' # setup distance matrix
 //' # two-column matrix with latitude/longitude, in degrees
 //' latLong = cbind(runif(n = 5, min = 0, max = 90),
@@ -198,10 +186,6 @@ Rcpp::NumericMatrix calcExpKernel(const Rcpp::NumericMatrix& distMat, const doub
 //' @param pi point mass at zero
 //'
 //' @examples
-//' \dontshow{
-//' Examples for users.
-//' Executable in < 5 seconds.
-//' }
 //' # setup distance matrix
 //' # two-column matrix with latitude/longitude, in degrees
 //' latLong = cbind(runif(n = 5, min = 0, max = 90),
