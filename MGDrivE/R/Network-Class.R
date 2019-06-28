@@ -99,7 +99,21 @@
 #'  * verbose: Chatty? Default is TRUE
 #'
 #'  @examples
-#'  # see vignette for complete examples
+#'  \dontshow{
+#'  There is no simple example for this, as it relies on many other objects.
+#'  Thus, provide the vignettes, but do not run.
+#'  }
+#'  \dontrun{
+#'  # There are no simple examples for this, so looking at the vignettes would be
+#'  #  most useful.
+#'
+#'  # Complete manual with examples, but none explored in depth.
+#'  vignette("MGDrivE-Examples", package = "MGDrivE")
+#'
+#'  # One example, explored in great detail. This is probably more helpful.
+#'  vignette("MGDrivE-Run", package = "MGDrivE")
+#'
+#'  }
 #'
 #' @export
 Network <- R6::R6Class(classname = "Network",
