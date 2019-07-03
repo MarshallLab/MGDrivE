@@ -128,6 +128,7 @@ splitOutput <- function(readDir, writeDir=NULL, remFile=TRUE, numCores=1, verbos
   # Set data.table thread use.
   oldThread = data.table::getDTthreads(verbose = FALSE)
   data.table::setDTthreads(threads = numCores)
+  on.exit(expr = data.table::setDTthreads(threads = oldThread))  # Reset data.table thread use.
 
   # get all files in the read directory
   dirFiles = list.files(path = readDir, pattern = "^[MF]_.*\\.csv$", full.names = TRUE)
@@ -178,8 +179,6 @@ splitOutput <- function(readDir, writeDir=NULL, remFile=TRUE, numCores=1, verbos
 
   } # end loop over files
 
-  # Reset data.table thread use.
-  data.table::setDTthreads(threads = oldThread)
 }
 
 #' Aggregate Female Output by Genotype
@@ -220,6 +219,7 @@ aggregateFemales <- function(readDir, writeDir=NULL, genotypes, remFile=FALSE,
   # Set data.table thread use.
   oldThread = data.table::getDTthreads(verbose = FALSE)
   data.table::setDTthreads(threads = numCores)
+  on.exit(expr = data.table::setDTthreads(threads = oldThread))  # Reset data.table thread use.
 
   #if the computer has the just-in-time compiler, it makes a huge difference in
   # string searches
@@ -277,9 +277,6 @@ aggregateFemales <- function(readDir, writeDir=NULL, genotypes, remFile=FALSE,
     if(verbose){setTxtProgressBar(pb = pb, value = pbVal)}
 
   }#end file loop
-
-  # Reset data.table thread use.
-  data.table::setDTthreads(threads = oldThread)
 
 }#end program
 
@@ -510,6 +507,7 @@ calcQuantiles <- function(readDir, writeDirectory, mean=TRUE, quantiles=NULL,
   # Set data.table thread use.
   oldThread = data.table::getDTthreads(verbose = FALSE)
   data.table::setDTthreads(threads = numCores)
+  on.exit(expr = data.table::setDTthreads(threads = oldThread))  # Reset data.table thread use.
 
   #get files
   repFiles = list.dirs(path = readDir, full.names = TRUE, recursive = FALSE)
@@ -659,9 +657,6 @@ calcQuantiles <- function(readDir, writeDirectory, mean=TRUE, quantiles=NULL,
     if(verbose){setTxtProgressBar(pb = pb, value = pbVal)}
 
   }#end loop over patches
-
-  # Reset data.table thread use.
-  data.table::setDTthreads(threads = oldThread)
 
 }#end function
 
