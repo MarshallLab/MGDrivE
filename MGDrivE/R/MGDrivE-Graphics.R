@@ -73,6 +73,7 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
 
   #keep old plot parameters to reset later
   oldPar <- par(no.readonly = TRUE)
+  on.exit(expr = par(oldPar)) #reset par()
 
   ####################
   # get files to plot, check number of patches
@@ -237,9 +238,6 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
     }#end patch loop
   }#end if
 
-  #reset par()
-  par(oldPar)
-
 }
 
 #######################################
@@ -301,6 +299,7 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
 
   #keep old plot parameters to reset later
   oldPar <- par(no.readonly = TRUE)
+  on.exit(expr = par(oldPar)) #reset par()
 
   ####################
   # check number of patches
@@ -501,8 +500,5 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
       box(lwd = 2)
     }#end patch loop
   }#end if
-
-  #reset par()
-  par(oldPar)
-
+  
 }
