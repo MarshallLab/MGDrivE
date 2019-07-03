@@ -67,6 +67,10 @@ oneRun_Network <- function(conADM = NULL, conAF1 = NULL, verbose = TRUE){
                                                ".csv"),
                           open = "wt")
   }
+  
+  # safety close files at end of run
+  on.exit(expr = close(private$conADM))
+  on.exit(expr = close(private$conAF1), add = TRUE)
 
   # males
   writeLines(text = paste0(c("Time","Patch",self$get_genotypesID()),collapse = ","),con = private$conADM,sep = "\n")
@@ -86,18 +90,11 @@ oneRun_Network <- function(conADM = NULL, conAF1 = NULL, verbose = TRUE){
 
   while(private$simTime >= private$tNow){
 
-    # if(private$tNow==116){browser()}
-
-    # cat("day ",private$tNow," of ",private$simTime,"\n",sep="")
-
     self$oneDay()
 
     private$tNow = private$tNow + 1L
     if(verbose){setTxtProgressBar(pb,value = private$tNow)}
   }
-
-  close(private$conADM)
-  close(private$conAF1)
 
   if(verbose){cat("run ",private$runID," over\n",sep="")}
 
@@ -143,6 +140,12 @@ multRun_Network <- function(conM = NULL, conF = NULL, verbose = TRUE){
                                                formatC(x = private$runID, width = 3, format = "d", flag = "0"),
                                                ".csv"),
                           open = "wt")
+    
+    ####################
+    # close connections safely at end of run
+    ####################
+    on.exit(expr = close(private$conADM))
+    on.exit(expr = close(private$conAF1), add = TRUE)
 
 
     ####################
@@ -179,12 +182,6 @@ multRun_Network <- function(conM = NULL, conF = NULL, verbose = TRUE){
       private$tNow = private$tNow + 1L
       if(verbose){setTxtProgressBar(pb,value = private$tNow)}
     }# end rest of sim
-
-    ####################
-    # close connections
-    ####################
-    close(private$conADM)
-    close(private$conAF1)
 
     if(verbose){cat("run ",private$runID," over\n",sep="")}
 
