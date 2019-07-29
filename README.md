@@ -20,36 +20,17 @@ _Click the image to watch a video description._
 install.packages(c("Rcpp","data.table","R6","Rdpack","roxygen2","knitr","rmarkdown"))
 ```
 
-Additionally **Windows** users **need** to install [RTools](https://cran.r-project.org/bin/windows/Rtools/).
-
-### A) Github
-
-To install the package directly from this repository make sure you have [devtools](https://cran.r-project.org/web/packages/devtools/index.html) installed:
+Once these packages are installed, the package can be installed with:
 
 ```R
-install.packages("devtools")
+install.packages("MGDrivE")
 ```
 
-Having installed [devtools](https://cran.r-project.org/web/packages/devtools/index.html), run the following commands in the _R_ terminal:
-
-```R
-devtools::install_github(repo="MarshallLab/MGDrivE",subdir="MGDrivE",build_opts = c("--no-resave-data", "--no-manual"))
-```
-
-And, finally, run the following command to test if the package installed correctly:
+and loaded:
 
 ```R
 library(MGDrivE)
 ```
-
-### B) Download
-
-Alternatively, __MGDrivE__ can be installed by downloading the source code and following these instructions:
-
-1. Download and unzip the current _tar_ or _zip_ from our repository.
-2. Open the file _./MGDrivE/MGDrivE.Rproj_ on [RStudio](https://www.rstudio.com/).
-3. Click on the _Build>Document_ toolbar.
-4. Click on the _Build>Install and Restart_ toolbar.
 
 <hr>
 
