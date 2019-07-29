@@ -45,14 +45,14 @@ This model is being supported and developed as part of the following research pr
 
 <hr>
 
-  <img src="https://marshalllab.github.io/MGDrivE//images/berkeley.jpg" height="20px"> &nbsp
-  <img src="https://marshalllab.github.io/MGDrivE//images/UCD.jpg" height="20px"> &nbsp
-  <img src="https://marshalllab.github.io/MGDrivE//images/UCI.png" height="20px"> &nbsp
-  <img src="https://marshalllab.github.io/MGDrivE//images/UCLA.png" height="20px"> &nbsp
-  <img src="https://marshalllab.github.io/MGDrivE//images/UCR.jpg" height="20px"> &nbsp
-  <img src="https://marshalllab.github.io/MGDrivE//images/UCSD.png" height="20px"> &nbsp
-  <img src="https://marshalllab.github.io/MGDrivE//images/JPL.png" height="20px"> &nbsp
-  <img src="https://marshalllab.github.io/MGDrivE//images/DARPA.jpg" height="20px"> &nbsp
-  <img src="https://marshalllab.github.io/MGDrivE//images/IGI.png" height="20px"> &nbsp
-  <img src="https://marshalllab.github.io/MGDrivE//images/nvidia.jpg" height="20px"> &nbsp
-  <img src="https://marshalllab.github.io/MGDrivE//images/UCIMI.png" height="20px"> &nbsp
+  <img src="https://marshalllab.github.io/MGDrivE//images/berkeley.jpg" height="20px">
+  <img src="https://marshalllab.github.io/MGDrivE//images/UCD.jpg" height="20px">
+  <img src="https://marshalllab.github.io/MGDrivE//images/UCI.png" height="20px">
+  <img src="https://marshalllab.github.io/MGDrivE//images/UCLA.png" height="20px">
+  <img src="https://marshalllab.github.io/MGDrivE//images/UCR.jpg" height="20px">
+  <img src="https://marshalllab.github.io/MGDrivE//images/UCSD.png" height="20px">
+  <img src="https://marshalllab.github.io/MGDrivE//images/JPL.png" height="20px">
+  <img src="https://marshalllab.github.io/MGDrivE//images/DARPA.jpg" height="20px">
+  <img src="https://marshalllab.github.io/MGDrivE//images/IGI.png" height="20px">
+  <img src="https://marshalllab.github.io/MGDrivE//images/nvidia.jpg" height="20px">
+  <img src="https://marshalllab.github.io/MGDrivE//images/UCIMI.png" height="20px">
