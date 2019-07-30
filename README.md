@@ -45,6 +45,14 @@ This model is being supported and developed as part of the following research pr
 
 <hr>
 
+##  [MoNeT_MGDrivE](https://pypi.org/project/MoNeT-MGDrivE/)
+
+To facilitate the data analysis of the results produced by [MGDrivE](https://marshalllab.github.io/MGDrivE/), we provide a python package [MoNeT_MGDrivE](https://pypi.org/project/MoNeT-MGDrivE/) installable through pip.
+
+<img src="https://marshalllab.github.io/MGDrivE/images/Homing_01Cb.png" height="40px" align="middle">
+
+<hr>
+
 ##  Funders and Collaborators
 
 <img src="https://marshalllab.github.io/MGDrivE/images/berkeley.jpg" height="40px" align="middle"><img src="https://marshalllab.github.io/MGDrivE/images/UCD.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCI.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCLA.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCR.jpg" height="40px" align="middle"> <br><br> <img src="https://marshalllab.github.io/MGDrivE/images/UCSD.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/JPL.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/IGI.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/DARPA.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/nvidia.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCIMI.png" height="40px" align="middle">
