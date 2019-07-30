@@ -45,17 +45,4 @@ This model is being supported and developed as part of the following research pr
 
 <hr>
 
-<img src="https://marshalllab.github.io/MGDrivE/images/MGDrivE/images/berkeley.jpg" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/images/UCI.png" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/images/UCD.jpg" height="30px" align="middle"><img src="https://marshalllab.github.io/MGDrivE/images/images/UCSD.png" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/images/UCLA.png" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/images/JPL.png" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/images/UCR.jpg" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/MGDrivE/images/JPL.png" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/images/DARPA.jpg" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/images/IGI.png" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/images/nvidia.jpg" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCIMI.png" height="30px" align="middle">
-
-
-  <img src="./images/berkeley.jpg" height="20px"> &nbsp
-  <img src="./images/UCD.jpg" height="20px"> &nbsp
-  <img src="./images/UCI.png" height="20px"> &nbsp
-  <img src="./images/UCLA.png" height="20px"> &nbsp
-  <img src="./images/UCR.jpg" height="20px"> &nbsp
-  <img src="./images/UCSD.png" height="20px"> &nbsp
-  <img src="./images/JPL.png" height="20px"> &nbsp
-  <img src="./images/DARPA.jpg" height="20px"> &nbsp
-  <img src="./images/IGI.png" height="20px"> &nbsp
-  <img src="./images/nvidia.jpg" height="20px"> &nbsp
-  <img src="./images/UCIMI.png" height="20px"> &nbsp
+<img src="https://chipdelmal.github.io/MGDrivE/images/MGDrivE/images/berkeley.jpg" height="30px" align="middle"> <img src="https://chipdelmal.github.io/MGDrivE/images/images/UCI.png" height="30px" align="middle"> <img src="https://chipdelmal.github.io/MGDrivE/images/images/UCD.jpg" height="30px" align="middle"><img src="https://chipdelmal.github.io/MGDrivE/images/images/UCSD.png" height="30px" align="middle"> <img src="https://chipdelmal.github.io/MGDrivE/images/images/UCLA.png" height="30px" align="middle"> <img src="https://chipdelmal.github.io/MGDrivE/images/images/JPL.png" height="30px" align="middle"> <img src="https://chipdelmal.github.io/MGDrivE/images/images/UCR.jpg" height="30px" align="middle"> <img src="https://chipdelmal.github.io/MGDrivE/images/MGDrivE/images/JPL.png" height="30px" align="middle"> <img src="https://chipdelmal.github.io/MGDrivE/images/images/DARPA.jpg" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/IGI.png" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/nvidia.jpg" height="30px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCIMI.png" height="30px" align="middle">
