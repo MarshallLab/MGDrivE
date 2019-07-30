@@ -9,8 +9,10 @@ For more information take a look at our <a href="https://marshalllab.github.io/M
 [![Demo](https://marshalllab.github.io/MGDrivE/images/crispr.jpg)](https://www.youtube.com/watch?time_continue=3&v=sZXuUtToszw)
 _Click the image to watch a video description._
 
-<hr>
 
+This software is freely available under the [GPL3 License](https://www.gnu.org/licenses/gpl-3.0.en.html).
+
+<hr>
 
 ## Installation Instructions
 
@@ -31,8 +33,6 @@ and loaded:
 ```R
 library(MGDrivE)
 ```
-
-This software is freely available under the [GPL3 License](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 <hr>
 
