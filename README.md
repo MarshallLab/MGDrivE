@@ -44,6 +44,8 @@ To facilitate the data analysis of the results produced by [MGDrivE](https://mar
 
 <img src="https://marshalllab.github.io/MGDrivE/images/Homing_01Cb.png" align="middle">
 
+This package is part of our companion project [MoNeT](https://chipdelmal.github.io/MoNeT/), so have a look at the project's [website](https://chipdelmal.github.io/MoNeT/) for information on some of the work we are doing!
+
 <hr>
 
 <img src="https://marshalllab.github.io/MGDrivE/images/berkeley.jpg" height="40px" align="middle"><img src="https://marshalllab.github.io/MGDrivE/images/UCD.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCI.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCLA.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCR.jpg" height="40px" align="middle"> <br><br> <img src="https://marshalllab.github.io/MGDrivE/images/UCSD.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/JPL.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/IGI.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/DARPA.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/nvidia.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCIMI.png" height="40px" align="middle">
