@@ -49,7 +49,7 @@ This model is being supported and developed as part of the following research pr
 
 To facilitate the data analysis of the results produced by [MGDrivE](https://marshalllab.github.io/MGDrivE/), we provide a python package [MoNeT_MGDrivE](https://pypi.org/project/MoNeT-MGDrivE/) installable through pip.
 
-<img src="https://marshalllab.github.io/MGDrivE/images/Homing_01Cb.png" height="40px" align="middle">
+<img src="https://marshalllab.github.io/MGDrivE/images/Homing_01Cb.png" align="middle">
 
 <hr>
 
