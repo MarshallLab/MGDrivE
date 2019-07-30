@@ -43,5 +43,3 @@ This software is freely available under the [GPL3 License](https://www.gnu.org/l
 
 This model is being supported and developed as part of the following research projects: [UCI Malaria Initiative](https://news.uci.edu/7517/05/08/uci-establishes-malaria-initiative-to-fight-deadly-disease-in-africa/), [DARPA: Safe Genes](https://www.darpa.mil/program/safe-genes), [IGI](https://innovativegenomics.org/)
 
-<hr>
-<img src="https://marshalllab.github.io/MGDrivE/images/berkeley.jpg" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/UCI.png" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/UCD.jpg" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/UCSD.png" height="40px" align="middle" vspace="5" hspace="5">
