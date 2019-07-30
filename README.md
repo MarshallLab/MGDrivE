@@ -50,7 +50,7 @@ This package is part of our companion project: [MoNeT](https://chipdelmal.github
 
 <img src="https://marshalllab.github.io/MGDrivE/images/berkeley.jpg" height="40px" align="middle"><img src="https://marshalllab.github.io/MGDrivE/images/UCD.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCI.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCLA.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCR.jpg" height="40px" align="middle"> <br><br> <img src="https://marshalllab.github.io/MGDrivE/images/UCSD.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/JPL.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/IGI.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/DARPA.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/nvidia.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCIMI.png" height="40px" align="middle">
 
-<br><br>
+<br>
 
 _This model is being supported and developed as part of the following research projects: [UCI Malaria Initiative](https://news.uci.edu/7517/05/08/uci-establishes-malaria-initiative-to-fight-deadly-disease-in-africa/), [DARPA: Safe Genes](https://www.darpa.mil/program/safe-genes), [IGI](https://innovativegenomics.org/)_
 
