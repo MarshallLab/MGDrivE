@@ -4,13 +4,39 @@
 \alias{splitOutput}
 \title{Split Output by Patch}
 \usage{
-splitOutput(directory, multiCore = FALSE)
+splitOutput(readDir, writeDir = NULL, remFile = TRUE, numCores = 1,
+  verbose = TRUE)
 }
 \arguments{
-\item{directory}{Directory where output was written to; must not end in path seperator}
+\item{readDir}{Directory where output was written to}
 
-\item{multiCore}{Write output using multiple cores? Default is FALSE}
+\item{writeDir}{Directory to write output to. Default is readDir}
+
+\item{remFile}{Remove original output? Default is TRUE}
+
+\item{numCores}{How many cores to use when writing output. Default is 1}
+
+\item{verbose}{Chatty? Default is TRUE}
 }
 \description{
 Split output into multiple files by patches.
+}
+\examples{
+\dontrun{
+# This example assumes user has already run MGDrivE and generated output.
+#  If that's untree, see vignette for complete example
+fPath <- "path/to/data/containing/folder"
+oPath <- "path/to/write/output"
+
+# split data by patch, keep original files
+#  not return value
+#  numCores uses data.table::setDTthreads internally
+splitOutput(readDir = fPath, writeDir = oPath, remFile = FALSE, numCores = 1)
+
+# Alternatively, remove the original files and write new ones in their place
+fPath <- "path/to/data/containing/folder"
+
+splitOutput(readDir = fPath, writeDir = NULL, remFile = TRUE, numCores = 1)
+}
+
 }

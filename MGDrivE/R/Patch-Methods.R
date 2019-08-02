@@ -13,12 +13,14 @@
 
 #' Reset Patch to Initial Conditions
 #'
-#' Resets a patch to its initial configuration so that a new one does not have to be created and
-#'     allocated in the network (for Monte Carlo simulation).
+#' Resets a patch to its initial configuration so that a new one does not have
+#' to be created and allocated in the network (for Monte Carlo simulation).
 #'
-reset_Patch <- function(){
+#' @param verbose Chatty? Default is TRUE
+#'
+reset_Patch <- function(verbose = TRUE){
 
-  cat("reset patch ",private$patchID,"\n",sep="")
+  if(verbose){cat("reset patch ",private$patchID,"\n",sep="")}
 
   # reset initial population size
   private$EGG[[1]] = private$EGGt0

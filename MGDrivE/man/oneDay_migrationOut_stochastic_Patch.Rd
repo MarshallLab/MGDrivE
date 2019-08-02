@@ -9,6 +9,6 @@ oneDay_migrationOut_stochastic_Patch()
 \description{
 Stochastic model of migration of \code{AF1new} females from this patch, fills up the \code{femaleMigration} array.
 Migration is modeled as a Dirichlet-Multinomial process parameterized by \code{moveVar} multiplied by the row corresponding to this
-patch from the stochastic matrix. A Dirichlet distributed random variate is sampled from \code{\link[MCMCpack]{rdirichlet}} according to that
+patch from the stochastic matrix. A Dirichlet distributed random variate is sampled from \code{rDirichlet} according to that
 parameter vector and then movement is sampled from \code{\link[stats]{rmultinom}}.
 }

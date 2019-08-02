@@ -10,6 +10,12 @@
 #   Héctor Sanchez, Jared Bennett, Sean Wu, John M. Marshall
 #   July 2017
 #   jared_bennett@berkeley.edu
+#   December 2018
+#    Update to reflect cutting, homing, resistance generation rates
+#    Did not add male/female specific stuff
+#    If any of that is needed, used the CRISPR2RA cube
+#   Jan 2019
+#    Did not actually update this.
 #
 ###############################################################################
 
@@ -19,8 +25,8 @@
 #' that creates 1 type of resistance allele. It assumes no sex-specific inheritance patterns and the
 #' construct is on an autosome.
 #'
-#' @param e Homing rate
-#' @param p Resistance allele generation rate
+#' @param c Cutting rate
+#' @param ch Successful homing rate rate
 #' @param eta Genotype-specific mating fitness
 #' @param phi Genotype-specific sex ratio at emergence
 #' @param omega Genotype-specific multiplicative modifier of adult mortality
@@ -32,58 +38,63 @@
 #' wild-type allele, mating fitness, sex ratio, adult mortality modifier, female pupatory success,
 #' male pupatory success, fertility modifier, release genotype)
 #' @export
-Cube_Homing1RA <- function(e = 1.0, p = 0, eta = NULL, phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
+cubeHoming1RA <- function(c = 1.0, ch = 0, eta = NULL, phi = NULL, omega = NULL,
+                           xiF = NULL, xiM = NULL, s = NULL){
 
   ## safety checks in case someone is dumb
-  if(any(c(e,p)>1) || any(c(e,p)<0) || e+p > 1){
+  if(any(c(c,ch)>1) || any(c(c,ch)<0) ){
     stop("e and p are rates.
          0 <= e <= 1
-         0 <= p <= 1
-         e +  p <= 1")
+         0 <= p <= 1")
   }
 
   ## define matrices
   ## Matrix Dimensions Key: [femaleGenotype,maleGenotype,offspringGenotype]
-  gtype <- c("HH", "Hh", "HR", "hh", "hR", "RR")
+  gtype <- c("HH", "HW", "HR", "WW", "WR", "RR")
   size <- length(gtype) #because I use it several times
   tMatrix <- array(data=0, dim=c(size, size, size), dimnames=list(gtype, gtype, gtype)) #transition matrix
 
   ## fill tMatrix with probabilities
-                         #("HH", "Hh", "HR", "hh", "hR", "RR")
-  tMatrix["HH","HH",] <- c( 1, 0, 0, 0, 0, 0)
+  #("HH", "HW", "HR", "WW", "WR", "RR")
+  tMatrix["HH","HH","HH"] <-1
 
-  tMatrix["Hh","HH",] <- c( (1+e)/2,(1-e-p)/2, 0, 0, p/2, 0)
-  tMatrix["Hh","Hh",] <- c( ((1+e)^2)/4, ((1+e)*(1-e-p))/2, ((1+e)*p)/2, ((1-e-p)^2)/4, (1-e-p)*p/2, (p^2)/4)
+  tMatrix["HW","HH",c("HH","HW","HR")] <- c( 1+c*ch, 1-c, c*(1-ch))/2
+  tMatrix["HW","HW",] <- c( (1+c*ch)^2, 2*(1+c*ch)*(1-c), 2*(1+c*ch)*(c*(1-ch)),
+                            (1-c)^2, 2*(1-c)*(c*(1-ch)), (c*(1-ch))^2)/4
 
-  tMatrix["HR","HH",] <- c( 1/2, 0, 1/2, 0, 0, 0)
-  tMatrix["HR","Hh",] <- c( (1+e)/4, (1-e-p)/4, (1+e+p)/4, 0, (1-e-p)/4, p/4)
-  tMatrix["HR","HR",] <- c( 1/4, 0, 1/2, 0, 0, 1/4)
+  tMatrix["HR","HH",c("HH","HR")] <- c( 1, 1)/2
+  tMatrix["HR","HW",] <- c( 1+c*ch, 1-c, 1+c*ch + c*(1-ch), 0, 1-c, c*(1-ch))/4
+  tMatrix["HR","HR",c("HH","HR","RR")] <- c( 1/2, 1, 1/2)/2
 
-  tMatrix["hh","HH",] <- c( 0, 1, 0, 0, 0, 0)
-  tMatrix["hh","Hh",] <- c( 0, (1+e)/2, p/2, (1-e-p)/2, 0, 0 )
-  tMatrix["hh","HR",] <- c( 0, 1/2, 0, 0, 1/2, 0)
-  tMatrix["hh","hh",] <- c( 0, 0, 0, 1, 0, 0)
+  tMatrix["WW","HH","HW"] <- 1
+  tMatrix["WW","HW",c("HW","WW","WR")] <- c( 1+c*ch, 1-c, c*(1-ch))/2
+  tMatrix["WW","HR",c("HW","WR")] <- c( 1, 1)/2
+  tMatrix["WW","WW","WW"] <- 1
 
-  tMatrix["hR","HH",] <- c( 0, 1/2, 1/2, 0, 0, 0)
-  tMatrix["hR","Hh",] <- c( 0, (1+e)/4, (1+e)/4, (1-e-p)/4, (1-e)/4, p/4)
-  tMatrix["hR","HR",] <- c( 0, 1/4, 1/4, 0, 1/4, 1/4)
-  tMatrix["hR","hh",] <- c( 0, 0, 0, 1/2, 1/2, 0)
-  tMatrix["hR","hR",] <- c( 0, 0, 0, 1/4, 1/2, 1/4)
+  tMatrix["WR","HH",c("HW","HR")] <- c( 1, 1)/2
+  tMatrix["WR","HW",] <- c( 0, 1+c*ch, 1+c*ch, 1-c, 1-c+c*(1-ch), c*(1-ch))/4
+  tMatrix["WR","HR",c("HW","HR","WR","RR")] <- c( 1, 1, 1, 1)/4
+  tMatrix["WR","WW",c("WW","WR")] <- c( 1, 1)/2
+  tMatrix["WR","WR",c("WW","WR","RR")] <- c( 1/2, 1, 1/2)/2
 
-  tMatrix["RR","HH",] <- c( 0, 0, 1, 0, 0, 0)
-  tMatrix["RR","Hh",] <- c( 0, 0, (1+e)/2, 0, (1-e-p)/2, p/2)
-  tMatrix["RR","HR",] <- c( 0, 0, 1/2, 0, 0, 1/2)
-  tMatrix["RR","hh",] <- c( 0, 0, 0, 0, 1, 0)
-  tMatrix["RR","hR",] <- c( 0, 0, 0, 0, 1/2, 1/2)
-  tMatrix["RR","RR",] <- c( 0, 0, 0, 0, 0, 1)
+  tMatrix["RR","HH","HR"] <- 1
+  tMatrix["RR","HW",c("HR","WR","RR")] <- c( 1+c*ch, 1-c, c*(1-ch))/2
+  tMatrix["RR","HR",c("HR","RR")] <- c(1, 1)/2
+  tMatrix["RR","WW","WR"] <- 1
+  tMatrix["RR","WR",c("WR","RR")] <- c(1, 1)/2
+  tMatrix["RR","RR","RR"] <- 1
 
   ## set the other half of the matrix
-  SymCubeC(lowerMat = tMatrix)
+  # Boolean matrix for subsetting, used several times
+  boolMat <- upper.tri(x = tMatrix[ , ,1], diag = FALSE)
+  # loop over depth, set upper triangle
+  for(z in 1:size){tMatrix[ , ,z][boolMat] <- t(tMatrix[ , ,z])[boolMat]}
+
   tMatrix[tMatrix < .Machine$double.eps] <- 0 #protection from underflow errors
 
 
   ## initialize viability mask. No mother-specific death, so use basic mask
-  viabilityMask <- matrix(data = 1, nrow = size, ncol = size, dimnames = list(gtype, gtype))
+  viabilityMask <- array(data = 1L, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## genotype-specific modifiers
   modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)
@@ -94,7 +105,7 @@ Cube_Homing1RA <- function(e = 1.0, p = 0, eta = NULL, phi = NULL, omega = NULL,
     tau = viabilityMask,
     genotypesID = gtype,
     genotypesN = size,
-    wildType = "hh",
+    wildType = "WW",
     eta = modifiers$eta,
     phi = modifiers$phi,
     omega = modifiers$omega,

@@ -4,7 +4,10 @@
 \alias{reset_Network}
 \title{Reset Network}
 \usage{
-reset_Network()
+reset_Network(verbose = TRUE)
+}
+\arguments{
+\item{verbose}{Chatty? Default is TRUE}
 }
 \description{
 Reset a \code{\link{Network}} between runs, useful for Monte Carlo simulation. This calls \code{\link{reset_Patch}} on each patch

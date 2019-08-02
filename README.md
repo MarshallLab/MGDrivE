@@ -1,4 +1,4 @@
-# Mosquito Gene Drive Explorer
+# [Mosquito Gene Drive Explorer](https://marshalllab.github.io/MGDrivE/)
 
 
 **MGDrivE** is a model designed to be a reliable testbed where various gene drive interventions for mosquito-borne diseases control. It is being developed to accommodate the use of various mosquito-specific gene drive systems within a population dynamics framework that allows migration of individuals between patches in landscape.
@@ -9,61 +9,48 @@ For more information take a look at our <a href="https://marshalllab.github.io/M
 [![Demo](https://marshalllab.github.io/MGDrivE/images/crispr.jpg)](https://www.youtube.com/watch?time_continue=3&v=sZXuUtToszw)
 _Click the image to watch a video description._
 
-<hr>
 
+This software is freely available under the [GPL3 License](https://www.gnu.org/licenses/gpl-3.0.en.html).
+
+<hr>
 
 ## Installation Instructions
 
-**MGDrivE** depends upon the following third-party packages: [RCPP](https://cran.r-project.org/web/packages/Rcpp/index.html), [RCPPArmadillo](https://cran.r-project.org/web/packages/RcppArmadillo/index.html), [data.table](https://cran.r-project.org/web/packages/data.table/index.html), [R6](https://cran.r-project.org/web/packages/R6/index.html), [Rdpack](https://cran.r-project.org/web/packages/Rdpack/index.html), [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html); which can be installed with the following command (in the _R_ console):
+**MGDrivE** depends upon the following third-party packages: [RCPP](https://cran.r-project.org/web/packages/Rcpp/index.html), [data.table](https://cran.r-project.org/web/packages/data.table/index.html), [R6](https://cran.r-project.org/web/packages/R6/index.html), and [Rdpack](https://cran.r-project.org/web/packages/Rdpack/index.html). The documentation and vignettes depend on [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html), [knitr](https://cran.r-project.org/web/packages/knitr/index.html), and [rmarkdown](https://cran.r-project.org/web/packages/rmarkdown/index.html); which can be installed with the following command (in the _R_ console):
 
 ```R
-install.packages(c("Rcpp","RcppArmadillo","data.table","R6","Rdpack","roxygen2"))
+install.packages(c("Rcpp","data.table","R6","Rdpack","roxygen2","knitr","rmarkdown"))
 ```
 
-Additionally **Windows** users **need** to install [RTools](https://cran.r-project.org/bin/windows/Rtools/).
-
-### A) Github
-
-To install the package directly from this repository make sure you have [devtools](https://cran.r-project.org/web/packages/devtools/index.html) installed:
+Once these packages are installed, the package can be installed with:
 
 ```R
-install.packages("devtools")
+install.packages("MGDrivE")
 ```
 
-Having installed [devtools](https://cran.r-project.org/web/packages/devtools/index.html), run the following commands in the _R_ terminal:
-
-```R
-devtools::install_github(repo="MarshallLab/MGDrivE",subdir="MGDrivE")
-```
-
-And, finally, run the following command to test if the package installed correctly:
+and loaded:
 
 ```R
 library(MGDrivE)
 ```
 
-### B) Download
-
-Alternatively, __MGDrivE__ can be installed by downloading the source code and following these instructions:
-
-1. Download and unzip the current _tar_ or _zip_ from our repository.
-2. Open the file _./MGDrivE/MGDrivE.Rproj_ on [RStudio](https://www.rstudio.com/).
-3. Click on the _Build>Document_ toolbar.
-4. Click on the _Build>Install and Restart_ toolbar.
+Please take a look at our [examples folder](https://github.com/MarshallLab/MGDrivE/tree/master/Examples/SoftwarePaper) for demos.
 
 <hr>
 
-## License
+##  [MoNeT_MGDrivE](https://pypi.org/project/MoNeT-MGDrivE/)
 
-This software is freely available under the [GPL3 License](https://www.gnu.org/licenses/gpl-3.0.en.html).
+To facilitate the data analysis of the results produced by [MGDrivE](https://marshalllab.github.io/MGDrivE/), we provide a python package [MoNeT_MGDrivE](https://pypi.org/project/MoNeT-MGDrivE/) installable through pip.
 
+<img src="https://marshalllab.github.io/MGDrivE/images/Homing_01Cb.png" align="middle">
 
-## Projects
-
-This model is being supported and developed as part of the following research projects: [UCI Malaria Initiative](https://news.uci.edu/7517/05/08/uci-establishes-malaria-initiative-to-fight-deadly-disease-in-africa/), [DARPA: Safe Genes](https://www.darpa.mil/program/safe-genes), [IGI](https://innovativegenomics.org/)
+This package is part of our companion project: [MoNeT](https://chipdelmal.github.io/MoNeT/), so have a look at the project's [website](https://chipdelmal.github.io/MoNeT/) for information on some of the work we are doing!
 
 <hr>
 
-<img src="https://marshalllab.github.io/MGDrivE/images/berkeley.jpg" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/UCI.png" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/UCD.jpg" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/UCSD.png" height="40px" align="middle" vspace="5" hspace="5">
+<img src="https://marshalllab.github.io/MGDrivE/images/berkeley.jpg" height="40px" align="middle"><img src="https://marshalllab.github.io/MGDrivE/images/UCD.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCI.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCLA.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCR.jpg" height="40px" align="middle"> <br><br> <img src="https://marshalllab.github.io/MGDrivE/images/UCSD.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/JPL.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/IGI.png" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/DARPA.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/nvidia.jpg" height="40px" align="middle"> <img src="https://marshalllab.github.io/MGDrivE/images/UCIMI.png" height="40px" align="middle">
 
-<img src="https://marshalllab.github.io/MGDrivE/images/UCLA.png" height="40px" align="middle" vspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/JPL.png" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/IGI.png" height="40px" align="middle" vspace="5" hspace="5"><img src="https://marshalllab.github.io/MGDrivE/images/DARPA.jpg" height="40px" align="middle" vspace="5" hspace="5">
+<br>
+
+_This model is being supported and developed as part of the following research projects: [UCI Malaria Initiative](https://news.uci.edu/7517/05/08/uci-establishes-malaria-initiative-to-fight-deadly-disease-in-africa/), [DARPA: Safe Genes](https://www.darpa.mil/program/safe-genes), [IGI](https://innovativegenomics.org/)_
+

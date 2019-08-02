@@ -5,7 +5,7 @@
 #    / /  / / /_/ / /_/ / /  / /| |/ / /___
 #   /_/  /_/\____/_____/_/  /_/ |___/_____/
 #
-#   MGDrivE Setup
+#   setupMGDrivE
 #   Marshall Lab
 #   November 2017
 #
@@ -13,16 +13,25 @@
 
 #' Setup MGDrivE
 #'
-#' Initialize methods in \code{\link{Patch}} to run deterministic or stochastic simulations. This function must be called prior to any objects being created.
+#' Initialize methods in \code{\link{Patch}} to run deterministic or stochastic simulations. This sets internal function definitions so that \code{\link{oneRun_Network}}
+#' and \code{\link{multRun_Network}} run either deterministic or stochastic functions.
 #'
-#' @param stochasticityON enable/disable stochastic simulation.
+#' @param stochasticityON Enable/disable stochastic simulation. Default is FALSE, implying deterministic simulation
+#' @param verbose Chatty? Default is TRUE
+#'
+#' @examples
+#' # run deterministic MGDrivE
+#' setupMGDrivE(stochasticityON = FALSE)
+#'
+#' # run stochastic MGDrivE
+#' setupMGDrivE(stochasticityON = TRUE)
+#'
 #'
 #' @export
-MGDrivE.Setup <- function(
-  stochasticityON=FALSE
-){
+setupMGDrivE <- function(stochasticityON = FALSE, verbose = TRUE){
+
   overwrite=TRUE
-  cat("initializing MGDrivE\n",sep="")
+  if(verbose){cat("initializing MGDrivE\n",sep="")}
 
   stoBools=turnStochasticityOnOrOff(stochasticityON)
   stochasticMove=stoBools[["stochasticMove"]]

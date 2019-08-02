@@ -1,7 +1,6 @@
 #' @import Rcpp
 #' @importFrom Rdpack reprompt
 #' @importFrom R6 R6Class
-#' @import RcppArmadillo
 #' @useDynLib MGDrivE
 NULL
 
@@ -22,8 +21,6 @@ NULL
 #' MGDrivE is based on the idea that we can decouple the genotype inheritance process from the population dynamics equations.  This allows the system to be treated and developed in three semi-indpendent modules that come together to form the system.
 #' The way this is done will be described later in this document but a reference diagram is shown here.
 #'
-#' \if{html}{\figure{diagram.png}{options: width=300px}}
-#' \if{latex}{\figure{diagram.png}{options: width=300px}}
 #'
 #' @section Previous Work:
 #'

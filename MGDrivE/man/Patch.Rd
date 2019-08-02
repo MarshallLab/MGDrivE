@@ -24,7 +24,8 @@ A Patch is a single well-mixed population that is the smallest unit of simulatio
 \item ADMt0: initial adult male population, \eqn{Ad_{eq}}
 \item AF1t0: initial adult female population, \eqn{Ad_{eq}}
 \item maleReleases: integer ID of this patch
-\item femaleReleases: female release schedule for this patch, see \code{\link{Release_basicRepeatedReleases}}
+\item femaleReleases: female release schedule for this patch, see \code{\link{basicRepeatedReleases}}
+\item larvaeReleases: male release schedule for this patch, see \code{\link{basicRepeatedReleases}}
 }
 }
 
@@ -40,8 +41,8 @@ A Patch is a single well-mixed population that is the smallest unit of simulatio
 \item get_EGG: see \code{\link{get_EGG_Patch}}
 \item get_LAR: see \code{\link{get_LAR_Patch}}
 \item get_PUP: see \code{\link{get_PUP_Patch}}
-\item get_ADM: see \code{\link{get_ADM_Patch}}
-\item get_AF1: see \code{\link{get_AF1_Patch}}
+\item get_ADM: see \code{\link{get_M_Patch}}
+\item get_AF1: see \code{\link{get_F_Patch}}
 \item get_EGGdly: see \code{\link{get_EGGdly_Patch}}
 \item get_LARdly: see \code{\link{get_LARdly_Patch}}
 \item get_PUPdly: see \code{\link{get_PUPdly_Patch}}

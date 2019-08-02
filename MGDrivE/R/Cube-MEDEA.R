@@ -37,7 +37,7 @@
 #' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
 #' and all genotype-specific parameters.
 #' @export
-Cube_MEDEA <- function(rM = 0, rW = 0, Teff = 1.0, eta = NULL, phi = NULL,
+cubeMEDEA <- function(rM = 0, rW = 0, Teff = 1.0, eta = NULL, phi = NULL,
                       omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
 
   #rM=0; rW=0;
@@ -85,15 +85,21 @@ Cube_MEDEA <- function(rM = 0, rW = 0, Teff = 1.0, eta = NULL, phi = NULL,
   tMatrix['RR','RR', 'RR'] <- 1
 
   ## set the other half of the matrix
-  SymCubeC(lowerMat = tMatrix)
+  # Boolean matrix for subsetting, used several times
+  boolMat <- upper.tri(x = tMatrix[ , ,1], diag = FALSE)
+  # loop over depth, set upper triangle
+  for(z in 1:size){tMatrix[ , ,z][boolMat] <- t(tMatrix[ , ,z])[boolMat]}
+
   tMatrix[tMatrix < .Machine$double.eps] <- 0 #protection from underflow errors
 
   ## initialize viability mask.
-  viabilityMask <- matrix(data = 1, nrow = size, ncol = size, dimnames = list(gtype, gtype))
+  viabilityMask <- array(data = 1, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## fill mother/offspring specific death, then muliply by efficacy of toxin and antidote
-  viabilityMask[c('WM', 'MR'), ] <- matrix( c( 1-Teff, 1, 1-Teff,1, 1, 1), nrow = 2, ncol = size, byrow = TRUE )
-  viabilityMask['MM', ] <- c( 1-2*Teff+Teff^2, 1, 1-2*Teff+Teff^2, 1, 1, 1)
+  for(slice in 1:size){
+    viabilityMask[c('WM', 'MR'),slice, ] <- matrix( c( 1-Teff, 1, 1-Teff,1, 1, 1), nrow = 2, ncol = size, byrow = TRUE )
+    viabilityMask['MM',slice, ] <- c( 1-2*Teff+Teff^2, 1, 1-2*Teff+Teff^2, 1, 1, 1)
+  }
 
 
   ## genotype-specific modifiers

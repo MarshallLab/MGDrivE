@@ -31,7 +31,7 @@
 #' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
 #' and all genotype-specific parameters.
 #' @export
-Cube_Mendelian <- function(gtype = c("AA", "Aa", "aa"), eta = NULL, phi = NULL,
+cubeMendelian <- function(gtype = c("AA", "Aa", "aa"), eta = NULL, phi = NULL,
                                 omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
 
 
@@ -45,20 +45,21 @@ Cube_Mendelian <- function(gtype = c("AA", "Aa", "aa"), eta = NULL, phi = NULL,
   ## Matrix Dimensions Key: [femaleGenotype,maleGenotype,offspringGenotype]
   size <- length(gtype) #because I use it several times
   tMatrix <- array(data=0, dim=c(size, size, size), dimnames=list(gtype, gtype, gtype)) #transition matrix
-  testVec <- setNames(numeric(size), gtype)  #need later
+  testVec <- setNames(object = numeric(size), nm = gtype)  #need later
 
   ## fill tMatrix with probabilities
   for (i in gtype)  # loop over female genotypes
   {
     for (j in gtype)  # loop over male genotypes
     {
-      male <- unlist( strsplit(j, split='') ) # male genotype for this cross
-      female <- unlist( strsplit(i, split='') ) # female genotype for this cross
-      offspring <- as.vector( outer(male, female, paste, sep='') )  # offspring genotypes for this cross
+
+      male <- strsplit(j, split='')[[1]] # male genotype for this cross
+      female <- strsplit(i, split='')[[1]] # female genotype for this cross
+      offspring <- as.vector( outer(male, female, paste0, sep='') )  # offspring genotypes for this cross
 
       # reorder all offspring alleles to match allele order in gtype
       offspring <- vapply( strsplit(offspring, split=''),
-                           function(x) {paste0(sort(x, decreasing=TRUE), collapse='')},
+                           function(x) {paste0(sort(x, method = 'radix'), collapse='')},
                            FUN.VALUE = character(1))
 
       # count genotypes of offspring, order according to gtype
@@ -67,9 +68,9 @@ Cube_Mendelian <- function(gtype = c("AA", "Aa", "aa"), eta = NULL, phi = NULL,
         testVec[k] <- testVec[k]+1
       }
 
-      testVec <- testVec/sum(testVec) # normalize offspring frequencies to 1
+      testVec[] <- testVec/sum(testVec) # normalize offspring frequencies to 1
 
-      tMatrix[i,j,] <- testVec  # store offspring frequences in transition matrix
+      tMatrix[i,j, ] <- testVec  # store offspring frequences in transition matrix
 
       testVec[] <- 0  # clear testVec
     }
@@ -77,10 +78,12 @@ Cube_Mendelian <- function(gtype = c("AA", "Aa", "aa"), eta = NULL, phi = NULL,
 
 
   ## initialize viability mask. No mother-specific death, so use basic mask
-  viabilityMask <- matrix(data = 1, nrow = size, ncol = size, dimnames = list(gtype, gtype))
+  viabilityMask <- array(data = 1L, dim = c(size,size,size),
+                         dimnames = list(gtype, gtype, gtype))
 
   ## genotype-specific modifiers
-  modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)
+  modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega,
+                            xiF = xiF, xiM = xiM, s = s)
 
   ## put everything into a labeled list to return
   return(list(
@@ -95,6 +98,6 @@ Cube_Mendelian <- function(gtype = c("AA", "Aa", "aa"), eta = NULL, phi = NULL,
     xiF = modifiers$xiF,
     xiM = modifiers$xiM,
     s = modifiers$s,
-    releaseType = tail(gtype, n = 1L)
+    releaseType = gtype[size]
   ))
 }

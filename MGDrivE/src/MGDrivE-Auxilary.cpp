@@ -1,29 +1,26 @@
-#include <RcppArmadillo.h>
+#include <Rcpp.h>
 using namespace Rcpp;
-using namespace arma;
-//[[Rcpp::depends(RcppArmadillo)]]
 
 /******************************************************************************
  * Auxilary functions to get rid of other library dependencies
  ******************************************************************************/
 
-//' Make a Symmetric Cube
-//'
-//' This function makes a lower-triangular cube symmetric over the z-axis.
-//' It was written to remove the dependency "Matrix".
-//' It is only used in building cubes.
-//'
-//' @param lowerMat A lower-triangular matrix of depth 1 or more
-//'
-//' @export
-// [[Rcpp::export]]
-void SymCubeC(arma::dcube& lowerMat){
-
-  for(size_t i=0; i<lowerMat.n_slices; i++){
-    lowerMat.slice(i) = symmatl(lowerMat.slice(i));
-  }
-
-}
+// //' Make a Symmetric Cube
+// //'
+// //' This function makes a lower-triangular cube symmetric over the z-axis.
+// //' It was written to remove the dependency "Matrix".
+// //' It is only used in building cubes.
+// //'
+// //' @param lowerMat A lower-triangular matrix of depth 1 or more
+// //'
+// // [[Rcpp::export]]
+// void symCube(arma::dcube& lowerMat){
+//
+//   for(int i=0; i<lowerMat.n_slices; i++){
+//     lowerMat.slice(i) = symmatl(lowerMat.slice(i));
+//   }
+//
+// }
 
 //' Shift a Vector
 //'
@@ -33,7 +30,6 @@ void SymCubeC(arma::dcube& lowerMat){
 //' @param popVector List of population vectors of length(Tegg+Tlarva+Tpupa)
 //' @param newPop Vector of length equal to the number of genotypes
 //'
-//' @export
 // [[Rcpp::export]]
 void shiftAndUpdatePopVector( ListOf<NumericVector>& popVector, const NumericVector newPop){
   //This  function shifts the list of population vectors one to the right, then
@@ -70,7 +66,6 @@ void shiftAndUpdatePopVector( ListOf<NumericVector>& popVector, const NumericVec
 //'
 //' @param migrationPoint Vector of weights for draws. Must be positive.
 //'
-//' @export
 // [[Rcpp::export]]
 NumericVector rDirichlet(const NumericVector& migrationPoint){
 
@@ -103,13 +98,6 @@ NumericVector rDirichlet(const NumericVector& migrationPoint){
 //'
 //' @return Numeric Matrix
 //'
-//' @examples
-//' Trials <- matrix(data = sample(x=1:100, size = 150, replace = TRUE), nrow=15, ncol=10)
-//' DrawSize <- c(.25, .5, .75)
-//'
-//' quantileC(Trials, Probs)
-//'
-//' @export
 // [[Rcpp::export]]
 NumericMatrix quantileC(IntegerMatrix& Trials, const NumericVector& Probs){
 

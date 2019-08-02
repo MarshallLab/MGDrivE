@@ -1,24 +1,33 @@
 Package: MGDrivE
 Type: Package
 Title: Mosquito Gene Drive Explorer
-Version: 1.0
+Version: 1.0.0
 Authors@R: c(
     person("Héctor Manuel", "Sánchez Castellanos", email = "sanchez.hmsc@berkeley.edu", role = c("aut","cre")),
     person("Jared", "Bennett", email = "jared_bennett@berkeley.edu ", role = "aut"),
     person("Sean", "Wu", email = "slwu89@berkeley.edu", role = "aut"),
     person("John M.", "Marshall", email = "john.marshall@berkeley.edu", role = "aut")
     )
-Description: MGDrivE is a model designed to be a reliable testbed where various gene drive interventions for mosquito-borne diseases control.
-  It is being developed to accommodate the use of various mosquito-specific gene drive systems within a population dynamics framework that allows migration of individuals between patches in landscape.
+Maintainer: Héctor Manuel Sánchez Castellanos <sanchez.hmsc@berkeley.edu>
+URL: https://marshalllab.github.io/MGDrivE/, https://www.marshalllab.com/
+BugReports: https://github.com/MarshallLab/MGDrivE/issues
+Description: Provides a model designed to be a reliable testbed where various gene 
+    drive interventions for mosquito-borne diseases control. It is being developed to 
+    accommodate the use of various mosquito-specific gene drive systems within a 
+    population dynamics framework that allows migration of individuals between patches 
+    in landscape. Previous work developing the population dynamics can be found in Deredec et al. 
+    (2001) <doi:10.1073/pnas.1110717108> and Hancock & Godfray (2007) <doi:10.1186/1475-2875-6-98>, 
+    and extensions to accommodate basic CRISPR homing dynamics in Marshall et al. (2017) 
+    <doi:10.1038/s41598-017-02744-7>.
 License: GPL-3
 Encoding: UTF-8
-Imports: R6, Rcpp, RcppArmadillo, Rdpack
+Imports: R6, Rcpp, Rdpack (>= 0.7), grDevices, graphics, stats, utils
 RdMacros: Rdpack
-LinkingTo: Rcpp, RcppArmadillo
+LinkingTo: Rcpp
 Depends: R (>= 2.10), data.table
 ByteCompile: true
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
-URL: https://marshalllab.github.io/MGDrivE/
-BugReports: https://github.com/MarshallLab/MGDrivE/issues
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr

@@ -2,10 +2,19 @@
 % Please edit documentation in R/Network-Class.R
 \name{get_tau_Network}
 \alias{get_tau_Network}
-\title{Get Viability Mash (tau)}
+\title{Get Female Viability Mask (tau)}
 \usage{
-get_tau_Network()
+get_tau_Network(fG = NULL, mG = NULL, oG = NULL)
+}
+\arguments{
+\item{fG}{Number for which female genotype to get}
+
+\item{mG}{Number for which male genotype to get}
+
+\item{oG}{Number for which offspring genotype to get
+
+Return matrix}
 }
 \description{
-Return matrix
+Get Female Viability Mask (tau)
 }
