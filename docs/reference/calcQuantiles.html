@@ -126,7 +126,7 @@ and enters them as a vector. Quantiles are calculated empirically. (order does n
     
     </div>
 
-    <pre class="usage"><span class='fu'>calcQuantiles</span>(<span class='no'>readDir</span>, <span class='no'>writeDirectory</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quantiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>calcQuantiles</span>(<span class='no'>readDir</span>, <span class='no'>writeDir</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quantiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>numCores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -137,7 +137,7 @@ and enters them as a vector. Quantiles are calculated empirically. (order does n
       <td><p>Directory to find repetition folders in</p></td>
     </tr>
     <tr>
-      <th>writeDirectory</th>
+      <th>writeDir</th>
       <td><p>Directory to write output</p></td>
     </tr>
     <tr>
@@ -160,12 +160,12 @@ and enters them as a vector. Quantiles are calculated empirically. (order does n
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Writes output to files in writeDirectory</p>
+    <p>Writes output to files in writeDir</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Given the readDirectory, this function assumes the follow file structure: <br /></p><ul>
-<li><p>readDirectory</p><ul>
+    <p>Given the readDir, this function assumes the follow file structure: <br /></p><ul>
+<li><p>readDir</p><ul>
 <li><p>repetition 1</p><ul>
 <li><p>patch 1</p></li>
 <li><p>patch 2</p></li>
@@ -197,11 +197,11 @@ M/F<em>Mean</em>(patchNum).csv and M/F<em>Quantile</em>(quantNum)_(patchNum).csv
 
 <span class='co'># here, only calculate mean, no quantiles</span>
 <span class='co'>#  no return value</span>
-<span class='fu'>calcQuantiles</span>(<span class='kw'>readDir</span> <span class='kw'>=</span> <span class='no'>fPath</span>, <span class='kw'>writeDirectory</span> <span class='kw'>=</span> <span class='no'>oPath</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+<span class='fu'>calcQuantiles</span>(<span class='kw'>readDir</span> <span class='kw'>=</span> <span class='no'>fPath</span>, <span class='kw'>writeDir</span> <span class='kw'>=</span> <span class='no'>oPath</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
               <span class='kw'>quantiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>numCores</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
 <span class='co'># here, calculate 2.5% and 97.5% quantiles</span>
-<span class='fu'>calcQuantiles</span>(<span class='kw'>readDir</span> <span class='kw'>=</span> <span class='no'>fPath</span>, <span class='kw'>writeDirectory</span> <span class='kw'>=</span> <span class='no'>oPath</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+<span class='fu'>calcQuantiles</span>(<span class='kw'>readDir</span> <span class='kw'>=</span> <span class='no'>fPath</span>, <span class='kw'>writeDir</span> <span class='kw'>=</span> <span class='no'>oPath</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
               <span class='kw'>quantiles</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.025</span>, <span class='fl'>0.975</span>), <span class='kw'>numCores</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>

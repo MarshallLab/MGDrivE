@@ -90,13 +90,13 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>Recent developments of CRISPR-Cas9 based homing endonuclease gene drive systems for the suppression or replacement of mosquito populations have generated much interest in their use for control of mosquito-borne diseases (such as dengue, malaria, chikungunya and Zika). This is because genetic control of pathogen transmission may complement or even substitute traditional vector-control interventions, which have had limited success in bringing the spread of these diseases to a halt.</p>
+<p>Recent developments of CRISPR-Cas9 based homing endonuclease gene drive systems for the suppression or replacement of mosquito populations have generated much interest in their use for control of mosquito-borne diseases (such as dengue, malaria, Chikungunya and Zika). This is because genetic control of pathogen transmission may complement or even substitute traditional vector-control interventions, which have had limited success in bringing the spread of these diseases to a halt.</p>
 <p>Despite excitement for the use of gene drives for mosquito control, current modeling efforts have analyzed only a handful of these new approaches (usually studying just one per framework). Moreover, these models usually consider well-mixed populations with no explicit spatial dynamics. To this end, we are developing <strong>MGDrivE</strong> (Mosquito Gene DRIVe Explorer), in cooperation with the ‘UCI Malaria Elimination Initiative’, as a flexible modeling framework to evaluate a variety of drive systems in spatial networks of mosquito populations. This framework provides a reliable testbed to evaluate and optimize the efficacy of gene drive mosquito releases. What separates <strong>MGDrivE</strong> from other models is the incorporation of mathematical and computational mechanisms to simulate a wide array of inheritance-based technologies within the same, coherent set of equations.</p>
 <p>We do this by treating the population dynamics, genetic inheritance operations, and migration between habitats as separate processes coupled together through the use of mathematical tensor operations. This way we can conveniently swap inheritance patterns whilst still making use of the same set of population dynamics equations. This is a crucial advantage of our system, as it allows other research groups to test their ideas without developing new models and without the need to spend time adapting other frameworks to suit their needs.</p>
 <div id="brief-description" class="section level2">
 <h2 class="hasAnchor">
 <a href="#brief-description" class="anchor"></a>Brief Description</h2>
-<p><strong>MGDrivE</strong> is based on the idea that we can decouple the genotype inheritance process from the population dynamics equations. This allows the system to be treated and developed in three semi-indpendent modules that come together to form the system.</p>
+<p><strong>MGDrivE</strong> is based on the idea that we can decouple the genotype inheritance process from the population dynamics equations. This allows the system to be treated and developed in three semi-independent modules that come together to form the system.</p>
 <div class="figure" style="text-align: center">
 <img src="diagram.png" alt="Fig. 1: **MGDrivE** Conceptual Model Framework" width="80%"><p class="caption">
 Fig. 1: <strong>MGDrivE</strong> Conceptual Model Framework
@@ -203,7 +203,7 @@ D(\theta_l,T_x) = \left\{
         \overline{Am_{[t-1]}} * (1-\mu_{ad})*\overline{\omega_{m}}\\
         + (1-\overline{\phi}) *  \overline{E^{'}}\\
         + \overline{\nu m_{[t-1]}}
-\]</span> in which the first term represents the number of males surviving from one day to the next; the second one, the fraction ofmales that survive to adulthood () and emerge as males (); the last one is used to add males into the population as part of gene-drive release campaigns.</p>
+\]</span> in which the first term represents the number of males surviving from one day to the next; the second one, the fraction of males that survive to adulthood () and emerge as males (); the last one is used to add males into the population as part of gene-drive release campaigns.</p>
 <p>Female adult populations are calculated in a similar way: <span class="math display">\[
   \overline{\overline{Af_{[t]}}}=
     \overline{\overline{Af_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_{f}}\\
@@ -251,7 +251,7 @@ D(\theta_l,T_x) = \left\{
 <div id="stochasticity" class="section level1">
 <h1 class="hasAnchor">
 <a href="#stochasticity" class="anchor"></a>Stochasticity</h1>
-<p><strong>MGDrivE</strong> allows all inheritance, migration, and population dynamics processes to be simulated stochastically; this accounts for the inherent probabilistic nature of the processes governing the interactions and lifecycles of organisms. In the next section, we will describe all the stochastic processes that can be activated in the program. It should be noted that all of these can be turned on and off independently from one another as required by the researcher.</p>
+<p><strong>MGDrivE</strong> allows all inheritance, migration, and population dynamics processes to be simulated stochastically; this accounts for the inherent probabilistic nature of the processes governing the interactions and life-cycles of organisms. In the next section, we will describe all the stochastic processes that can be activated in the program. It should be noted that all of these can be turned on and off independently from one another as required by the researcher.</p>
 <div id="mosquito-biology" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mosquito-biology" class="anchor"></a>Mosquito Biology</h3>
@@ -276,9 +276,9 @@ D(\theta_l,T_x) = \left\{
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
 <ul>
-<li>Deredec A, Godfray HCJ, Burt A (2011). “Requirements for effective malaria control with homing endonuclease genes.” <em>Proceedings of the National Academy of Sciences of the United States of America</em>, 108(43), E874–80. ISSN 1091-6490, doi: 10.1073/pnas.1110717108 , <a href="http://www.ncbi.nlm.nih.gov/pubmed/21976487%7B%%7D5Cnhttp://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=PMC3203790" class="uri">http://www.ncbi.nlm.nih.gov/pubmed/21976487{%}5Cnhttp://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=PMC3203790</a>.</li>
-<li>Hancock PA, Godfray HCJ (2007). “Application of the lumped age-class technique to studying the dynamics of malaria-mosquito-human interactions.” <em>Malaria Journal</em>, 6, 98. ISSN 1475-2875, doi: 10.1186/1475-2875-6-98 , <a href="http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=1971713%7B%5C&amp;%7Dtool=pmcentrez%7B%5C&amp;%7Drendertype=abstract" class="uri">http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=1971713{\&amp;}tool=pmcentrez{\&amp;}rendertype=abstract</a>.</li>
-<li>Marshall J, Buchman A, C. HMS, Akbari OS (2017). “Overcoming evolved resistance to population-suppressing homing-based gene drives.” <em>Nature Scientific Reports</em>, 1–46. ISSN 2045-2322, doi: <a href="https://doi.org/10.1101/088427" class="uri">https://doi.org/10.1101/088427</a>
+<li>Deredec A, Godfray HCJ, Burt A (2011). “Requirements for effective malaria control with homing endonuclease genes.” <em>Proceedings of the National Academy of Sciences of the United States of America</em>, 108(43), E874–80. ISSN 1091-6490, doi: 10.1073/pnas.1110717108 , <a href="https://www.pnas.org/content/108/43/E874" class="uri">https://www.pnas.org/content/108/43/E874</a>.</li>
+<li>Hancock PA, Godfray HCJ (2007). “Application of the lumped age-class technique to studying the dynamics of malaria-mosquito-human interactions.” <em>Malaria Journal</em>, 6, 98. ISSN 1475-2875, doi: 10.1186/1475-2875-6-98 , <a href="https://malariajournal.biomedcentral.com/articles/10.1186/1475-2875-6-98" class="uri">https://malariajournal.biomedcentral.com/articles/10.1186/1475-2875-6-98</a>.</li>
+<li>Marshall J, Buchman A, C. HMS, Akbari OS (2017). “Overcoming evolved resistance to population-suppressing homing-based gene drives.” <em>Nature Scientific Reports</em>, 1–46. ISSN 2045-2322, doi: <a href="https://doi.org/10.1101/088427" class="uri">https://doi.org/10.1101/088427</a> , <a href="https://www.nature.com/articles/s41598-017-02744-7" class="uri">https://www.nature.com/articles/s41598-017-02744-7</a>
 </li>
 </ul>
 </div>

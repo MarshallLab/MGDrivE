@@ -163,9 +163,17 @@ is FALSE, as this is easier to read on a plot.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'># Requires the user to have run MGDrivE with repetitions and keep them in the
-#  directory organization shown above.
-# See vignette for complete example
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># Requires the user to have run MGDrivE, deterministic or stochastic, analyzed</span>
+<span class='co'>#  the data, and stored it in the directory shown below.</span>
+<span class='co'># See vignette for complete example</span>
+
+<span class='co'># Folder where single run is stored</span>
+<span class='no'>fPath</span> <span class='kw'>&lt;-</span> <span class='st'>"path/to/data/containing/folder"</span>
+
+<span class='co'># plot output to see effect</span>
+<span class='fu'>plotMGDrivESingle</span>(<span class='kw'>readDir</span><span class='kw'>=</span><span class='no'>fPath</span>,<span class='kw'>totalPop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,<span class='kw'>lwd</span><span class='kw'>=</span><span class='fl'>3.5</span>,<span class='kw'>alpha</span><span class='kw'>=</span><span class='fl'>1</span>)
+<span class='co'># }</span><div class='input'>
 
 </div></pre>
   </div>

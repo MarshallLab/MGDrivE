@@ -259,8 +259,7 @@ pre {
 <a class="sourceLine" id="cb2-2" title="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb2-4" title="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt; Loading required package: data.table</span></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span></a></code></pre></div>
 <p>Step one, load <em>MGDrivE</em>.</p>
 </div>
 <div id="setup-folder-directory" class="section level4">
@@ -297,7 +296,7 @@ pre {
 <p>The biological parameters were chosen for <em>Aedes aegypti</em> in our original simulations. These parameters represent:</p>
 <ul>
 <li>
-<code>betaK</code>: Daily number of eggs laid per female mosquitoe</li>
+<code>betaK</code>: Daily number of eggs laid per female mosquito</li>
 <li>
 <code>tEgg</code>: Number of days spent in the egg stage</li>
 <li>
@@ -350,7 +349,7 @@ pre {
 <a class="sourceLine" id="cb6-35" title="35"><span class="co">#&gt; [3,] 0.00 0.05 0.90 0.05 0.00</span></a>
 <a class="sourceLine" id="cb6-36" title="36"><span class="co">#&gt; [4,] 0.00 0.00 0.05 0.90 0.05</span></a>
 <a class="sourceLine" id="cb6-37" title="37"><span class="co">#&gt; [5,] 0.00 0.00 0.00 0.05 0.95</span></a></code></pre></div>
-<p>Our landscape will be a line, with each population only connected to the populations on either side. We set a 5% per day migration rate. There are several examples in the other <a href="../doc/mgdrive_examples.html">vignette</a> for setting up different landscapes.</p>
+<p>Our landscape will be a line, with each population only connected to the populations on either side. We set a 5% per day migration rate. There are several examples in the other <a href="mgdrive_examples.html">vignette</a> for setting up different landscapes.</p>
 <p>Finally, there is the possibility of large-group movement facilitated by humans (using <em>Aedes</em> for example, this could be boats or water containers in truck beds, etc.). <em>MGDrivE</em> handles this through <code><a href="../reference/basicBatchMigration.html">basicBatchMigration()</a></code>. For simplicity, we are ignoring this possibility (by setting the probability of it to zero).</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># batch migration is disabled by setting the probability to 0</span></a>
 <a class="sourceLine" id="cb7-2" title="2">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>, <span class="dt">numPatches=</span>sitesNumber)</a></code></pre></div>
@@ -398,7 +397,7 @@ pre {
 <div id="releases" class="section level4">
 <h4 class="hasAnchor">
 <a href="#releases" class="anchor"></a>Releases</h4>
-<p><em>MGDrivE</em> uses a list specifying releases of males or females to paramtrize the release schedule. The initial list is <code>NULL</code>, and only if there are releases to be performed is anything added.</p>
+<p><em>MGDrivE</em> uses a list specifying releases of males or females to parameterize the release schedule. The initial list is <code>NULL</code>, and only if there are releases to be performed is anything added.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb9-2" title="2"><span class="co"># Setup releases and batch migration</span></a>
 <a class="sourceLine" id="cb9-3" title="3"><span class="co">####################</span></a>
@@ -455,7 +454,7 @@ pre {
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># set MGDrivE to run stochastic</span></a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="kw"><a href="../reference/setupMGDrivE.html">setupMGDrivE</a></span>(<span class="dt">stochasticityON =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb13-3" title="3"><span class="co">#&gt; initializing MGDrivE</span></a></code></pre></div>
-<p>Finaly, we setup the complete network to run our simulation.</p>
+<p>Finally, we setup the complete network to run our simulation.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># build network prior to run</span></a>
 <a class="sourceLine" id="cb14-2" title="2">MGDrivESim &lt;-<span class="st"> </span>Network<span class="op">$</span><span class="kw">new</span>(<span class="dt">params=</span>netPar,</a>
 <a class="sourceLine" id="cb14-3" title="3">                         <span class="dt">driveCube=</span>cube,</a>
@@ -503,7 +502,7 @@ pre {
 <a class="sourceLine" id="cb17-9" title="9"><span class="co"># look at male file header</span></a>
 <a class="sourceLine" id="cb17-10" title="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(mMat)</a>
 <a class="sourceLine" id="cb17-11" title="11"><span class="co">#&gt; [1] "Time"  "Patch" "AA"    "Aa"    "aa"</span></a></code></pre></div>
-<p>The header for male files (<code>M_RunXXX.csv</code>) is shown above. They always containst the time, patch, and every possible genotype in the simulation. For the Mendelian inheritance here, there are three possible genotypes, AA, Aa, aa. The Time and Patch columns will always be the same, but the number of genotypes changes depending on the inheritance pattern used. For example, CRISPR-based homing inheritance has 10, so there would be 12 columns in the male files. Below, we see how each patch is designated in the file.</p>
+<p>The header for male files (<code>M_RunXXX.csv</code>) is shown above. They always contains the time, patch, and every possible genotype in the simulation. For the Mendelian inheritance here, there are three possible genotypes, AA, Aa, aa. The Time and Patch columns will always be the same, but the number of genotypes changes depending on the inheritance pattern used. For example, CRISPR-based homing inheritance has 10, so there would be 12 columns in the male files. Below, we see how each patch is designated in the file.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="dt">x =</span> mMat, <span class="dt">n =</span> <span class="dv">2</span><span class="op">*</span>sitesNumber)</a>
 <a class="sourceLine" id="cb18-2" title="2"><span class="co">#&gt;       Time Patch  AA Aa aa</span></a>
 <a class="sourceLine" id="cb18-3" title="3"><span class="co">#&gt;  [1,]    1     1 250  0  0</span></a>
@@ -636,7 +635,7 @@ The Time/Patch pattern is the same as in the male files.</p>
 <a class="sourceLine" id="cb28-18" title="18"><span class="co">#&gt; [3,]   25 268  0 95</span></a>
 <a class="sourceLine" id="cb28-19" title="19"><span class="co">#&gt; [4,]   26 270  0 85</span></a>
 <a class="sourceLine" id="cb28-20" title="20"><span class="co">#&gt; [5,]   27 260  0 69</span></a></code></pre></div>
-<p>Looking closely, we see the “AAAA” column combined wiht the “AAaa” column in the first output sum to the value in the “AA” column in the second.<br>
+<p>Looking closely, we see the “AAAA” column combined with the “AAaa” column in the first output sum to the value in the “AA” column in the second.<br>
 The same goes for the “aaAA” and “aaaa” columns in the first and the “aa” column in the second.</p>
 </div>
 <div id="plotting" class="section level4">

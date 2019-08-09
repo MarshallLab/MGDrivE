@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate Hurdle Exponential Stochastic Matrix — calcHurdleExpKernel • MGDrivE</title>
+<title>Calculate Zero-inflated Exponential Stochastic Matrix — calcHurdleExpKernel • MGDrivE</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,14 @@
 
 
 
-<meta property="og:title" content="Calculate Hurdle Exponential Stochastic Matrix — calcHurdleExpKernel" />
+<meta property="og:title" content="Calculate Zero-inflated Exponential Stochastic Matrix — calcHurdleExpKernel" />
 
 <meta property="og:description" content="Given a distance matrix from calcVinEll, calculate a
-stochastic matrix where one step movement probabilities follow an zero-truncated
-exponential density with a point mass at zero." />
+stochastic matrix where one step movement probabilities follow an zero-inflated
+exponential density with a point mass at zero. The point mass at zero represents the first stage of
+a two-stage process, where mosquitoes decide to stay at their current node or leave anywhere.
+This parameter can be calculated from lifetime probabilities to stay at the current node with the
+helper function calcZeroInflation." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -113,7 +116,7 @@ exponential density with a point mass at zero." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate Hurdle Exponential Stochastic Matrix</h1>
+    <h1>Calculate Zero-inflated Exponential Stochastic Matrix</h1>
     
     <div class="hidden name"><code>calcHurdleExpKernel.Rd</code></div>
     </div>
@@ -121,12 +124,15 @@ exponential density with a point mass at zero." />
     <div class="ref-description">
     
     <p>Given a distance matrix from <code><a href='calcVinEll.html'>calcVinEll</a></code>, calculate a
-stochastic matrix where one step movement probabilities follow an zero-truncated
-exponential density with a point mass at zero.</p>
+stochastic matrix where one step movement probabilities follow an zero-inflated
+exponential density with a point mass at zero. The point mass at zero represents the first stage of
+a two-stage process, where mosquitoes decide to stay at their current node or leave anywhere.
+This parameter can be calculated from lifetime probabilities to stay at the current node with the
+helper function <code><a href='calcZeroInflation.html'>calcZeroInflation</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>calcHurdleExpKernel</span>(<span class='no'>distMat</span>, <span class='no'>rate</span>, <span class='no'>pi</span>)</pre>
+    <pre class="usage"><span class='fu'>calcHurdleExpKernel</span>(<span class='no'>distMat</span>, <span class='no'>rate</span>, <span class='no'>p0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -140,10 +146,24 @@ exponential density with a point mass at zero.</p>
       <td><p>rate parameter of <code><a href='https://www.rdocumentation.org/packages/stats/topics/Exponential'>Exponential</a></code> distribution</p></td>
     </tr>
     <tr>
-      <th>pi</th>
+      <th>p0</th>
       <td><p>point mass at zero</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>If a mosquito leaves its current node, with probability \(1-p_{0}\), it then chooses
+a destination node according to a standard exponential density with rate parameter \(rate\).</p>
+<p>The distribution and density functions for the zero inflated exponential kernel are given below:
+$$
+F(x)=p_{0}\theta(x) + (1-p_{0})(1-e^{-\lambda x})
+$$
+$$
+f(x)=p_{0}\delta(x)+(1-p_{0})\lambda e^{-\lambda x}
+$$
+where \(\lambda\) is the rate parameter of the exponential distribution, \(\theta(x)\) is the Heaviside step function
+and \(\delta(x)\) is the Dirac delta function.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -157,13 +177,15 @@ exponential density with a point mass at zero.</p>
 
 <span class='co'># calculate hurdle exponential distribution over distances</span>
 <span class='co'>#  rate and point mass are just for example</span>
-<span class='no'>kernMat</span> <span class='kw'>=</span> <span class='fu'>calcHurdleExpKernel</span>(<span class='kw'>distMat</span> <span class='kw'>=</span> <span class='no'>distMat</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>pi</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</div></pre>
+<span class='no'>kernMat</span> <span class='kw'>=</span> <span class='fu'>calcHurdleExpKernel</span>(<span class='kw'>distMat</span> <span class='kw'>=</span> <span class='no'>distMat</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>1e6</span>, <span class='kw'>p0</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#details">Details</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

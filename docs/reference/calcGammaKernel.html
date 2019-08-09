@@ -143,6 +143,18 @@ stochastic matrix where one step movement probabilities follow a gamma density.<
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The distribution and density functions for the gamma kernel are given below:
+$$
+F(x)=\frac{1}{\Gamma(\alpha)}\gamma(\alpha,\beta x)
+$$
+$$
+f(x)=\frac{\beta^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}
+$$
+where \(\Gamma(\alpha)\) is the Gamma function, \(\gamma(\alpha,\beta x)\) is hte lower incomplete
+gamma function, and \(\alpha,\beta\) are the shape and rate parameters, respectively.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># setup distance matrix</span>
@@ -161,7 +173,9 @@ stochastic matrix where one step movement probabilities follow a gamma density.<
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#details">Details</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
