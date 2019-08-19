@@ -32,7 +32,7 @@ and all genotype-specific parameters.
 }
 \description{
 This function creates an inheritance cube to model a Killer-Rescue system.
-Killer-Resuce is a 2-locus system: one locus has a toxin and the other locus contains
+Killer-Rescue is a 2-locus system: one locus has a toxin and the other locus contains
 the antidote. The loci are assumed independent and are non-homing. \cr
 This drive has 3 alleles at locus 1 and 2 alleles and locus 2:
 \itemize{
@@ -40,7 +40,7 @@ This drive has 3 alleles at locus 1 and 2 alleles and locus 2:
 \itemize{
 \item T: Wild-type allele
 \item K: "Killer" toxin allele
-\item R: Rroken toxin allele
+\item R: Broken toxin allele
 }
 \item Locus 2
 \itemize{

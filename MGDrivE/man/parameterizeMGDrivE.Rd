@@ -57,5 +57,4 @@ and \code{\link{calcLarvalPopEquilibrium}}.
 simPars <- parameterizeMGDrivE(nPatch = 2, simTime = 365,
                                AdPopEQ = c(100,200))
 
-
 }

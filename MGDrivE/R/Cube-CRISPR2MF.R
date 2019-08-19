@@ -21,7 +21,7 @@
 #' is on an autosome and there can be different male/female homing rates. It also has
 #' maternal deposition, ie, when the male provides a W allele to a female with a H allele,
 #' some portion are cut during oogenesis.
-#' If the maternal d eposition parameters are zero (d* parameters), this is a normal
+#' If the maternal deposition parameters are zero (d* parameters), this is a normal
 #' CRISPR drive
 #'
 #' @param cM Male homing rate

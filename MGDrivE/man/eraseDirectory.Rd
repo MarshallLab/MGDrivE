@@ -15,11 +15,13 @@ eraseDirectory(directory, verbose = TRUE)
 Given a directory path, check it exists and if so delete all its contents.
 }
 \examples{
+\dontrun{
 # Path to directory, can tilde expand
-myPath <- ""
+myPath <- "~/path/to/write/output"
 
 # Erase directory
 #  No return value
 eraseDirectory(directory = myPath)
+}
 
 }

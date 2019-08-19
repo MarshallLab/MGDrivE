@@ -130,15 +130,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // calcHurdleExpKernel
-Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat, double rate, double pi);
-RcppExport SEXP _MGDrivE_calcHurdleExpKernel(SEXP distMatSEXP, SEXP rateSEXP, SEXP piSEXP) {
+Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat, double rate, double p0);
+RcppExport SEXP _MGDrivE_calcHurdleExpKernel(SEXP distMatSEXP, SEXP rateSEXP, SEXP p0SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type distMat(distMatSEXP);
     Rcpp::traits::input_parameter< double >::type rate(rateSEXP);
-    Rcpp::traits::input_parameter< double >::type pi(piSEXP);
-    rcpp_result_gen = Rcpp::wrap(calcHurdleExpKernel(distMat, rate, pi));
+    Rcpp::traits::input_parameter< double >::type p0(p0SEXP);
+    rcpp_result_gen = Rcpp::wrap(calcHurdleExpKernel(distMat, rate, p0));
     return rcpp_result_gen;
 END_RCPP
 }

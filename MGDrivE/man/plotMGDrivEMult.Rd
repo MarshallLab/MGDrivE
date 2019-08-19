@@ -21,11 +21,11 @@ plotMGDrivEMult(readDir, whichPatches = NULL, totalPop = FALSE,
 \item{alpha}{Double, specify the opacity for plotting}
 }
 \description{
-Plots several traces from MGDrive, assuming each set is another repetition
+Plots several traces from MGDrivE, assuming each set is another repetition
 from the same experiment. \cr
-Given the readDirectory, this function assumes the follow file structure: \cr
+Given the readDir, this function assumes the follow file structure: \cr
 \itemize{
-\item readDirectory
+\item readDir
 \itemize{
 \item repetition 1
 \itemize{
@@ -52,8 +52,16 @@ genotypes that could exist, but are not created in the simulation. Default
 is FALSE, as this is easier to read on a plot.
 }
 \examples{
-# Requires the user to have run MGDrivE with repetitions and keep them in the
-#  directory organization shown above.
+\dontrun{
+# Requires the user to have run MGDrivE, logically stochastic, analyzed
+#  the data, and stored it in the directory shown below.
 # See vignette for complete example
+
+# Folder where single run is stored
+fPath <- "path/to/data/containing/folder"
+
+# plot output to see effect
+plotMGDrivEMult(readDir=fPath,totalPop = TRUE,lwd=3.5,alpha=1)
+}
 
 }

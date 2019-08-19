@@ -14,7 +14,7 @@ calcDensityDependentDeathRate(fertility, thetaAq, tAq,
 
 \item{tAq}{vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}}
 
-\item{adultPopSizeEquilibrium}{adult population size at equilbrium, \eqn{Ad_{eq}}}
+\item{adultPopSizeEquilibrium}{adult population size at equilibrium, \eqn{Ad_{eq}}}
 
 \item{populationGrowthRate}{population growth in absence of density-dependent mortality \eqn{R_{m}}}
 }

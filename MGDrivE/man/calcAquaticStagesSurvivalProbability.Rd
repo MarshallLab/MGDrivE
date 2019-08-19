@@ -15,5 +15,5 @@ calcAquaticStagesSurvivalProbability(eggSurvivalProbability,
 \item{pupaSurvivalProbability}{see \code{\link{calcAquaticStageSurvivalProbability}}}
 }
 \description{
-Calculate vector of survival probabilities for each stage of aquatic lifecycle.
+Calculate vector of survival probabilities for each stage of aquatic life-cycle.
 }

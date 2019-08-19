@@ -30,6 +30,6 @@ hHeight <- calcZeroInflation(stayThroughLifespanProbability = 0.80,
                              adultMortality = 0.1)
 
 # calculate hurdle exponential distribution over distances
-kernMat = calcHurdleExpKernel(distMat = distMat, rate = 10, pi = hHeight)
+kernMat = calcHurdleExpKernel(distMat = distMat, rate = 10, p0 = hHeight)
 
 }

@@ -2,21 +2,38 @@
 % Please edit documentation in R/RcppExports.R
 \name{calcHurdleExpKernel}
 \alias{calcHurdleExpKernel}
-\title{Calculate Hurdle Exponential Stochastic Matrix}
+\title{Calculate Zero-inflated Exponential Stochastic Matrix}
 \usage{
-calcHurdleExpKernel(distMat, rate, pi)
+calcHurdleExpKernel(distMat, rate, p0)
 }
 \arguments{
 \item{distMat}{distance matrix from \code{\link[MGDrivE]{calcVinEll}}}
 
 \item{rate}{rate parameter of \code{\link[stats]{Exponential}} distribution}
 
-\item{pi}{point mass at zero}
+\item{p0}{point mass at zero}
 }
 \description{
 Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a
-stochastic matrix where one step movement probabilities follow an zero-truncated
-exponential density with a point mass at zero.
+stochastic matrix where one step movement probabilities follow an zero-inflated
+exponential density with a point mass at zero. The point mass at zero represents the first stage of
+a two-stage process, where mosquitoes decide to stay at their current node or leave anywhere.
+This parameter can be calculated from lifetime probabilities to stay at the current node with the
+helper function \code{\link[MGDrivE]{calcZeroInflation}}.
+}
+\details{
+If a mosquito leaves its current node, with probability \eqn{1-p_{0}}, it then chooses
+a destination node according to a standard exponential density with rate parameter \eqn{rate}.
+
+The distribution and density functions for the zero inflated exponential kernel are given below:
+\deqn{
+F(x)=p_{0}\theta(x) + (1-p_{0})(1-e^{-\lambda x})
+}
+\deqn{
+f(x)=p_{0}\delta(x)+(1-p_{0})\lambda e^{-\lambda x}
+}
+where \eqn{\lambda} is the rate parameter of the exponential distribution, \eqn{\theta(x)} is the Heaviside step function
+and \eqn{\delta(x)} is the Dirac delta function.
 }
 \examples{
 # setup distance matrix
@@ -29,6 +46,6 @@ distMat = calcVinEll(latLongs = latLong)
 
 # calculate hurdle exponential distribution over distances
 #  rate and point mass are just for example
-kernMat = calcHurdleExpKernel(distMat = distMat, rate = 10, pi = 1000)
+kernMat = calcHurdleExpKernel(distMat = distMat, rate = 1/1e6, p0 = 0.1)
 
 }

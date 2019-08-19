@@ -380,7 +380,7 @@ aggregateOutput <- function(readDir, writeDir=NULL){
 #' outermost nesting dimension indexes runID, within runID elements are split by sex
 #' and innermost nesting is over patches.
 #'
-#' @param readDir directory where output was written to; must not end in path seperator
+#' @param readDir directory where output was written to; must not end in path separator
 #' @param verbose Chatty? Default is TRUE
 #'
 #' @importFrom utils read.csv
@@ -450,8 +450,8 @@ retrieveOutput <- function(readDir, verbose=TRUE){
 #' the mean, quantiles, or both. User chooses the quantiles, up to 4 decimal places,
 #' and enters them as a vector. Quantiles are calculated empirically. (order does not matter)  \cr
 #'
-#' Given the readDirectory, this function assumes the follow file structure: \cr
-#'  * readDirectory
+#' Given the readDir, this function assumes the follow file structure: \cr
+#'  * readDir
 #'    * repetition 1
 #'      * patch 1
 #'      * patch 2
@@ -468,7 +468,7 @@ retrieveOutput <- function(readDir, verbose=TRUE){
 #' {M/F}_Mean_(patchNum).csv and {M/F}_Quantile_(quantNum)_(patchNum).csv.
 #'
 #' @param readDir Directory to find repetition folders in
-#' @param writeDirectory Directory to write output
+#' @param writeDir Directory to write output
 #' @param mean Boolean, calculate mean or not. Default is TRUE
 #' @param quantiles Vector of quantiles to calculate. Default is NULL
 #' @param numCores Number of cores when reading/writing. Default is 1.
@@ -486,17 +486,17 @@ retrieveOutput <- function(readDir, verbose=TRUE){
 #'
 #' # here, only calculate mean, no quantiles
 #' #  no return value
-#' calcQuantiles(readDir = fPath, writeDirectory = oPath, mean = TRUE,
+#' calcQuantiles(readDir = fPath, writeDir = oPath, mean = TRUE,
 #'               quantiles = NULL, numCores = 1)
 #'
 #' # here, calculate 2.5% and 97.5% quantiles
-#' calcQuantiles(readDir = fPath, writeDirectory = oPath, mean = FALSE,
+#' calcQuantiles(readDir = fPath, writeDir = oPath, mean = FALSE,
 #'               quantiles = c(0.025, 0.975), numCores = 1)
 #' }
 #'
-#' @return Writes output to files in writeDirectory
+#' @return Writes output to files in writeDir
 #' @export
-calcQuantiles <- function(readDir, writeDirectory, mean=TRUE, quantiles=NULL,
+calcQuantiles <- function(readDir, writeDir, mean=TRUE, quantiles=NULL,
                           numCores=1, verbose=TRUE){
 
   #safety check
@@ -597,10 +597,10 @@ calcQuantiles <- function(readDir, writeDirectory, mean=TRUE, quantiles=NULL,
       }
 
       #write output
-      maleFileName <- file.path(writeDirectory,
+      maleFileName <- file.path(writeDir,
                                 file.path("M_Mean_", patch, ".csv", fsep = "")
       )
-      femaleFileName <- file.path(writeDirectory,
+      femaleFileName <- file.path(writeDir,
                                   file.path("F_Mean_", patch, ".csv", fsep = "")
       )
 
@@ -627,14 +627,14 @@ calcQuantiles <- function(readDir, writeDirectory, mean=TRUE, quantiles=NULL,
       #write output
       for(whichQuant in 1:length(quantiles)){
         #file names
-        maleFileName <- file.path(writeDirectory,
+        maleFileName <- file.path(writeDir,
                                   file.path("M_Quantile_",
                                             formatC(x = quantiles[whichQuant], digits = 4,
                                                     format = "f", decimal.mark = "",
                                                     big.mark = NULL),
                                             "_", patch, ".csv", fsep = "")
         )
-        femaleFileName <- file.path(writeDirectory,
+        femaleFileName <- file.path(writeDir,
                                     file.path("F_Quantile_",
                                               formatC(x = quantiles[whichQuant], digits = 4,
                                                       format = "f", decimal.mark = "",
@@ -789,7 +789,7 @@ primePopMatrixArray <- function(primingMatrix,memoryWindow){
 #'                              adultMortality = 0.1)
 #'
 #' # calculate hurdle exponential distribution over distances
-#' kernMat = calcHurdleExpKernel(distMat = distMat, rate = 10, pi = hHeight)
+#' kernMat = calcHurdleExpKernel(distMat = distMat, rate = 10, p0 = hHeight)
 #'
 #' @export
 calcZeroInflation <- function(stayThroughLifespanProbability,adultMortality){

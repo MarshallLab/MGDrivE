@@ -16,13 +16,13 @@
 #' Inheritance Cube: Killer-Rescue System
 #'
 #' This function creates an inheritance cube to model a Killer-Rescue system.
-#' Killer-Resuce is a 2-locus system: one locus has a toxin and the other locus contains
+#' Killer-Rescue is a 2-locus system: one locus has a toxin and the other locus contains
 #' the antidote. The loci are assumed independent and are non-homing. \cr
 #' This drive has 3 alleles at locus 1 and 2 alleles and locus 2:
 #'  * Locus 1
 #'    * T: Wild-type allele
 #'    * K: "Killer" toxin allele
-#'    * R: Rroken toxin allele
+#'    * R: Broken toxin allele
 #'  * Locus 2
 #'    * W: Wild-type allele
 #'    * A: Antidote allele

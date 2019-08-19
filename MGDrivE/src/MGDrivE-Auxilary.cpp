@@ -60,7 +60,7 @@ void shiftAndUpdatePopVector( ListOf<NumericVector>& popVector, const NumericVec
 
 //' Dirichlet Distribution
 //'
-//' Make a single draw from a dirichlet distribution with the shape parameter
+//' Make a single draw from a Dirichlet distribution with the shape parameter
 //' one. This replaces the MCMCpack rDirichlet function, which was wholly written
 //' in R.
 //'
@@ -72,7 +72,7 @@ NumericVector rDirichlet(const NumericVector& migrationPoint){
   //set up return things
   NumericVector probs(migrationPoint.length());
 
-  //This is a dirichlet distribtuion
+  //This is a Dirichlet distribtuion
   for(int i = 0; i<migrationPoint.length(); i++){
     probs[i] = R::rgamma(migrationPoint[i], 1.0);
   }

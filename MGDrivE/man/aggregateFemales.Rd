@@ -26,8 +26,8 @@ Aggregate over male mate genotype to convert female matrix output into vector ou
 \examples{
 \dontrun{
 # This example assumes user has already run MGDrivE and generated output.
-#  This also assumes that the user has already split output by patch
-# See vignette for complete example
+#  This also assumes that the user has already split output by patch.
+# See vignette for complete example.
 
 # set read/write directory
 fPath <- "path/to/data/containing/folder"

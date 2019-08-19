@@ -2,7 +2,7 @@
 % Please edit documentation in R/Patch-Migration.R
 \name{oneDay_migrationOut_deterministic_Patch}
 \alias{oneDay_migrationOut_deterministic_Patch}
-\title{Deterministic Oubound Migration from a Patch}
+\title{Deterministic Outbound Migration from a Patch}
 \usage{
 oneDay_migrationOut_deterministic_Patch()
 }

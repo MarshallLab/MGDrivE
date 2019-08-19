@@ -9,7 +9,7 @@ MGDrivE: Mosquito Gene Drive Explorer
 \section{Introduction}{
 
 
-Recent developments of CRISPR-Cas9 based homing endonuclease gene drive systems for the suppression or replacement of mosquito populations have generated much interest in their use for control of mosquito-borne diseases (such as dengue, malaria, chikungunya and Zika).
+Recent developments of CRISPR-Cas9 based homing endonuclease gene drive systems for the suppression or replacement of mosquito populations have generated much interest in their use for control of mosquito-borne diseases (such as dengue, malaria, Chikungunya and Zika).
 This is because genetic control of pathogen transmission may complement or even substitute traditional vector-control interventions,  which have had limited success in bringing the spread of these diseases to a halt.
 Despite excitement for the use of gene drives for mosquito control,  current modeling efforts have analyzed only a handful of these new approaches (usually studying just one per framework).
 Moreover, these models usually consider well-mixed populations with no explicit spatial dynamics. To this end, we are developing MGDrivE (Mosquito Gene DRIVe Explorer), in cooperation with the 'UCI Malaria Elimination Initiative', as a flexible modeling framework to evaluate a variety of drive systems in spatial networks of mosquito populations.
@@ -21,7 +21,7 @@ This way we can conveniently swap inheritance patterns whilst still making use o
 \section{Brief Description}{
 
 
-MGDrivE is based on the idea that we can decouple the genotype inheritance process from the population dynamics equations.  This allows the system to be treated and developed in three semi-indpendent modules that come together to form the system.
+MGDrivE is based on the idea that we can decouple the genotype inheritance process from the population dynamics equations.  This allows the system to be treated and developed in three semi-independent modules that come together to form the system.
 The way this is done will be described later in this document but a reference diagram is shown here.
 }
 

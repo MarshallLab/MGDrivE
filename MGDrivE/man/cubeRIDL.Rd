@@ -28,7 +28,7 @@ and all genotype-specific parameters.
 This function creates a RIDL system
 RIDL (Release of Insects with Dominant Lethality), is a form of SIT.
 Created by Oxitec, this is based on a positive feedback loop using the
-toxic tTAV gene, contolled under lab conditions by the TetO promoter.
+toxic tTAV gene, controlled under lab conditions by the TetO promoter.
 This has 2 alleles at 1 locus
 \itemize{
 \item W: Wild-type allele

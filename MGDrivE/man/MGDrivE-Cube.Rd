@@ -4,7 +4,9 @@
 \alias{MGDrivE-Cube}
 \title{MGDrivE: Inheritance Cube}
 \description{
-To model an arbitrary number of genotypes efficiently in the same mathematical framework we use a 3-dimensional array structure (cube) where each axis represents the following information:
+To model an arbitrary number of genotypes efficiently in the same mathematical
+framework we use a 3-dimensional array structure (cube) where each axis
+represents the following information:
 \itemize{
 \item x: female adult mate genotype
 \item y: male adult mate genotype
@@ -12,11 +14,16 @@ To model an arbitrary number of genotypes efficiently in the same mathematical f
 }
 }
 \details{
-The cube structure gives us the flexibility to apply tensor operations to the elements within our equations, so that we can calculate the stratified population dynamics rapidly; and within a readable, flexible computational framework. This becomes apparent when we define the equation we use for the computation of eggs laid at any given point in time:
-
-\deqn{\overline{O(T_x)} = \sum_{j=1}^{n} \Bigg( \bigg( (\beta*\overline{s} * \overline{ \overline{Af_{[t-T_x]}}}) * \overline{\overline{\overline{Ih}}} \bigg) * \Lambda  \Bigg)^{\top}_{ij}}
-
-In this equation, the matrix containing the number of mated adult females (\eqn{\overline{\overline{Af}}}) is multiplied element-wise with each one of the layers containing the eggs genotypes proportions expected from this cross (\eqn{\overline{\overline{\overline{Ih}}}}).
+The cube structure gives us the flexibility to apply tensor operations to the
+elements within our equations, so that we can calculate the stratified population
+dynamics rapidly; and within a readable, flexible computational framework.
+This becomes apparent when we define the equation we use for the computation of
+eggs laid at any given point in time:
+\deqn{\overline{O(T_x)}=\sum_{j=1}^{n} \Bigg( \bigg( (\beta \cdot \overline{s} \cdot \overline{ \overline{Af_{[t-T_x]}}}) \cdot \overline{\overline{\overline{Ih}}} \bigg) \cdot \Lambda  \Bigg)^{\top}_{ij}}
+In this equation, the matrix containing the number of mated adult females
+(\eqn{\overline{\overline{Af}}}) is multiplied element-wise with each one of
+the layers containing the eggs genotypes proportions expected from this cross
+(\eqn{\overline{\overline{\overline{Ih}}}}).
 The resulting matrix is then multiplied by a binary 'viability mask' (\eqn{\Lambda}) that filters out female-parent to offspring genetic combinations that are not viable due to biological impediments (such as cytoplasmic incompatibility).
 The summation of the transposed resulting matrix returns us the total fraction of eggs resulting from all the male to female genotype crosses (\eqn{\overline{O(T_x)}}).
 
@@ -31,7 +38,7 @@ stratified by male and female parent genotypes. MGDrivE provides the following c
 \item \code{\link{cubeOneLocusTA}}: 1 Locus Maternal-Toxin/Zygotic-Antidote System
 \item \code{\link{cubeTwoLocusTA}}: 2 Locus Maternal-Toxin/Zygotic-Antidote System
 \item \code{\link{cubeHoming1RA}}: Homing Drive with 1 Resistance Allele
-\item \code{\link{cubeHomingDrive}}: CRISPR (Clustered Regularly Interspaced SWort Palindromic Repeats) witW 2 Resistance Allele
+\item \code{\link{cubeHomingDrive}}: CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Allele
 \item \code{\link{cubeKillerRescue}}: Killer-Rescue System
 \item \code{\link{cubeMEDEA}}: MEDEA (Maternal Effect Dominant Embryonic Arrest)
 \item \code{\link{cubeReciprocalTranslocations}}: Reciprocal Translocation

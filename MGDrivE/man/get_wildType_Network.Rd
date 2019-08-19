@@ -2,7 +2,7 @@
 % Please edit documentation in R/Network-Class.R
 \name{get_wildType_Network}
 \alias{get_wildType_Network}
-\title{Get wildType}
+\title{Get wildtype}
 \usage{
 get_wildType_Network()
 }

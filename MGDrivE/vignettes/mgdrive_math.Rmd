@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-Recent developments of CRISPR-Cas9 based homing endonuclease gene drive systems for the suppression or replacement of mosquito populations have generated much interest in their use for control of mosquito-borne diseases (such as dengue, malaria, chikungunya and Zika). This is because genetic control of pathogen transmission may complement or even substitute traditional vector-control interventions, which have had limited success in bringing the spread of these diseases to a halt.
+Recent developments of CRISPR-Cas9 based homing endonuclease gene drive systems for the suppression or replacement of mosquito populations have generated much interest in their use for control of mosquito-borne diseases (such as dengue, malaria, Chikungunya and Zika). This is because genetic control of pathogen transmission may complement or even substitute traditional vector-control interventions, which have had limited success in bringing the spread of these diseases to a halt.
 
 Despite excitement for the use of gene drives for mosquito control, current modeling efforts have analyzed only a handful of these new approaches (usually studying just one per framework). Moreover, these models usually consider well-mixed populations with no explicit spatial dynamics. To this end, we are developing **MGDrivE** (Mosquito Gene DRIVe Explorer), in cooperation with the 'UCI Malaria Elimination Initiative', as a flexible modeling framework to evaluate a variety of drive systems in spatial networks of mosquito populations. This framework provides a reliable testbed to evaluate and optimize the efficacy of gene drive mosquito releases. What separates **MGDrivE** from other models is the incorporation of mathematical and computational mechanisms to simulate a wide array of inheritance-based technologies within the same, coherent set of equations.
 
@@ -24,7 +24,7 @@ We do this by treating the population dynamics, genetic inheritance operations, 
 
 ## Brief Description
 
-**MGDrivE** is based on the idea that we can decouple the genotype inheritance process from the population dynamics equations.  This allows the system to be treated and developed in three semi-indpendent modules that come together to form the system.
+**MGDrivE** is based on the idea that we can decouple the genotype inheritance process from the population dynamics equations.  This allows the system to be treated and developed in three semi-independent modules that come together to form the system.
 
 ```{r, echo=FALSE, fig.cap="Fig. 1: **MGDrivE** Conceptual Model Framework", out.width = "80%", fig.align='center'}
 knitr::include_graphics("diagram.png")
@@ -144,7 +144,7 @@ $$
  		+ (1-\overline{\phi}) *  \overline{E^{'}}\\
   		+ \overline{\nu m_{[t-1]}}
 $$
-in which the first term represents the number of males surviving from one day to the next; the second one, the fraction ofmales that survive to adulthood (\eqn{\overline{E'}}) and emerge as males (\eqn{1-\phi}); the last one is used to add males into the population as part of gene-drive release campaigns.
+in which the first term represents the number of males surviving from one day to the next; the second one, the fraction of males that survive to adulthood (\eqn{\overline{E'}}) and emerge as males (\eqn{1-\phi}); the last one is used to add males into the population as part of gene-drive release campaigns.
 
 Female adult populations are calculated in a similar way:
 $$
@@ -189,7 +189,7 @@ In these equations the new population of the patch $i$ is calculated by summing 
 
 # Stochasticity
 
-**MGDrivE** allows all inheritance, migration, and population dynamics processes to be simulated stochastically; this accounts for the inherent probabilistic nature of the processes governing the interactions and lifecycles of organisms. In the next section, we will describe all the stochastic processes that can be activated in the program. It should be noted that all of these can be turned on and off independently from one another as required by the researcher.
+**MGDrivE** allows all inheritance, migration, and population dynamics processes to be simulated stochastically; this accounts for the inherent probabilistic nature of the processes governing the interactions and life-cycles of organisms. In the next section, we will describe all the stochastic processes that can be activated in the program. It should be noted that all of these can be turned on and off independently from one another as required by the researcher.
 
 ### Mosquito Biology
 

@@ -48,6 +48,6 @@ This is a sex-specific version of the original cube. It assumes that the constru
 is on an autosome and there can be different male/female homing rates. It also has
 maternal deposition, ie, when the male provides a W allele to a female with a H allele,
 some portion are cut during oogenesis.
-If the maternal d eposition parameters are zero (d* parameters), this is a normal
+If the maternal deposition parameters are zero (d* parameters), this is a normal
 CRISPR drive
 }

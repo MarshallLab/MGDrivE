@@ -15,6 +15,16 @@ calcExpKernel(distMat, rate)
 Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a
 stochastic matrix where one step movement probabilities follow an exponential density.
 }
+\details{
+The distribution and density functions for the exponential kernel are given below:
+\deqn{
+F(x)=1-e^{-\lambda x}
+}
+\deqn{
+f(x)=\lambda e^{-\lambda x}
+}
+where \eqn{\lambda} is the rate parameter of the exponential distribution.
+}
 \examples{
 # setup distance matrix
 # two-column matrix with latitude/longitude, in degrees

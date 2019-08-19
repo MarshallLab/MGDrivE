@@ -408,7 +408,7 @@ oneDay_numMaleFemale_deterministic_Patch <- function(){
 
 #' Stochastic Adult Male Survival
 #'
-#' Daily adult male survival is sampled from a binomial distribution where survival probability is given by \deqn{(1-\mu_{ad}) * \overline{\omega_m}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_m}} correponds to
+#' Daily adult male survival is sampled from a binomial distribution where survival probability is given by \deqn{(1-\mu_{ad}) * \overline{\omega_m}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_m}} corresponds to
 #' genotype-specific mortality effects.
 #'
 oneDay_admSurvival_stochastic_Patch <- function(){
@@ -434,7 +434,7 @@ oneDay_admSurvival_stochastic_Patch <- function(){
 
 #' Deterministc Adult Male Survival
 #'
-#' Daily adult male survival is calculated according to \deqn{\overline{\overline{Am_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_m}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_m}} correponds to
+#' Daily adult male survival is calculated according to \deqn{\overline{\overline{Am_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_m}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_m}} corresponds to
 #' genotype-specific mortality effects.
 #'
 oneDay_admSurvival_deterministic_Patch <- function(){
@@ -491,7 +491,7 @@ oneDay_admPupating_deterministic_Patch <- function(){
 
 #' Stochastic Adult Female Survival
 #'
-#' Daily adult female survival is sampled from a binomial distribution where survival probability is given by \deqn{(1-\mu_{ad}) * \overline{\omega_f}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_f}} correponds to
+#' Daily adult female survival is sampled from a binomial distribution where survival probability is given by \deqn{(1-\mu_{ad}) * \overline{\omega_f}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_f}} corresponds to
 #' genotype-specific mortality effects.
 #'
 oneDay_af1Survival_stochastic_Patch <- function(){
@@ -517,7 +517,7 @@ oneDay_af1Survival_stochastic_Patch <- function(){
 
 #' Deterministc Adult Female Survival
 #'
-#' Daily adult female survival is calculated according to \deqn{\overline{\overline{Af_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_f}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_f}} correponds to
+#' Daily adult female survival is calculated according to \deqn{\overline{\overline{Af_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_f}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_f}} corresponds to
 #' genotype-specific mortality effects.
 #'
 oneDay_af1Survival_deterministic_Patch <- function(){

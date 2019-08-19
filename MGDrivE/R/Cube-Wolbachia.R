@@ -15,7 +15,7 @@
 
 #' Inheritance Cube: Wolbachia
 #'
-#' This function creates an inheritance cube to model a Wolbachia infection. Wobachia
+#' This function creates an inheritance cube to model a Wolbachia infection. Wolbachia
 #' is a parasite that can infect mosquitoes. It biases its inheritance through
 #' cytoplasmic incompatibility. \cr
 #' This drive has 2 alleles at 1 locus:

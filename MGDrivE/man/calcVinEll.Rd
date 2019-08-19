@@ -18,7 +18,7 @@ calcVinEll(latLongs, a = 6378137, b = 6356752.3142,
 
 \item{eps}{Convergence criteria}
 
-\item{iter}{Naximum number of iterations to attempt convergence}
+\item{iter}{Maximum number of iterations to attempt convergence}
 }
 \description{
 This function calculates geodesic distance using the original Vincenty Ellipsoid method.

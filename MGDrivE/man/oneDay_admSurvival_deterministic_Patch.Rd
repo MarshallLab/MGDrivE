@@ -7,6 +7,6 @@
 oneDay_admSurvival_deterministic_Patch()
 }
 \description{
-Daily adult male survival is calculated according to \deqn{\overline{\overline{Am_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_m}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_m}} correponds to
+Daily adult male survival is calculated according to \deqn{\overline{\overline{Am_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_m}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_m}} corresponds to
 genotype-specific mortality effects.
 }

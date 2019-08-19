@@ -12,7 +12,7 @@ calcCos(latLongs, r = 6378137)
 \item{r}{Earth radius. Default is WGS-84 radius}
 }
 \description{
-This function calculates geodesic distance using the cosing method.
+This function calculates geodesic distance using the cosine method.
 }
 \examples{
 # two-column matrix with latitude/longitude, in degrees

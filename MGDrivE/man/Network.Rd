@@ -95,9 +95,20 @@ A \code{Network} class object stores all the information for a simulation on a d
 \item patchReleases: a list of release schedules for each patch
 \item verbose: Chatty? Default is TRUE
 }
-
-@examplessee vignette for complete examples
 }
 
+\examples{
+ \dontrun{
+ # There are no simple examples for this, so looking at the vignettes would be
+ #  most useful.
+
+ # Complete manual with examples, but none explored in depth.
+ vignette("MGDrivE-Examples", package = "MGDrivE")
+
+ # One example, explored in great detail. This is probably more helpful.
+ vignette("MGDrivE-Run", package = "MGDrivE")
+ }
+
+}
 \keyword{R6}
 \keyword{class}

@@ -17,6 +17,16 @@ calcLognormalKernel(distMat, meanlog, sdlog)
 Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}},
 calculate a stochastic matrix where one step movement probabilities follow a lognormal density.
 }
+\details{
+The distribution and density functions for the lognormal kernel are given below:
+\deqn{
+F(x)=\frac{1}{2} + \frac{1}{2} \mathrm{erf}[\frac{\mathrm{ln}x-\mu}{\sqrt{2}\sigma}]
+}
+\deqn{
+f(x)=\frac{1}{x\sigma\sqrt{2\pi}}\mathrm{exp}\left( -\frac{(\mathrm{ln}x-\mu)^{2}}{2\sigma^{2}} \right)
+}
+where \eqn{\mu} is the mean on the log scale, and \eqn{\sigma} is the standard deviation on the log scale.
+}
 \examples{
 # setup distance matrix
 # two-column matrix with latitude/longitude, in degrees

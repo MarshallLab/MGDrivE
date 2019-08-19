@@ -43,7 +43,7 @@ inline double toDeg(const double& rad) {
 
 //' Calculate Geodesic Distance - Cosine Method
 //'
-//' This function calculates geodesic distance using the cosing method.
+//' This function calculates geodesic distance using the cosine method.
 //'
 //' @param latLongs Two column matrix of latitudes/longitudes
 //' @param r Earth radius. Default is WGS-84 radius
@@ -107,7 +107,7 @@ Rcpp::NumericMatrix calcCos(const Rcpp::NumericMatrix& latLongs, const double& r
  *****************************************************************************/
 
 /********************
- * Seans original haversine function, with changed radius to reflect WGS-84
+ * Seans original Haversine function, with changed radius to reflect WGS-84
  ******************/
 // double gcd_hf(const double& long1, const double& lat1, const double& long2, const double& lat2){
 //   double deltaLong = (long2 - long1);
@@ -120,7 +120,7 @@ Rcpp::NumericMatrix calcCos(const Rcpp::NumericMatrix& latLongs, const double& r
 //   return d;
 // };
 //
-// Rcpp::NumericMatrix calc_haversine(const Rcpp::NumericMatrix& latlongs){
+// Rcpp::NumericMatrix calc_Haversine(const Rcpp::NumericMatrix& latlongs){
 //   size_t n = latlongs.nrow();
 //   Rcpp::NumericMatrix zz = Rcpp::NumericMatrix(n,n);
 //   for(size_t i=0; i<n; i++){
@@ -150,7 +150,7 @@ Rcpp::NumericMatrix calcCos(const Rcpp::NumericMatrix& latLongs, const double& r
 
 //' Calculate Geodesic Distance - Haversine Method
 //'
-//' This function calculates geodesic distance using the haversine method.
+//' This function calculates geodesic distance using the Haversine method.
 //'
 //' @param latLongs Two column matrix of latitudes/longitudes
 //' @param r Earth radius. Default is WGS-84 radius
@@ -160,7 +160,7 @@ Rcpp::NumericMatrix calcCos(const Rcpp::NumericMatrix& latLongs, const double& r
 //' latLong = cbind(runif(n = 5, min = 0, max = 90),
 //'                 runif(n = 5, min = 0, max = 180))
 //'
-//' # haversine distance formula
+//' # Haversine distance formula
 //' distMat = calcHaversine(latLongs = latLong)
 //'
 //' @export
@@ -388,7 +388,7 @@ Rcpp::NumericMatrix calcVinSph(const Rcpp::NumericMatrix& latLongs, const double
 //' @param b Polar radius of the earth, default is WGS-84 radius
 //' @param f Flattening or inverse eccentricity, default eccentricity is WGS-84
 //' @param eps Convergence criteria
-//' @param iter Naximum number of iterations to attempt convergence
+//' @param iter Maximum number of iterations to attempt convergence
 //'
 //' @examples
 //' # two-column matrix with latitude/longitude, in degrees

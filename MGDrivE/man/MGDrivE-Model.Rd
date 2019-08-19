@@ -6,7 +6,7 @@
 \description{
 The original version of this model was based on work by \insertCite{Deredec2011,Hancock2007}{MGDrivE} and adapted to accommodate CRISPR homing dynamics in a previous publication by our team \insertCite{JohnMarshallAnnaBuchmanHectorMSanchezC.2017}{MGDrivE}.
 As it was described, we extended this framework to be able to handle a variable number of genotypes, and migration across spatial scenarios.
-We did this by adapting the equations to work in a tensor-oriented manner, where each genotype can have different processes affecting their particular strain (death rates, mating fitness, sex-ratio bias, etcetera).
+We did this by adapting the equations to work in a tensor-oriented manner, where each genotype can have different processes affecting their particular strain (death rates, mating fitness, sex-ratio bias, et cetera).
 }
 \section{Inheritance Cube and Oviposition}{
 

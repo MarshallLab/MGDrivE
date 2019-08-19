@@ -209,10 +209,24 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
   box(lwd = 2)
 
   #legend
-  par(mar = c(0,0,0,0), font=2)
   plot.new()
-  legend(x = "left", legend = genotypes, col = col,
-         bty = "n", bg = "transparent",lty = 1, lwd=3,cex = 1)
+  par(font = 2)
+  legend(x = 'left',
+         inset = 0, # will have to play with this as widths change
+         seg.len = 2, # length of line denoting the colors
+         x.intersp = 0.9,
+         y.intersp = 0.9, # vertical space between lines
+         title = 'Genotypes',
+         legend = genotypes,
+         col = col,
+         bty = "n",
+         #bg = "lightblue",
+         xpd = TRUE,
+         pch = 15,
+         pt.cex = 2,
+         # lty = c(1,1,1,1),
+         # lwd=16,
+         cex = 1)
 
 
   ##rest of the patches
@@ -247,10 +261,10 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
 
 #' Plot
 #'
-#' Plots several traces from MGDrive, assuming each set is another repetition
+#' Plots several traces from MGDrivE, assuming each set is another repetition
 #' from the same experiment. \cr
-#' Given the readDirectory, this function assumes the follow file structure: \cr
-#'  * readDirectory
+#' Given the readDir, this function assumes the follow file structure: \cr
+#'  * readDir
 #'    * repetition 1
 #'      * patch 1
 #'      * patch 2
@@ -461,11 +475,24 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
 
 
   #legend
-  par(mar = c(0,0,0,0), font=2)
   plot.new()
-  legend(x = "left", legend = genotypes, col = col,
-         bty = "n", bg = "transparent",lty = 1, lwd=3,cex = 1)
-
+  par(font = 2)
+  legend(x = 'left',
+         inset = 0, # will have to play with this as widths change
+         seg.len = 2, # length of line denoting the colors
+         x.intersp = 0.9,
+         y.intersp = 0.9, # vertical space between lines
+         title = 'Genotypes',
+         legend = genotypes,
+         col = col,
+         bty = "n",
+         #bg = "lightblue",
+         xpd = TRUE,
+         pch = 15,
+         pt.cex = 2,
+         # lty = c(1,1,1,1),
+         # lwd=16,
+         cex = 1)
 
   ##rest of the patches
   if(numPatches>1){
@@ -500,5 +527,5 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
       box(lwd = 2)
     }#end patch loop
   }#end if
-  
+
 }

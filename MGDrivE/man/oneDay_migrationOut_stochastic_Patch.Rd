@@ -2,7 +2,7 @@
 % Please edit documentation in R/Patch-Migration.R
 \name{oneDay_migrationOut_stochastic_Patch}
 \alias{oneDay_migrationOut_stochastic_Patch}
-\title{Stochastic Oubound Migration}
+\title{Stochastic Outbound Migration}
 \usage{
 oneDay_migrationOut_stochastic_Patch()
 }

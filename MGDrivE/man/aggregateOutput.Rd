@@ -19,7 +19,7 @@ one for females, "...M_LandscapeAgg_Run...csv".
 }
 \examples{
 \dontrun{
-# This assumes user has run MGDrivE and output is in \\code{readDir}
+# This assumes user has run MGDrivE and output is in fPath.
 #  See vignette for examples on how to run MGDrivE
 
 # read/write dirs

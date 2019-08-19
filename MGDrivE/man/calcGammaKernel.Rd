@@ -17,6 +17,17 @@ calcGammaKernel(distMat, shape, rate)
 Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a
 stochastic matrix where one step movement probabilities follow a gamma density.
 }
+\details{
+The distribution and density functions for the gamma kernel are given below:
+\deqn{
+F(x)=\frac{1}{\Gamma(\alpha)}\gamma(\alpha,\beta x)
+}
+\deqn{
+f(x)=\frac{\beta^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}
+}
+where \eqn{\Gamma(\alpha)} is the Gamma function, \eqn{\gamma(\alpha,\beta x)} is hte lower incomplete
+gamma function, and \eqn{\alpha,\beta} are the shape and rate parameters, respectively.
+}
 \examples{
 # setup distance matrix
 # two-column matrix with latitude/longitude, in degrees

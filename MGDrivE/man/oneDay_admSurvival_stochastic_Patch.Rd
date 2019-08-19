@@ -7,6 +7,6 @@
 oneDay_admSurvival_stochastic_Patch()
 }
 \description{
-Daily adult male survival is sampled from a binomial distribution where survival probability is given by \deqn{(1-\mu_{ad}) * \overline{\omega_m}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_m}} correponds to
+Daily adult male survival is sampled from a binomial distribution where survival probability is given by \deqn{(1-\mu_{ad}) * \overline{\omega_m}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_m}} corresponds to
 genotype-specific mortality effects.
 }

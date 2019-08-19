@@ -15,7 +15,7 @@ shiftAndUpdatePopVector <- function(popVector, newPop) {
 
 #' Dirichlet Distribution
 #'
-#' Make a single draw from a dirichlet distribution with the shape parameter
+#' Make a single draw from a Dirichlet distribution with the shape parameter
 #' one. This replaces the MCMCpack rDirichlet function, which was wholly written
 #' in R.
 #'
@@ -47,7 +47,7 @@ quantileC <- function(Trials, Probs) {
 
 #' Calculate Geodesic Distance - Cosine Method
 #'
-#' This function calculates geodesic distance using the cosing method.
+#' This function calculates geodesic distance using the cosine method.
 #'
 #' @param latLongs Two column matrix of latitudes/longitudes
 #' @param r Earth radius. Default is WGS-84 radius
@@ -67,7 +67,7 @@ calcCos <- function(latLongs, r = 6378137) {
 
 #' Calculate Geodesic Distance - Haversine Method
 #'
-#' This function calculates geodesic distance using the haversine method.
+#' This function calculates geodesic distance using the Haversine method.
 #'
 #' @param latLongs Two column matrix of latitudes/longitudes
 #' @param r Earth radius. Default is WGS-84 radius
@@ -77,7 +77,7 @@ calcCos <- function(latLongs, r = 6378137) {
 #' latLong = cbind(runif(n = 5, min = 0, max = 90),
 #'                 runif(n = 5, min = 0, max = 180))
 #'
-#' # haversine distance formula
+#' # Haversine distance formula
 #' distMat = calcHaversine(latLongs = latLong)
 #'
 #' @export
@@ -114,7 +114,7 @@ calcVinSph <- function(latLongs, r = 6378137) {
 #' @param b Polar radius of the earth, default is WGS-84 radius
 #' @param f Flattening or inverse eccentricity, default eccentricity is WGS-84
 #' @param eps Convergence criteria
-#' @param iter Naximum number of iterations to attempt convergence
+#' @param iter Maximum number of iterations to attempt convergence
 #'
 #' @examples
 #' # two-column matrix with latitude/longitude, in degrees
@@ -133,6 +133,15 @@ calcVinEll <- function(latLongs, a = 6378137, b = 6356752.3142, f = 1.0/298.2572
 #'
 #' Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}},
 #' calculate a stochastic matrix where one step movement probabilities follow a lognormal density.
+#'
+#' The distribution and density functions for the lognormal kernel are given below:
+#' \deqn{
+#' F(x)=\frac{1}{2} + \frac{1}{2} \mathrm{erf}[\frac{\mathrm{ln}x-\mu}{\sqrt{2}\sigma}]
+#' }
+#' \deqn{
+#' f(x)=\frac{1}{x\sigma\sqrt{2\pi}}\mathrm{exp}\left( -\frac{(\mathrm{ln}x-\mu)^{2}}{2\sigma^{2}} \right)
+#' }
+#' where \eqn{\mu} is the mean on the log scale, and \eqn{\sigma} is the standard deviation on the log scale.
 #'
 #' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
 #' @param meanlog log mean of \code{\link[stats]{Lognormal}} distribution
@@ -161,6 +170,16 @@ calcLognormalKernel <- function(distMat, meanlog, sdlog) {
 #' Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a
 #' stochastic matrix where one step movement probabilities follow a gamma density.
 #'
+#' The distribution and density functions for the gamma kernel are given below:
+#' \deqn{
+#' F(x)=\frac{1}{\Gamma(\alpha)}\gamma(\alpha,\beta x)
+#' }
+#' \deqn{
+#' f(x)=\frac{\beta^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}
+#' }
+#' where \eqn{\Gamma(\alpha)} is the Gamma function, \eqn{\gamma(\alpha,\beta x)} is hte lower incomplete
+#' gamma function, and \eqn{\alpha,\beta} are the shape and rate parameters, respectively.
+#'
 #' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
 #' @param shape shape parameter of \code{\link[stats]{GammaDist}} distribution
 #' @param rate rate parameter of \code{\link[stats]{GammaDist}} distribution
@@ -188,6 +207,15 @@ calcGammaKernel <- function(distMat, shape, rate) {
 #' Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a
 #' stochastic matrix where one step movement probabilities follow an exponential density.
 #'
+#' The distribution and density functions for the exponential kernel are given below:
+#' \deqn{
+#' F(x)=1-e^{-\lambda x}
+#' }
+#' \deqn{
+#' f(x)=\lambda e^{-\lambda x}
+#' }
+#' where \eqn{\lambda} is the rate parameter of the exponential distribution.
+#'
 #' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
 #' @param rate rate parameter of \code{\link[stats]{Exponential}} distribution
 #'
@@ -209,15 +237,32 @@ calcExpKernel <- function(distMat, rate) {
     .Call('_MGDrivE_calcExpKernel', PACKAGE = 'MGDrivE', distMat, rate)
 }
 
-#' Calculate Hurdle Exponential Stochastic Matrix
+#' Calculate Zero-inflated Exponential Stochastic Matrix
 #'
 #' Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a
-#' stochastic matrix where one step movement probabilities follow an zero-truncated
-#' exponential density with a point mass at zero.
+#' stochastic matrix where one step movement probabilities follow an zero-inflated
+#' exponential density with a point mass at zero. The point mass at zero represents the first stage of
+#' a two-stage process, where mosquitoes decide to stay at their current node or leave anywhere.
+#' This parameter can be calculated from lifetime probabilities to stay at the current node with the
+#' helper function \code{\link[MGDrivE]{calcZeroInflation}}.
+#'
+#' If a mosquito leaves its current node, with probability \eqn{1-p_{0}}, it then chooses
+#' a destination node according to a standard exponential density with rate parameter \eqn{rate}.
+#'
+#' The distribution and density functions for the zero inflated exponential kernel are given below:
+#' \deqn{
+#' F(x)=p_{0}\theta(x) + (1-p_{0})(1-e^{-\lambda x})
+#' }
+#' \deqn{
+#' f(x)=p_{0}\delta(x)+(1-p_{0})\lambda e^{-\lambda x}
+#' }
+#' where \eqn{\lambda} is the rate parameter of the exponential distribution, \eqn{\theta(x)} is the Heaviside step function
+#' and \eqn{\delta(x)} is the Dirac delta function.
+#'
 #'
 #' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
 #' @param rate rate parameter of \code{\link[stats]{Exponential}} distribution
-#' @param pi point mass at zero
+#' @param p0 point mass at zero
 #'
 #' @examples
 #' # setup distance matrix
@@ -230,10 +275,10 @@ calcExpKernel <- function(distMat, rate) {
 #'
 #' # calculate hurdle exponential distribution over distances
 #' #  rate and point mass are just for example
-#' kernMat = calcHurdleExpKernel(distMat = distMat, rate = 10, pi = 1000)
+#' kernMat = calcHurdleExpKernel(distMat = distMat, rate = 1/1e6, p0 = 0.1)
 #'
 #' @export
-calcHurdleExpKernel <- function(distMat, rate, pi) {
-    .Call('_MGDrivE_calcHurdleExpKernel', PACKAGE = 'MGDrivE', distMat, rate, pi)
+calcHurdleExpKernel <- function(distMat, rate, p0) {
+    .Call('_MGDrivE_calcHurdleExpKernel', PACKAGE = 'MGDrivE', distMat, rate, p0)
 }
 

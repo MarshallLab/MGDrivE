@@ -50,6 +50,15 @@ inline double dtruncExp(double x, double r, double a, double b){
 //' Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}},
 //' calculate a stochastic matrix where one step movement probabilities follow a lognormal density.
 //'
+//' The distribution and density functions for the lognormal kernel are given below:
+//' \deqn{
+//' F(x)=\frac{1}{2} + \frac{1}{2} \mathrm{erf}[\frac{\mathrm{ln}x-\mu}{\sqrt{2}\sigma}]
+//' }
+//' \deqn{
+//' f(x)=\frac{1}{x\sigma\sqrt{2\pi}}\mathrm{exp}\left( -\frac{(\mathrm{ln}x-\mu)^{2}}{2\sigma^{2}} \right)
+//' }
+//' where \eqn{\mu} is the mean on the log scale, and \eqn{\sigma} is the standard deviation on the log scale.
+//'
 //' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
 //' @param meanlog log mean of \code{\link[stats]{Lognormal}} distribution
 //' @param sdlog log standard deviation of \code{\link[stats]{Lognormal}} distribution
@@ -94,6 +103,16 @@ Rcpp::NumericMatrix calcLognormalKernel(const Rcpp::NumericMatrix& distMat,
 //' Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a
 //' stochastic matrix where one step movement probabilities follow a gamma density.
 //'
+//' The distribution and density functions for the gamma kernel are given below:
+//' \deqn{
+//' F(x)=\frac{1}{\Gamma(\alpha)}\gamma(\alpha,\beta x)
+//' }
+//' \deqn{
+//' f(x)=\frac{\beta^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}
+//' }
+//' where \eqn{\Gamma(\alpha)} is the Gamma function, \eqn{\gamma(\alpha,\beta x)} is hte lower incomplete
+//' gamma function, and \eqn{\alpha,\beta} are the shape and rate parameters, respectively.
+//'
 //' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
 //' @param shape shape parameter of \code{\link[stats]{GammaDist}} distribution
 //' @param rate rate parameter of \code{\link[stats]{GammaDist}} distribution
@@ -137,6 +156,15 @@ Rcpp::NumericMatrix calcGammaKernel(const Rcpp::NumericMatrix& distMat, const do
 //' Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a
 //' stochastic matrix where one step movement probabilities follow an exponential density.
 //'
+//' The distribution and density functions for the exponential kernel are given below:
+//' \deqn{
+//' F(x)=1-e^{-\lambda x}
+//' }
+//' \deqn{
+//' f(x)=\lambda e^{-\lambda x}
+//' }
+//' where \eqn{\lambda} is the rate parameter of the exponential distribution.
+//'
 //' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
 //' @param rate rate parameter of \code{\link[stats]{Exponential}} distribution
 //'
@@ -172,18 +200,35 @@ Rcpp::NumericMatrix calcExpKernel(const Rcpp::NumericMatrix& distMat, const doub
 };
 
 /**************************************
- * hurdle exponential (point mass at zero + zero-truncated exponential distribution)
+ * zero-inflated exponential (point mass at zero + zero-truncated exponential distribution)
  *************************************/
 
-//' Calculate Hurdle Exponential Stochastic Matrix
+//' Calculate Zero-inflated Exponential Stochastic Matrix
 //'
 //' Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a
-//' stochastic matrix where one step movement probabilities follow an zero-truncated
-//' exponential density with a point mass at zero.
+//' stochastic matrix where one step movement probabilities follow an zero-inflated
+//' exponential density with a point mass at zero. The point mass at zero represents the first stage of
+//' a two-stage process, where mosquitoes decide to stay at their current node or leave anywhere.
+//' This parameter can be calculated from lifetime probabilities to stay at the current node with the
+//' helper function \code{\link[MGDrivE]{calcZeroInflation}}.
+//'
+//' If a mosquito leaves its current node, with probability \eqn{1-p_{0}}, it then chooses
+//' a destination node according to a standard exponential density with rate parameter \eqn{rate}.
+//'
+//' The distribution and density functions for the zero inflated exponential kernel are given below:
+//' \deqn{
+//' F(x)=p_{0}\theta(x) + (1-p_{0})(1-e^{-\lambda x})
+//' }
+//' \deqn{
+//' f(x)=p_{0}\delta(x)+(1-p_{0})\lambda e^{-\lambda x}
+//' }
+//' where \eqn{\lambda} is the rate parameter of the exponential distribution, \eqn{\theta(x)} is the Heaviside step function
+//' and \eqn{\delta(x)} is the Dirac delta function.
+//'
 //'
 //' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
 //' @param rate rate parameter of \code{\link[stats]{Exponential}} distribution
-//' @param pi point mass at zero
+//' @param p0 point mass at zero
 //'
 //' @examples
 //' # setup distance matrix
@@ -196,11 +241,11 @@ Rcpp::NumericMatrix calcExpKernel(const Rcpp::NumericMatrix& distMat, const doub
 //'
 //' # calculate hurdle exponential distribution over distances
 //' #  rate and point mass are just for example
-//' kernMat = calcHurdleExpKernel(distMat = distMat, rate = 10, pi = 1000)
+//' kernMat = calcHurdleExpKernel(distMat = distMat, rate = 1/1e6, p0 = 0.1)
 //'
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat, double rate, double pi){
+Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat, double rate, double p0){
   const double a = 1.0e-10; /* lower truncation bound */
 
   size_t n = distMat.nrow();
@@ -214,8 +259,8 @@ Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat, doub
         kernMat(i,j) = dtruncExp(distMat(i,j),rate,a,inf_pos); /* truncated density */
       }
     }
-    kernMat(i,_) = (kernMat(i,_) / Rcpp::sum(kernMat(i,_))) *(1-pi); /* normalize density */
-    kernMat(i,i) = pi; /* point mass at zero */
+    kernMat(i,_) = (kernMat(i,_) / Rcpp::sum(kernMat(i,_))) *(1-p0); /* normalize density */
+    kernMat(i,i) = p0; /* point mass at zero */
   }
 
   return kernMat;

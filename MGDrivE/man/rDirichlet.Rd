@@ -10,7 +10,7 @@ rDirichlet(migrationPoint)
 \item{migrationPoint}{Vector of weights for draws. Must be positive.}
 }
 \description{
-Make a single draw from a dirichlet distribution with the shape parameter
+Make a single draw from a Dirichlet distribution with the shape parameter
 one. This replaces the MCMCpack rDirichlet function, which was wholly written
 in R.
 }

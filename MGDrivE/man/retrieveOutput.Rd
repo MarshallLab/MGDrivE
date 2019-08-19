@@ -7,7 +7,7 @@
 retrieveOutput(readDir, verbose = TRUE)
 }
 \arguments{
-\item{readDir}{directory where output was written to; must not end in path seperator}
+\item{readDir}{directory where output was written to; must not end in path separator}
 
 \item{verbose}{Chatty? Default is TRUE}
 }

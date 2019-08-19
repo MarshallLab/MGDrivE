@@ -12,14 +12,14 @@ calcHaversine(latLongs, r = 6378137)
 \item{r}{Earth radius. Default is WGS-84 radius}
 }
 \description{
-This function calculates geodesic distance using the haversine method.
+This function calculates geodesic distance using the Haversine method.
 }
 \examples{
 # two-column matrix with latitude/longitude, in degrees
 latLong = cbind(runif(n = 5, min = 0, max = 90),
                 runif(n = 5, min = 0, max = 180))
 
-# haversine distance formula
+# Haversine distance formula
 distMat = calcHaversine(latLongs = latLong)
 
 }

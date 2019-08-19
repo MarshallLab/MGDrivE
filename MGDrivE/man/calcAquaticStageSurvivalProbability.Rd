@@ -2,7 +2,7 @@
 % Please edit documentation in R/Network-Parameters.R
 \name{calcAquaticStageSurvivalProbability}
 \alias{calcAquaticStageSurvivalProbability}
-\title{Calculate Aquatic Stage Surival Probability}
+\title{Calculate Aquatic Stage Survival Probability}
 \usage{
 calcAquaticStageSurvivalProbability(mortalityRate, stageDuration)
 }

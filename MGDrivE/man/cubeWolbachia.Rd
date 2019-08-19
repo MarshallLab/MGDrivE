@@ -25,7 +25,7 @@ Named list containing the inheritance cube, transition matrix, genotypes, wild-t
 and all genotype-specific parameters.
 }
 \description{
-This function creates an inheritance cube to model a Wolbachia infection. Wobachia
+This function creates an inheritance cube to model a Wolbachia infection. Wolbachia
 is a parasite that can infect mosquitoes. It biases its inheritance through
 cytoplasmic incompatibility. \cr
 This drive has 2 alleles at 1 locus:

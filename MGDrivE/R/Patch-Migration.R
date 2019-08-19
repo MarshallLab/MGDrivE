@@ -15,7 +15,7 @@
 # Outbound Migration
 ########################################################################
 
-#' Deterministic Oubound Migration from a Patch
+#' Deterministic Outbound Migration from a Patch
 #'
 #' Deterministc model of outbound migration of \code{AF1new} females from this patch, fills up the \code{femaleMigration} array.
 #'
@@ -36,7 +36,7 @@ oneDay_migrationOut_deterministic_Patch <- function(){
 
 }
 
-#' Stochastic Oubound Migration
+#' Stochastic Outbound Migration
 #'
 #' Stochastic model of migration of \code{AF1new} females from this patch, fills up the \code{femaleMigration} array.
 #' Migration is modeled as a Dirichlet-Multinomial process parameterized by \code{moveVar} multiplied by the row corresponding to this

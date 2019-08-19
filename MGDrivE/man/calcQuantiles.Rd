@@ -4,13 +4,13 @@
 \alias{calcQuantiles}
 \title{Summary Statistics for Stochastic MGDrivE}
 \usage{
-calcQuantiles(readDir, writeDirectory, mean = TRUE, quantiles = NULL,
+calcQuantiles(readDir, writeDir, mean = TRUE, quantiles = NULL,
   numCores = 1, verbose = TRUE)
 }
 \arguments{
 \item{readDir}{Directory to find repetition folders in}
 
-\item{writeDirectory}{Directory to write output}
+\item{writeDir}{Directory to write output}
 
 \item{mean}{Boolean, calculate mean or not. Default is TRUE}
 
@@ -21,7 +21,7 @@ calcQuantiles(readDir, writeDirectory, mean = TRUE, quantiles = NULL,
 \item{verbose}{Chatty? Default is TRUE}
 }
 \value{
-Writes output to files in writeDirectory
+Writes output to files in writeDir
 }
 \description{
 This function reads in all repetitions for each patch and calculates either
@@ -29,9 +29,9 @@ the mean, quantiles, or both. User chooses the quantiles, up to 4 decimal places
 and enters them as a vector. Quantiles are calculated empirically. (order does not matter)  \cr
 }
 \details{
-Given the readDirectory, this function assumes the follow file structure: \cr
+Given the readDir, this function assumes the follow file structure: \cr
 \itemize{
-\item readDirectory
+\item readDir
 \itemize{
 \item repetition 1
 \itemize{
@@ -66,11 +66,11 @@ oPath <- "my/path/output"
 
 # here, only calculate mean, no quantiles
 #  no return value
-calcQuantiles(readDir = fPath, writeDirectory = oPath, mean = TRUE,
+calcQuantiles(readDir = fPath, writeDir = oPath, mean = TRUE,
               quantiles = NULL, numCores = 1)
 
 # here, calculate 2.5\% and 97.5\% quantiles
-calcQuantiles(readDir = fPath, writeDirectory = oPath, mean = FALSE,
+calcQuantiles(readDir = fPath, writeDir = oPath, mean = FALSE,
               quantiles = c(0.025, 0.975), numCores = 1)
 }
 

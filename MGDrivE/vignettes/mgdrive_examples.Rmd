@@ -36,7 +36,7 @@ set.seed(seed = 42)
 
 ## Landscape Setup
 
-*MGDrivE* is capable of running in one population, on a simple network, or on networks derived from real locations and parametrized using local topology and climate. Topology and climate analysis are out of the scope of this vignette, but we will show how to setup simple, single-node examples to real landscapes parametrized only by distance. The key to this flexibility is that the landscape module of *MGDrivE* only requires a matrix of daily movement rates between nodes. Nodes are listed along the X/Y-axis, with the diagonal representing the proportion of mosquitoes that don't leave a node at each day.  
+*MGDrivE* is capable of running in one population, on a simple network, or on networks derived from real locations and parameterized using local topology and climate. Topology and climate analysis are out of the scope of this vignette, but we will show how to setup simple, single-node examples to real landscapes parameterized only by distance. The key to this flexibility is that the landscape module of *MGDrivE* only requires a matrix of daily movement rates between nodes. Nodes are listed along the X/Y-axis, with the diagonal representing the proportion of mosquitoes that don't leave a node at each day.  
   
 Each example produces a `moveMat` object - this is the matrix of daily movement rates. It is used for the `migrationMale` and/or `migrationFemale` matrices in the constructor of the `Network` object.
 
@@ -133,9 +133,11 @@ moveMat
 
 Here we show how to make a landscape from a set of coordinates, each of which will represent a node the user wishes to simulate in the metapopulation model. In this example we show a simple setup with 3 nodes.  
   
-The first step is to calculate the distance between points using built-in functions. Examples include `calcCos()`, `calcHaversine()`, or most accurately, `calcVinEll()`.  
+The first step is to calculate the distance between points - several built-in functions are provided, or the user may provide their own. Examples of built-in functions include `calcCos()`, `calcHaversine()`, or most accurately, `calcVinEll()`.  
   
-The second step that we do here is to put an exponential kernal over those distances. We do this because it is hypothesized that mosquitoes follow a leptokurtic movement pattern. This also ensures that our rows are normalized. However, this is not necessary for all scenarios, one must only remember to normalize the rows.
+The second step that we do here is to put a zero-inflated exponential kernel over those distances, using function `calcHurdleExpKernel()`. We do this because it is hypothesized that mosquitoes follow a leptokurtic movement pattern. This also ensures that our rows are normalized. However, this is not necessary for all scenarios, one must only remember to normalize the rows.
+
+We also provide functions to calculate a basic exponential kernel (`calcExpKernel()`), gamma kernel (`calcGammaKernel()`), and log-normal kernel (`calcLognormalKernel()`).
 
 ```{r}
 # realistic landscape
@@ -152,12 +154,20 @@ lat_longs <- matrix(data = c(37.873507, -122.268181,
 # dmat <- MGDrivE::calcVinSph(latLongs = lat_longs)
 distMat <- MGDrivE::calcVinEll(latLongs = lat_longs)
 
+# calculate a zero-inflated movement kernal over the distances
+# p0 is the probability, per day, that a mosquito doesn't move.
+#  This is the value used in Code sample 1 from the paper, and in the examples in our
+#  github repository. 
+# rate is the average migration rate per day, implying 1/rate is the average 
+#  migration distance. The average distance was estimated as ~55.5 meters per day,
+#  which is the value used in Code sample 1 and in the examples on github.
+p0 <- 0.991
+rate <- 1/55.5
 
-# rate parameter such that about 90% of movement is within 1036 meters
-moveMat <- MGDrivE::calcExpKernel(distMat = distMat, r = 1/450)
+moveMat <- MGDrivE::calcHurdleExpKernel(distMat = distMat, rate = rate, p0 = p0)
 moveMat
 ```
-
+Notice, the diagonal elements, representing the probability that a critter in each node remains in that node, is equal to to zero-inflation probability, p0. Additionally, each row is normalized to 1.
 
 ## Inheritance Simulations
 
@@ -305,7 +315,7 @@ totPop <- read.csv(file = file.path(outFolder, "M_Run001_Patch001.csv"),
 
 In the figure, we see males and females of every genotype plotted by time, along with the total population. With an equilibrium population size of `r adultPopEquilibrium` individuals, and no sex biasing, we have an equal division of males and females. The release occurs equally in both sexes at time t = `r releasesParameters$releasesStart`, as expected, and we see an increase in the total population due to the release before recovering to the equilibrium population size.  
 
-Since this is basic Mendelian inheritance, we should be able to calculate the expected allele and genotype frequencies assuming Hardy-Weinberg equilibrium (HWE). As we released `r 2*releasesParameters$releaseProportion` _aa_ individuals into a population of `r adultPopEquilibrium` _AA_ individuals, we can calculate the expected allele frequenciies:  
+Since this is basic Mendelian inheritance, we should be able to calculate the expected allele and genotype frequencies assuming Hardy-Weinberg equilibrium (HWE). As we released `r 2*releasesParameters$releaseProportion` _aa_ individuals into a population of `r adultPopEquilibrium` _AA_ individuals, we can calculate the expected allele frequencies:  
 
   * _a_: $\frac{1}{26}$  
   * _A_: $\frac{25}{26}$  
@@ -328,7 +338,7 @@ However, when we look at the equilibrium genotypes from the simulation, the popu
   * _Aa_: `r round(x = totPop[tMax, "Aa"], digits = 2)`
   * _aa_: `r round(x = totPop[tMax, "aa"], digits = 2)` 
 
-These are significantly different from the expected genotype numbers according to HWE. This is because of the assumptions in how HWE is calculated, specifically, ignoring maturation of child stages prior to reproduction by assuming discrete generations, and infinite population size. In contrast, *MGDrivE* has overlapping generations and tracks offspring development prior to adulthood. Additionally, while the release performed here is small, the population is far from "inifinite", and the release represents `r 2*releasesParameters$releaseProportion/adultPopEquilibrium * 100`% of the population. Therefore, the effective population size is significantly larger than `r adultPopEquilibrium`. Ignoring the effect of constant daily mortality on the distribution of adults, implying individual lifespans follow a geometric distribution and reducing the proportion of released individuals to wild-type as adults die off, we can calculate the effective population size using the following parameters;  
+These are significantly different from the expected genotype numbers according to HWE. This is because of the assumptions in how HWE is calculated, specifically, ignoring maturation of child stages prior to reproduction by assuming discrete generations, and infinite population size. In contrast, *MGDrivE* has overlapping generations and tracks offspring development prior to adulthood. Additionally, while the release performed here is small, the population is far from "infinite", and the release represents `r 2*releasesParameters$releaseProportion/adultPopEquilibrium * 100`% of the population. Therefore, the effective population size is significantly larger than `r adultPopEquilibrium`. Ignoring the effect of constant daily mortality on the distribution of adults, implying individual lifespans follow a geometric distribution and reducing the proportion of released individuals to wild-type as adults die off, we can calculate the effective population size using the following parameters;  
 
   * Adult Population Size: `r adultPopEquilibrium`  
   * Release Amount: `r 2*releasesParameters$releaseProportion`  
@@ -510,9 +520,9 @@ totPop <- read.csv(file = file.path(outFolder, "M_Run001_Patch001.csv"),
            header = TRUE, sep = ",")[ ,-1]
 ```
 
-Again, we plot the females on the left, the males on the right, with the population size on the Y-axis and simulation time along the X-axis. We see the total population size starts at 250 males and females, a total of 500 individuals, but quickly drops to `r totPop[90,1]`. This is because of the fitness cost applied to the _AA_ individuals that make up the population. As we applied an 60% fitness cost, we expect the total population to be 60% of the desired population. 60% of 500 individuals, assuming HWE applies, is 300, which is close to the simulated population size prior to the releases. This discrepency can be accounted for by the presence of density-dependence during larval maturation.  
+Again, we plot the females on the left, the males on the right, with the population size on the Y-axis and simulation time along the X-axis. We see the total population size starts at 250 males and females, a total of 500 individuals, but quickly drops to `r totPop[90,1]`. This is because of the fitness cost applied to the _AA_ individuals that make up the population. As we applied an 60% fitness cost, we expect the total population to be 60% of the desired population. 60% of 500 individuals, assuming HWE applies, is 300, which is close to the simulated population size prior to the releases. This discrepancy can be accounted for by the presence of density-dependence during larval maturation.  
 
-After releases of _aa_ individuals are performed, we see the population quickly drive towards heterozygous individuals, and the population size marginally recover. The population partially recovers becausee there is no fitness cost on the heterozygotes, but does not fully recover because heterozygotes create homozygotes at each generation. At equilibrium, given that heterozygotes produce homozygotes at a rate of 50% per generation, our expected genotype amounts (assuming all HWE assumptions apply) are:  
+After releases of _aa_ individuals are performed, we see the population quickly drive towards heterozygous individuals, and the population size marginally recover. The population partially recovers because there is no fitness cost on the heterozygotes, but does not fully recover because heterozygotes create homozygotes at each generation. At equilibrium, given that heterozygotes produce homozygotes at a rate of 50% per generation, our expected genotype amounts (assuming all HWE assumptions apply) are:  
   
   * _AA_: $500 \cdot \frac{1}{4} \cdot 0.60 = 75$  
   * _Aa_: $500 \cdot \frac{1}{2} \cdot 1.00 = 250$  
@@ -830,7 +840,7 @@ aggregateFemales(readDir=outFolder,genotypes=cube$genotypesID,
 plotMGDrivESingle(readDir=outFolder,lwd=3.5,alpha=1)
 ```
 
-The plots are now expanded to include both populations in our simulation, as labeled on the right side of the plot. We performed `r releasesParameters$releasesNumber` releases of `r releasesParameters$releaseProportion` _aa_ individuals in the first node. However, since there is no migration between the populations, we see _Aa_ individuals appear in patch 1 only, while patch 2 remails completely _AA_.  
+The plots are now expanded to include both populations in our simulation, as labeled on the right side of the plot. We performed `r releasesParameters$releasesNumber` releases of `r releasesParameters$releaseProportion` _aa_ individuals in the first node. However, since there is no migration between the populations, we see _Aa_ individuals appear in patch 1 only, while patch 2 remains completely _AA_.  
 
 ```{r, echo=FALSE}
 ####################
@@ -962,7 +972,7 @@ aggregateFemales(readDir=outFolder,genotypes=cube$genotypesID,
 plotMGDrivESingle(readDir=outFolder,totalPop = TRUE,lwd=3.5,alpha=1)
 ```
 
-As expected, with a 1% daily migration rate, we see heterozygotes in patch 2 shorterly after they begin emerging in patch 1.  
+As expected, with a 1% daily migration rate, we see heterozygotes in patch 2 shortly after they begin emerging in patch 1.  
 
 ```{r, echo=FALSE}
 ####################
@@ -1108,9 +1118,9 @@ plotMGDrivESingle(readDir=folderNames[1],totalPop = TRUE,lwd=3.5,alpha=1)
 plotMGDrivEMult(readDir=outFolder,lwd=0.35,alpha=0.75)
 ```
 
-Looking at the first plot, of just one repetition from the 25 that we ran, we see the release at time 25 and then the increase in heterozygotes after that. If we look closely, there are a few _aa_ individuals that migrate to the second patch, but very few. We see how the population of _Aa_ individuals fluctuates near zero the entire simulation, but there are enough that they never completely drop out of the popultion. The total population fluctuates around 500 individuals, 250 each of males and females, as expected from the parameters provided.  
+Looking at the first plot, of just one repetition from the 25 that we ran, we see the release at time 25 and then the increase in heterozygotes after that. If we look closely, there are a few _aa_ individuals that migrate to the second patch, but very few. We see how the population of _Aa_ individuals fluctuates near zero the entire simulation, but there are enough that they never completely drop out of the population. The total population fluctuates around 500 individuals, 250 each of males and females, as expected from the parameters provided.  
 
-Looking at the second plot with all 25 repetitions provided, we see how the simulations hueristically agree with the deterministic ones performed above. The general analysis remains the same here, but with more noise, accounting for the random fluctuations in real populations. While not particularly enlightening in this setting, the behavior and outcome are the same, it's easy to see how low-frequency genotypes could be lost from a population.  
+Looking at the second plot with all 25 repetitions provided, we see how the simulations heuristically agree with the deterministic ones performed above. The general analysis remains the same here, but with more noise, accounting for the random fluctuations in real populations. While not particularly enlightening in this setting, the behavior and outcome are the same, it's easy to see how low-frequency genotypes could be lost from a population.  
 
 ```{r, echo=FALSE}
 ####################
@@ -1275,7 +1285,7 @@ plotMGDrivEMult(readDir=outFolder,lwd=0.35,alpha=0.75)
 
 Looking at the first plot, a single repetition of our stochastic simulation, we see that the results are very similar. The population size first drops to about 300, 60% of the equilibration population, and then increases to about 400, as expected from the deterministic simulation and analysis performed before. Do notice however, the dynamics are slower in the first population than in the single-population exploration. This is because we performed the same releases, but with a second population, there is a small immigration of _AA_ individuals into the first patch and a small emigration of _aa_ and _Aa_ individuals out of patch 1 into patch 2. Thus, there is effectively twice the population size total, even though there is only a 1% chance of mixing per day.  
 
-The second plot shows all 25 repetitions of our simulation. The results clearly follow the one-node, deterministic simulation performed before. There is an inital population drop, as both patches are fully _AA_ until we perform releases, then releases and a small recovery in population size. The general dynamics remain very similar, with the shift from _AA_ to _Aa_ individuals in the population taking a little longer than originally. This is also something we saw in the one-node stochastic simulation, and is a result of stochasticy in the population dynamics, as well as migration to/from the second patch.  
+The second plot shows all 25 repetitions of our simulation. The results clearly follow the one-node, deterministic simulation performed before. There is an initial population drop, as both patches are fully _AA_ until we perform releases, then releases and a small recovery in population size. The general dynamics remain very similar, with the shift from _AA_ to _Aa_ individuals in the population taking a little longer than originally. This is also something we saw in the one-node stochastic simulation, and is a result of stochasticity in the population dynamics, as well as migration to/from the second patch.  
 
 ```{r, echo=FALSE}
 ####################
@@ -1289,11 +1299,11 @@ rm(list=ls())
 
 ### Reciprocal Translocation Gene Drive Simulations, One Population
 
-[Reciprocal translocations](https://pubs.acs.org/doi/10.1021/acssynbio.7b00451) are a classic form of gene drive, utilizing the underdominance effects of gene dosage compensation to either suppress a population or replace a population, depending on fitness costs and release frequencies. The classic reciprocal translocation involves breaking two chromosomes, swapping the broken ends, and reattaching the ends to the opposite chromosomes. Theoretically, this creates a perfect 50% fitness cost on the population, as has been shown previously. However, previous simulations studying reciprocal translocations have been panmictec, deterministic, and ignore life-stages. Thus, we start with two deterministic simulations, to find the critical threshold when a complete life-history is included, and then explore how that threshold is affected by stochasticity.  
+[Reciprocal translocations](https://pubs.acs.org/doi/10.1021/acssynbio.7b00451) are a classic form of gene drive, utilizing the underdominance effects of gene dosage compensation to either suppress a population or replace a population, depending on fitness costs and release frequencies. The classic reciprocal translocation involves breaking two chromosomes, swapping the broken ends, and reattaching the ends to the opposite chromosomes. Theoretically, this creates a perfect 50% fitness cost on the population, as has been shown previously. However, previous simulations studying reciprocal translocations have been panmictic, deterministic, and ignore life-stages. Thus, we start with two deterministic simulations, to find the critical threshold when a complete life-history is included, and then explore how that threshold is affected by stochasticity.  
 
 #### Deterministic, Below Threshold
 
-We maintain the same theoretical fitness cost, namely, that posession of only 1 copy of a reciprocal chromosome is always fatal. We perform 5 releases of transgenic critters, both male and female, every 7 days starting at day 25. This is not enough to make the population 50% transgenic, and therefore the transgenic critters should die out.  
+We maintain the same theoretical fitness cost, namely, that possession of only 1 copy of a reciprocal chromosome is always fatal. We perform 5 releases of transgenic critters, both male and female, every 7 days starting at day 25. This is not enough to make the population 50% transgenic, and therefore the transgenic critters should die out.  
 
 ```{r}
 ####################
@@ -1556,7 +1566,7 @@ rm(list=ls())
 
 #### Stochastic, "Above" Threshold
 
-The preceeding two simulations show dramatically different results with the addition of a single release. This implies that we are near the critical threshold but gives a false impression of how distinct or certain we are of the outcome. Stochastic fluctuations can quickly push us across a threshold, even determinisitic simulations implied we had passed/not passed it. Using stochastic simulations, we can put a probability on an outcome, given that we are near the threshold. Thus, we perform the same simulation as above, 6 releases, that we think puts us over the critical threshold. However, as we will see below, this is not entirely the case.  
+The preceding two simulations show dramatically different results with the addition of a single release. This implies that we are near the critical threshold but gives a false impression of how distinct or certain we are of the outcome. Stochastic fluctuations can quickly push us across a threshold, even deterministic simulations implied we had passed/not passed it. Using stochastic simulations, we can put a probability on an outcome, given that we are near the threshold. Thus, we perform the same simulation as above, 6 releases, that we think puts us over the critical threshold. However, as we will see below, this is not entirely the case.  
 
 ```{r}
 ####################
@@ -1717,7 +1727,7 @@ sCPerc <- successCount / nRep * 100
 ```
 
 
-We perform 20 repetitions of our stochastic simulation. In an experimental setting, we should perform many more repetitions (the number of repetitions is related to the precision of your estimate. 100 repetitions would provide 1% resoultion, while our 20 repetitions here only provides 5% resolution), but outcome resolution needs to be balanced against run time.  
+We perform 20 repetitions of our stochastic simulation. In an experimental setting, we should perform many more repetitions (the number of repetitions is related to the precision of your estimate. 100 repetitions would provide 1% resolution, while our 20 repetitions here only provides 5% resolution), but outcome resolution needs to be balanced against run time.  
 
 First we plot a single repetition. Wild-type (aabb) critters are in orange, and transgenic (AABB) critters are in blue. We see that there is some fluctuation, but the final result is the same as the deterministic simulation. This is a good sign, it implies we are well above the critical threshold, but it is only one repetitions.  
 

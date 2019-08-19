@@ -98,7 +98,7 @@
 #'  * patchReleases: a list of release schedules for each patch
 #'  * verbose: Chatty? Default is TRUE
 #'
-#'  @examples
+#' @examples
 #'  \dontrun{
 #'  # There are no simple examples for this, so looking at the vignettes would be
 #'  #  most useful.
@@ -108,7 +108,6 @@
 #'
 #'  # One example, explored in great detail. This is probably more helpful.
 #'  vignette("MGDrivE-Run", package = "MGDrivE")
-#'
 #'  }
 #'
 #' @export
@@ -469,7 +468,7 @@ Network$set(which = "public",name = "get_genotypesN",
   value = get_genotypesN_Network,overwrite = TRUE
 )
 
-#' Get wildType
+#' Get wildtype
 #'
 #' Return wild-type genotype
 #'

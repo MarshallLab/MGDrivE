@@ -245,7 +245,7 @@ Here, folder names reflect their purpose - holding each repetition of our stocha
   
 The biological parameters were chosen for _Aedes aegypti_ in our original simulations. These parameters represent:  
 
-  * `betaK`: Daily number of eggs laid per female mosquitoe
+  * `betaK`: Daily number of eggs laid per female mosquito
   * `tEgg`: Number of days spent in the egg stage
   * `tLarva`: Number of days spent in the larval stage
   * `tPupa`: Number of days spent in the pupa stage
@@ -329,7 +329,7 @@ While we use the default parameters, there are several fitness costs that can be
   
 #### Releases
 
-*MGDrivE* uses a list specifying releases of males or females to paramtrize the release schedule. The initial list is `NULL`, and only if there are releases to be performed is anything added.  
+*MGDrivE* uses a list specifying releases of males or females to parameterize the release schedule. The initial list is `NULL`, and only if there are releases to be performed is anything added.  
 
 ```{r}
 ####################
@@ -398,7 +398,7 @@ netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
 setupMGDrivE(stochasticityON = TRUE)
 ```
 
-Finaly, we setup the complete network to run our simulation.
+Finally, we setup the complete network to run our simulation.
 
 ```{r}
 # build network prior to run
@@ -451,7 +451,7 @@ fMat <- as.matrix(read.csv(file = list.files(path = outFolder, full.names = TRUE
 colnames(mMat)
 ```
 
-The header for male files (`M_RunXXX.csv`) is shown above. They always containst the time, patch, and every possible genotype in the simulation. For the Mendelian inheritance here, there are three possible genotypes, `r cube$genotypesID`. The Time and Patch columns will always be the same, but the number of genotypes changes depending on the inheritance pattern used. For example, CRISPR-based homing inheritance has `r cubeHomingDrive()$genotypesN`, so there would be `r 2 + cubeHomingDrive()$genotypesN` columns in the male files. Below, we see how each patch is designated in the file.  
+The header for male files (`M_RunXXX.csv`) is shown above. They always contains the time, patch, and every possible genotype in the simulation. For the Mendelian inheritance here, there are three possible genotypes, `r cube$genotypesID`. The Time and Patch columns will always be the same, but the number of genotypes changes depending on the inheritance pattern used. For example, CRISPR-based homing inheritance has `r cubeHomingDrive()$genotypesN`, so there would be `r 2 + cubeHomingDrive()$genotypesN` columns in the male files. Below, we see how each patch is designated in the file.  
 
 ```{r}
 head(x = mMat, n = 2*sitesNumber)
@@ -560,7 +560,7 @@ cat("\n")
 fMat2[(releasesParameters$releasesStart-2):(releasesParameters$releasesStart+2), ]
 ```
 
-Looking closely, we see the "AAAA" column combined wiht the "AAaa" column in the first output sum to the value in the "AA" column in the second.  
+Looking closely, we see the "AAAA" column combined with the "AAaa" column in the first output sum to the value in the "AA" column in the second.  
 The same goes for the "aaAA" and "aaaa" columns in the first and the "aa" column in the second.  
 
 #### Plotting

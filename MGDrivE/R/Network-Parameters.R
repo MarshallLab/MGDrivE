@@ -201,7 +201,7 @@ calcMemoryWindow <- function(stagesDuration){
 #' @param fertility number of eggs per oviposition for wild-type females, \eqn{\beta}
 #' @param thetaAq vector of density-independent survival probabilities of aquatic stages, \eqn{\theta_{e}, \theta_{l}}
 #' @param tAq vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}
-#' @param adultPopSizeEquilibrium adult population size at equilbrium, \eqn{Ad_{eq}}
+#' @param adultPopSizeEquilibrium adult population size at equilibrium, \eqn{Ad_{eq}}
 #' @param populationGrowthRate population growth in absence of density-dependent mortality \eqn{R_{m}}
 #'
 calcDensityDependentDeathRate <- function(fertility, thetaAq, tAq, adultPopSizeEquilibrium, populationGrowthRate){
@@ -233,7 +233,7 @@ calcPopulationGrowthRate <- function(dailyPopGrowthRate, averageGenerationTime){
   return(dailyPopGrowthRate^averageGenerationTime)
 }
 
-#' Calculate Aquatic Stage Surival Probability
+#' Calculate Aquatic Stage Survival Probability
 #'
 #' Calculate \eqn{\theta_{st}}, density-independent survival probability, given by: \deqn{\theta_{st}=(1-\mu_{st})^{T_{st}}}
 #'
@@ -263,7 +263,7 @@ calcLarvalStageMortalityRate <- function(generationPopGrowthRate, adultMortality
 
 #' Calculate Survival Probability of entire Aquatic Stage Life-cycle
 #'
-#' Calculate vector of survival probabilities for each stage of aquatic lifecycle.
+#' Calculate vector of survival probabilities for each stage of aquatic life-cycle.
 #'
 #' @param eggSurvivalProbability see \code{\link{calcAquaticStageSurvivalProbability}}
 #' @param larvaSurvivalProbability see \code{\link{calcAquaticStageSurvivalProbability}}

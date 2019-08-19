@@ -98,7 +98,6 @@ oneRun_Network <- function(conADM = NULL, conAF1 = NULL, verbose = TRUE){
   close(private$conADM)
   close(private$conAF1)
 
-  
   if(verbose){cat("run ",private$runID," over\n",sep="")}
 
 }
@@ -185,6 +184,7 @@ multRun_Network <- function(conM = NULL, conF = NULL, verbose = TRUE){
     close(private$conADM)
     close(private$conAF1)
 
+    
     if(verbose){cat("run ",private$runID," over\n",sep="")}
 
     ####################

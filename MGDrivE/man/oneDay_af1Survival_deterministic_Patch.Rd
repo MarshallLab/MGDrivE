@@ -7,6 +7,6 @@
 oneDay_af1Survival_deterministic_Patch()
 }
 \description{
-Daily adult female survival is calculated according to \deqn{\overline{\overline{Af_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_f}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_f}} correponds to
+Daily adult female survival is calculated according to \deqn{\overline{\overline{Af_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_f}}, where \eqn{\mu_{ad}} is adult mortality rate and \eqn{\overline{\omega_f}} corresponds to
 genotype-specific mortality effects.
 }
