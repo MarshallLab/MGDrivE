@@ -2,6 +2,10 @@
   packageStartupMessage("Loading MGDrivE: Mosquito Gene Drive Explorer")
 }
 
+.onUnload <- function (libpath) {
+  library.dynam.unload("MGDrivE", libpath)
+}
+
 #' @importFrom utils globalVariables
 
 # CRAN Note avoidance
