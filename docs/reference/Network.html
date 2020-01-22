@@ -8,21 +8,25 @@
 
 <title>Network Class Definition — Network • MGDrivE</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,10 +34,12 @@
 
 
 
-<meta property="og:title" content="Network Class Definition — Network" />
 
-<meta property="og:description" content="A Network class object stores all the information for a simulation on a defined landscape." />
+<meta property="og:title" content="Network Class Definition — Network" />
+<meta property="og:description" content="A Network class object stores all the information for a simulation on
+a defined landscape." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -45,6 +51,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -63,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -91,7 +98,6 @@
   <a href="../reference/index.html">Functions</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/MarshallLab/MGDrivE">
@@ -106,6 +112,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -117,127 +124,119 @@
     </div>
 
     <div class="ref-description">
-    
-    <p>A <code>Network</code> class object stores all the information for a simulation on a defined landscape.</p>
-    
+    <p>A <code>Network</code> class object stores all the information for a simulation on
+a defined landscape.</p>
     </div>
 
-    <pre class="usage"><span class='no'>Network</span></pre>
-        
+
+
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>An <code>R6Class</code> generator object</p>
-    
     <h2 class="hasAnchor" id="constructor"><a class="anchor" href="#constructor"></a><strong>Constructor</strong></h2>
 
     
-    <ul>
+
+<ul>
 <li><p>params: see <code><a href='parameterizeMGDrivE.html'>parameterizeMGDrivE</a></code></p></li>
 <li><p>driveCube: an inheritance cube</p></li>
 <li><p>patchReleases: see <code><a href='basicRepeatedReleases.html'>basicRepeatedReleases</a></code> for examples on how to set up release schedules</p></li>
 <li><p>migrationMale: a stochastic matrix whose dimensions conform to the number of patches</p></li>
 <li><p>migrationFemale: a stochastic matrix whose dimensions conform to the number of patches</p></li>
+<li><p>migrationBatch: a list of batch migration parameters. See<code><a href='basicBatchMigration.html'>basicBatchMigration</a></code></p></li>
 <li><p>directory: character string of output directory</p></li>
+<li><p>verbose: Chatty? Default is TRUE</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a><strong>Methods</strong></h2>
 
     
-    <ul>
+
+<ul>
 <li><p>get_moveVar: see <code><a href='get_moveVar_Network.html'>get_moveVar_Network</a></code></p></li>
 <li><p>get_timeAq: see <code><a href='get_timeAq_Network.html'>get_timeAq_Network</a></code></p></li>
-<li><p>get_thetaAq: see <code><a href='get_thetaAq_Network.html'>get_thetaAq_Network</a></code></p></li>
-<li><p>get_windowSize: see <code><a href='get_windowSize_Network.html'>get_windowSize_Network</a></code></p></li>
 <li><p>get_beta: see <code><a href='get_beta_Network.html'>get_beta_Network</a></code></p></li>
 <li><p>get_muAd: see <code><a href='get_muAd_Network.html'>get_muAd_Network</a></code></p></li>
-<li><p>get_dayPopGrowth: see <code><a href='get_dayPopGrowth_Network.html'>get_dayPopGrowth_Network</a></code></p></li>
-<li><p>get_AdPopEQ: see <code><a href='get_AdPopEQ_Network.html'>get_AdPopEQ_Network</a></code></p></li>
-<li><p>get_g: see <code><a href='get_g_Network.html'>get_g_Network</a></code></p></li>
-<li><p>get_genPopGrowth: see <code><a href='get_genPopGrowth_Network.html'>get_genPopGrowth_Network</a></code></p></li>
 <li><p>get_muAq: see <code><a href='get_muAq_Network.html'>get_muAq_Network</a></code></p></li>
 <li><p>get_alpha: see <code><a href='get_alpha_Network.html'>get_alpha_Network</a></code></p></li>
-<li><p>get_Leq_Network: see <code><a href='get_Leq_Network.html'>get_Leq_Network</a></code></p></li>
-<li><p>get_drivecubegenotype: see <code><a href='get_drivecubegenotype_Network.html'>get_drivecubegenotype_Network</a></code></p></li>
 <li><p>get_drivecubeindex: see <code><a href='get_drivecubeindex_Network.html'>get_drivecubeindex_Network</a></code></p></li>
 <li><p>get_tau: see <code><a href='get_tau_Network.html'>get_tau_Network</a></code></p></li>
 <li><p>get_genotypesID: see <code><a href='get_genotypesID_Network.html'>get_genotypesID_Network</a></code></p></li>
 <li><p>get_genotypesN: see <code><a href='get_genotypesN_Network.html'>get_genotypesN_Network</a></code></p></li>
-<li><p>get_wildType: see <code><a href='get_wildType_Network.html'>get_wildType_Network</a></code></p></li>
 <li><p>get_eta: see <code><a href='get_eta_Network.html'>get_eta_Network</a></code></p></li>
 <li><p>get_phi: see <code><a href='get_phi_Network.html'>get_phi_Network</a></code></p></li>
-<li><p>getOmega: see <code><a href='getOmega_Network.html'>getOmega_Network</a></code></p></li>
+<li><p>get_omega: see <code><a href='get_omega_Network.html'>get_omega_Network</a></code></p></li>
 <li><p>get_xiF: see <code><a href='get_xiF_Network.html'>get_xiF_Network</a></code></p></li>
 <li><p>get_xiM: see <code><a href='get_xiM_Network.html'>get_xiM_Network</a></code></p></li>
 <li><p>get_s: see <code><a href='get_s_Network.html'>get_s_Network</a></code></p></li>
-<li><p>get_releaseType: see <code><a href='get_releaseType_Network.html'>get_releaseType_Network</a></code></p></li>
-<li><p>get_patch: see <code><a href='get_patch_Network.html'>get_patch_Network</a></code></p></li>
-<li><p>get_patches: see <code><a href='get_patches_Network.html'>get_patches_Network</a></code></p></li>
 <li><p>get_nPatch: see <code><a href='get_nPatch_Network.html'>get_nPatch_Network</a></code></p></li>
-<li><p>get_directory: see <code><a href='get_directory_Network.html'>get_directory_Network</a></code></p></li>
-<li><p>get_simTime: see <code><a href='get_simTime_Network.html'>get_simTime_Network</a></code></p></li>
 <li><p>get_conADM: see <code><a href='get_conM_Network.html'>get_conM_Network</a></code></p></li>
-<li><p>get_conAF1: see <code><a href='get_conF_Network.html'>get_conF_Network</a></code></p></li>
-<li><p>close_allConnections: see <code><a href='close_allConnections_Network.html'>close_allConnections_Network</a></code></p></li>
+<li><p>get_conADF: see <code><a href='get_conF_Network.html'>get_conF_Network</a></code></p></li>
 <li><p>get_tNow: see <code><a href='get_tNow_Network.html'>get_tNow_Network</a></code></p></li>
-<li><p>get_migrationMale: see <code><a href='get_migrationMale_Network.html'>get_migrationMale_Network</a></code></p></li>
 <li><p>get_migrationMaleRow: see <code><a href='get_migrationMaleRow_Network.html'>get_migrationMaleRow_Network</a></code></p></li>
-<li><p>set_migrationMale: see <code><a href='set_migrationMale_Network.html'>set_migrationMale_Network</a></code></p></li>
-<li><p>get_migrationFemale: see <code><a href='get_migrationFemale_Network.html'>get_migrationFemale_Network</a></code></p></li>
 <li><p>get_migrationFemaleRow: see <code><a href='get_migrationFemaleRow_Network.html'>get_migrationFemaleRow_Network</a></code></p></li>
-<li><p>set_migrationFemale: see <code><a href='set_migrationFemale_Network.html'>set_migrationFemale_Network</a></code></p></li>
 <li><p>get_patchReleases: see <code><a href='get_patchReleases_Network.html'>get_patchReleases_Network</a></code></p></li>
+<li><p>get_batchProbs: see <code><a href='get_batchProbs_Network.html'>get_batchProbs_Network</a></code></p></li>
+<li><p>get_batchSex: see <code><a href='get_batchSex_Network.html'>get_batchSex_Network</a></code></p></li>
+<li><p>get_batchLocations: see <code><a href='get_batchLocRow_Network.html'>get_batchLocRow_Network</a></code></p></li>
 <li><p>oneDay_Migration: see <code><a href='oneDay_Migration_Network.html'>oneDay_Migration_Network</a></code></p></li>
 <li><p>reset: see <code><a href='reset_Network.html'>reset_Network</a></code></p></li>
+<li><p>oneDay: see <code><a href='oneDay_Network.html'>oneDay_Network</a></code></p></li>
 <li><p>oneRun: see <code><a href='oneRun_Network.html'>oneRun_Network</a></code></p></li>
 <li><p>multRun: see <code><a href='multRun_Network.html'>multRun_Network</a></code></p></li>
-<li><p>oneDay: see <code><a href='oneDay_Network.html'>oneDay_Network</a></code></p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a><strong>Fields</strong></h2>
 
     
-    <ul>
-<li><p>params: see <code><a href='parameterizeMGDrivE.html'>parameterizeMGDrivE</a></code></p></li>
+
+<ul>
+<li><p>parameters: see <code><a href='parameterizeMGDrivE.html'>parameterizeMGDrivE</a></code></p></li>
 <li><p>patches: a list of <code><a href='Patch.html'>Patch</a></code> objects</p></li>
 <li><p>nPatch: number of patches</p></li>
 <li><p>simTime: maximum time of simulation</p></li>
+<li><p>sampTime: how often to write output, tNow %% sampTime</p></li>
 <li><p>driveCube: an inheritance cube</p></li>
 <li><p>tNow: current time of simulation (time starts at 2 because time 1 is the initial equilibrium state)</p></li>
 <li><p>runID: an identifier for the current simulation run, useful for Monte Carlo simulation</p></li>
 <li><p>directory: a character string of where to store output</p></li>
-<li><p>conADM: a <code><a href='https://www.rdocumentation.org/packages/base/topics/connections'>connection</a></code> to write male population dynamics out to</p></li>
-<li><p>conAF1: a <code><a href='https://www.rdocumentation.org/packages/base/topics/connections'>connection</a></code> to write female population dynamics out to</p></li>
+<li><p>conADM: a <code><a href='https://rdrr.io/r/base/connections.html'>connection</a></code> to write male population dynamics out to</p></li>
+<li><p>conADF: a <code><a href='https://rdrr.io/r/base/connections.html'>connection</a></code> to write female population dynamics out to</p></li>
 <li><p>migrationMale: a stochastic matrix whose dimensions conform to the number of patches</p></li>
 <li><p>migrationFemale: a stochastic matrix whose dimensions conform to the number of patches</p></li>
 <li><p>migrationBatch: list of items for batch migration in stochastic sim.</p></li>
+<li><p>mMoveMat: holder object for male migration</p></li>
+<li><p>fMoveArray: holder object for female migration</p></li>
 <li><p>patchReleases: a list of release schedules for each patch</p></li>
-<li><p>verbose: Chatty? Default is TRUE</p></li>
 </ul>
-    <p>@examples
- # There are no simple examples for this, so looking at the vignettes would be
- #  most useful.
-    # Complete manual with examples, but none explored in depth.
- vignette("MGDrivE-Examples", package = "MGDrivE")
-    # One example, explored in great detail. This is probably more helpful.
- vignette("MGDrivE-Run", package = "MGDrivE")</p>
-    
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'> <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+ <span class='co'># There are no simple examples for this, so looking at the vignettes would be</span>
+ <span class='co'>#  most useful.</span>
+
+ <span class='co'># Complete manual with examples, but none explored in depth.</span>
+ <span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"MGDrivE-Examples"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"MGDrivE"</span>)
+
+ <span class='co'># One example, explored in great detail. This is probably more helpful.</span>
+ <span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"MGDrivE-Run"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"MGDrivE"</span>)
+
+ }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#format">Format</a></li>
-
       <li><a href="#constructor"><strong>Constructor</strong></a></li>
-
       <li><a href="#methods"><strong>Methods</strong></a></li>
-
       <li><a href="#fields"><strong>Fields</strong></a></li>
-          </ul>
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -245,13 +244,16 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

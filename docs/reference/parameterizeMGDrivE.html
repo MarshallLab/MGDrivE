@@ -8,21 +8,25 @@
 
 <title>parameterizeMGDrivE — parameterizeMGDrivE • MGDrivE</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,18 +34,18 @@
 
 
 
-<meta property="og:title" content="parameterizeMGDrivE — parameterizeMGDrivE" />
 
+<meta property="og:title" content="parameterizeMGDrivE — parameterizeMGDrivE" />
 <meta property="og:description" content="Generate parameters for simulation on a Network.
-Parameters average generation time \(g\), population growth rate \(R_{m}\),
-aquatic mortality \(\mu_{Aq}\), and aquatic survival \(\theta_{Aq}\)
+Parameters include: average generation time \(g\), population growth rate \(R_{m}\),
+aquatic mortality \(\mu_{Aq}\), and aquatic survival \(\theta_{Aq}\), which
 are shared between patches and calculated by calcAverageGenerationTime,
-calcPopulationGrowthRate, calcLarvalStageMortalityRate,
-and calcAquaticStagesSurvivalProbability. 
+calcPopulationGrowthRate, and calcLarvalStageMortalityRate. 
 Patch-specific parameters \(\alpha\) and \(L_{eq}\)
 are calculated for each patch by calcDensityDependentDeathRate
 and calcLarvalPopEquilibrium." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -53,6 +57,7 @@ and calcLarvalPopEquilibrium." />
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -71,7 +76,7 @@ and calcLarvalPopEquilibrium." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -99,7 +104,6 @@ and calcLarvalPopEquilibrium." />
   <a href="../reference/index.html">Functions</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/MarshallLab/MGDrivE">
@@ -114,6 +118,7 @@ and calcLarvalPopEquilibrium." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -125,106 +130,130 @@ and calcLarvalPopEquilibrium." />
     </div>
 
     <div class="ref-description">
-    
     <p>Generate parameters for simulation on a <code><a href='Network.html'>Network</a></code>.
-Parameters average generation time \(g\), population growth rate \(R_{m}\),
-aquatic mortality \(\mu_{Aq}\), and aquatic survival \(\theta_{Aq}\)
+Parameters include: average generation time \(g\), population growth rate \(R_{m}\),
+aquatic mortality \(\mu_{Aq}\), and aquatic survival \(\theta_{Aq}\), which
 are shared between patches and calculated by <code><a href='calcAverageGenerationTime.html'>calcAverageGenerationTime</a></code>,
-<code><a href='calcPopulationGrowthRate.html'>calcPopulationGrowthRate</a></code>, <code><a href='calcLarvalStageMortalityRate.html'>calcLarvalStageMortalityRate</a></code>,
-and <code><a href='calcAquaticStagesSurvivalProbability.html'>calcAquaticStagesSurvivalProbability</a></code>. <br />
+<code><a href='calcPopulationGrowthRate.html'>calcPopulationGrowthRate</a></code>, and <code><a href='calcLarvalStageMortalityRate.html'>calcLarvalStageMortalityRate</a></code>. <br />
 Patch-specific parameters \(\alpha\) and \(L_{eq}\)
 are calculated for each patch by <code><a href='calcDensityDependentDeathRate.html'>calcDensityDependentDeathRate</a></code>
 and <code><a href='calcLarvalPopEquilibrium.html'>calcLarvalPopEquilibrium</a></code>.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>parameterizeMGDrivE</span>(<span class='kw'>runID</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>nPatch</span>, <span class='no'>simTime</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>moveVar</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>tEgg</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>tLarva</span> <span class='kw'>=</span> <span class='fl'>14L</span>, <span class='kw'>tPupa</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>32</span>,
-  <span class='kw'>muAd</span> <span class='kw'>=</span> <span class='fl'>0.123</span>, <span class='kw'>popGrowth</span> <span class='kw'>=</span> <span class='fl'>1.096</span>, <span class='no'>AdPopEQ</span>, <span class='kw'>LarPopRatio</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>AdPopRatio_F</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>AdPopRatio_M</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>parameterizeMGDrivE</span>(
+  <span class='kw'>runID</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='no'>nPatch</span>,
+  <span class='no'>simTime</span>,
+  <span class='kw'>sampTime</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>moveVar</span> <span class='kw'>=</span> <span class='fl'>1000L</span>,
+  <span class='kw'>tEgg</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>tLarva</span> <span class='kw'>=</span> <span class='fl'>14L</span>,
+  <span class='kw'>tPupa</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>32</span>,
+  <span class='kw'>muAd</span> <span class='kw'>=</span> <span class='fl'>0.123</span>,
+  <span class='kw'>popGrowth</span> <span class='kw'>=</span> <span class='fl'>1.096</span>,
+  <span class='no'>AdPopEQ</span>,
+  <span class='no'>LarPopRatio</span>,
+  <span class='no'>AdPopRatio_F</span>,
+  <span class='no'>AdPopRatio_M</span>,
+  <span class='no'>inheritanceCube</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>runID</th>
-      <td><p>begin counting runs with this set of parameters from this value</p></td>
+      <td><p>Begin counting runs with this set of parameters from this value</p></td>
     </tr>
     <tr>
       <th>nPatch</th>
-      <td><p>number of <code><a href='Patch.html'>Patch</a></code></p></td>
+      <td><p>Number of <code><a href='Patch.html'>Patch</a></code></p></td>
     </tr>
     <tr>
       <th>simTime</th>
-      <td><p>maximum time to run simulation</p></td>
+      <td><p>Maximum time to run simulation</p></td>
     </tr>
     <tr>
-      <th>parallel</th>
-      <td><p>append process id (see <code>link[base]{Sys.getpid}</code>) to output files for running in parallel</p></td>
+      <th>sampTime</th>
+      <td><p>Times to sample, used as tNow %% sampTime, default is every day</p></td>
     </tr>
     <tr>
       <th>moveVar</th>
-      <td><p>variance of stochastic movement (not used in diffusion model of migration). It affects the concentration of probability in the Dirchlet simplex, small values lead to high variance and large values lead to low variance.</p></td>
+      <td><p>Variance of stochastic movement (not used in diffusion model of migration).
+It affects the concentration of probability in the Dirchlet simplex, small values
+lead to high variance and large values lead to low variance.</p></td>
     </tr>
     <tr>
       <th>tEgg</th>
-      <td><p>length of egg stage</p></td>
+      <td><p>Length of egg stage</p></td>
     </tr>
     <tr>
       <th>tLarva</th>
-      <td><p>length of larval instar stage</p></td>
+      <td><p>Length of larval instar stage</p></td>
     </tr>
     <tr>
       <th>tPupa</th>
-      <td><p>length of pupal stage</p></td>
+      <td><p>Length of pupal stage</p></td>
     </tr>
     <tr>
       <th>beta</th>
-      <td><p>female egg batch size of wild-type</p></td>
+      <td><p>Female egg batch size of wild-type</p></td>
     </tr>
     <tr>
       <th>muAd</th>
-      <td><p>wild-type daily adult mortality (1/muAd is average wild-type lifespan)</p></td>
+      <td><p>Wild-type daily adult mortality (1/muAd is average wild-type lifespan)</p></td>
     </tr>
     <tr>
       <th>popGrowth</th>
-      <td><p>daily population growth rate (used to calculate equilibrium)</p></td>
+      <td><p>Daily population growth rate (used to calculate equilibrium)</p></td>
     </tr>
     <tr>
       <th>AdPopEQ</th>
-      <td><p>vector of adult population size at equilibrium</p></td>
+      <td><p>Single number or vector of adult population size at equilibrium
+(single number implies all patches have the same population)</p></td>
     </tr>
     <tr>
       <th>LarPopRatio</th>
-      <td><p>may be <code>NULL</code>; if not, gives the wildtype gene frequencies among larval stages at the beginning of simulation</p></td>
+      <td><p>May be empty; if not, a vector gives the wildtype gene frequencies
+among larval stages at the beginning of simulation or a matrix provides different
+initial frequencies for each patch (every row is a different patch, must have nrow = nPatch)</p></td>
     </tr>
     <tr>
       <th>AdPopRatio_F</th>
-      <td><p>may be <code>NULL</code>; if not, gives the wildtype gene frequencies among adult females at the beginning of simulation</p></td>
+      <td><p>May be empty; if not, a vector gives the wildtype gene frequencies
+among adult females at the beginning of simulation or a matrix provides different
+initial frequencies for each patch (every row is a different patch, must have nrow = nPatch)</p></td>
     </tr>
     <tr>
       <th>AdPopRatio_M</th>
-      <td><p>may be <code>NULL</code>; if not, gives the wildtype gene frequencies among adult males at the beginning of simulation</p></td>
+      <td><p>May be empty; if not, a vector gives the wildtype gene frequencies
+among adult males at the beginning of simulation or a matrix provides different
+initial frequencies for each patch (every row is a different patch, must have nrow = nPatch)</p></td>
+    </tr>
+    <tr>
+      <th>inheritanceCube</th>
+      <td><p>Inheritance cube to check/set population ratios at the beginning of the simulation</p></td>
     </tr>
     </table>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># using default parameters for 2 patches</span>
 <span class='co'>#  using different population sizes for patches</span>
 <span class='no'>simPars</span> <span class='kw'>&lt;-</span> <span class='fu'>parameterizeMGDrivE</span>(<span class='kw'>nPatch</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>simTime</span> <span class='kw'>=</span> <span class='fl'>365</span>,
-                               <span class='kw'>AdPopEQ</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>,<span class='fl'>200</span>))</div></pre>
+                               <span class='kw'>AdPopEQ</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>,<span class='fl'>200</span>), <span class='kw'>inheritanceCube</span> <span class='kw'>=</span> <span class='fu'><a href='cubeMendelian.html'>cubeMendelian</a></span>())</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -232,13 +261,16 @@ and <code><a href='calcLarvalPopEquilibrium.html'>calcLarvalPopEquilibrium</a></
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
