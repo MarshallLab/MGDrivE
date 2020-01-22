@@ -4,8 +4,14 @@
 \alias{cubeWolbachia}
 \title{Inheritance Cube: Wolbachia}
 \usage{
-cubeWolbachia(eta = NULL, phi = NULL, omega = NULL, xiF = NULL,
-  xiM = NULL, s = NULL)
+cubeWolbachia(
+  eta = NULL,
+  phi = NULL,
+  omega = NULL,
+  xiF = NULL,
+  xiM = NULL,
+  s = NULL
+)
 }
 \arguments{
 \item{eta}{Genotype-specific mating fitness}

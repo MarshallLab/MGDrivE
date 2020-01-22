@@ -5,7 +5,7 @@
 \title{MGDrivE: Inheritance Cube}
 \description{
 To model an arbitrary number of genotypes efficiently in the same mathematical
-framework we use a 3-dimensional array structure (cube) where each axis
+framework, we use a 3-dimensional array structure (cube) where each axis
 represents the following information:
 \itemize{
 \item x: female adult mate genotype
@@ -17,23 +17,31 @@ represents the following information:
 The cube structure gives us the flexibility to apply tensor operations to the
 elements within our equations, so that we can calculate the stratified population
 dynamics rapidly; and within a readable, flexible computational framework.
-This becomes apparent when we define the equation we use for the computation of
-eggs laid at any given point in time:
-\deqn{\overline{O(T_x)}=\sum_{j=1}^{n} \Bigg( \bigg( (\beta \cdot \overline{s} \cdot \overline{ \overline{Af_{[t-T_x]}}}) \cdot \overline{\overline{\overline{Ih}}} \bigg) \cdot \Lambda  \Bigg)^{\top}_{ij}}
+This becomes apparent when we define the equation we use for the computation
+of eggs laid at any given point in time:
+
+\deqn{\overline{O(T_x)} = \sum_{j=1}^{n} \Bigg( \bigg( (\beta*\overline{s} * \overline{ \overline{Af_{[t-T_x]}}}) * \overline{\overline{\overline{Ih}}} \bigg) * \Lambda  \Bigg)^{\top}_{ij}}
+
 In this equation, the matrix containing the number of mated adult females
 (\eqn{\overline{\overline{Af}}}) is multiplied element-wise with each one of
 the layers containing the eggs genotypes proportions expected from this cross
-(\eqn{\overline{\overline{\overline{Ih}}}}).
-The resulting matrix is then multiplied by a binary 'viability mask' (\eqn{\Lambda}) that filters out female-parent to offspring genetic combinations that are not viable due to biological impediments (such as cytoplasmic incompatibility).
-The summation of the transposed resulting matrix returns us the total fraction of eggs resulting from all the male to female genotype crosses (\eqn{\overline{O(T_x)}}).
+(\eqn{\overline{\overline{\overline{Ih}}}}). The resulting matrix is then
+multiplied by a binary 'viability mask' (\eqn{\Lambda}) that filters out
+female-parent to offspring genetic combinations that are not viable due to
+biological impediments (such as cytoplasmic incompatibility). The summation of
+the transposed resulting matrix returns us the total fraction of eggs resulting
+from all the male to female genotype crosses (\eqn{\overline{O(T_x)}}).
 
-Note: For inheritance operations to be consistent within the framework the summation of each element in the z-axis (this is, the proportions of each one of the offspring's genotypes) must be equal to one.
+Note: For inheritance operations to be consistent within the framework the
+summation of each element in the z-axis (this is, the proportions of each one
+of the offspring's genotypes) must be equal to one.
 }
 \section{Drive-specific Cubes}{
 
 
-An inheritance cube in an array object that specifies inheritance probabilities (offspring genotype probability)
-stratified by male and female parent genotypes. MGDrivE provides the following cubes to model different gene drive systems:
+An inheritance cube in an array object that specifies inheritance probabilities
+(offspring genotype probability) stratified by male and female parent genotypes.
+MGDrivE provides the following cubes to model different gene drive systems:
 \itemize{
 \item \code{\link{cubeOneLocusTA}}: 1 Locus Maternal-Toxin/Zygotic-Antidote System
 \item \code{\link{cubeTwoLocusTA}}: 2 Locus Maternal-Toxin/Zygotic-Antidote System
@@ -44,6 +52,9 @@ stratified by male and female parent genotypes. MGDrivE provides the following c
 \item \code{\link{cubeReciprocalTranslocations}}: Reciprocal Translocation
 \item \code{\link{cubeRIDL}}: RIDL (Release of Insects with Dominant Lethality)
 \item \code{\link{cubeMendelian}}: Mendelian
+\item \code{\link{cubeSplitDrive}}: Split CRISPR drive
+\item \code{\link{cubeTGD}}: trans-complementing Gene Drive
+\item \code{\link{cubeTGDX}}: trans-complementing Gene Drive, X-Linked
 \item \code{\link{cubeWolbachia}}: Wolbachia
 }
 }
@@ -51,7 +62,7 @@ stratified by male and female parent genotypes. MGDrivE provides the following c
 \section{Functions for Cubes}{
 
 
-There are several functions to operate on cube objects.
+We provide one auxiliary function to operate on cube objects.
 \itemize{
 \item \code{\link{cube2csv}}: Export slices of a cube to .csv format
 }

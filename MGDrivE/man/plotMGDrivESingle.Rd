@@ -24,10 +24,10 @@ plotMGDrivESingle(readDir, whichPatches = NULL, totalPop = FALSE,
 Plots one run from MGDrivE
 }
 \details{
-This function plots output from one run or one set of runs after being analyzed. Setting totalPop
-to FALSE keeps it from plotting the total population. NonZeroGen accounts for
-genotypes that could exist, but are not created in the simulation. Default
-is FALSE, as this is easier to read on a plot.
+This function plots output from one run or one set of runs after being
+analyzed. Setting totalPop to FALSE keeps it from plotting the total population.
+NonZeroGen accounts for genotypes that could exist, but are not created in the
+simulation. Default is FALSE, as this is easier to read on a plot.
 }
 \examples{
 \dontrun{
@@ -41,6 +41,5 @@ fPath <- "path/to/data/containing/folder"
 # plot output to see effect
 plotMGDrivESingle(readDir=fPath,totalPop = TRUE,lwd=3.5,alpha=1)
 }
-
 
 }

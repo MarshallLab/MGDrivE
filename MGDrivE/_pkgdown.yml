@@ -38,34 +38,37 @@ reference:
   - '`cubeMendelian`'
   - '`cubeModifiers`'
   - '`cubeOneLocusTA`'
+  - '`cubeTwoLocusTA`'
   - '`cubeRIDL`'
   - '`cubeReciprocalTranslocations`'
-  - '`cubeTwoLocusTA`'
   - '`cubeWolbachia`'
   - '`cube2csv`'
+  - '`cubeSplitDrive`'
+  - '`cubeTGD`'
+  - '`cubeTGDX`'
 - title: Kernel & Geographic Distance
   desc: >
     Functions to generate movement matrices based on parameteric dispersal kernels and function to calculate distance matrices between latitude/longitude pairs of points.
   contents:
   - '`calcCos`'
-  - '`calcExpKernel`'
-  - '`calcGammaKernel`'
   - '`calcHaversine`'
-  - '`calcHurdleExpKernel`'
-  - '`calcLognormalKernel`'
-  - '`calcVinEll`'
   - '`calcVinSph`'
+  - '`calcVinEll`'
   - '`calcZeroInflation`'
+  - '`calcLognormalKernel`'
+  - '`calcGammaKernel`'
+  - '`calcExpKernel`'
+  - '`calcHurdleExpKernel`'
 - title: Population Dynamics Parameters
   desc: >
     A description of model parameters governing population dynamics, not including inheritance, which is described in its own section.
     This section also includes functions that generate mosquito release events and set up probabilities for batch migration, and the functions which select between deterministic or stochastic simulation.
   contents:
+  - '`calcOmega`'
   - '`parameterizeMGDrivE`'
-  - '`getOmega`'
   - '`generateReleaseVector`'
-  - '`basicBatchMigration`'
   - '`basicRepeatedReleases`'
+  - '`basicBatchMigration`'
   - '`setupMGDrivE`'
 - title: Data
   desc: >
@@ -86,14 +89,14 @@ reference:
   desc: >
     Functions that allow the output to be summarized and plotted.
   contents:
-  - '`splitOutput`'
+  - '`eraseDirectory`'
   - '`retrieveOutput`'
+  - '`splitOutput`'
   - '`aggregateFemales`'
   - '`aggregateOutput`'
   - '`calcQuantiles`'
-  - '`eraseDirectory`'
-  - '`plotMGDrivEMult`'
   - '`plotMGDrivESingle`'
+  - '`plotMGDrivEMult`'
 - title: Network Class
   desc: >
     The Network object class which is the main object with which to interact with the **MGDrivE** simulation, and manages the metapopulation dynamics upon which the simulation runs.

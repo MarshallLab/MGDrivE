@@ -4,13 +4,9 @@
 \alias{oneRun_Network}
 \title{Run Simulation}
 \usage{
-oneRun_Network(conADM = NULL, conAF1 = NULL, verbose = TRUE)
+oneRun_Network(verbose = TRUE)
 }
 \arguments{
-\item{conADM}{Optional \code{\link[base]{connection}} to write male population dynamics to}
-
-\item{conAF1}{Optional \code{\link[base]{connection}} to write female population dynamics to}
-
 \item{verbose}{Chatty? Default is TRUE}
 }
 \description{

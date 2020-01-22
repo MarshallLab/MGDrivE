@@ -5,17 +5,6 @@
 
 using namespace Rcpp;
 
-// shiftAndUpdatePopVector
-void shiftAndUpdatePopVector(ListOf<NumericVector>& popVector, const NumericVector newPop);
-RcppExport SEXP _MGDrivE_shiftAndUpdatePopVector(SEXP popVectorSEXP, SEXP newPopSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< ListOf<NumericVector>& >::type popVector(popVectorSEXP);
-    Rcpp::traits::input_parameter< const NumericVector >::type newPop(newPopSEXP);
-    shiftAndUpdatePopVector(popVector, newPop);
-    return R_NilValue;
-END_RCPP
-}
 // rDirichlet
 NumericVector rDirichlet(const NumericVector& migrationPoint);
 RcppExport SEXP _MGDrivE_rDirichlet(SEXP migrationPointSEXP) {
@@ -28,12 +17,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // quantileC
-NumericMatrix quantileC(IntegerMatrix& Trials, const NumericVector& Probs);
+NumericMatrix quantileC(const IntegerMatrix& Trials, const NumericVector& Probs);
 RcppExport SEXP _MGDrivE_quantileC(SEXP TrialsSEXP, SEXP ProbsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix& >::type Trials(TrialsSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type Trials(TrialsSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type Probs(ProbsSEXP);
     rcpp_result_gen = Rcpp::wrap(quantileC(Trials, Probs));
     return rcpp_result_gen;
@@ -130,21 +119,20 @@ BEGIN_RCPP
 END_RCPP
 }
 // calcHurdleExpKernel
-Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat, double rate, double p0);
+Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat, const double& rate, const double& p0);
 RcppExport SEXP _MGDrivE_calcHurdleExpKernel(SEXP distMatSEXP, SEXP rateSEXP, SEXP p0SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type distMat(distMatSEXP);
-    Rcpp::traits::input_parameter< double >::type rate(rateSEXP);
-    Rcpp::traits::input_parameter< double >::type p0(p0SEXP);
+    Rcpp::traits::input_parameter< const double& >::type rate(rateSEXP);
+    Rcpp::traits::input_parameter< const double& >::type p0(p0SEXP);
     rcpp_result_gen = Rcpp::wrap(calcHurdleExpKernel(distMat, rate, p0));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_MGDrivE_shiftAndUpdatePopVector", (DL_FUNC) &_MGDrivE_shiftAndUpdatePopVector, 2},
     {"_MGDrivE_rDirichlet", (DL_FUNC) &_MGDrivE_rDirichlet, 1},
     {"_MGDrivE_quantileC", (DL_FUNC) &_MGDrivE_quantileC, 2},
     {"_MGDrivE_calcCos", (DL_FUNC) &_MGDrivE_calcCos, 2},

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Network-Class.R
 \name{get_conF_Network}
 \alias{get_conF_Network}
-\title{Get conAF1}
+\title{Get conADF}
 \usage{
 get_conF_Network()
 }

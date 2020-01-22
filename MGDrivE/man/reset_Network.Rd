@@ -10,6 +10,7 @@ reset_Network(verbose = TRUE)
 \item{verbose}{Chatty? Default is TRUE}
 }
 \description{
-Reset a \code{\link{Network}} between runs, useful for Monte Carlo simulation. This calls \code{\link{reset_Patch}} on each patch
+Reset a \code{\link{Network}} between runs, useful for Monte Carlo simulation.
+This calls \code{\link{reset_Patch}} on each patch
 and resets \code{tNow = 2} and increments the \code{runID}.
 }

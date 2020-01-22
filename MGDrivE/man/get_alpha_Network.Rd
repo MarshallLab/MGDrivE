@@ -7,7 +7,7 @@
 get_alpha_Network(ix)
 }
 \arguments{
-\item{ix}{index of patch}
+\item{ix}{Index of patch}
 }
 \description{
 Return density dependent mortality, see \code{\link{calcDensityDependentDeathRate}}

@@ -7,7 +7,7 @@
 #
 #   MGDrivE: Mosquito Gene Drive Explorer
 #   Mendelian
-#   Héctor Sanchez, Jared Bennett, Sean Wu, John M. Marshall
+#   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
 #   jared_bennett@berkeley.edu
 #   August 2017
 #
@@ -17,7 +17,7 @@
 #'
 #' This function creates a Mendelian Inheritance Cube. It only handles simple,
 #' alphabetic genotypes. \cr
-#' The default is 3 alleles at 1 locus, but this can be extended to however many
+#' The default is 3 alleles at 1 locus, this can be extended to however many
 #' alleles one is interested in, but only at 1 locus.
 #'
 #' @param gtype Vector of genotypes, with the wild-type in the first position
@@ -33,7 +33,6 @@
 #' @export
 cubeMendelian <- function(gtype = c("AA", "Aa", "aa"), eta = NULL, phi = NULL,
                                 omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
-
 
   ## safety check
   if(!all(nchar(gtype[1])==nchar(gtype))){

@@ -7,11 +7,11 @@
 calcGammaKernel(distMat, shape, rate)
 }
 \arguments{
-\item{distMat}{distance matrix from \code{\link[MGDrivE]{calcVinEll}}}
+\item{distMat}{Distance matrix from \code{\link[MGDrivE]{calcVinEll}}}
 
-\item{shape}{shape parameter of \code{\link[stats]{GammaDist}} distribution}
+\item{shape}{Shape parameter of \code{\link[stats]{GammaDist}} distribution}
 
-\item{rate}{rate parameter of \code{\link[stats]{GammaDist}} distribution}
+\item{rate}{Rate parameter of \code{\link[stats]{GammaDist}} distribution}
 }
 \description{
 Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a

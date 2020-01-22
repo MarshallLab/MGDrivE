@@ -7,9 +7,9 @@
 ggColUtility(n, alpha = 0.75)
 }
 \arguments{
-\item{n}{number of colors}
+\item{n}{Number of colors}
 
-\item{alpha}{transparency}
+\item{alpha}{Transparency}
 }
 \description{
 Sample at equally spaced intervals along the color wheel

@@ -4,8 +4,13 @@
 \alias{get_eta_Network}
 \title{Get eta}
 \usage{
-get_eta_Network()
+get_eta_Network(fIdx)
+}
+\arguments{
+\item{fIdx}{Index of female genotype to pull
+
+Return genotype-specific mating fitness}
 }
 \description{
-Return genotype-specific mating fitness
+Get eta
 }

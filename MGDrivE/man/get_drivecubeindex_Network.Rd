@@ -7,11 +7,11 @@
 get_drivecubeindex_Network(fG = NULL, mG = NULL, oG = NULL)
 }
 \arguments{
-\item{fG}{female genotype index}
+\item{fG}{Female genotype index}
 
-\item{mG}{male genotype index}
+\item{mG}{Male genotype index}
 
-\item{oG}{offspring genotype index}
+\item{oG}{Offspring genotype index}
 }
 \description{
 Return elements or slices of drive cube. If all \code{NULL} return entire cube.

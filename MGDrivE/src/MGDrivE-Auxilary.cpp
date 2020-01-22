@@ -2,73 +2,21 @@
 using namespace Rcpp;
 
 /******************************************************************************
- * Auxilary functions to get rid of other library dependencies
+ * Auxilary Functions
  ******************************************************************************/
-
-// //' Make a Symmetric Cube
-// //'
-// //' This function makes a lower-triangular cube symmetric over the z-axis.
-// //' It was written to remove the dependency "Matrix".
-// //' It is only used in building cubes.
-// //'
-// //' @param lowerMat A lower-triangular matrix of depth 1 or more
-// //'
-// // [[Rcpp::export]]
-// void symCube(arma::dcube& lowerMat){
-//
-//   for(int i=0; i<lowerMat.n_slices; i++){
-//     lowerMat.slice(i) = symmatl(lowerMat.slice(i));
-//   }
-//
-// }
-
-//' Shift a Vector
-//'
-//' Shift a population vector by one day and insert the new population.
-//' This was written to remove the dependency "binhf".
-//'
-//' @param popVector List of population vectors of length(Tegg+Tlarva+Tpupa)
-//' @param newPop Vector of length equal to the number of genotypes
-//'
-// [[Rcpp::export]]
-void shiftAndUpdatePopVector( ListOf<NumericVector>& popVector, const NumericVector newPop){
-  //This  function shifts the list of population vectors one to the right, then
-  // updates the first position with the new population.
-  // Only shifts things by 1 point!
-  // works on doubles and ints
-  // works on lists length 1
-  // OVERWRITES THE INPUT!!! BE CAREFUL
-
-  /*This function is used in Patch-Methods oneDay_UpdatePopulation_AgeClass()
-   *Originally, it was meant to replace a call to shift() from the binhf package.
-   *It became easier to remake the whole function. It takes the population list,
-   * shifts it to the right by 1, then updates the first slot with the new
-   * population. It won't move things to the left, or by a step other than one,
-   * and the safety checks are gone. FYI.
-   */
-
-  //Shift to the right, starting from the second to last element
-  for(int i = popVector.size()-2; i>=0; i--){
-
-    popVector[i+1] = popVector[i];
-
-  }
-
-  //set the first position with the new population
-  popVector[0] = newPop;
-}
 
 //' Dirichlet Distribution
 //'
 //' Make a single draw from a Dirichlet distribution with the shape parameter
-//' one. This replaces the MCMCpack rDirichlet function, which was wholly written
-//' in R.
+//' one. 
 //'
 //' @param migrationPoint Vector of weights for draws. Must be positive.
 //'
 // [[Rcpp::export]]
 NumericVector rDirichlet(const NumericVector& migrationPoint){
 
+  // This replaces the MCMCpack rDirichlet function, which was wholly written in R.
+  
   //set up return things
   NumericVector probs(migrationPoint.length());
 
@@ -99,7 +47,7 @@ NumericVector rDirichlet(const NumericVector& migrationPoint){
 //' @return Numeric Matrix
 //'
 // [[Rcpp::export]]
-NumericMatrix quantileC(IntegerMatrix& Trials, const NumericVector& Probs){
+NumericMatrix quantileC(const IntegerMatrix& Trials, const NumericVector& Probs){
 
   //Set error for rounding issues
   double fuzz = 4.0*std::numeric_limits<double>::epsilon();
@@ -130,7 +78,7 @@ NumericMatrix quantileC(IntegerMatrix& Trials, const NumericVector& Probs){
 
 
     //1/3 and 2/3 are to match algorithm 8 in the rstats quantile function
-    //Not really sure what else is happening. I took this from R quantile function
+    // Not really sure what else is happening. I took this from R quantile function
     nppm = 1.0/3.0 + Probs*(vecLen + 1.0/3.0);
     h = nppm + fuzz;
     j = floor(h);
@@ -140,26 +88,10 @@ NumericMatrix quantileC(IntegerMatrix& Trials, const NumericVector& Probs){
     // like the r quantile does.
     h[h<fuzz] = 0;
 
-
     //calculate quantiles. Also not sure why or how this works.
-    //No return value, set in place
     RETURN(i,_) = (1-h)*as<NumericVector>(test[j])+h*as<NumericVector>(test[j+1]);
 
   }//end loop over rows
   return(RETURN);
 }//end function
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

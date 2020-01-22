@@ -7,7 +7,7 @@
 set_NetworkPointer_Patch(NetworkPointer)
 }
 \arguments{
-\item{NetworkPointer}{a \code{\link{Network}} object}
+\item{NetworkPointer}{A \code{\link{Network}} object}
 }
 \description{
 Set a reference to the enclosing \code{\link{Network}} object

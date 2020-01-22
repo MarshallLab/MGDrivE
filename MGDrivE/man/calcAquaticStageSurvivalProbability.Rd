@@ -7,10 +7,11 @@
 calcAquaticStageSurvivalProbability(mortalityRate, stageDuration)
 }
 \arguments{
-\item{mortalityRate}{daily mortality probability, \eqn{\mu_{st}}}
+\item{mortalityRate}{Daily mortality probability, \eqn{\mu_{st}}}
 
-\item{stageDuration}{duration of aquatic stage, \eqn{T^{st}}}
+\item{stageDuration}{Duration of aquatic stage, \eqn{T^{st}}}
 }
 \description{
-Calculate \eqn{\theta_{st}}, density-independent survival probability, given by: \deqn{\theta_{st}=(1-\mu_{st})^{T_{st}}}
+Calculate \eqn{\theta_{st}}, density-independent survival probability, given
+by: \deqn{\theta_{st}=(1-\mu_{st})^{T_{st}}}
 }

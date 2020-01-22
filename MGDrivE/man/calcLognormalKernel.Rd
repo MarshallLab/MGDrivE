@@ -7,11 +7,11 @@
 calcLognormalKernel(distMat, meanlog, sdlog)
 }
 \arguments{
-\item{distMat}{distance matrix from \code{\link[MGDrivE]{calcVinEll}}}
+\item{distMat}{Distance matrix from \code{\link[MGDrivE]{calcVinEll}}}
 
-\item{meanlog}{log mean of \code{\link[stats]{Lognormal}} distribution}
+\item{meanlog}{Log mean of \code{\link[stats]{Lognormal}} distribution}
 
-\item{sdlog}{log standard deviation of \code{\link[stats]{Lognormal}} distribution}
+\item{sdlog}{Log standard deviation of \code{\link[stats]{Lognormal}} distribution}
 }
 \description{
 Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}},

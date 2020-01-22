@@ -4,54 +4,41 @@
 \alias{basicRepeatedReleases}
 \title{Make List of Modified Mosquito Releases}
 \usage{
-basicRepeatedReleases(genotypes, releaseStart, releaseEnd, releaseInterval,
-  releaseVector, sex = "M")
+basicRepeatedReleases(releaseStart, releaseEnd, releaseInterval, releaseMatrix)
 }
 \arguments{
-\item{genotypes}{possible genotypes}
+\item{releaseStart}{Day releases start}
 
-\item{releaseStart}{day releases start}
+\item{releaseEnd}{Day releases end}
 
-\item{releaseEnd}{day releases end}
+\item{releaseInterval}{Interval between releases}
 
-\item{releaseInterval}{interval between releases}
-
-\item{releaseVector}{named character vector of release composition}
-
-\item{sex}{character in 'M','F','E'}
+\item{releaseMatrix}{Numeric matrix specifying the genotype and release amount}
 }
 \description{
 Sets up a release schedule for a single patch, returns a list to be used in
-\code{\link{oneDay_maleReleases_Patch}} or \code{\link{oneDay_femaleReleases_Patch}}.
+\code{\link{oneDay_releases_Patch}} or \code{\link{oneDay_eggReleases_Patch}}.
+This function is no longer intended to be used alone, please use the standard
+interface, \code{\link{generateReleaseVector}}.
 }
 \examples{
-# to setup for 3 patches but only release in the first with a defined release schedule:
+\dontrun{
+# Setup for 3 patches but only release in the first with a defined release
+#  schedule, for the cube cubeHomingDrive:
 
-patchReleases = replicate(n = 3,expr = {
-  list(maleReleases = NULL,femaleReleases = NULL)
+patchReleases = replicate(n = 3, expr = {
+  list(maleReleases = NULL, femaleReleases = NULL, eggReleases = NULL, matedFemaleReleases = NULL)
 },simplify = FALSE)
 
-patchReleases[[1]]$femaleReleases = basicRepeatedReleases(genotypes = cubeHoming1RA$genotypesID,
-                                                          releaseStart = 5,
+patchReleases[[1]]$femaleReleases = MGDrivE::basicRepeatedReleases(releaseStart = 5,
                                                           releaseEnd = 30,
                                                           releaseInterval = 5,
-                                                          releaseVector = c("HH"=100,
-                                                                            "Hh"=0,
-                                                                            "HR"=0,
-                                                                            "hh"=0,
-                                                                            "hR"=0,
-                                                                            "RR"=0),
-                                                          sex = "F")
-patchReleases[[1]]$maleReleases = basicRepeatedReleases(genotypes = cubeHoming1RA$genotypesID,
-                                                        releaseStart = 50,
+                                                          releaseMatrix = matrix(c(5,100),1,2))
+
+patchReleases[[1]]$maleReleases = MGDrivE::basicRepeatedReleases(releaseStart = 50,
                                                         releaseEnd = 60,
                                                         releaseInterval = 1,
-                                                        releaseVector = c("HH"=100,
-                                                                          "Hh"=0,
-                                                                          "HR"=0,
-                                                                          "hh"=0,
-                                                                          "hR"=0,
-                                                                          "RR"=0),
-                                                        sex = "M")
+                                                        releaseMatrix = matrix(c(5,100),1,2))
+}
 
 }

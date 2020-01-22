@@ -4,8 +4,16 @@
 \alias{cubeOneLocusTA}
 \title{Inheritance Cube: 1 Locus Maternal-Toxin/Zygotic-Antidote System}
 \usage{
-cubeOneLocusTA(TAEfficacy = 1, TBEfficacy = 1, eta = NULL,
-  phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL)
+cubeOneLocusTA(
+  TAEfficacy = 1,
+  TBEfficacy = 1,
+  eta = NULL,
+  phi = NULL,
+  omega = NULL,
+  xiF = NULL,
+  xiM = NULL,
+  s = NULL
+)
 }
 \arguments{
 \item{TAEfficacy}{Maternal toxin A efficacy}

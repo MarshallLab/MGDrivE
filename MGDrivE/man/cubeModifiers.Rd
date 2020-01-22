@@ -4,13 +4,20 @@
 \alias{cubeModifiers}
 \title{Generate and Modify Default Genotype-specific Parameters}
 \usage{
-cubeModifiers(gtype, eta = NULL, phi = NULL, omega = NULL,
-  xiF = NULL, xiM = NULL, s = NULL)
+cubeModifiers(
+  gtype,
+  eta = NULL,
+  phi = NULL,
+  omega = NULL,
+  xiF = NULL,
+  xiM = NULL,
+  s = NULL
+)
 }
 \arguments{
 \item{gtype}{character vector of genotypes}
 
-\item{eta}{genotype-specific mating fitness}
+\item{eta}{genotype-specific mating fitness, handles assortative mating as well}
 
 \item{phi}{genotype-specific sex ratio at emergence}
 

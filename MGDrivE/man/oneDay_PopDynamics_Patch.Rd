@@ -7,5 +7,16 @@
 oneDay_PopDynamics_Patch()
 }
 \description{
-Run population dynamics (not including migration) for this patch.
+Run population dynamics (including migration) for this patch. \cr
+Performed in this order, see the following for each function: \cr
+Adult Death: \code{\link{oneDay_adultDeath_deterministic_Patch}} or \code{\link{oneDay_adultDeath_stochastic_Patch}} \cr
+Pupa Death/Maturation: \code{\link{oneDay_pupaDM_deterministic_Patch}} or \code{\link{oneDay_pupaDM_stochastic_Patch}} \cr
+Larva Death/Maturation: \code{\link{oneDay_larvaDM_deterministic_Patch}} or \code{\link{oneDay_larvaDM_stochastic_Patch}} \cr
+Egg Death/Maturation: \code{\link{oneDay_eggDM_deterministic_Patch}} or \code{\link{oneDay_eggDM_stochastic_Patch}} \cr
+Pupation: \code{\link{oneDay_pupation_deterministic_Patch}} or \code{\link{oneDay_pupation_stochastic_Patch}} \cr
+Releases: \code{\link{oneDay_releases_Patch}} \cr
+Mating: \code{\link{oneDay_mating_deterministic_Patch}} or \code{\link{oneDay_mating_stochastic_Patch}} \cr
+Lay Eggs: \code{\link{oneDay_oviposit_deterministic_Patch}} or \code{\link{oneDay_oviposit_stochastic_Patch}} \cr
+Release Eggs: \code{\link{oneDay_eggReleases_Patch}} \cr
+Migration: \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}} \cr
 }

@@ -4,19 +4,27 @@
 \alias{basicBatchMigration}
 \title{Make List of Batch Migration Parameters}
 \usage{
-basicBatchMigration(batchProbs = 1e-05, sexProbs = c(0.01, 0.01),
-  numPatches = 1)
+basicBatchMigration(
+  batchProbs = 1e-05,
+  sexProbs = c(0.01, 0.01),
+  numPatches = 1
+)
 }
 \arguments{
-\item{batchProbs}{Probability of a batch migration, either 1 number or vector of length equal to the number of patches}
+\item{batchProbs}{Probability of a batch migration, either 1 number or a vector
+of length equal to the number of patches}
 
-\item{sexProbs}{Population fraction of males and females that migration. Either vector c(M,F) or matrix of 2 columns}
+\item{sexProbs}{Population fraction of males and females that migrate. Either
+a vector c(M,F) or matrix of 2 columns}
 
 \item{numPatches}{Number of patches in the simulation}
 }
 \description{
-Sets up a list containing the probability of a batch migration, the fractional amount of males/females
-that migrate, and the weighted probabilities for where to migrate.
+Sets up a list containing the probability of a batch migration, the fractional
+amount of males/females that migrate, and the weighted probabilities for where
+to migrate. The default weights for migration are equal for all patches.
+These can be changed after running the function. This is only used in
+\code{\link{oneDay_migrationOut_stochastic_Patch}}.
 }
 \examples{
 # to setup for 3 patches

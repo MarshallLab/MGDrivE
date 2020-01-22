@@ -1,4 +1,4 @@
-########################################################################
+###############################################################################
 #       _   __     __                      __
 #      / | / /__  / /__      ______  _____/ /__
 #     /  |/ / _ \/ __/ | /| / / __ \/ ___/ //_/
@@ -7,83 +7,55 @@
 #
 #   Network Class Mosquito Population Simulation
 #   Marshall Lab
-#   November 2017
+#   jared_bennett@berkeley.edu
+#   December 2019
 #
-########################################################################
+###############################################################################
+###############################################################################
+# Main Run Functions
+###############################################################################
 
 #' Run Simulation
 #'
 #' Run a single simulation on this network.
 #'
-#' @param conADM Optional \code{\link[base]{connection}} to write male population dynamics to
-#' @param conAF1 Optional \code{\link[base]{connection}} to write female population dynamics to
 #' @param verbose Chatty? Default is TRUE
 #'
-oneRun_Network <- function(conADM = NULL, conAF1 = NULL, verbose = TRUE){
+oneRun_Network <- function(verbose = TRUE){
 
-  # open connections & write headers
-  # parallel
-  if(private$parameters$parallel){
+  ####################
+  # open connections
+  ####################
+  # can't use on.exit() to close files because it closes onces this function goes out
+  #  of scope, which happens before the simulation even runs!
+  private$conADM = file(description = paste0(private$directory[1],
+                                             .Platform$file.sep,
+                                             "M_Run",
+                                             formatC(x = private$runID, width = 3, format = "d", flag = "0"),
+                                             ".csv"),
+                        open = "wt")
+  private$conADF = file(description = paste0(private$directory[1],
+                                             .Platform$file.sep,
+                                             "F_Run",
+                                             formatC(x = private$runID, width = 3, format = "d", flag = "0"),
+                                             ".csv"),
+                        open = "wt")
 
-    pid = Sys.getpid()
-    if(is.null(conADM)){
-      private$conADM = file(description = paste0(private$directory[1],
-                                                 .Platform$file.sep,
-                                                 "M_pid_",
-                                                 pid,
-                                                 "_Run",
-                                                 formatC(x = private$runID, width = 3, format = "d", flag = "0"),
-                                                 ".csv"),
-                            open = "wt")
-    } else {
-      private$conADM = file(description = file.path(private$directory[1], conADM),open = "wt")
-    }
-
-    if(is.null(conAF1)){
-      private$conAF1 = file(description = paste0(private$directory[1],
-                                                 .Platform$file.sep,
-                                                 "F_pid_",
-                                                 pid,
-                                                 "_Run",
-                                                 formatC(x = private$runID, width = 3, format = "d", flag = "0"),
-                                                 ".csv"),
-                            open = "wt")
-    } else {
-      private$conAF1 = file(description = file.path(private$directory[1], conAF1),open = "wt")
-    }
-
-  # serial
-  } else {
-    private$conADM = file(description = paste0(private$directory[1],
-                                               .Platform$file.sep,
-                                               "M_Run",
-                                               formatC(x = private$runID, width = 3, format = "d", flag = "0"),
-                                               ".csv"),
-                          open = "wt")
-    private$conAF1 = file(description = paste0(private$directory[1],
-                                               .Platform$file.sep,
-                                               "F_Run",
-                                               formatC(x = private$runID, width = 3, format = "d", flag = "0"),
-                                               ".csv"),
-                          open = "wt")
-  }
-
-  # males
-  writeLines(text = paste0(c("Time","Patch",self$get_genotypesID()),collapse = ","),con = private$conADM,sep = "\n")
-
-  # females
-  femaleCrosses = c(t(outer(self$get_genotypesID(),self$get_genotypesID(),FUN = paste0)))
-  writeLines(text = paste0(c("Time","Patch",femaleCrosses),collapse = ","),con = private$conAF1,sep = "\n")
-
+  ####################
+  # begin run
+  ####################
   if(verbose){cat("begin run ",private$runID,"\n",sep="")}
 
+  ####################
   # setup output
+  ####################
   for(i in 1:private$nPatch){
     private$patches[[i]]$oneDay_initOutput()
   }
 
   if(verbose){pb = txtProgressBar(min = 0,max = private$simTime,style = 3)}
 
+  # run simulation
   while(private$simTime >= private$tNow){
 
     self$oneDay()
@@ -91,15 +63,14 @@ oneRun_Network <- function(conADM = NULL, conAF1 = NULL, verbose = TRUE){
     private$tNow = private$tNow + 1L
     if(verbose){setTxtProgressBar(pb,value = private$tNow)}
   }
-  
+
   ####################
   # close connections
   ####################
   close(private$conADM)
-  close(private$conAF1)
+  close(private$conADF)
 
   if(verbose){cat("run ",private$runID," over\n",sep="")}
-
 }
 
 Network$set(which = "public",name = "oneRun",
@@ -110,18 +81,9 @@ Network$set(which = "public",name = "oneRun",
 #'
 #' Run multiple simulations on this network
 #'
-#' @param conM Optional vector of \code{\link[base]{connection}} to write male population dynamics to
-#' @param conF Optional vector of \code{\link[base]{connection}} to write female population dynamics to
 #' @param verbose Chatty? Default is TRUE
 #'
-multRun_Network <- function(conM = NULL, conF = NULL, verbose = TRUE){
-
-  ####################
-  # safety check
-  ####################
-  if(length(conM) != length(conF)){
-    stop("Length of output folders must be the same length for males and females")
-  }
+multRun_Network <- function(verbose = TRUE){
 
   ####################
   # setup loop over number of runs
@@ -136,7 +98,7 @@ multRun_Network <- function(conM = NULL, conF = NULL, verbose = TRUE){
                                                formatC(x = private$runID, width = 3, format = "d", flag = "0"),
                                                ".csv"),
                           open = "wt")
-    private$conAF1 = file(description = paste0(private$directory[run],
+    private$conADF = file(description = paste0(private$directory[run],
                                                .Platform$file.sep,
                                                "F_Run",
                                                formatC(x = private$runID, width = 3, format = "d", flag = "0"),
@@ -144,20 +106,7 @@ multRun_Network <- function(conM = NULL, conF = NULL, verbose = TRUE){
                           open = "wt")
 
     ####################
-    # write headers
-    ####################
-    # males
-    writeLines(text = paste0(c("Time","Patch",self$get_genotypesID()),collapse = ","),
-               con = private$conADM, sep = "\n")
-
-    # females
-    femaleCrosses = c(t(outer(self$get_genotypesID(),self$get_genotypesID(),FUN = paste0)))
-    writeLines(text = paste0(c("Time","Patch",femaleCrosses),collapse = ","),
-               con = private$conAF1, sep = "\n")
-
-
-    ####################
-    # Begin Runs!
+    # begin runs
     ####################
     if(verbose){cat("begin run ",private$runID,"\n",sep="")}
 
@@ -170,6 +119,7 @@ multRun_Network <- function(conM = NULL, conF = NULL, verbose = TRUE){
 
     if(verbose){pb = txtProgressBar(min = 0,max = private$simTime,style = 3)}
 
+    # run simulation
     while(private$simTime >= private$tNow){
 
       self$oneDay()
@@ -177,14 +127,13 @@ multRun_Network <- function(conM = NULL, conF = NULL, verbose = TRUE){
       private$tNow = private$tNow + 1L
       if(verbose){setTxtProgressBar(pb,value = private$tNow)}
     }# end rest of sim
-    
+
     ####################
     # close connections
     ####################
     close(private$conADM)
-    close(private$conAF1)
+    close(private$conADF)
 
-    
     if(verbose){cat("run ",private$runID," over\n",sep="")}
 
     ####################
@@ -205,21 +154,14 @@ Network$set(which = "public",name = "multRun",
           value = multRun_Network, overwrite = TRUE
 )
 
-
-
-
-
-
-
-
-
-
-
-
+###############################################################################
+# Auxiliary Run Functions
+###############################################################################
 
 #' Run a Single Day on a Network
 #'
-#' Runs a single day of simulation on a \code{\link{Network}} object, handling population dynamics, migration, population update, and output.
+#' Runs a single day of simulation on a \code{\link{Network}} object, handling
+#' population dynamics, migration, population update, and output.
 #'
 oneDay_Network <- function(){
 
@@ -231,12 +173,11 @@ oneDay_Network <- function(){
   # inter-patch migration
   self$oneDay_Migration()
 
-  for(i in 1:private$nPatch){
-    private$patches[[i]]$oneDay_updatePopulation()
-  }
-
-  for(i in 1:private$nPatch){
-    private$patches[[i]]$oneDay_writeOutput()
+  # log output
+  if(!(private$tNow %% private$sampTime)){
+    for(i in 1:private$nPatch){
+      private$patches[[i]]$oneDay_writeOutput()
+    }
   }
 
 }
@@ -247,7 +188,8 @@ Network$set(which = "public",name = "oneDay",
 
 #' Reset Network
 #'
-#' Reset a \code{\link{Network}} between runs, useful for Monte Carlo simulation. This calls \code{\link{reset_Patch}} on each patch
+#' Reset a \code{\link{Network}} between runs, useful for Monte Carlo simulation.
+#' This calls \code{\link{reset_Patch}} on each patch
 #' and resets \code{tNow = 2} and increments the \code{runID}.
 #'
 #' @param verbose Chatty? Default is TRUE
@@ -267,4 +209,43 @@ reset_Network <- function(verbose = TRUE){
 
 Network$set(which = "public",name = "reset",
           value = reset_Network, overwrite = TRUE
+)
+
+#' Inter-Patch Migration
+#'
+#' Simulate migration between patches. See \code{\link{MGDrivE-Model}},
+#' 'Migration' section for more details on how inter-patch migration is handled.
+#'
+oneDay_Migration_Network <- function(){
+
+  ######################################
+  # Clear holder objects
+  ######################################
+  private$mMoveMat[] <- 0
+  private$fMoveArray[] <- 0
+
+  ######################################
+  # Collect Migration Out
+  ######################################
+  # loop over patches, pull out things to migrate
+  for(i in 1:private$nPatch){
+    # grab moving males
+    private$mMoveMat[] <- private$mMoveMat + private$patches[[i]]$get_maleMigration()
+
+    # grab moving females
+    private$fMoveArray[] <- private$fMoveArray + private$patches[[i]]$get_femaleMigration()
+
+  }
+
+  ######################################
+  # migration in
+  ######################################
+  for(i in 1:private$nPatch){
+    private$patches[[i]]$oneDay_migrationIn(maleIn = private$mMoveMat[ ,i], femaleIn = private$fMoveArray[ , ,i])
+  }
+
+}
+
+Network$set(which = "public",name = "oneDay_Migration",
+            value = oneDay_Migration_Network, overwrite = TRUE
 )

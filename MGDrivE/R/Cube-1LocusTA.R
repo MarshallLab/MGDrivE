@@ -7,7 +7,7 @@
 #
 #   MGDrivE: Mosquito Gene Drive Explorer
 #   1-locus UDmel
-#   Héctor Sanchez, Jared Bennett, Sean Wu, John M. Marshall
+#   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
 #   jared_bennett@berkeley.edu
 #   August 2017
 #
@@ -22,7 +22,6 @@
 #'  * A: Maternal-toxin 1, zygotic-antidote 2
 #'  * B: Maternal-toxin 2, zygotic-antidote 1
 #'  * W: Wild-type allele
-#'
 #'
 #' @param TAEfficacy Maternal toxin A efficacy
 #' @param TBEfficacy Maternal toxin B efficacy
@@ -40,7 +39,7 @@ cubeOneLocusTA <- function(TAEfficacy = 1.0, TBEfficacy = 1.0,
                                     eta = NULL, phi = NULL, omega = NULL,
                                     xiF = NULL, xiM = NULL, s = NULL){
 
-  ## safety checks in case someone is dumb
+  ## safety checks
   if(any(c(TAEfficacy,TBEfficacy)>1) || any(c(TAEfficacy,TBEfficacy)<0)){
     stop("TAEfficacy, and TBEfficacy are rates.
          0 <= TAEfficacy <= 1

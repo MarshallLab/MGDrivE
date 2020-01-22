@@ -4,20 +4,26 @@
 \alias{calcDensityDependentDeathRate}
 \title{Calculate Density-dependent Larval Mortality}
 \usage{
-calcDensityDependentDeathRate(fertility, thetaAq, tAq,
-  adultPopSizeEquilibrium, populationGrowthRate)
+calcDensityDependentDeathRate(
+  fertility,
+  thetaAq,
+  tAq,
+  adultPopSizeEquilibrium,
+  populationGrowthRate
+)
 }
 \arguments{
-\item{fertility}{number of eggs per oviposition for wild-type females, \eqn{\beta}}
+\item{fertility}{Number of eggs per oviposition for wild-type females, \eqn{\beta}}
 
-\item{thetaAq}{vector of density-independent survival probabilities of aquatic stages, \eqn{\theta_{e}, \theta_{l}}}
+\item{thetaAq}{Vector of density-independent survival probabilities of aquatic stages, \eqn{\theta_{e}, \theta_{l}}}
 
-\item{tAq}{vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}}
+\item{tAq}{Vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}}
 
-\item{adultPopSizeEquilibrium}{adult population size at equilibrium, \eqn{Ad_{eq}}}
+\item{adultPopSizeEquilibrium}{Adult population size at equilibrium, \eqn{Ad_{eq}}}
 
-\item{populationGrowthRate}{population growth in absence of density-dependent mortality \eqn{R_{m}}}
+\item{populationGrowthRate}{Population growth in absence of density-dependent mortality \eqn{R_{m}}}
 }
 \description{
-Calculate \eqn{\alpha}, the strength of density-dependent mortality during the larval stage, given by: \deqn{\alpha=\Bigg( \frac{1/2 * \beta * \theta_e * Ad_{eq}}{R_m-1} \Bigg) * \Bigg( \frac{1-(\theta_l / R_m)}{1-(\theta_l / R_m)^{1/T_l}} \Bigg)}
+Calculate \eqn{\alpha}, the strength of density-dependent mortality during the
+larval stage, given by: \deqn{\alpha=\Bigg( \frac{1/2 * \beta * \theta_e * Ad_{eq}}{R_m-1} \Bigg) * \Bigg( \frac{1-(\theta_l / R_m)}{1-(\theta_l / R_m)^{1/T_l}} \Bigg)}
 }

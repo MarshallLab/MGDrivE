@@ -4,19 +4,21 @@
 \alias{generateReleaseVector}
 \title{Make List of Modified Mosquito Releases}
 \usage{
-generateReleaseVector(driveCube = driveCube,
-  releasesParameters = releasesParameters, sex = "M")
+generateReleaseVector(driveCube, releasesParameters, nameGenotypes = NULL)
 }
 \arguments{
-\item{driveCube}{gene-drive cube}
+\item{driveCube}{Gene-drive cube}
 
 \item{releasesParameters}{A list containing the releasesStart, releasesNumber
 releasesInterval, and releaseProportion named values.}
 
-\item{sex}{character in 'M','F'}
+\item{nameGenotypes}{Optional list to specify different genotypes for egg/male/female
+releases. This is required for mated female releases. This parameter overrides
+the default release type.}
 }
 \description{
-Sets up a release schedule for a single patch, calls \code{\link{basicRepeatedReleases}} internally.
+Sets up a release schedule for a single patch, calls
+\code{\link{basicRepeatedReleases}} internally.
 }
 \examples{
 # setup a drive cube, using Mendelian as the example
@@ -32,12 +34,12 @@ relParams <- list(releasesStart = 25, releasesNumber = 1,
 
 # generate male releases
 mRelVec <- generateReleaseVector(driveCube = cube,
-                                 releasesParameters = relParams,
-                                 sex = "M")
+                                 releasesParameters = relParams)
 
-# generate female releases
+# generate mated female releases
 fRelVec <- generateReleaseVector(driveCube = cube,
                                  releasesParameters = relParams,
-                                 sex = "F")
+                                 nameGenotypes = list(c("AA","AA", 10),
+                                                      c("AA","aa", 10)))
 
 }

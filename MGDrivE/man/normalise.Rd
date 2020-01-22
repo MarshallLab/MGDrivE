@@ -7,7 +7,7 @@
 normalise(vector)
 }
 \arguments{
-\item{vector}{numeric vector}
+\item{vector}{Numeric vector}
 }
 \description{
 Normalise a numeric vector to sum to one

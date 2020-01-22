@@ -59,9 +59,9 @@ inline double dtruncExp(double x, double r, double a, double b){
 //' }
 //' where \eqn{\mu} is the mean on the log scale, and \eqn{\sigma} is the standard deviation on the log scale.
 //'
-//' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
-//' @param meanlog log mean of \code{\link[stats]{Lognormal}} distribution
-//' @param sdlog log standard deviation of \code{\link[stats]{Lognormal}} distribution
+//' @param distMat Distance matrix from \code{\link[MGDrivE]{calcVinEll}}
+//' @param meanlog Log mean of \code{\link[stats]{Lognormal}} distribution
+//' @param sdlog Log standard deviation of \code{\link[stats]{Lognormal}} distribution
 //'
 //' @examples
 //' # setup distance matrix
@@ -95,7 +95,7 @@ Rcpp::NumericMatrix calcLognormalKernel(const Rcpp::NumericMatrix& distMat,
 };
 
 /**************************************
- * gamma
+ * Gamma
  *************************************/
 
 //' Calculate Gamma Stochastic Matrix
@@ -113,9 +113,9 @@ Rcpp::NumericMatrix calcLognormalKernel(const Rcpp::NumericMatrix& distMat,
 //' where \eqn{\Gamma(\alpha)} is the Gamma function, \eqn{\gamma(\alpha,\beta x)} is hte lower incomplete
 //' gamma function, and \eqn{\alpha,\beta} are the shape and rate parameters, respectively.
 //'
-//' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
-//' @param shape shape parameter of \code{\link[stats]{GammaDist}} distribution
-//' @param rate rate parameter of \code{\link[stats]{GammaDist}} distribution
+//' @param distMat Distance matrix from \code{\link[MGDrivE]{calcVinEll}}
+//' @param shape Shape parameter of \code{\link[stats]{GammaDist}} distribution
+//' @param rate Rate parameter of \code{\link[stats]{GammaDist}} distribution
 //'
 //' @examples
 //' # setup distance matrix
@@ -132,7 +132,8 @@ Rcpp::NumericMatrix calcLognormalKernel(const Rcpp::NumericMatrix& distMat,
 //'
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericMatrix calcGammaKernel(const Rcpp::NumericMatrix& distMat, const double& shape, const double& rate){
+Rcpp::NumericMatrix calcGammaKernel(const Rcpp::NumericMatrix& distMat,
+                                    const double& shape, const double& rate){
 
   size_t n = distMat.nrow();
   Rcpp::NumericMatrix kernMat(n,n);
@@ -148,7 +149,7 @@ Rcpp::NumericMatrix calcGammaKernel(const Rcpp::NumericMatrix& distMat, const do
 };
 
 /**************************************
- * exponential
+ * Exponential
  *************************************/
 
 //' Calculate Exponential Stochastic Matrix
@@ -165,8 +166,8 @@ Rcpp::NumericMatrix calcGammaKernel(const Rcpp::NumericMatrix& distMat, const do
 //' }
 //' where \eqn{\lambda} is the rate parameter of the exponential distribution.
 //'
-//' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
-//' @param rate rate parameter of \code{\link[stats]{Exponential}} distribution
+//' @param distMat Distance matrix from \code{\link[MGDrivE]{calcVinEll}}
+//' @param rate Rate parameter of \code{\link[stats]{Exponential}} distribution
 //'
 //' @examples
 //' # setup distance matrix
@@ -200,20 +201,22 @@ Rcpp::NumericMatrix calcExpKernel(const Rcpp::NumericMatrix& distMat, const doub
 };
 
 /**************************************
- * zero-inflated exponential (point mass at zero + zero-truncated exponential distribution)
+ * Zero-inflated Exponential (point mass at zero + zero-truncated exponential distribution)
  *************************************/
 
 //' Calculate Zero-inflated Exponential Stochastic Matrix
 //'
 //' Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a
 //' stochastic matrix where one step movement probabilities follow an zero-inflated
-//' exponential density with a point mass at zero. The point mass at zero represents the first stage of
-//' a two-stage process, where mosquitoes decide to stay at their current node or leave anywhere.
-//' This parameter can be calculated from lifetime probabilities to stay at the current node with the
-//' helper function \code{\link[MGDrivE]{calcZeroInflation}}.
+//' exponential density with a point mass at zero. The point mass at zero represents
+//' the first stage of a two-stage process, where mosquitoes decide to stay at
+//' their current node or leave anywhere. This parameter can be calculated from
+//' lifetime probabilities to stay at the current node with the helper function
+//' \code{\link[MGDrivE]{calcZeroInflation}}.
 //'
-//' If a mosquito leaves its current node, with probability \eqn{1-p_{0}}, it then chooses
-//' a destination node according to a standard exponential density with rate parameter \eqn{rate}.
+//' If a mosquito leaves its current node, with probability \eqn{1-p_{0}}, it
+//' then chooses a destination node according to a standard exponential density
+//' with rate parameter \eqn{rate}.
 //'
 //' The distribution and density functions for the zero inflated exponential kernel are given below:
 //' \deqn{
@@ -222,13 +225,13 @@ Rcpp::NumericMatrix calcExpKernel(const Rcpp::NumericMatrix& distMat, const doub
 //' \deqn{
 //' f(x)=p_{0}\delta(x)+(1-p_{0})\lambda e^{-\lambda x}
 //' }
-//' where \eqn{\lambda} is the rate parameter of the exponential distribution, \eqn{\theta(x)} is the Heaviside step function
-//' and \eqn{\delta(x)} is the Dirac delta function.
+//' where \eqn{\lambda} is the rate parameter of the exponential distribution,
+//' \eqn{\theta(x)} is the Heaviside step function and \eqn{\delta(x)} is the
+//' Dirac delta function.
 //'
-//'
-//' @param distMat distance matrix from \code{\link[MGDrivE]{calcVinEll}}
-//' @param rate rate parameter of \code{\link[stats]{Exponential}} distribution
-//' @param p0 point mass at zero
+//' @param distMat Distance matrix from \code{\link[MGDrivE]{calcVinEll}}
+//' @param rate Rate parameter of \code{\link[stats]{Exponential}} distribution
+//' @param p0 Point mass at zero
 //'
 //' @examples
 //' # setup distance matrix
@@ -245,7 +248,9 @@ Rcpp::NumericMatrix calcExpKernel(const Rcpp::NumericMatrix& distMat, const doub
 //'
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat, double rate, double p0){
+Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat,
+                                        const double& rate, const double& p0){
+
   const double a = 1.0e-10; /* lower truncation bound */
 
   size_t n = distMat.nrow();

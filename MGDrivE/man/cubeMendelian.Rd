@@ -4,8 +4,15 @@
 \alias{cubeMendelian}
 \title{Inheritance Cube: Mendelian}
 \usage{
-cubeMendelian(gtype = c("AA", "Aa", "aa"), eta = NULL, phi = NULL,
-  omega = NULL, xiF = NULL, xiM = NULL, s = NULL)
+cubeMendelian(
+  gtype = c("AA", "Aa", "aa"),
+  eta = NULL,
+  phi = NULL,
+  omega = NULL,
+  xiF = NULL,
+  xiM = NULL,
+  s = NULL
+)
 }
 \arguments{
 \item{gtype}{Vector of genotypes, with the wild-type in the first position}
@@ -29,6 +36,6 @@ and all genotype-specific parameters.
 \description{
 This function creates a Mendelian Inheritance Cube. It only handles simple,
 alphabetic genotypes. \cr
-The default is 3 alleles at 1 locus, but this can be extended to however many
+The default is 3 alleles at 1 locus, this can be extended to however many
 alleles one is interested in, but only at 1 locus.
 }

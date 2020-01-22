@@ -1,7 +1,7 @@
 Package: MGDrivE
 Type: Package
 Title: Mosquito Gene Drive Explorer
-Version: 1.1.0
+Version: 1.5.0
 Authors@R: c(
     person("Héctor Manuel", "Sánchez Castellanos", email = "sanchez.hmsc@berkeley.edu", role = c("aut","cre")),
     person("Jared", "Bennett", email = "jared_bennett@berkeley.edu ", role = "aut"),
@@ -21,13 +21,13 @@ Description: Provides a model designed to be a reliable testbed where various ge
     <doi:10.1038/s41598-017-02744-7>.
 License: GPL-3
 Encoding: UTF-8
-Imports: R6, Rcpp, Rdpack (>= 0.7), grDevices, graphics, stats, utils, data.table
+Imports: R6, Rcpp, Rdpack (>= 0.7), grDevices, graphics, stats, utils
 RdMacros: Rdpack
 LinkingTo: Rcpp
 Depends: R (>= 2.10)
 ByteCompile: true
 LazyData: true
-RoxygenNote: 6.1.1
-Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.0.2
+Roxygen: list(markdown = TRUE, r6 = FALSE)
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr

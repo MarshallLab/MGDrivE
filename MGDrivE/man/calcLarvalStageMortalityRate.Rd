@@ -4,18 +4,23 @@
 \alias{calcLarvalStageMortalityRate}
 \title{Calculate Larval Stage Mortality Rate}
 \usage{
-calcLarvalStageMortalityRate(generationPopGrowthRate, adultMortality,
-  fertility, aquaticStagesDuration)
+calcLarvalStageMortalityRate(
+  generationPopGrowthRate,
+  adultMortality,
+  fertility,
+  aquaticStagesDuration
+)
 }
 \arguments{
-\item{generationPopGrowthRate}{see \code{\link{calcPopulationGrowthRate}}}
+\item{generationPopGrowthRate}{See \code{\link{calcPopulationGrowthRate}}}
 
-\item{adultMortality}{adult mortality rate, \eqn{\mu_{ad}}}
+\item{adultMortality}{Adult mortality rate, \eqn{\mu_{ad}}}
 
-\item{fertility}{number of eggs per oviposition for wild-type females, \eqn{\beta}}
+\item{fertility}{Number of eggs per oviposition for wild-type females, \eqn{\beta}}
 
-\item{aquaticStagesDuration}{vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}}
+\item{aquaticStagesDuration}{Vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}}
 }
 \description{
-Calculate \eqn{\mu_{l}}, the larval mortality, given by \deqn{\mu_l=1-\Bigg( \frac{R_m * \mu_{ad}}{1/2 * \beta * (1-\mu_m)} \Bigg)^{\frac{1}{T_e+T_l+T_p}}}
+Calculate \eqn{\mu_{l}}, the larval mortality, given by
+\deqn{\mu_l=1-\Bigg( \frac{R_m * \mu_{ad}}{1/2 * \beta * (1-\mu_m)} \Bigg)^{\frac{1}{T_e+T_l+T_p}}}
 }

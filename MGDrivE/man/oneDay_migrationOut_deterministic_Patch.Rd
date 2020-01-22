@@ -7,5 +7,9 @@
 oneDay_migrationOut_deterministic_Patch()
 }
 \description{
-Deterministc model of outbound migration of \code{AF1new} females from this patch, fills up the \code{femaleMigration} array.
+Deterministc model of outbound migration from each patch for \code{\link{oneDay_Migration_Network}}.
+\code{popFemale} from each patch is stored in the \code{fMig} array, and \code{popMale}
+are stored in the \code{mMig} matrix. Migration location is determined from
+\code{\link{get_migrationFemaleRow_Network}} and \code{\link{get_migrationMaleRow_Network}}. \cr
+Batch migration is not used in the deterministic model.
 }

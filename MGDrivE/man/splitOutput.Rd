@@ -4,8 +4,7 @@
 \alias{splitOutput}
 \title{Split Output by Patch}
 \usage{
-splitOutput(readDir, writeDir = NULL, remFile = TRUE, numCores = 1,
-  verbose = TRUE)
+splitOutput(readDir, writeDir = NULL, remFile = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{readDir}{Directory where output was written to}
@@ -13,8 +12,6 @@ splitOutput(readDir, writeDir = NULL, remFile = TRUE, numCores = 1,
 \item{writeDir}{Directory to write output to. Default is readDir}
 
 \item{remFile}{Remove original output? Default is TRUE}
-
-\item{numCores}{How many cores to use when writing output. Default is 1}
 
 \item{verbose}{Chatty? Default is TRUE}
 }
@@ -29,14 +26,13 @@ fPath <- "path/to/data/containing/folder"
 oPath <- "path/to/write/output"
 
 # split data by patch, keep original files
-#  not return value
-#  numCores uses data.table::setDTthreads internally
-splitOutput(readDir = fPath, writeDir = oPath, remFile = FALSE, numCores = 1)
+#  no return value
+splitOutput(readDir = fPath, writeDir = oPath, remFile = FALSE)
 
 # Alternatively, remove the original files and write new ones in their place
 fPath <- "path/to/data/containing/folder"
 
-splitOutput(readDir = fPath, writeDir = NULL, remFile = TRUE, numCores = 1)
+splitOutput(readDir = fPath, writeDir = NULL, remFile = TRUE)
 }
 
 }

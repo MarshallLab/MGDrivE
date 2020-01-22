@@ -22,12 +22,12 @@ inline double toDeg(const double& rad) {
 /* These functions come from the geosphere package, version 1.5-7
  * They are pulled from src/dist.c file, and converted to c++
  *
- * The original functions will be commented out above the ones used for the package.
+ * The original functions (by Sean) will be commented out above the ones used
+ * for the package. The originals are less clear to read, but generally the same.
  */
 
-
 /******************************************************************************
- * Cosine distance
+ * Cosine Distance
  *****************************************************************************/
 
 // double distCos(double lon1, double lat1, double lon2, double lat2, double r) {
@@ -61,7 +61,7 @@ inline double toDeg(const double& rad) {
 Rcpp::NumericMatrix calcCos(const Rcpp::NumericMatrix& latLongs, const double& r = 6378137){
 
   // latLongs = 2 column matrix of latitudes/longitudes in degrees
-  // a = equatorial radius of earth in meters from WGS-84
+  // r = equatorial radius of earth in meters from WGS-84
 
   ////////////////////
   // Setup objects
@@ -101,9 +101,8 @@ Rcpp::NumericMatrix calcCos(const Rcpp::NumericMatrix& latLongs, const double& r
 
 }// end function
 
-
 /******************************************************************************
- * Haversine distance
+ * Haversine Distance
  *****************************************************************************/
 
 /********************
@@ -212,9 +211,8 @@ Rcpp::NumericMatrix calcHaversine(const Rcpp::NumericMatrix& latLongs, const dou
 
 }// end function
 
-
 /******************************************************************************
- * Vincenty Sphere distance
+ * Vincenty Sphere Distance
  *****************************************************************************/
 
 // double distVinSph(double lon1, double lat1, double lon2, double lat2, double r) {
@@ -301,9 +299,8 @@ Rcpp::NumericMatrix calcVinSph(const Rcpp::NumericMatrix& latLongs, const double
 
 }// end function
 
-
 /******************************************************************************
- * Vincenty Ellipse distance
+ * Vincenty Ellipse Distance
  *****************************************************************************/
 
 // double distVinEll(double lon1, double lat1, double lon2, double lat2, double a, double b, double f) {
@@ -400,7 +397,7 @@ Rcpp::NumericMatrix calcVinSph(const Rcpp::NumericMatrix& latLongs, const double
 //'
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericMatrix calcVinEll(const Rcpp::NumericMatrix& latLongs,const double& a = 6378137,
+Rcpp::NumericMatrix calcVinEll(const Rcpp::NumericMatrix& latLongs, const double& a = 6378137,
                                   const double& b = 6356752.3142, const double& f = 1.0/298.257223563,
                                   const double& eps = 1e-12, const double& iter = 100) {
 

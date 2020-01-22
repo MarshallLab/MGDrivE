@@ -7,8 +7,8 @@
 get_timeAq_Network(stage = NULL)
 }
 \arguments{
-\item{stage}{character in 'E', 'L', 'P'; if \code{NULL} return total duration}
+\item{stage}{Character in 'E', 'L', 'P'; if \code{NULL} return total duration}
 }
 \description{
-Return duration of aquatic stages, see \code{\link{initStagesDurations}}
+Return duration of aquatic stages.
 }

@@ -4,8 +4,13 @@
 \alias{aggregateFemales}
 \title{Aggregate Female Output by Genotype}
 \usage{
-aggregateFemales(readDir, writeDir = NULL, genotypes, remFile = FALSE,
-  numCores = 1, verbose = TRUE)
+aggregateFemales(
+  readDir,
+  writeDir = NULL,
+  genotypes,
+  remFile = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{readDir}{Directory to read input from}
@@ -15,8 +20,6 @@ aggregateFemales(readDir, writeDir = NULL, genotypes, remFile = FALSE,
 \item{genotypes}{Character vector of possible genotypes; found in \code{driveCube$genotypesID}}
 
 \item{remFile}{Boolean flag to remove original (unaggregated) file}
-
-\item{numCores}{Number of cores when reading/writing. Default is 1.}
 
 \item{verbose}{Chatty? Default is TRUE}
 }
@@ -38,9 +41,8 @@ fPath <- "path/to/data/containing/folder"
 cube <- cubeMendelian()
 
 # no return value from function
-# numCores uses data.table::setDTthreads internally
-aggregateFemales(readDir= fPath, writeDi = NULL, genotypes = cube$genotypesID,
-                 remFile = FALSE, numCores = 1)
+aggregateFemales(readDir= fPath, writeDir = NULL, genotypes = cube$genotypesID,
+                 remFile = TRUE)
 }
 
 }

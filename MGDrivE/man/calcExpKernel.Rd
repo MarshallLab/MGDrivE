@@ -7,9 +7,9 @@
 calcExpKernel(distMat, rate)
 }
 \arguments{
-\item{distMat}{distance matrix from \code{\link[MGDrivE]{calcVinEll}}}
+\item{distMat}{Distance matrix from \code{\link[MGDrivE]{calcVinEll}}}
 
-\item{rate}{rate parameter of \code{\link[stats]{Exponential}} distribution}
+\item{rate}{Rate parameter of \code{\link[stats]{Exponential}} distribution}
 }
 \description{
 Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a

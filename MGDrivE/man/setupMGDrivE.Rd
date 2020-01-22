@@ -12,7 +12,8 @@ setupMGDrivE(stochasticityON = FALSE, verbose = TRUE)
 \item{verbose}{Chatty? Default is TRUE}
 }
 \description{
-Initialize methods in \code{\link{Patch}} to run deterministic or stochastic simulations. This sets internal function definitions so that \code{\link{oneRun_Network}}
+Initialize methods in \code{\link{Patch}} to run deterministic or stochastic simulations.
+This sets internal function definitions so that \code{\link{oneRun_Network}}
 and \code{\link{multRun_Network}} run either deterministic or stochastic functions.
 }
 \examples{
@@ -21,6 +22,5 @@ setupMGDrivE(stochasticityON = FALSE)
 
 # run stochastic MGDrivE
 setupMGDrivE(stochasticityON = TRUE)
-
 
 }

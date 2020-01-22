@@ -1,4 +1,4 @@
-########################################################################
+###############################################################################
 #       __  _____________       _       ______
 #      /  |/  / ____/ __ \_____(_)   __/ ____/
 #     / /|_/ / / __/ / / / ___/ / | / / __/
@@ -7,9 +7,10 @@
 #
 #   MGDrivE Graphics
 #   Marshall Lab
-#   November 2017
+#   jared_bennett@berkeley.edu
+#   December 2019
 #
-########################################################################
+###############################################################################
 #######################################
 # Color Utility
 #######################################
@@ -18,14 +19,17 @@
 #'
 #' Sample at equally spaced intervals along the color wheel
 #'
-#' @param n number of colors
-#' @param alpha transparency
+#' @param n Number of colors
+#' @param alpha Transparency
 #'
 #' @importFrom grDevices hcl
 #'
 ggColUtility <- function(n, alpha = .75) {
+  # equally spaced intervals
   hues = seq(15, 375, length = n + 1)
-  hcl(h = hues, l = 65, c = 100, alpha = alpha)[1:n]
+
+  # return colors
+  return(hcl(h = hues, l = 65, c = 100, alpha = alpha)[1:n])
 }
 
 #######################################
@@ -47,11 +51,12 @@ ggColUtility <- function(n, alpha = .75) {
 #' @param alpha Double, specify the opacity for plotting
 #'
 #' @importFrom graphics box grid layout legend matplot mtext par plot.new title
+#' @importFrom utils tail
 #'
-#' @details This function plots output from one run or one set of runs after being analyzed. Setting totalPop
-#' to FALSE keeps it from plotting the total population. NonZeroGen accounts for
-#' genotypes that could exist, but are not created in the simulation. Default
-#' is FALSE, as this is easier to read on a plot.
+#' @details This function plots output from one run or one set of runs after being
+#' analyzed. Setting totalPop to FALSE keeps it from plotting the total population.
+#' NonZeroGen accounts for genotypes that could exist, but are not created in the
+#' simulation. Default is FALSE, as this is easier to read on a plot.
 #'
 #' @examples
 #' \dontrun{
@@ -65,7 +70,6 @@ ggColUtility <- function(n, alpha = .75) {
 #' # plot output to see effect
 #' plotMGDrivESingle(readDir=fPath,totalPop = TRUE,lwd=3.5,alpha=1)
 #' }
-#'
 #'
 #' @export
 plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
@@ -107,7 +111,7 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
   ####################
   # scan test file for names and existing genotypes
   ####################
-  #test file to get sizes
+  # test file to get sizes
   # THIS ASSUMES MALE/FEMALE FILE ORDER. MAY CHANGE IF WE RENAME FILES
   columnNames <- scan(file = mFiles[1], what = character(), sep = ",", quiet = TRUE, nlines = 1)
 
@@ -142,7 +146,6 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
                      ncol = length(columnNames), byrow = TRUE)
     maleData[,,patch] = cbind(mFile[ ,genotypes], rowSums(x = mFile[ ,-1]))
 
-
     # get female file name
     names = grep(pattern = patch, x = fFiles, fixed = TRUE, value = TRUE)
 
@@ -168,17 +171,15 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
   col <- ggColUtility(n = length(genotypes), alpha=alpha)
 
 
-
-
   ####################
   # plot layout
   ####################
   lmatrix <- matrix(data = 1:(numPatches*3), nrow = numPatches, ncol = 3, byrow = TRUE)
   if(numPatches>1){
-    #fill in rest of plot labels
+    # fill in rest of plot labels
     lmatrix[2:numPatches, c(1,2)] <- matrix(data = 4:(3+2*(numPatches-1)),
                                             ncol = 2, byrow = TRUE)
-    #legend gets whole right side
+    # legend gets whole right side
     lmatrix[,3] <- 3
   }
 
@@ -187,28 +188,28 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
   ####################
   # plot!
   ####################
-  #plot first patch and the legend
-  #female
+  # plot first patch and the legend
+  # female
   par(mar = c(2,3,3,1), las = 1, font.lab = 2, font.axis = 2, font.main = 2, cex.main = 1.75)
-  matplot(femaleData[ , genotypes, patches[1]], type = "l", lty = 1,
-          main = "Females", ylab = "", lwd=lwd,
+  matplot(x = femaleData[ ,1,patches[1],drop = FALSE], y = femaleData[ , genotypes, patches[1]],
+          type = "l", lty = 1, main = "Females", ylab = "", lwd=lwd,
           ylim = c(0, 1.1*max(femaleData[ , genotypes, patches[1]])),
-          xlim = c(0, dim(maleData)[1]), yaxs = "i", xaxs = "i",
+          xlim = c(0, tail(x = femaleData[ ,1,1], n = 1)), yaxs = "i", xaxs = "i",
           col = col, panel.first=grid())
   title(ylab = "Population\n", line = 2)
   box(lwd = 2)
 
-  #female
+  # male
   par(mar = c(2,2,3,1), las = 1)
-  matplot(maleData[ , genotypes, patches[1]], type = "l", lty = 1,
-          main = "Males", ylab = "", lwd=lwd,
+  matplot(x = maleData[ ,1, patches[1],drop = FALSE], y = maleData[ , genotypes, patches[1]],
+          type = "l", lty = 1, main = "Males", ylab = "", lwd=lwd,
           ylim = c(0, 1.1*max(maleData[ , genotypes, patches[1]])),
-          xlim = c(0, dim(maleData)[1]), yaxs = "i", xaxs = "i",
+          xlim = c(0, tail(x = maleData[ ,1,1], n = 1)), yaxs = "i", xaxs = "i",
           col = col, panel.first=grid())
   mtext(patches[1], side = 4, line = 0.5, las = 0, cex = 0.9, font = 2)
   box(lwd = 2)
 
-  #legend
+  # legend
   plot.new()
   par(font = 2)
   legend(x = 'left',
@@ -228,36 +229,36 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
          # lwd=16,
          cex = 1)
 
-
-  ##rest of the patches
+  # rest of the patches
   if(numPatches>1){
     for(patch in patches[-1]){
+      # female
       par(mar = c(2,3,1,1), las = 1)
-      matplot(femaleData[ , genotypes, patch], type = "l", lty = 1,
-              ylab = "", lwd=lwd,
+      matplot(x = femaleData[ ,1, patch, drop = FALSE], y = femaleData[ , genotypes, patch],
+              type = "l", lty = 1, ylab = "", lwd=lwd,
               ylim = c(0, 1.1*max(femaleData[ , genotypes, patch])),
-              xlim = c(0, dim(maleData)[1]), yaxs = "i", xaxs = "i",
+              xlim = c(0, tail(x = femaleData[ ,1,1], n = 1)), yaxs = "i", xaxs = "i",
               col = col, panel.first=grid())
       title(ylab = "Population\n", line = 2)
       box(lwd = 2)
 
+      # male
       par(mar = c(2,2,1,1))
-      matplot(maleData[ , genotypes, patch], type = "l", lty = 1,
-              ylab = "", lwd=lwd,
+      matplot(x = maleData[ ,1, patch, drop = FALSE], y = maleData[ , genotypes, patch],
+              type = "l", lty = 1, ylab = "", lwd=lwd,
               ylim = c(0, 1.1*max(maleData[ , genotypes, patch])),
-              xlim = c(0, dim(maleData)[1]), yaxs = "i", xaxs = "i",
+              xlim = c(0, tail(x = maleData[ ,1,1], n = 1)), yaxs = "i", xaxs = "i",
               col = col, panel.first=grid())
       mtext(patch, side = 4, line = 0.5, las = 0, cex = 0.9, font = 2)
       box(lwd = 2)
-    }#end patch loop
-  }#end if
+    } # end patch loop
+  } # end rest of patches
 
 }
 
 #######################################
 # Plot multiple Trace
 #######################################
-
 
 #' Plot
 #'
@@ -289,10 +290,10 @@ plotMGDrivESingle <- function(readDir, whichPatches = NULL, totalPop = FALSE,
 #'
 #' @importFrom graphics matlines
 #'
-#' @details This function plots output from one run or one set of runs after being analyzed. Setting totalPop
-#' to FALSE keeps it from plotting the total population. NonZeroGen accounts for
-#' genotypes that could exist, but are not created in the simulation. Default
-#' is FALSE, as this is easier to read on a plot.
+#' @details This function plots output from one run or one set of runs after
+#' being analyzed. Setting totalPop to FALSE keeps it from plotting the total
+#' population. NonZeroGen accounts for genotypes that could exist, but are not
+#' created in the simulation. Default is FALSE, as this is easier to read on a plot.
 #'
 #' @examples
 #' \dontrun{
@@ -323,8 +324,6 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
   fFiles = lapply(X = list.dirs(path = readDir, recursive = FALSE),
                   FUN = list.files, pattern = "^F_.*csv$", full.names = TRUE)
 
-
-
   # Test that number of patches matches what we can plot
   patches = unique(x = regmatches(x = mFiles[[1]], m = regexpr(pattern = "Patch[0-9]+", text = mFiles[[1]])))
 
@@ -351,7 +350,7 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
   ####################
   # scan test file for names and existing genotypes
   ####################
-  #test file to get sizes
+  # test file to get sizes
   columnNames <- scan(file = mFiles[[1]][1], what = character(), sep = ",", quiet = TRUE, nlines = 1)
 
   mFile <- matrix(data = scan(file = mFiles[[1]][1], what = double(), sep = ",", skip = 1, quiet = TRUE),
@@ -367,7 +366,6 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
   #   test male and female files, in case of sex-specific drive
   #   Does only test first patch, which if releases aren't done there, could be wrong.
   if(!nonZeroGen){genotypes <- genotypes[colSums(mFile[ ,genotypes])!=0 | colSums(fFile[ ,genotypes])!=0]}
-
 
   ####################
   # Read in all data, subset by desired genotypes
@@ -404,7 +402,6 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
     }# end patches
   }# end repetitions
 
-
   ####################
   # setup colors and final genotype size
   ####################
@@ -418,9 +415,6 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
 
   # get color swath
   col <- ggColUtility(n = length(genotypes), alpha=alpha)
-
-
-
 
   ####################
   # plot layout
@@ -436,23 +430,23 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
 
   layout(lmatrix, widths = c(3,3,1))
 
-
   ####################
   # plot!
   ####################
-  #plot first patch and the legend
-  # female
-  # set parameters
+  # plot first patch and the legend
+  #  female
+  #  set parameters
   par(mar = c(2,3,3,1), las = 1, font.lab = 2, font.axis = 2, font.main = 2, cex.main = 1.75)
   # plot first repetition
-  matplot(femaleData[[1]][ , genotypes, patches[1]], type = "l", lty = 1,
-          main = "Females", ylab = "", lwd=lwd,
+  matplot(x = femaleData[[1]][ , 1, patches[1], drop = FALSE], y = femaleData[[1]][ , genotypes, patches[1]],
+          type = "l", lty = 1, main = "Females", ylab = "", lwd=lwd,
           ylim = c(0, 1.1*max(femaleData[[1]][ , genotypes, patches[1]])),
-          xlim = c(0, dim(maleData[[1]])[1]), yaxs = "i", xaxs = "i",
+          xlim = c(0, tail(x = femaleData[[1]][ , 1, 1], n = 1)), yaxs = "i", xaxs = "i",
           col = col, panel.first=grid())
   # add remaining repetitions to the plot
   for(nRep in 2:numReps){
-    matlines(femaleData[[nRep]][ , genotypes, patches[1]], type = "l", lty = 1,lwd=lwd, col = col)
+    matlines(x = femaleData[[nRep]][ ,1, patches[1]], y = femaleData[[nRep]][ , genotypes, patches[1]],
+             type = "l", lty = 1,lwd=lwd, col = col)
   }
   title(ylab = "Population\n", line = 2)
   box(lwd = 2)
@@ -461,20 +455,20 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
   # set parameters
   par(mar = c(2,2,3,1), las = 1)
   # plot first repetition
-  matplot(maleData[[1]][ , genotypes, patches[1]], type = "l", lty = 1,
-          main = "Males", ylab = "", lwd=lwd,
+  matplot(x = maleData[[1]][ ,1, patches[1], drop = FALSE], y = maleData[[1]][ , genotypes, patches[1]],
+          type = "l", lty = 1, main = "Males", ylab = "", lwd=lwd,
           ylim = c(0, 1.1*max(maleData[[1]][ , genotypes, patches[1]])),
-          xlim = c(0, dim(maleData[[1]])[1]), yaxs = "i", xaxs = "i",
+          xlim = c(0, tail(x = maleData[[1]][ , 1, 1], n = 1)), yaxs = "i", xaxs = "i",
           col = col, panel.first=grid())
   # add remaining repetitions to the plot
   for(nRep in 2:numReps){
-    matlines(maleData[[nRep]][ , genotypes, patches[1]], type = "l", lty = 1,lwd=lwd, col = col)
+    matlines(x = maleData[[nRep]][ ,1, patches[1], drop = FALSE], y = maleData[[nRep]][ , genotypes, patches[1]],
+             type = "l", lty = 1,lwd=lwd, col = col)
   }
   mtext(patches[1], side = 4, line = 0.5, las = 0, cex = 0.9, font = 2)
   box(lwd = 2)
 
-
-  #legend
+  # legend
   plot.new()
   par(font = 2)
   legend(x = 'left',
@@ -486,7 +480,7 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
          legend = genotypes,
          col = col,
          bty = "n",
-         #bg = "lightblue",
+         # bg = "lightblue",
          xpd = TRUE,
          pch = 15,
          pt.cex = 2,
@@ -494,38 +488,39 @@ plotMGDrivEMult <- function(readDir, whichPatches = NULL, totalPop = FALSE,
          # lwd=16,
          cex = 1)
 
-  ##rest of the patches
+  # rest of the patches
   if(numPatches>1){
     # loop over patches
     for(patch in patches[-1]){
       # female
       par(mar = c(2,3,1,1), las = 1)
-      matplot(femaleData[[1]][ , genotypes, patch], type = "l", lty = 1,
-              ylab = "", lwd=lwd,
+      matplot(x = femaleData[[1]][ ,1, patch], y = femaleData[[1]][ , genotypes, patch],
+              type = "l", lty = 1, ylab = "", lwd=lwd,
               ylim = c(0, 1.1*max(femaleData[[1]][ , genotypes, patch])),
-              xlim = c(0, dim(maleData[[1]])[1]), yaxs = "i", xaxs = "i",
+              xlim = c(0, tail(x = femaleData[[1]][ , 1, patch], n = 1)), yaxs = "i", xaxs = "i",
               col = col, panel.first=grid())
       for(nRep in 2:numReps){
-        matlines(femaleData[[nRep]][ , genotypes, patch], type = "l", lty = 1,lwd=lwd, col = col)
+        matlines(x = femaleData[[nRep]][ ,1, patch], y = femaleData[[nRep]][ , genotypes, patch],
+                 type = "l", lty = 1,lwd=lwd, col = col)
       }
       title(ylab = "Population\n", line = 2)
       box(lwd = 2)
 
-
       # male
       par(mar = c(2,2,1,1))
-      matplot(maleData[[1]][ , genotypes, patch], type = "l", lty = 1,
-              ylab = "", lwd=lwd,
+      matplot(x = maleData[[1]][ ,1, patch], y = maleData[[1]][ , genotypes, patch],
+              type = "l", lty = 1, ylab = "", lwd=lwd,
               ylim = c(0, 1.1*max(maleData[[1]][ , genotypes, patch])),
-              xlim = c(0, dim(maleData[[1]])[1]), yaxs = "i", xaxs = "i",
+              xlim = c(0, tail(x = maleData[[1]][ , 1, patch], n = 1)), yaxs = "i", xaxs = "i",
               col = col, panel.first=grid())
       for(nRep in 2:numReps){
-        matlines(maleData[[nRep]][ , genotypes, patch], type = "l", lty = 1,lwd=lwd, col = col)
+        matlines(x = maleData[[nRep]][ ,1, patch], y = maleData[[nRep]][ , genotypes, patch],
+                 type = "l", lty = 1,lwd=lwd, col = col)
       }
 
       mtext(patch, side = 4, line = 0.5, las = 0, cex = 0.9, font = 2)
       box(lwd = 2)
-    }#end patch loop
-  }#end if
+    } # end patch loop
+  } # end rest of patches
 
 }

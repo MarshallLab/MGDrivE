@@ -7,10 +7,11 @@
 calcPopulationGrowthRate(dailyPopGrowthRate, averageGenerationTime)
 }
 \arguments{
-\item{dailyPopGrowthRate}{daily population growth rate, \eqn{r_{m}}}
+\item{dailyPopGrowthRate}{Daily population growth rate, \eqn{r_{m}}}
 
-\item{averageGenerationTime}{see \code{\link{calcAverageGenerationTime}}}
+\item{averageGenerationTime}{See \code{\link{calcAverageGenerationTime}}}
 }
 \description{
-Calculate \eqn{R_{m}}, population growth in absence of density-dependent mortality, given by: \deqn{(r_{m})^{g}}
+Calculate \eqn{R_{m}}, population growth in absence of density-dependent mortality,
+given by: \deqn{(r_{m})^{g}}
 }

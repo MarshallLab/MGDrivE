@@ -27,10 +27,9 @@
 #'
 #' @usage data(moveMatAll2)
 #'
-#'
 #' @format A matrix with 3 rows and 3 columns:
 #' \describe{
-#'   Patches 1 and 3 are sources for patch 2 which is a sink.
+#'   Patches 1 and 3 are sources for patch 2, which is a sink.
 #' }
 "moveMatAll2"
 
@@ -43,7 +42,6 @@
 #'
 #' @usage data(moveMatDiag)
 #'
-#'
 #' @format A matrix with 3 rows and 3 columns:
 #' \describe{
 #'   3 independent patches.
@@ -53,7 +51,6 @@
 #' Movement Matrix: Cascade 3
 #'
 #' A movement matrix for simulation with 3 patches.
-#'
 #'
 #' @name moveMatCascade3
 #' @docType data
@@ -75,7 +72,6 @@
 #' @docType data
 #'
 #' @usage data(moveMatIndependent3)
-#'
 #'
 #' @format A matrix with 3 rows and 3 columns:
 #' \describe{
@@ -127,7 +123,6 @@
 #' \describe{
 #'   Mosquitoes in patch 1 stay with probability 0.999, move to patch 2 with probability 0.001,
 #'   mosquitoes in patch 2 and 3 stay in their patches.
-
 #' }
 "moveMatMixedSpil"
 
@@ -157,7 +152,8 @@
 #'
 #' @format A matrix with 12 rows and 12 columns:
 #' \describe{
-#'   Tri-diagonal matrix with approximately 0.985 probability on diagonal and rest of probability mass on k-1 and k+1 off-diagonal elements.
+#'   Tri-diagonal matrix with approximately 0.985 probability on diagonal and
+#'   rest of probability mass on k-1 and k+1 off-diagonal elements.
 #' }
 "moveMatTriDiagonal"
 

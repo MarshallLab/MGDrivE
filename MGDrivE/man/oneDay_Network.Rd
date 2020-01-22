@@ -7,5 +7,6 @@
 oneDay_Network()
 }
 \description{
-Runs a single day of simulation on a \code{\link{Network}} object, handling population dynamics, migration, population update, and output.
+Runs a single day of simulation on a \code{\link{Network}} object, handling
+population dynamics, migration, population update, and output.
 }

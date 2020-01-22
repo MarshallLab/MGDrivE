@@ -4,8 +4,16 @@
 \alias{cubeHoming1RA}
 \title{Inheritance Cube: Homing Drive with 1 Resistance Allele}
 \usage{
-cubeHoming1RA(c = 1, ch = 0, eta = NULL, phi = NULL,
-  omega = NULL, xiF = NULL, xiM = NULL, s = NULL)
+cubeHoming1RA(
+  c = 1,
+  ch = 0,
+  eta = NULL,
+  phi = NULL,
+  omega = NULL,
+  xiF = NULL,
+  xiM = NULL,
+  s = NULL
+)
 }
 \arguments{
 \item{c}{Cutting rate}
@@ -25,9 +33,8 @@ cubeHoming1RA(c = 1, ch = 0, eta = NULL, phi = NULL,
 \item{s}{Genotype-specific fractional reduction(increase) in fertility}
 }
 \value{
-Named list(inheritance cube, viability mask, genotypes ID, genotypes number,
-wild-type allele, mating fitness, sex ratio, adult mortality modifier, female pupatory success,
-male pupatory success, fertility modifier, release genotype)
+Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
+and all genotype-specific parameters.
 }
 \description{
 This function creates an inheritance cube to model a homing gene drive (such as a CRISPR-Cas9 system)

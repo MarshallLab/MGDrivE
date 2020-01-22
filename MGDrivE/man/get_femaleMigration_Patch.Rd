@@ -2,10 +2,10 @@
 % Please edit documentation in R/Patch-Class.R
 \name{get_femaleMigration_Patch}
 \alias{get_femaleMigration_Patch}
-\title{Get maleMigration}
+\title{Get femaleMigration}
 \usage{
 get_femaleMigration_Patch()
 }
 \description{
-Return outbound males (nGenotypes X nGenotypes X nPatch array)
+Return outbound females (nGenotypes X nGenotypes X nPatch array)
 }

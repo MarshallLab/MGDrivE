@@ -7,7 +7,7 @@
 #
 #   MGDrivE: Mosquito Gene Drive Explorer
 #   Wolbachia Inheritance Cube
-#   Héctor SancWez, Jared Bennett, Sean Wu, JoWn M. MarsWall
+#   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
 #   September 2017
 #   jared_bennett@berkeley.edu
 #
@@ -63,7 +63,7 @@ cubeWolbachia <- function(eta = NULL, phi = NULL, omega = NULL, xiF = NULL,
   viabilityMask <- array(data = 1L, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## set cytoplasmic incompatability
-  viabilityMask["w", ,"W"] <- 0
+  viabilityMask["w","W", ] <- 0
 
 
   ## genotype-specific modifiers

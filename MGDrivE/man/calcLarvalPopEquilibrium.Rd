@@ -7,10 +7,10 @@
 calcLarvalPopEquilibrium(alpha, Rm)
 }
 \arguments{
-\item{alpha}{see \code{\link{calcDensityDependentDeathRate}}}
+\item{alpha}{See \code{\link{calcDensityDependentDeathRate}}}
 
-\item{Rm}{see \code{\link{calcPopulationGrowthRate}}}
+\item{Rm}{See \code{\link{calcPopulationGrowthRate}}}
 }
 \description{
-Equilibrium larval population to sustain population.
+Equilibrium larval population size to sustain adult population.
 }

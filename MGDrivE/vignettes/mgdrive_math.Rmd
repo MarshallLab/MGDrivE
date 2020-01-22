@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-Recent developments of CRISPR-Cas9 based homing endonuclease gene drive systems for the suppression or replacement of mosquito populations have generated much interest in their use for control of mosquito-borne diseases (such as dengue, malaria, Chikungunya and Zika). This is because genetic control of pathogen transmission may complement or even substitute traditional vector-control interventions, which have had limited success in bringing the spread of these diseases to a halt.
+Recent developments of CRISPR-Cas9 based homing endonuclease gene drive systems, either for the suppression or replacement of mosquito populations, have generated much interest in their use for control of mosquito-borne diseases (such as dengue, malaria, Chikungunya and Zika). This is because genetic control of pathogen transmission may complement or even substitute traditional vector-control interventions, which have had limited success in bringing the spread of these diseases to a halt.
 
 Despite excitement for the use of gene drives for mosquito control, current modeling efforts have analyzed only a handful of these new approaches (usually studying just one per framework). Moreover, these models usually consider well-mixed populations with no explicit spatial dynamics. To this end, we are developing **MGDrivE** (Mosquito Gene DRIVe Explorer), in cooperation with the 'UCI Malaria Elimination Initiative', as a flexible modeling framework to evaluate a variety of drive systems in spatial networks of mosquito populations. This framework provides a reliable testbed to evaluate and optimize the efficacy of gene drive mosquito releases. What separates **MGDrivE** from other models is the incorporation of mathematical and computational mechanisms to simulate a wide array of inheritance-based technologies within the same, coherent set of equations.
 
@@ -47,9 +47,9 @@ In the case of one dimensional tensors, each slot represents a genotype of the p
 
 All the processes that affect mosquitoes in a genotype-specific way are defined and stored in this way within the framework.
 
-There are two tensors of squared dimensionality in the model: the adult females matrix, and the genotype-specific viability mask. In the case of the former the rows represent the females' genotype, whilst the columns represent the genotype of the male they mated with: $$ \overline{\overline{Af}} = \left(\begin{array}{ccccc} g_{11} & g_{12} & g_{13} & \cdots & g_{1n}\\ g_{21} & g_{22} & g_{23} & \cdots & g_{2n}\\ g_{31} & g_{32} & g_{33} & \cdots & g_{3n}\\ \vdots & \vdots & \vdots & \ddots & \vdots\\ g_{n1} & g_{n2} & g_{n3} & \cdots & g_{nn} \end{array}\right) _{ij} $$
+There are two tensors of squared dimensionality in the model: the adult females matrix, and the genotype-specific male-mating ability, $\overline{\overline{\eta}}$. In the case of the former, the rows represent the females' genotype, whilst the columns represent the genotype of the male they mated with: $$ \overline{\overline{Af}} = \left(\begin{array}{ccccc} g_{11} & g_{12} & g_{13} & \cdots & g_{1n}\\ g_{21} & g_{22} & g_{23} & \cdots & g_{2n}\\ g_{31} & g_{32} & g_{33} & \cdots & g_{3n}\\ \vdots & \vdots & \vdots & \ddots & \vdots\\ g_{n1} & g_{n2} & g_{n3} & \cdots & g_{nn} \end{array}\right) _{ij} $$
 
-The genotype-specific viability mask, on the other hand, stores the mothers' genotype in the rows, and the potential eggs' genotype in the columns of the matrix.
+The genotype-specific male-mating ability, on the other hand, stores the mothers' genotype in the rows, the male mate genotype as columns, and each value indicates the ability of a specific male genotype to mate with a specific female genotype. This allows assortative mating to be modeled.
 
 # Mathematical Framework
 
@@ -87,11 +87,14 @@ stratified by male and female parent genotypes. **MGDrivE** provides the followi
 * [Reciprocal Translocations](../reference/cubeReciprocalTranslocations.html)
 * [RIDL (Release of Insects with Dominant Lethality)](../reference/cubeRIDL.html)
 * [Mendelian](../reference/cubeMendelian.html)
+* [Split-Drive](../reference/cubeSplitDrive.html)
+* [trans-Vomplementing Gene Drive](../reference/cubeTGD.html)
+* [X-Linked trans-Complementing Gene Drive](../reference/cubeTGDX.html)
 * [Wolbachia](../reference/cubeWolbachia.html)
 
 ## Population Dynamics
 
-During the three aquatic stages, a density-independent mortality process takes place:
+During the three aquatic stages, a density-independent mortality process takes place at each stage (*st*):
 $$ \theta_{st}=(1-\mu_{st})^{T_{st}} $$
 Along with a density dependent process dependent on the number of larvae in the environment:
 $$ F(L[t])=\Bigg(\frac{\alpha}{\alpha+\sum{\overline{L[t]}}}\Bigg)^{1/T_l} $$
@@ -101,7 +104,7 @@ in which $\beta$ is the species' fertility in the absence of gene-drive, $Ad_{eq
 $$ g=T_{e}+T_{l}+T_{p}+\frac{1}{\mu_{ad}}\\R_{m}=(r_{m})^{g} $$
 
 ### Larval Stages
-The computation of the larval stage in the population is crucial to the model because the density dependent processes necessary for equilibrium trajectories to be calculated occur here. This calculation is performed with the following equation:
+The computation of the larval stage in the population is crucial to the model because the density dependent processes necessary for equilibrium trajectories occur here. This calculation is performed with the following equation:
 $$
 D(\theta_l,T_x) = \left\{
          \begin{array}{ll}
@@ -128,7 +131,7 @@ $$
  		%\prod_{i=1}^{T_{l}} F(\overline{L_{[t-i]}})
  		%\theta_{l}
 $$
-where the first term accounts for larvae surviving one day to the other; the second therm accounts for the eggs that ha hatched within the same period of time; and the last term computes the number of larvae that have transformed into pupae.
+where the first term accounts for larvae surviving one day to the other; the second therm accounts for the eggs that have hatched within the same period of time; and the last term computes the number of larvae that have transformed into pupae.
 
 ### Adult Stages
 We are ultimately interested in calculating how many adults of each genotype exist at any given point in time. For this, we first calculate the number of eggs that are laid and survive to the adult stages with the equation:
@@ -144,20 +147,20 @@ $$
  		+ (1-\overline{\phi}) *  \overline{E^{'}}\\
   		+ \overline{\nu m_{[t-1]}}
 $$
-in which the first term represents the number of males surviving from one day to the next; the second one, the fraction of males that survive to adulthood (\eqn{\overline{E'}}) and emerge as males (\eqn{1-\phi}); the last one is used to add males into the population as part of gene-drive release campaigns.
+in which the first term represents the number of males surviving from one day to the next; the second term, the fraction of males that survive to adulthood ($\overline{E'}$) and emerge as males ($1-\phi$); the last term is used to add males into the population as part of gene-drive release campaigns.
 
 Female adult populations are calculated in a similar way:
 $$
   \overline{\overline{Af_{[t]}}}=
     \overline{\overline{Af_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_{f}}\\
-    +  \bigg( \overline{\phi} * \overline{E^{'}}+\overline{\nu f_{[t-1]}}\bigg)^{\top} * \bigg( \frac{\overline{\eta}*\overline{Am_{[t-1]}}}{\sum{\overline{Am_{[t-1]}}}} \bigg)%\overline{\overline{Mf}}
+    +  \bigg( \overline{\phi} * \overline{E^{'}}+\overline{\nu f_{[t-1]}}\bigg)^{\top} * \bigg( \frac{\overline{\overline{\eta}}*\overline{Am_{[t-1]}}}{\sum{\overline{Am_{[t-1]}}}} \bigg)%\overline{\overline{Mf}}
 $$
 where we first compute the surviving female adults from one day to the next; and then we calculate the mating composition of the female fraction emerging from pupa stage. To do this, we obtain the surviving fraction of eggs that survive to adulthood ($\overline{E'}$) and emerge as females ($\phi$), we then add the new females added as a result of gene-drive releases ($\overline{\nu f_{[t-1]}}$).
-After doing this, we calculate the proportion of males that are allocated to each female genotype, taking into account their respective mating fitnesses ($\overline{\eta}$) so that we can introduce the new adult females into the population pool.
+After doing this, we calculate the proportion of males that are allocated to each female genotype, taking into account their respective mating fitnesses ($\overline{\overline{\eta}}$) so that we can introduce the new adult females into the population pool.
 
 ## Gene Drive Releases and Effects
 
-As it was briefly mentioned before, we are including the option to release both male and/or female individuals into the populations. Another important thing to emphasize is that we allow flexible releases sizes and schedules. Our model handles releases internally as lists of populations compositions so, it is possible to have releases performed at irregular intervals and with different numbers of mosquito genetic compositions as long as no new genotypes are introduced (which have not been previously defined in the inheritance cube).
+As was briefly mentioned before, we are including the option to release both male and/or female individuals into the populations. Another important thing to emphasize is that we allow flexible releases sizes and schedules. Our model handles releases internally as lists of population compositions, so it is possible to have releases performed at irregular intervals and with different numbers of mosquito genetic compositions as long as no new genotypes are introduced (which have not been previously defined in the inheritance cube).
 $$
   \overline{\nu} = \bigg\{
     \left(\begin{array}{c} g_1 \\ g_2 \\ g_3 \\ \vdots \\ g_n \end{array}\right)_{t=1} ,
@@ -171,13 +174,13 @@ So far, however, we have not described the way in which the effects of these gen
 
 * $\overline{\omega}$: Relative increase in mortality (zero being full mortality effects and one no mortality effect)
 * $\overline{\phi}$: Relative shift in the sex of the pupating mosquitoes (zero biases the sex ratio towards males, whilst 1 biases the ratio towards females).
-* $\overline{\eta}$: Standardized mating fitness (zero being complete fitness ineptitude, and one being regular mating skills).
-* $\overline{\beta}$: Fecundity (average number of eggs laid).
+* $\overline{\overline{\eta}}$: Standardized mating fitness (zero being complete fitness ineptitude, and one being regular mating skills).
+* $\overline{\beta}$: Fecundity (average number of eggs laid per day).
 * $\overline{\xi}$: Pupation success (zero being full mortality and one full pupation success).
 
 ## Migration
 
-To simulate migration within our framework we are considering patches (or nodes) of fully-mixed populations in a network structure. This allows us to handle mosquito movement across spatially-distributed populations with a transitions matrix, which is calculated with the tensor outer product of the genotypes populations tensors and the transitions matrix of the network as follows:
+To simulate migration within our framework we are considering patches (or nodes) of fully-mixed populations in a network structure. This allows us to handle mosquito movement across spatially-distributed populations with a transitions matrix, which is calculated with the tensor outer product of the genotypes population tensors and the transitions matrix of the network as follows:
 $$
     \overline{Am_{(t)}^{i}}=
     	\sum{\overline{A_{m}^j} \otimes \overline{\overline{\tau m_{[t-1]}}}} \\
@@ -217,7 +220,7 @@ $$ Multinomial(numFemales, p_1f_1, p_2f_2, \dots p_nf_n) $$
 
 **Other Stochastic Processes**
 
-All remaining stochastic processes (larval survival, hatching , pupating, surviving to adult hood) are determined by multinomial sampling conditioned on factors affecting the current life stage. These factors are determined empirically from mosquito population data.
+All remaining stochastic processes (larval survival, hatching ,pupating, surviving to adult hood) are determined by binomial sampling conditioned on factors affecting the current life stage. These factors are determined empirically from mosquito population data.
 
 **Migration**
 

@@ -4,8 +4,14 @@
 \alias{cubeReciprocalTranslocations}
 \title{Inheritance Cube: Reciprocal Translocation}
 \usage{
-cubeReciprocalTranslocations(eta = NULL, phi = NULL, omega = NULL,
-  xiF = NULL, xiM = NULL, s = NULL)
+cubeReciprocalTranslocations(
+  eta = NULL,
+  phi = NULL,
+  omega = NULL,
+  xiF = NULL,
+  xiM = NULL,
+  s = NULL
+)
 }
 \arguments{
 \item{eta}{Genotype-specific mating fitness}

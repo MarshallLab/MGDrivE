@@ -46,10 +46,10 @@ Given the readDir, this function assumes the follow file structure: \cr
 }
 }
 \details{
-This function plots output from one run or one set of runs after being analyzed. Setting totalPop
-to FALSE keeps it from plotting the total population. NonZeroGen accounts for
-genotypes that could exist, but are not created in the simulation. Default
-is FALSE, as this is easier to read on a plot.
+This function plots output from one run or one set of runs after
+being analyzed. Setting totalPop to FALSE keeps it from plotting the total
+population. NonZeroGen accounts for genotypes that could exist, but are not
+created in the simulation. Default is FALSE, as this is easier to read on a plot.
 }
 \examples{
 \dontrun{

@@ -4,49 +4,73 @@
 \alias{parameterizeMGDrivE}
 \title{parameterizeMGDrivE}
 \usage{
-parameterizeMGDrivE(runID = 1L, nPatch, simTime, parallel = FALSE,
-  moveVar = 1000, tEgg = 1L, tLarva = 14L, tPupa = 1L, beta = 32,
-  muAd = 0.123, popGrowth = 1.096, AdPopEQ, LarPopRatio = NULL,
-  AdPopRatio_F = NULL, AdPopRatio_M = NULL)
+parameterizeMGDrivE(
+  runID = 1L,
+  nPatch,
+  simTime,
+  sampTime = 1L,
+  moveVar = 1000L,
+  tEgg = 1L,
+  tLarva = 14L,
+  tPupa = 1L,
+  beta = 32,
+  muAd = 0.123,
+  popGrowth = 1.096,
+  AdPopEQ,
+  LarPopRatio,
+  AdPopRatio_F,
+  AdPopRatio_M,
+  inheritanceCube
+)
 }
 \arguments{
-\item{runID}{begin counting runs with this set of parameters from this value}
+\item{runID}{Begin counting runs with this set of parameters from this value}
 
-\item{nPatch}{number of \code{\link{Patch}}}
+\item{nPatch}{Number of \code{\link{Patch}}}
 
-\item{simTime}{maximum time to run simulation}
+\item{simTime}{Maximum time to run simulation}
 
-\item{parallel}{append process id (see \code{link[base]{Sys.getpid}}) to output files for running in parallel}
+\item{sampTime}{Times to sample, used as tNow \%\% sampTime, default is every day}
 
-\item{moveVar}{variance of stochastic movement (not used in diffusion model of migration). It affects the concentration of probability in the Dirchlet simplex, small values lead to high variance and large values lead to low variance.}
+\item{moveVar}{Variance of stochastic movement (not used in diffusion model of migration).
+It affects the concentration of probability in the Dirchlet simplex, small values
+lead to high variance and large values lead to low variance.}
 
-\item{tEgg}{length of egg stage}
+\item{tEgg}{Length of egg stage}
 
-\item{tLarva}{length of larval instar stage}
+\item{tLarva}{Length of larval instar stage}
 
-\item{tPupa}{length of pupal stage}
+\item{tPupa}{Length of pupal stage}
 
-\item{beta}{female egg batch size of wild-type}
+\item{beta}{Female egg batch size of wild-type}
 
-\item{muAd}{wild-type daily adult mortality (1/muAd is average wild-type lifespan)}
+\item{muAd}{Wild-type daily adult mortality (1/muAd is average wild-type lifespan)}
 
-\item{popGrowth}{daily population growth rate (used to calculate equilibrium)}
+\item{popGrowth}{Daily population growth rate (used to calculate equilibrium)}
 
-\item{AdPopEQ}{vector of adult population size at equilibrium}
+\item{AdPopEQ}{Single number or vector of adult population size at equilibrium
+(single number implies all patches have the same population)}
 
-\item{LarPopRatio}{may be \code{NULL}; if not, gives the wildtype gene frequencies among larval stages at the beginning of simulation}
+\item{LarPopRatio}{May be empty; if not, a vector gives the wildtype gene frequencies
+among larval stages at the beginning of simulation or a matrix provides different
+initial frequencies for each patch (every row is a different patch, must have nrow = nPatch)}
 
-\item{AdPopRatio_F}{may be \code{NULL}; if not, gives the wildtype gene frequencies among adult females at the beginning of simulation}
+\item{AdPopRatio_F}{May be empty; if not, a vector gives the wildtype gene frequencies
+among adult females at the beginning of simulation or a matrix provides different
+initial frequencies for each patch (every row is a different patch, must have nrow = nPatch)}
 
-\item{AdPopRatio_M}{may be \code{NULL}; if not, gives the wildtype gene frequencies among adult males at the beginning of simulation}
+\item{AdPopRatio_M}{May be empty; if not, a vector gives the wildtype gene frequencies
+among adult males at the beginning of simulation or a matrix provides different
+initial frequencies for each patch (every row is a different patch, must have nrow = nPatch)}
+
+\item{inheritanceCube}{Inheritance cube to check/set population ratios at the beginning of the simulation}
 }
 \description{
 Generate parameters for simulation on a \code{\link{Network}}.
-Parameters average generation time \eqn{g}, population growth rate \eqn{R_{m}},
-aquatic mortality \eqn{\mu_{Aq}}, and aquatic survival \eqn{\theta_{Aq}}
+Parameters include: average generation time \eqn{g}, population growth rate \eqn{R_{m}},
+aquatic mortality \eqn{\mu_{Aq}}, and aquatic survival \eqn{\theta_{Aq}}, which
 are shared between patches and calculated by \code{\link{calcAverageGenerationTime}},
-\code{\link{calcPopulationGrowthRate}}, \code{\link{calcLarvalStageMortalityRate}},
-and \code{\link{calcAquaticStagesSurvivalProbability}}. \cr
+\code{\link{calcPopulationGrowthRate}}, and \code{\link{calcLarvalStageMortalityRate}}. \cr
 Patch-specific parameters \eqn{\alpha} and \eqn{L_{eq}}
 are calculated for each patch by \code{\link{calcDensityDependentDeathRate}}
 and \code{\link{calcLarvalPopEquilibrium}}.
@@ -55,6 +79,6 @@ and \code{\link{calcLarvalPopEquilibrium}}.
 # using default parameters for 2 patches
 #  using different population sizes for patches
 simPars <- parameterizeMGDrivE(nPatch = 2, simTime = 365,
-                               AdPopEQ = c(100,200))
+                               AdPopEQ = c(100,200), inheritanceCube = cubeMendelian())
 
 }

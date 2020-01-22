@@ -30,14 +30,14 @@ knitr::opts_chunk$set(
   eval = TRUE
 )
 
-# set seed for reproduibility
+# set seed for reproducibility
 set.seed(seed = 42)
 ```
 
 ## Landscape Setup
 
-*MGDrivE* is capable of running in one population, on a simple network, or on networks derived from real locations and parameterized using local topology and climate. Topology and climate analysis are out of the scope of this vignette, but we will show how to setup simple, single-node examples to real landscapes parameterized only by distance. The key to this flexibility is that the landscape module of *MGDrivE* only requires a matrix of daily movement rates between nodes. Nodes are listed along the X/Y-axis, with the diagonal representing the proportion of mosquitoes that don't leave a node at each day.  
-  
+*MGDrivE* is capable of running in one population, on a simple network, or on networks derived from real locations and parameterized using local topology and climate. Topology and climate analysis are out of the scope of this vignette, but we will show how to setup simple, single-node examples to real landscapes parameterized only by distance. The key to this flexibility is that the landscape module of *MGDrivE* only requires a matrix of daily movement rates between nodes. Nodes are listed along the X/Y-axis, with the diagonal representing the proportion of mosquitoes that don't leave a node at each day.
+
 Each example produces a `moveMat` object - this is the matrix of daily movement rates. It is used for the `migrationMale` and/or `migrationFemale` matrices in the constructor of the `Network` object.
 
 ### Single Population
@@ -52,7 +52,7 @@ moveMat
 
 ### Two Populations
 
-Extending our single population example, running *MGDrivE* on 2 populations is also simple. However, movement rates are calculated using the rows, i.e., the movement of critters from node 1 to any other node is parameterized by row 1 in the movement matrix. Thus, the rows of the movement matrix must be normalized.
+Extending our single population example, running *MGDrivE* on 2 populations is also simple. However, movement rates are calculated using the rows, i.e., the movement of critters from node 1 to any other node is parameterized by row 1 in the movement matrix. Thus, the rows of the movement matrix must be normalized and sum to 1.
 
 ```{r}
 # setup movement matrix for 2 nodes
@@ -69,7 +69,7 @@ moveMat
 # 5% migration per day from population 1
 # 10% migraton per day from population 2
 #  Notice that the rows sum to 1
-moveMat <- matrix(data = c(0.95, 0.05, 0.01, 0.90),
+moveMat <- matrix(data = c(0.95, 0.05, 0.10, 0.90),
                   nrow = 2, ncol = 2, byrow = TRUE)
 moveMat
 ```
@@ -104,20 +104,20 @@ nNodes <- 10
 
 # define function for use
 triDiag <- function(upper, lower){
-  
+
   # return matrix
   retMat <- matrix(data = 0, nrow = length(upper) + 1, ncol = length(upper) + 1)
-  
+
   # set index values for upper/lower triangles
   indx <- 1:length(upper)
-  
+
   # set forward/backward migration using matrix access
   retMat[cbind(indx+1,indx)] <- lower
   retMat[cbind(indx,indx+1)] <- upper
-  
+
   # set stay probs
   diag(x = retMat) <- 1-rowSums(x = retMat)
-  
+
   return(retMat)
 }
 
@@ -131,10 +131,10 @@ moveMat
 
 ### Realistic Location
 
-Here we show how to make a landscape from a set of coordinates, each of which will represent a node the user wishes to simulate in the metapopulation model. In this example we show a simple setup with 3 nodes.  
-  
-The first step is to calculate the distance between points - several built-in functions are provided, or the user may provide their own. Examples of built-in functions include `calcCos()`, `calcHaversine()`, or most accurately, `calcVinEll()`.  
-  
+Here we show how to make a landscape from a set of coordinates, each of which will represent a node the user wishes to simulate in the metapopulation model. In this example we show a simple setup with 3 nodes.
+
+The first step is to calculate the distance between points - several built-in functions are provided, or the user may provide their own. Examples of built-in functions include `calcCos()`, `calcHaversine()`, or most accurately, `calcVinEll()`.
+
 The second step that we do here is to put a zero-inflated exponential kernel over those distances, using function `calcHurdleExpKernel()`. We do this because it is hypothesized that mosquitoes follow a leptokurtic movement pattern. This also ensures that our rows are normalized. However, this is not necessary for all scenarios, one must only remember to normalize the rows.
 
 We also provide functions to calculate a basic exponential kernel (`calcExpKernel()`), gamma kernel (`calcGammaKernel()`), and log-normal kernel (`calcLognormalKernel()`).
@@ -145,7 +145,7 @@ We also provide functions to calculate a basic exponential kernel (`calcExpKerne
 # matrix of coordinates as latitude/longitude pairs
 lat_longs <- matrix(data = c(37.873507, -122.268181,
                              37.873578, -122.254430,
-                             37.869806, -122.267639), 
+                             37.869806, -122.267639),
                     nrow = 3, ncol = 2, byrow = TRUE,
                     dimnames = list(NULL, c('Lat','Lon')))
 
@@ -157,8 +157,8 @@ distMat <- MGDrivE::calcVinEll(latLongs = lat_longs)
 # calculate a zero-inflated movement kernal over the distances
 # p0 is the probability, per day, that a mosquito doesn't move.
 #  This is the value used in Code sample 1 from the paper, and in the examples in our
-#  github repository. 
-# rate is the average migration rate per day, implying 1/rate is the average 
+#  github repository.
+# rate is the average migration rate per day, implying 1/rate is the average
 #  migration distance. The average distance was estimated as ~55.5 meters per day,
 #  which is the value used in Code sample 1 and in the examples on github.
 p0 <- 0.991
@@ -175,7 +175,7 @@ It is important to know that a model produces results consistent with accepted t
 
 ### Mendelian Inheritance Simulations, Single Population
 
-A useful benchmark of population models that include genetic inheritance is to study basic Mendelian inheritance. *MGDrivE* provides a 1-locus, 2-allele Mendelian inheritance pattern in the function `cubeMendelian()`. 
+A useful benchmark of population models that include genetic inheritance is to study basic Mendelian inheritance. *MGDrivE* provides a 1-locus, 2-allele Mendelian inheritance pattern in the function `cubeMendelian()`.
 
 #### Deterministic
 
@@ -199,15 +199,14 @@ outFolder <- "mgdrive"
 tMax <- 365
 
 # entomological parameters
-bioParameters <- list(betaK=20,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=0.09)
+bioParameters <- list(betaK=20, tEgg=5, tLarva=6, tPupa=4, popGrowth=1.175, muAd=0.09)
 
 # a 1-node network where mosquitoes do not leave
-moveMat <- as.matrix(1)
+moveMat <- matrix(data = 1, nrow = 1, ncol = 1)
 
 # parameters of the population equilibrium
 adultPopEquilibrium <- 500
 sitesNumber <- nrow(moveMat)
-patchPops <- rep(adultPopEquilibrium,sitesNumber)
 
 ####################
 # Basic Inheritance pattern
@@ -215,60 +214,53 @@ patchPops <- rep(adultPopEquilibrium,sitesNumber)
 # Mendelian cube with standard (default) paraameters
 cube <- cubeMendelian()
 
-
 ####################
 # Setup releases and batch migration
 ####################
 # set up the empty release vector
 #  MGDrivE pulls things out by name
 patchReleases <- replicate(n=sitesNumber,
-                           expr={list(maleReleases=NULL,femaleReleases=NULL)},
+                           expr={list(maleReleases=NULL,femaleReleases=NULL,
+                                      eggReleases=NULL,matedFemaleReleases=NULL)},
                            simplify=FALSE)
 
 # choose release parameters
 #  Releases start at time 25, occur every day, for 1 day.
-#  There are 10 mosquitoes relaeses every time.
+#  There are 10 mosquitoes released every time.
 releasesParameters <- list(releasesStart=25,
                            releasesNumber=1,
                            releasesInterval=0,
                            releaseProportion=10)
 
-# generate male release vector
-maleReleasesVector <- generateReleaseVector(driveCube=cube, 
-                                            releasesParameters=releasesParameters,
-                                            sex="M")
-
-# generate female release vector
-femaleReleasesVector <- generateReleaseVector(driveCube=cube,
-                                              releasesParameters=releasesParameters,
-                                              sex="F")
+# generate release vector
+releasesVector <- generateReleaseVector(driveCube=cube,
+                                        releasesParameters=releasesParameters)
 
 # put releases into the proper place in the release list
-patchReleases[[1]]$maleReleases <- maleReleasesVector
-patchReleases[[1]]$femaleReleases <- femaleReleasesVector
+patchReleases[[1]]$maleReleases <- releasesVector
+patchReleases[[1]]$femaleReleases <- releasesVector
 
 
 # batch migration is disabled by setting the probability to 0
-# This is required because of the stochastic simulations, but doesn't make sense 
+# This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
                                       sexProbs=c(.5,.5),
                                       numPatches=sitesNumber)
 
-
 ####################
 # Combine parameters and run!
 ####################
 # set MGDrivE to run deterministic
-setupMGDrivE(stochasticityON = FALSE)
+setupMGDrivE(stochasticityON = FALSE, verbose = FALSE)
 
 # setup parameters for the network. This builds a list of parameters required for
 #  every population in the network. In ths case, we havee a network of 1 population.
-netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
+netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, sampTime = 1, nPatch=sitesNumber,
                               beta=bioParameters$betaK, muAd=bioParameters$muAd,
                               popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
                               tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                              AdPopEQ=patchPops)
+                              AdPopEQ=adultPopEquilibrium, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
@@ -277,17 +269,18 @@ MGDrivESim <- Network$new(params=netPar,
                           migrationMale=moveMat,
                           migrationFemale=moveMat,
                           migrationBatch=batchMigration,
-                          directory=outFolder)
+                          directory=outFolder,
+                          verbose=FALSE)
+
 # run simulation
 MGDrivESim$oneRun(verbose = FALSE)
-
 
 ####################
 # Post Analysis
 ####################
 # split output by patch
 #  Required for plotting later
-splitOutput(readDir = outFolder, verbose = FALSE)
+splitOutput(readDir = outFolder, remFile = TRUE, verbose = FALSE)
 
 # aggregate females by their mate choice
 #  This reduces the female file to have the same columns as the male file
@@ -295,7 +288,7 @@ aggregateFemales(readDir = outFolder, genotypes = cube$genotypesID,
                  remFile = TRUE, verbose = FALSE)
 
 # plot output to see effect
-plotMGDrivESingle(readDir=outFolder,totalPop = TRUE,lwd=3.5,alpha=1)
+plotMGDrivESingle(readDir = outFolder, totalPop = TRUE, lwd = 3.5, alpha = 1)
 ```
 
 
@@ -310,57 +303,56 @@ totPop <- read.csv(file = file.path(outFolder, "M_Run001_Patch001.csv"),
                    header = TRUE, sep = ",")[ ,-1] +
           read.csv(file = file.path(outFolder, "F_Aggregate_Run001_Patch001.csv"),
                    header = TRUE, sep = ",")[ ,-1]
-
 ```
 
-In the figure, we see males and females of every genotype plotted by time, along with the total population. With an equilibrium population size of `r adultPopEquilibrium` individuals, and no sex biasing, we have an equal division of males and females. The release occurs equally in both sexes at time t = `r releasesParameters$releasesStart`, as expected, and we see an increase in the total population due to the release before recovering to the equilibrium population size.  
+In the figure, we see males and females of every genotype plotted by time, along with the total population. With an equilibrium population size of `r adultPopEquilibrium` individuals, and no sex biasing, we have an equal division of males and females. The release occurs equally in both sexes at time t = `r releasesParameters$releasesStart`, as expected, and we see an increase in the total population due to the release before recovering to the equilibrium population size.
 
-Since this is basic Mendelian inheritance, we should be able to calculate the expected allele and genotype frequencies assuming Hardy-Weinberg equilibrium (HWE). As we released `r 2*releasesParameters$releaseProportion` _aa_ individuals into a population of `r adultPopEquilibrium` _AA_ individuals, we can calculate the expected allele frequencies:  
+Since this is basic Mendelian inheritance, we should be able to calculate the expected allele and genotype frequencies assuming Hardy-Weinberg equilibrium (HWE). As we released `r 2*releasesParameters$releaseProportion` _aa_ individuals into a population of `r adultPopEquilibrium` _AA_ individuals, we can calculate the expected allele frequencies:
 
-  * _a_: $\frac{1}{26}$  
-  * _A_: $\frac{25}{26}$  
-  
-This leads to the following expected genotype frequencies:  
+  * _a_: $\frac{1}{26}$
+  * _A_: $\frac{25}{26}$
 
-  * _AA_: $\big(\frac{25}{26}\big)^2 =$ `r round(x = (25/26)^2, digits = 4)`  
-  * _Aa_: $2\cdot \big(\frac{25}{26}\big)\cdot\big(\frac{1}{26}\big) =$ `r formatC(x = 2 * (25/26) * (1/26), format = "f", digits = 4)`  
-  * _aa_: $\big(\frac{1}{26}\big)^2 =$ `r round(x = (1/26)^2, digits = 4)`  
+This leads to the following expected genotype frequencies:
 
-Which, in a population of size `r adultPopEquilibrium`, implies the following number of individuals (remember, this is a deterministic simulation, so "individuals" will not be whole numbers):  
+  * _AA_: $\big(\frac{25}{26}\big)^2 =$ `r round(x = (25/26)^2, digits = 4)`
+  * _Aa_: $2\cdot \big(\frac{25}{26}\big)\cdot\big(\frac{1}{26}\big) =$ `r formatC(x = 2 * (25/26) * (1/26), format = "f", digits = 4)`
+  * _aa_: $\big(\frac{1}{26}\big)^2 =$ `r round(x = (1/26)^2, digits = 4)`
+
+Which, in a population of size `r adultPopEquilibrium`, implies the following number of individuals (remember, this is a deterministic simulation, so "individuals" will not be whole numbers):
 
   * _AA_: `r round(x = (25/26)^2 * adultPopEquilibrium, digits = 2)`
   * _Aa_: `r round(x = 2 * (25/26) * (1/26) * adultPopEquilibrium, digits = 2)`
-  * _aa_: `r round(x = (1/26)^2 * adultPopEquilibrium, digits = 2)`  
+  * _aa_: `r round(x = (1/26)^2 * adultPopEquilibrium, digits = 2)`
 
-However, when we look at the equilibrium genotypes from the simulation, the populations are:  
+However, when we look at the equilibrium genotypes from the simulation, the populations are:
 
   * _AA_: `r round(x = totPop[tMax, "AA"], digits = 2)`
   * _Aa_: `r round(x = totPop[tMax, "Aa"], digits = 2)`
-  * _aa_: `r round(x = totPop[tMax, "aa"], digits = 2)` 
+  * _aa_: `r round(x = totPop[tMax, "aa"], digits = 2)`
 
-These are significantly different from the expected genotype numbers according to HWE. This is because of the assumptions in how HWE is calculated, specifically, ignoring maturation of child stages prior to reproduction by assuming discrete generations, and infinite population size. In contrast, *MGDrivE* has overlapping generations and tracks offspring development prior to adulthood. Additionally, while the release performed here is small, the population is far from "infinite", and the release represents `r 2*releasesParameters$releaseProportion/adultPopEquilibrium * 100`% of the population. Therefore, the effective population size is significantly larger than `r adultPopEquilibrium`. Ignoring the effect of constant daily mortality on the distribution of adults, implying individual lifespans follow a geometric distribution and reducing the proportion of released individuals to wild-type as adults die off, we can calculate the effective population size using the following parameters;  
+These are significantly different from the expected genotype numbers according to HWE. This is because of the assumptions in how HWE is calculated, specifically, ignoring maturation of child stages prior to reproduction by assuming discrete generations, and infinite population size. In contrast, *MGDrivE* has overlapping generations and tracks offspring development prior to adulthood. Additionally, while the release performed here is small, the population is far from "infinite", and the release represents `r 2*releasesParameters$releaseProportion/adultPopEquilibrium * 100`% of the population. Therefore, the effective population size is significantly larger than `r adultPopEquilibrium`. Ignoring the effect of constant daily mortality on the distribution of adults, implying individual lifespans follow a geometric distribution and reducing the proportion of released individuals to wild-type as adults die off, we can calculate the effective population size using the following parameters;
 
-  * Adult Population Size: `r adultPopEquilibrium`  
-  * Release Amount: `r 2*releasesParameters$releaseProportion`  
-  * Daily Pupation Amount: 45  
-  * Maturation Time: `r sum(netPar$timeAq)` days  
+  * Adult Population Size: `r adultPopEquilibrium`
+  * Release Amount: `r 2*releasesParameters$releaseProportion`
+  * Daily Pupation Amount: 45
+  * Maturation Time: `r sum(netPar$timeAq)` days
 
-From these parameters, an approximate effective population size is calculated by combining the *Adult Population Size*, plus the *Release Amount*, plus the *Maturation Time* times the *Daily Pupation Amount*, which estimates a population size of `r adultPopEquilibrium + 2*releasesParameters$releaseProportion + sum(netPar$timeAq)*45`. Using this estimate of our effective population size, the expected allele frequencies are:  
+From these parameters, an approximate effective population size is calculated by combining the *Adult Population Size*, plus the *Release Amount*, plus the *Maturation Time* times the *Daily Pupation Amount*, which estimates a population size of `r adultPopEquilibrium + 2*releasesParameters$releaseProportion + sum(netPar$timeAq)*45`. Using this estimate of our effective population size, the expected allele frequencies are:
 
-  * _a_: $\frac{4}{239}$  
-  * _A_: $\frac{235}{239}$  
+  * _a_: $\frac{4}{239}$
+  * _A_: $\frac{235}{239}$
 
-Our new expected genotype frequencies:  
+Our new expected genotype frequencies:
 
-  * _AA_: $\big(\frac{235}{239}\big)^2 =$ `r round(x = (235/239)^2, digits = 5)`  
-  * _Aa_: $2\cdot \big(\frac{235}{239}\big)\cdot\big(\frac{4}{239}\big) =$ `r round(x = 2 * (235/239) * (4/239), digits = 5)`  
-  * _aa_: $\big(\frac{4}{239}\big)^2 =$ `r formatC(x = (4/239)^2, format = "f", digits = 5)`  
+  * _AA_: $\big(\frac{235}{239}\big)^2 =$ `r round(x = (235/239)^2, digits = 5)`
+  * _Aa_: $2\cdot \big(\frac{235}{239}\big)\cdot\big(\frac{4}{239}\big) =$ `r round(x = 2 * (235/239) * (4/239), digits = 5)`
+  * _aa_: $\big(\frac{4}{239}\big)^2 =$ `r formatC(x = (4/239)^2, format = "f", digits = 5)`
 
-Since our population will return to equilibrium after some time, `r adultPopEquilibrium` individuals, we expect the following number of individuals of each genotype:  
+Since our population will return to equilibrium after some time, `r adultPopEquilibrium` individuals, we expect the following number of individuals of each genotype:
 
   * _AA_: `r formatC(x = (235/239)^2 * 500, format = "f", digits = 2)`
   * _Aa_: `r round(x = 2 * (235/239) * (4/239) * adultPopEquilibrium, digits = 2)`
-  * _aa_: `r round(x = (4/239)^2 * adultPopEquilibrium, digits = 2)`  
+  * _aa_: `r round(x = (4/239)^2 * adultPopEquilibrium, digits = 2)`
 
 This is significantly closer to the simulated population. As expected, it is slightly high, which stems from ignoring the geometric distribution of our adult population.
 
@@ -375,7 +367,7 @@ rm(list=ls())
 
 #### Deterministic, With Fitness Cost
 
-Now that we have shown a basic Mendelian simulation, we will expand it a little by including a fitness cost on certain genotypes. In the following simulation, the homozygotes, _AA_ and _aa_, are only 60% as fit as the heterozygote over their adult lifetime. This is an example of a heterozygote advantage, and we should see the population become primarily heterozygous. We will increase the size and number of releases, to speed up the equilibration process, but everything else will remain the same, ie., one population and a deterministic simulation.
+Now that we have shown a basic Mendelian simulation, we will expand it a little by including a fitness cost on certain genotypes. In the following simulation, the homozygotes, _AA_ and _aa_, are only 60% as fit as the heterozygote over their adult lifetime. This is an example of a heterozygote advantage, and we should see the population become primarily heterozygous. We will increase the size and number of releases and perform them a little bit later, to see the effects of the fitness cost and then speed up the equilibration process, but everything else will remain the same, ie., one population and a deterministic simulation.
 
 ```{r}
 ####################
@@ -395,7 +387,7 @@ outFolder <- "mgdrive"
 tMax <- 365*2
 
 # entomological parameters
-bioParameters <- list(betaK=20,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=0.09)
+bioParameters <- list(betaK=20, tEgg=5, tLarva=6, tPupa=4, popGrowth=1.175, muAd=0.09)
 
 # a 1-node network where mosquitoes do not leave
 moveMat <- as.matrix(1)
@@ -410,20 +402,19 @@ patchPops <- rep(adultPopEquilibrium,sitesNumber)
 ####################
 # Mendelian cube with standard (default) paraameters
 
-# This time, lets put fitness cost on the homozygotes, giving the heterozygote 
+# This time, lets put fitness cost on the homozygotes, giving the heterozygote
 #  an advantage
 
-# These genotypes correspond to ones in the cube. Look at a base cube first, 
+# These genotypes correspond to ones in the cube. Look at a base cube first,
 #  then set this.
 # homozygotes are 60% as fit as heterozygote over their entire lifetime
-#  Since omega is the adult daily death rate, we use the built-in function to 
+#  Since omega is the adult daily death rate, we use the built-in function to
 #  calculate our desired lifetime cost as applied daily
-dayOmega <- getOmega(mu = bioParameters$muAd, lifespanReduction = 0.60)
+dayOmega <- calcOmega(mu = bioParameters$muAd, lifespanReduction = 0.60)
 omegaNew <- c("AA"=dayOmega, "aa"=dayOmega)
 
 # setup cube
 cube <- cubeMendelian(omega = omegaNew)
-
 
 ####################
 # Setup releases and batch migration
@@ -431,26 +422,25 @@ cube <- cubeMendelian(omega = omegaNew)
 # set up the empty release vector
 #  MGDrivE pulls things out by name
 patchReleases <- replicate(n=sitesNumber,
-                           expr={list(maleReleases=NULL,femaleReleases=NULL)},
+                           expr={list(maleReleases=NULL,femaleReleases=NULL,
+                                      eggReleases=NULL,matedFemaleReleases=NULL)},
                            simplify=FALSE)
 
 # choose release parameters
-#  Releases start at time 25, occur every day, for 5 days.
-#  There are 50 mosquitoes relaeses every time.
+#  Releases start at time 100, occur every day, for 5 days.
+#  There are 50 mosquitoes released every time.
 releasesParameters <- list(releasesStart=100,
                            releasesNumber=5,
                            releasesInterval=0,
                            releaseProportion=50)
 
 # generate male release vector
-maleReleasesVector <- generateReleaseVector(driveCube=cube, 
-                                            releasesParameters=releasesParameters,
-                                            sex="M")
+maleReleasesVector <- generateReleaseVector(driveCube=cube,
+                                            releasesParameters=releasesParameters)
 
 # generate female release vector
 femaleReleasesVector <- generateReleaseVector(driveCube=cube,
-                                              releasesParameters=releasesParameters,
-                                              sex="F")
+                                              releasesParameters=releasesParameters)
 
 # put releases into the proper place in the release list
 patchReleases[[1]]$maleReleases <- maleReleasesVector
@@ -458,26 +448,25 @@ patchReleases[[1]]$femaleReleases <- femaleReleasesVector
 
 
 # batch migration is disabled by setting the probability to 0
-# This is required because of the stochastic simulations, but doesn't make sense 
+# This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
                                       sexProbs=c(.5,.5),
                                       numPatches=sitesNumber)
 
-
 ####################
 # Combine parameters and run!
 ####################
 # set MGDrivE to run deterministic
-setupMGDrivE(stochasticityON = FALSE)
+setupMGDrivE(stochasticityON = FALSE, verbose = FALSE)
 
 # setup parameters for the network. This builds a list of parameters required for
-#  every population in the network. In ths case, we havee a network of 1 population.
+#  every population in the network. In ths case, we have a network of 1 population.
 netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
                               beta=bioParameters$betaK, muAd=bioParameters$muAd,
                               popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
                               tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                              AdPopEQ=patchPops)
+                              AdPopEQ=patchPops, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
@@ -486,25 +475,25 @@ MGDrivESim <- Network$new(params=netPar,
                           migrationMale=moveMat,
                           migrationFemale=moveMat,
                           migrationBatch=batchMigration,
-                          directory=outFolder)
+                          directory=outFolder,
+                          verbose=FALSE)
 # run simulation
 MGDrivESim$oneRun(verbose = FALSE)
-
 
 ####################
 # Post Analysis
 ####################
 # split output by patch
 #  Required for plotting later
-splitOutput(readDir=outFolder, verbose=FALSE)
+splitOutput(readDir = outFolder, remFile = TRUE, verbose = FALSE)
 
 # aggregate females by their mate choice
 #  This reduces the female file to have the same columns as the male file
-aggregateFemales(readDir=outFolder,genotypes=cube$genotypesID,remFile=TRUE,
-                 verbose=FALSE)
+aggregateFemales(readDir = outFolder, genotypes = cube$genotypesID, remFile = TRUE,
+                 verbose = FALSE)
 
 # plot output to see effect
-plotMGDrivESingle(readDir=outFolder,totalPop=TRUE,lwd=3.5,alpha=1)
+plotMGDrivESingle(readDir = outFolder, totalPop = TRUE, lwd = 3.5, alpha = 1)
 ```
 
 
@@ -520,25 +509,23 @@ totPop <- read.csv(file = file.path(outFolder, "M_Run001_Patch001.csv"),
            header = TRUE, sep = ",")[ ,-1]
 ```
 
-Again, we plot the females on the left, the males on the right, with the population size on the Y-axis and simulation time along the X-axis. We see the total population size starts at 250 males and females, a total of 500 individuals, but quickly drops to `r totPop[90,1]`. This is because of the fitness cost applied to the _AA_ individuals that make up the population. As we applied an 60% fitness cost, we expect the total population to be 60% of the desired population. 60% of 500 individuals, assuming HWE applies, is 300, which is close to the simulated population size prior to the releases. This discrepancy can be accounted for by the presence of density-dependence during larval maturation.  
+Again, we plot the females on the left, the males on the right, with the population size on the Y-axis and simulation time along the X-axis. We see the total population size starts at 250 males and females, a total of 500 individuals, but quickly drops to `r totPop[90,1]`. This is because of the fitness cost applied to the _AA_ individuals that make up the population. As we applied an 60% fitness cost, we expect the total population to be 60% of the desired population. 60% of 500 individuals, assuming HWE applies, is 300, which is close to the simulated population size prior to the releases. This discrepancy can be accounted for by the presence of density-dependence during larval maturation.
 
-After releases of _aa_ individuals are performed, we see the population quickly drive towards heterozygous individuals, and the population size marginally recover. The population partially recovers because there is no fitness cost on the heterozygotes, but does not fully recover because heterozygotes create homozygotes at each generation. At equilibrium, given that heterozygotes produce homozygotes at a rate of 50% per generation, our expected genotype amounts (assuming all HWE assumptions apply) are:  
-  
-  * _AA_: $500 \cdot \frac{1}{4} \cdot 0.60 = 75$  
-  * _Aa_: $500 \cdot \frac{1}{2} \cdot 1.00 = 250$  
-  * _aa_: $500 \cdot \frac{1}{4} \cdot 0.60 = 75$  
-  * Total: _AA_ + _Aa_ + _aa_ = 400  
+After releases of _aa_ individuals are performed, we see the population quickly drive towards heterozygous individuals, and the population size marginally recover. The population partially recovers because there is no fitness cost on the heterozygotes, but does not fully recover because heterozygotes create homozygotes at each generation. At equilibrium, given that heterozygotes produce homozygotes at a rate of 50% per generation, our expected genotype amounts (assuming all HWE assumptions apply) are:
 
-Checking at the end of our simulation, we find that the empirical genotype amounts are:  
-  
+  * _AA_: $500 \cdot \frac{1}{4} \cdot 0.60 = 75$
+  * _Aa_: $500 \cdot \frac{1}{2} \cdot 1.00 = 250$
+  * _aa_: $500 \cdot \frac{1}{4} \cdot 0.60 = 75$
+  * Total: _AA_ + _Aa_ + _aa_ = 400
+
+Checking at the end of our simulation, we find that the empirical genotype amounts are:
+
   * _AA_: `r round(x = totPop[tMax, 1], digits = 2)`
 * _Aa_: `r round(x = totPop[tMax, 2], digits = 2)`
 * _aa_: `r round(x = totPop[tMax, 3], digits = 2)`
 * Total: `r round(x = sum(totPop[tMax, ]), digits = 2)`
 
-This closely matches our simulated population, differing because HWE assumes discrete generations.  
-
-
+This closely matches our simulated population, differing because HWE assumes discrete generations.
 
 
 
@@ -551,7 +538,7 @@ rm(list=ls())
 ```
 
 
-#### Stochastic  
+#### Stochastic
 
 The processes of birth, death, mating, and inheritance are inherently probabilistic, meaning that in order to understand the full spectrum of outcomes a model may produce, it is necessary to simulate from correctly-specified stochastic models. We show an example of the same modeled system here when the stochastic simulation is used; we run an ensemble of simulations, then plot the trajectories to give a sense of the expected variability in possible model trajectories.
 
@@ -570,7 +557,7 @@ library(MGDrivE)
 # This is slightly obtuse for vignette building reasons
 #  Really, all you need is a base directory, then the repetitions in folders inside that.
 #  Here, our base directory is "mgdrive", and the repetition folders are "001","002", etc.
-#  So, the final structure is "mgdrive/001","mgdrive/002", etc. 
+#  So, the final structure is "mgdrive/001","mgdrive/002", etc.
 outFolder <- "mgdrive"
 dir.create(path = outFolder)
 
@@ -578,7 +565,7 @@ dir.create(path = outFolder)
 # Simulation Parameters
 ####################
 # days to run the simulation
-tMax <- 365
+tMax <- 365*2
 
 # number of Monte Carlo iterations
 nRep <- 50
@@ -588,7 +575,7 @@ folderNames <- file.path(outFolder,
                          formatC(x = 1:nRep, width = 3, format = "d", flag = "0"))
 
 # entomological parameters
-bioParameters <- list(betaK=20,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=0.09)
+bioParameters <- list(betaK=20, tEgg=5, tLarva=6, tPupa=4, popGrowth=1.175, muAd=0.09)
 
 # a 1-node network where mosquitoes do not leave
 moveMat <- as.matrix(1)
@@ -596,27 +583,25 @@ moveMat <- as.matrix(1)
 # parameters of the population equilibrium
 adultPopEquilibrium <- 500
 sitesNumber <- nrow(moveMat)
-patchPops <- rep(adultPopEquilibrium,sitesNumber)
 
 ####################
 # Basic Inheritance pattern
 ####################
 # Mendelian cube with standard (default) paraameters
 
-# This time, lets put fitness cost on the homozygotes, giving the heterozygote 
+# This time, lets put fitness cost on the homozygotes, giving the heterozygote
 #  an advantage
 
-# These genotypes correspond to ones in the cube. Look at a base cube first, 
+# These genotypes correspond to ones in the cube. Look at a base cube first,
 #  then set this.
 # homozygotes are 60% as fit as heterozygote over their entire lifetime
-#  Since omega is the adult daily death rate, we use the built-in function to 
+#  Since omega is the adult daily death rate, we use the built-in function to
 #  calculate our desired lifetime cost as applied daily
-dayOmega <- getOmega(mu = bioParameters$muAd, lifespanReduction = 0.60)
+dayOmega <- calcOmega(mu = bioParameters$muAd, lifespanReduction = 0.60)
 omegaNew <- c("AA"=dayOmega, "aa"=dayOmega)
 
 # setup cube
 cube <- cubeMendelian(omega = omegaNew)
-
 
 ####################
 # Setup releases and batch migration
@@ -624,26 +609,25 @@ cube <- cubeMendelian(omega = omegaNew)
 # set up the empty release vector
 #  MGDrivE pulls things out by name
 patchReleases <- replicate(n=sitesNumber,
-                           expr={list(maleReleases=NULL,femaleReleases=NULL)},
+                           expr={list(maleReleases=NULL,femaleReleases=NULL,
+                                      eggReleases=NULL,matedFemaleReleases=NULL)},
                            simplify=FALSE)
 
 # choose release parameters
-#  Releases start at time 25, occur every day, for 5 days.
-#  There are 50 mosquitoes relaeses every time.
-releasesParameters <- list(releasesStart=25,
+#  Releases start at time 100, occur every day, for 5 days.
+#  There are 50 mosquitoes released every time.
+releasesParameters <- list(releasesStart=100,
                            releasesNumber=5,
                            releasesInterval=0,
                            releaseProportion=50)
 
 # generate male release vector
-maleReleasesVector <- generateReleaseVector(driveCube=cube, 
-                                            releasesParameters=releasesParameters,
-                                            sex="M")
+maleReleasesVector <- generateReleaseVector(driveCube=cube,
+                                            releasesParameters=releasesParameters)
 
 # generate female release vector
 femaleReleasesVector <- generateReleaseVector(driveCube=cube,
-                                              releasesParameters=releasesParameters,
-                                              sex="F")
+                                              releasesParameters=releasesParameters)
 
 # put releases into the proper place in the release list
 patchReleases[[1]]$maleReleases <- maleReleasesVector
@@ -651,26 +635,25 @@ patchReleases[[1]]$femaleReleases <- femaleReleasesVector
 
 
 # batch migration is disabled by setting the probability to 0
-# This is required because of the stochastic simulations, but doesn't make sense 
+# This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
                                       sexProbs=c(.5,.5),
                                       numPatches=sitesNumber)
 
-
 ####################
 # Combine parameters and run!
 ####################
 # set MGDrivE to run stochastic
-setupMGDrivE(stochasticityON = TRUE)
+setupMGDrivE(stochasticityON = TRUE, verbose = FALSE)
 
 # setup parameters for the network. This builds a list of parameters required for
-#  every population in the network. In ths case, we havee a network of 1 population.
-netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
+#  every population in the network. In ths case, we have a network of 1 population.
+netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, sampTime = 5, nPatch=sitesNumber,
                               beta=bioParameters$betaK, muAd=bioParameters$muAd,
                               popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
                               tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                              AdPopEQ=patchPops)
+                              AdPopEQ=adultPopEquilibrium, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
@@ -679,10 +662,10 @@ MGDrivESim <- Network$new(params=netPar,
                           migrationMale=moveMat,
                           migrationFemale=moveMat,
                           migrationBatch=batchMigration,
-                          directory=folderNames)
+                          directory=folderNames,
+                          verbose = FALSE)
 # run simulation
 MGDrivESim$multRun(verbose = FALSE)
-
 
 ####################
 # Post Analysis
@@ -690,20 +673,19 @@ MGDrivESim$multRun(verbose = FALSE)
 # First, split output by patch
 # Second, aggregate females by their mate choice
 for(i in 1:nRep){
-  splitOutput(readDir=folderNames[i],remFile = TRUE,verbose = FALSE)
-  aggregateFemales(readDir=folderNames[i],genotypes=cube$genotypesID,
-                   remFile=TRUE,verbose = FALSE)
+  splitOutput(readDir = folderNames[i], remFile = TRUE, verbose = FALSE)
+  aggregateFemales(readDir = folderNames[i], genotypes = cube$genotypesID,
+                   remFile = TRUE, verbose = FALSE)
 }
 
 # plot output of first run to see effect
-plotMGDrivESingle(readDir=folderNames[1],totalPop = TRUE,lwd=3.5,alpha=1)
+plotMGDrivESingle(readDir = folderNames[1], totalPop = TRUE, lwd = 3.5, alpha = 1)
 
 # plot all 50 repetitions together
-plotMGDrivEMult(readDir=outFolder,lwd=0.35,alpha=0.75)
+plotMGDrivEMult(readDir = outFolder, lwd = 0.35, alpha = 0.75)
 ```
 
-We first plot a single run of our stochastic simulation, and then plot all `r nRep` runs together. We see that the individual run looks similar to the deterministic run from before, all genotypes behaving heuristically the same. However, the dynamics are not as "clean" as the deterministic version, clearly suffering from the randomness inherent in an actual population, and the dynamics are slower than the deterministic version. This is an inherent effect of stochasticity, something that is important in decision making and with smaller population sizes.  
-
+We first plot a single run of our stochastic simulation, and then plot all `r nRep` runs together. We see that the individual run looks similar to the deterministic run from before, all genotypes behaving heuristically the same. However, the dynamics are not as "clean" as the deterministic version, clearly suffering from the randomness inherent in an actual population, and the dynamics are slower than the deterministic version. This is an inherent effect of stochasticity, something that is important in decision making and with smaller population sizes.
 
 
 ```{r, echo=FALSE}
@@ -716,9 +698,9 @@ rm(list=ls())
 
 ### Mendelian Inheritance Simulations, Two Populations
 
-Single, panmictic populations are simple to analyze but rarely encountered in nature. Often, populations of identical individuals are separated by geography, be it great distances or a road that is difficult to cross. This creates structures within populations that can drastically alter how genes spread. Here, we explore how the results of our first simulation change when we have a structured population where two halves of the population never mix. 
+Single, panmictic populations are simple to analyze but rarely encountered in nature. Often, populations of identical individuals are separated by geography, be it great distances or a road that is difficult to cross. This creates structures within populations that can drastically alter how genes spread. Here, we explore how the results of our first simulation change when we have a structured population where two halves of the population never mix.
 
-*MGDrivE* handles population structure by considering separate, panmictic populations with some migration rate between them. This makes *MGDrivE* a meta-population model, where individual populations are part of the same graph, connected via some migration or mixture rate. In the following simulation, we use two nodes, or two well-mixed populations, that have no migration between them. Then, we simulate releases in one population, and analyze what happens.  
+*MGDrivE* handles population structure by considering separate, panmictic populations with some migration rate between them. This makes *MGDrivE* a meta-population model, where individual populations are part of the same graph, connected via some migration or mixture rate. In the following simulation, we use two nodes, or two well-mixed populations, that have no migration between them. Then, we simulate releases in one population, and analyze what happens.
 
 #### Deterministic, No Migration
 
@@ -740,7 +722,7 @@ outFolder <- "mgdrive"
 tMax <- 365
 
 # entomological parameters
-bioParameters <- list(betaK=20,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=0.09)
+bioParameters <- list(betaK=20, tEgg=5, tLarva=6, tPupa=4, popGrowth=1.175, muAd=0.09)
 
 # a 2-node network where mosquitoes do not leave
 moveMat <- matrix(data = c(1,0,0,1), nrow = 2, ncol = 2)
@@ -749,7 +731,6 @@ moveMat
 # parameters of the population equilibrium
 adultPopEquilibrium <- 500
 sitesNumber <- nrow(moveMat)
-patchPops <- rep(adultPopEquilibrium,sitesNumber)
 
 ####################
 # Basic Inheritance pattern
@@ -757,60 +738,52 @@ patchPops <- rep(adultPopEquilibrium,sitesNumber)
 # Mendelian cube with standard (default) paraameters
 cube <- cubeMendelian()
 
-
 ####################
 # Setup releases and batch migration
 ####################
 # set up the empty release vector
 #  MGDrivE pulls things out by name
 patchReleases <- replicate(n=sitesNumber,
-                           expr={list(maleReleases=NULL,femaleReleases=NULL)},
+                           expr={list(maleReleases=NULL,femaleReleases=NULL,
+                                      eggReleases=NULL,matedFemaleReleases=NULL)},
                            simplify=FALSE)
 
 # choose release parameters
-#  Releases start at time 25, occur every day, for 5 day.
-#  There are 50 mosquitoes relaeses every time.
+#  Releases start at time 25, occur every day, for 5 days.
+#  There are 50 mosquitoes released every time.
 releasesParameters <- list(releasesStart=25,
                            releasesNumber=5,
                            releasesInterval=0,
                            releaseProportion=50)
 
-# generate male release vector
-maleReleasesVector <- generateReleaseVector(driveCube=cube, 
-                                            releasesParameters=releasesParameters,
-                                            sex="M")
-
-# generate female release vector
-femaleReleasesVector <- generateReleaseVector(driveCube=cube,
-                                              releasesParameters=releasesParameters,
-                                              sex="F")
+# generate release vector
+releasesVector <- generateReleaseVector(driveCube=cube,
+                                        releasesParameters=releasesParameters)
 
 # put releases into the proper place in the release list
-patchReleases[[1]]$maleReleases <- maleReleasesVector
-patchReleases[[1]]$femaleReleases <- femaleReleasesVector
-
+patchReleases[[1]]$maleReleases <- releasesVector
+patchReleases[[1]]$femaleReleases <- releasesVector
 
 # batch migration is disabled by setting the probability to 0
-# This is required because of the stochastic simulations, but doesn't make sense 
+# This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
                                       sexProbs=c(.5,.5),
                                       numPatches=sitesNumber)
 
-
 ####################
 # Combine parameters and run!
 ####################
 # set MGDrivE to run deterministic
-setupMGDrivE(stochasticityON = FALSE)
+setupMGDrivE(stochasticityON = FALSE, verbose = FALSE)
 
 # setup parameters for the network. This builds a list of parameters required for
-#  every population in the network. In ths case, we havee a network of 1 population.
+#  every population in the network. In ths case, we have a network of 2 populations.
 netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
                               beta=bioParameters$betaK, muAd=bioParameters$muAd,
                               popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
                               tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                              AdPopEQ=patchPops)
+                              AdPopEQ=adultPopEquilibrium, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
@@ -819,28 +792,28 @@ MGDrivESim <- Network$new(params=netPar,
                           migrationMale=moveMat,
                           migrationFemale=moveMat,
                           migrationBatch=batchMigration,
-                          directory=outFolder)
+                          directory=outFolder,
+                          verbose=FALSE)
 # run simulation
 MGDrivESim$oneRun(verbose = FALSE)
-
 
 ####################
 # Post Analysis
 ####################
 # split output by patch
 #  Required for plotting later
-splitOutput(readDir=outFolder, verbose = FALSE, remFile = TRUE)
+splitOutput(readDir = outFolder, verbose = FALSE, remFile = TRUE)
 
 # aggregate females by their mate choice
 #  This reduces the female file to have the same columns as the male file
-aggregateFemales(readDir=outFolder,genotypes=cube$genotypesID,
-                 remFile=TRUE, verbose = FALSE)
+aggregateFemales(readDir = outFolder, genotypes = cube$genotypesID,
+                 remFile = TRUE, verbose = FALSE)
 
 # plot output to see effect
-plotMGDrivESingle(readDir=outFolder,lwd=3.5,alpha=1)
+plotMGDrivESingle(readDir = outFolder, lwd = 3.5, alpha = 1)
 ```
 
-The plots are now expanded to include both populations in our simulation, as labeled on the right side of the plot. We performed `r releasesParameters$releasesNumber` releases of `r releasesParameters$releaseProportion` _aa_ individuals in the first node. However, since there is no migration between the populations, we see _Aa_ individuals appear in patch 1 only, while patch 2 remains completely _AA_.  
+The plots are now expanded to include both populations in our simulation, as labeled on the right side of the plot. We performed `r releasesParameters$releasesNumber` releases of `r releasesParameters$releaseProportion` _aa_ individuals in the first node. However, since there is no migration between the populations, we see _Aa_ individuals appear in patch 1 only, while patch 2 remains completely _AA_.
 
 ```{r, echo=FALSE}
 ####################
@@ -872,7 +845,7 @@ outFolder <- "mgdrive"
 tMax <- 365
 
 # entomological parameters
-bioParameters <- list(betaK=20,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=0.09)
+bioParameters <- list(betaK=20, tEgg=5, tLarva=6, tPupa=4, popGrowth=1.175, muAd=0.09)
 
 # a 2-node network with 1% per day migration rate
 moveMat <- matrix(data = c(0.99,0.01,0.01,0.99), nrow = 2, ncol = 2)
@@ -889,60 +862,56 @@ patchPops <- rep(adultPopEquilibrium,sitesNumber)
 # Mendelian cube with standard (default) paraameters
 cube <- cubeMendelian()
 
-
 ####################
 # Setup releases and batch migration
 ####################
 # set up the empty release vector
 #  MGDrivE pulls things out by name
 patchReleases <- replicate(n=sitesNumber,
-                           expr={list(maleReleases=NULL,femaleReleases=NULL)},
+                           expr={list(maleReleases=NULL,femaleReleases=NULL,
+                                      eggReleases=NULL,matedFemaleReleases=NULL)},
                            simplify=FALSE)
 
 # choose release parameters
-#  Releases start at time 25, occur every day, for 5 day.
-#  There are 50 mosquitoes relaeses every time.
+#  Releases start at time 25, occur every day, for 5 days.
+#  There are 50 mosquitoes released every time.
 releasesParameters <- list(releasesStart=25,
                            releasesNumber=5,
                            releasesInterval=0,
                            releaseProportion=50)
 
 # generate male release vector
-maleReleasesVector <- generateReleaseVector(driveCube=cube, 
-                                            releasesParameters=releasesParameters,
-                                            sex="M")
+maleReleasesVector <- generateReleaseVector(driveCube=cube,
+                                            releasesParameters=releasesParameters)
 
 # generate female release vector
 femaleReleasesVector <- generateReleaseVector(driveCube=cube,
-                                              releasesParameters=releasesParameters,
-                                              sex="F")
+                                              releasesParameters=releasesParameters)
 
 # put releases into the proper place in the release list
 patchReleases[[1]]$maleReleases <- maleReleasesVector
 patchReleases[[1]]$femaleReleases <- femaleReleasesVector
 
-
 # batch migration is disabled by setting the probability to 0
-# This is required because of the stochastic simulations, but doesn't make sense 
+# This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
                                      sexProbs=c(.5,.5),
                                      numPatches=sitesNumber)
 
-
 ####################
 # Combine parameters and run!
 ####################
 # set MGDrivE to run deterministic
-setupMGDrivE(stochasticityON = FALSE)
+setupMGDrivE(stochasticityON = FALSE, verbose = FALSE)
 
 # setup parameters for the network. This builds a list of parameters required for
-#  every population in the network. In ths case, we havee a network of 1 population.
+#  every population in the network. In ths case, we have a network of 2 populations.
 netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
                              beta=bioParameters$betaK, muAd=bioParameters$muAd,
                              popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
                              tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                             AdPopEQ=patchPops)
+                             AdPopEQ=patchPops, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
@@ -951,28 +920,28 @@ MGDrivESim <- Network$new(params=netPar,
                          migrationMale=moveMat,
                          migrationFemale=moveMat,
                          migrationBatch=batchMigration,
-                         directory=outFolder)
+                         directory=outFolder,
+                         verbose = FALSE)
 # run simulation
 MGDrivESim$oneRun(verbose = FALSE)
-
 
 ####################
 # Post Analysis
 ####################
 # split output by patch
 #  Required for plotting later
-splitOutput(readDir=outFolder, verbose = FALSE, remFile = TRUE)
+splitOutput(readDir = outFolder, verbose = FALSE, remFile = TRUE)
 
 # aggregate females by their mate choice
 #  This reduces the female file to have the same columns as the male file
-aggregateFemales(readDir=outFolder,genotypes=cube$genotypesID,
-                remFile=TRUE, verbose = FALSE)
+aggregateFemales(readDir = outFolder, genotypes = cube$genotypesID,
+                remFile = TRUE, verbose = FALSE)
 
 # plot output to see effect
-plotMGDrivESingle(readDir=outFolder,totalPop = TRUE,lwd=3.5,alpha=1)
+plotMGDrivESingle(readDir = outFolder, totalPop = TRUE, lwd = 3.5, alpha = 1)
 ```
 
-As expected, with a 1% daily migration rate, we see heterozygotes in patch 2 shortly after they begin emerging in patch 1.  
+As expected, with a 1% daily migration rate, we see heterozygotes in patch 2 shortly after they begin emerging in patch 1.
 
 ```{r, echo=FALSE}
 ####################
@@ -984,7 +953,7 @@ rm(list=ls())
 
 #### Stochastic, Small Migration
 
-With very small migration rates, it is interesting to see how a scenario changes using a stochastic simulation. Some  repetitions should take significantly longer for heterozygotes to migrate from patch 1 to patch 2. So, we keep all of the parameters the same as above, but run 25 stochastic repetitions instead of a deterministic simulation.  
+With very small migration rates, it is interesting to see how a scenario changes using a stochastic simulation. Some  repetitions should take significantly longer for heterozygotes to migrate from patch 1 to patch 2. So, we keep all of the parameters the same as above, but run 25 stochastic repetitions instead of a deterministic simulation.
 
 ```{r}
 ####################
@@ -998,7 +967,7 @@ library(MGDrivE)
 # This is slightly obtuse for vignette building reasons
 #  Really, all you need is a base directory, then the repetitions in folders inside that.
 #  Here, our base directory is "mgdrive", and the repetition folders are "001","002", etc.
-#  So, the final structure is "mgdrive/001","mgdrive/002", etc. 
+#  So, the final structure is "mgdrive/001","mgdrive/002", etc.
 outFolder <- "mgdrive"
 dir.create(path = outFolder)
 
@@ -1016,7 +985,7 @@ folderNames <- file.path(outFolder,
                         formatC(x = 1:nRep, width = 3, format = "d", flag = "0"))
 
 # entomological parameters
-bioParameters <- list(betaK=20,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=0.09)
+bioParameters <- list(betaK=20, tEgg=5, tLarva=6, tPupa=4, popGrowth=1.175, muAd=0.09)
 
 # a 2-node network with 1% per day migration rate
 moveMat <- matrix(data = c(0.99,0.01,0.01,0.99), nrow = 2, ncol = 2)
@@ -1025,7 +994,6 @@ moveMat
 # parameters of the population equilibrium
 adultPopEquilibrium <- 500
 sitesNumber <- nrow(moveMat)
-patchPops <- rep(adultPopEquilibrium,sitesNumber)
 
 ####################
 # Basic Inheritance pattern
@@ -1033,60 +1001,52 @@ patchPops <- rep(adultPopEquilibrium,sitesNumber)
 # Mendelian cube with standard (default) paraameters
 cube <- cubeMendelian()
 
-
 ####################
 # Setup releases and batch migration
 ####################
 # set up the empty release vector
 #  MGDrivE pulls things out by name
 patchReleases <- replicate(n=sitesNumber,
-                          expr={list(maleReleases=NULL,femaleReleases=NULL)},
-                          simplify=FALSE)
+                           expr={list(maleReleases=NULL,femaleReleases=NULL,
+                                      eggReleases=NULL,matedFemaleReleases=NULL)},
+                           simplify=FALSE)
 
 # choose release parameters
-#  Releases start at time 25, occur every day, for 5 day.
-#  There are 50 mosquitoes relaeses every time.
+#  Releases start at time 25, occur every day, for 5 days.
+#  There are 50 mosquitoes released every time.
 releasesParameters <- list(releasesStart=25,
                           releasesNumber=5,
                           releasesInterval=0,
                           releaseProportion=50)
 
-# generate male release vector
-maleReleasesVector <- generateReleaseVector(driveCube=cube, 
-                                           releasesParameters=releasesParameters,
-                                           sex="M")
-
-# generate female release vector
-femaleReleasesVector <- generateReleaseVector(driveCube=cube,
-                                             releasesParameters=releasesParameters,
-                                             sex="F")
+# generate release vector
+releasesVector <- generateReleaseVector(driveCube=cube,
+                                        releasesParameters=releasesParameters)
 
 # put releases into the proper place in the release list
-patchReleases[[1]]$maleReleases <- maleReleasesVector
-patchReleases[[1]]$femaleReleases <- femaleReleasesVector
-
+patchReleases[[1]]$maleReleases <- releasesVector
+patchReleases[[1]]$femaleReleases <- releasesVector
 
 # batch migration is disabled by setting the probability to 0
-# This is required because of the stochastic simulations, but doesn't make sense 
+# This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
                                      sexProbs=c(.5,.5),
                                      numPatches=sitesNumber)
 
-
 ####################
 # Combine parameters and run!
 ####################
 # set MGDrivE to run stochastic
-setupMGDrivE(stochasticityON = TRUE)
+setupMGDrivE(stochasticityON = TRUE, verbose = FALSE)
 
 # setup parameters for the network. This builds a list of parameters required for
-#  every population in the network. In ths case, we havee a network of 1 population.
+#  every population in the network. In ths case, we have a network of 2 populations.
 netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
                              beta=bioParameters$betaK, muAd=bioParameters$muAd,
                              popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
                              tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                             AdPopEQ=patchPops)
+                             AdPopEQ=adultPopEquilibrium, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
@@ -1095,10 +1055,10 @@ MGDrivESim <- Network$new(params=netPar,
                          migrationMale=moveMat,
                          migrationFemale=moveMat,
                          migrationBatch=batchMigration,
-                         directory=folderNames)
+                         directory=folderNames,
+                         verbose = FALSE)
 # run simulation
 MGDrivESim$multRun(verbose = FALSE)
-
 
 ####################
 # Post Analysis
@@ -1106,21 +1066,21 @@ MGDrivESim$multRun(verbose = FALSE)
 # First, split output by patch
 # Second, aggregate females by their mate choice
 for(i in 1:nRep){
- splitOutput(readDir=folderNames[i],remFile = TRUE, verbose = FALSE)
- aggregateFemales(readDir=folderNames[i],genotypes=cube$genotypesID,
-                  remFile=TRUE,verbose = FALSE)
+ splitOutput(readDir = folderNames[i], remFile = TRUE, verbose = FALSE)
+ aggregateFemales(readDir = folderNames[i], genotypes = cube$genotypesID,
+                  remFile = TRUE, verbose = FALSE)
 }
 
 # plot output of first run to see effect
-plotMGDrivESingle(readDir=folderNames[1],totalPop = TRUE,lwd=3.5,alpha=1)
+plotMGDrivESingle(readDir = folderNames[1], totalPop = TRUE, lwd = 3.5, alpha = 1)
 
 # plot all 25 repetitions together
-plotMGDrivEMult(readDir=outFolder,lwd=0.35,alpha=0.75)
+plotMGDrivEMult(readDir = outFolder, lwd = 0.35, alpha = 0.75)
 ```
 
-Looking at the first plot, of just one repetition from the 25 that we ran, we see the release at time 25 and then the increase in heterozygotes after that. If we look closely, there are a few _aa_ individuals that migrate to the second patch, but very few. We see how the population of _Aa_ individuals fluctuates near zero the entire simulation, but there are enough that they never completely drop out of the population. The total population fluctuates around 500 individuals, 250 each of males and females, as expected from the parameters provided.  
+Looking at the first plot, of just one repetition from the 25 that we ran, we see the release at time 25 and then the increase in heterozygotes after that. If we look closely, there are a few _aa_ individuals that migrate to the second patch, but very few. We see how the population of _Aa_ individuals fluctuates near zero until the end of the simulation, but there are enough that they never completely drop out of the population. The total population fluctuates around 500 individuals, 250 each of males and females, as expected from the parameters provided.
 
-Looking at the second plot with all 25 repetitions provided, we see how the simulations heuristically agree with the deterministic ones performed above. The general analysis remains the same here, but with more noise, accounting for the random fluctuations in real populations. While not particularly enlightening in this setting, the behavior and outcome are the same, it's easy to see how low-frequency genotypes could be lost from a population.  
+Looking at the second plot with all 25 repetitions provided, we see how the simulations heuristically agree with the deterministic ones performed above. The general analysis remains the same here, but with more noise, accounting for the random fluctuations in real populations. While not particularly enlightening in this setting, the behavior and outcome are the same, it's easy to see how low-frequency genotypes could be lost from a population.
 
 ```{r, echo=FALSE}
 ####################
@@ -1133,7 +1093,7 @@ rm(list=ls())
 
 #### Stochastic, Small Migration and Fitness Cost
 
-As a final example, we perform a stochastic, two-population simulation with the same fitness cost explored previously, ie., a 60% reduction in lifetime on _AA_ and _aa_ individuals. We first explored this in a single, panmictic population using a deterministic simulation, then explored the effect of stochasticity on the results. Here, we extend our analysis to a two-population setting, to explore how population structure might affect our results.  
+As a final example, we perform a stochastic, two-population simulation with the same fitness cost explored previously, ie., a 60% reduction in lifetime on _AA_ and _aa_ individuals. We first explored this in a single, panmictic population using a deterministic simulation, then explored the effect of stochasticity on the results. Here, we extend our analysis to a two-population setting, to explore how population structure might affect our results.
 
 ```{r}
 ####################
@@ -1147,7 +1107,7 @@ library(MGDrivE)
 # This is slightly obtuse for vignette building reasons
 #  Really, all you need is a base directory, then the repetitions in folders inside that.
 #  Here, our base directory is "mgdrive", and the repetition folders are "001","002", etc.
-#  So, the final structure is "mgdrive/001","mgdrive/002", etc. 
+#  So, the final structure is "mgdrive/001","mgdrive/002", etc.
 outFolder <- "mgdrive"
 dir.create(path = outFolder)
 
@@ -1165,36 +1125,33 @@ folderNames <- file.path(outFolder,
                          formatC(x = 1:nRep, width = 3, format = "d", flag = "0"))
 
 # entomological parameters
-bioParameters <- list(betaK=20,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=0.09)
+bioParameters <- list(betaK=20, tEgg=5, tLarva=6, tPupa=4, popGrowth=1.175, muAd=0.09)
 
 # a 2-node network with 1% per day migration rate
 moveMat <- matrix(data = c(0.99,0.01,0.01,0.99), nrow = 2, ncol = 2)
-moveMat
 
 # parameters of the population equilibrium
 adultPopEquilibrium <- 500
 sitesNumber <- nrow(moveMat)
-patchPops <- rep(adultPopEquilibrium,sitesNumber)
 
 ####################
 # Basic Inheritance pattern
 ####################
-# Mendelian cube with standard (default) paraameters
+# Mendelian cube
 
-# This time, lets put fitness cost on the homozygotes, giving the heterozygote 
+# This time, lets put fitness cost on the homozygotes, giving the heterozygote
 #  an advantage
 
-# These genotypes correspond to ones in the cube. Look at a base cube first, 
+# These genotypes correspond to ones in the cube. Look at a base cube first,
 #  then set this.
-# homozygotes are 60% as fit as heterozygote over their entire lifetime
-#  Since omega is a daily death rate, we use the built-in function to calculate 
+# Homozygotes are 60% as fit as heterozygote over their entire lifetime
+#  Since omega is a daily death rate, we use the built-in function to calculate
 #  our desired lifetime cost as applied daily
-dayOmega <- getOmega(mu = bioParameters$muAd, lifespanReduction = 0.60)
+dayOmega <- calcOmega(mu = bioParameters$muAd, lifespanReduction = 0.60)
 omegaNew <- c("AA"=dayOmega, "aa"=dayOmega)
 
 # setup cube
 cube <- cubeMendelian(omega = omegaNew)
-
 
 ####################
 # Setup releases and batch migration
@@ -1202,53 +1159,50 @@ cube <- cubeMendelian(omega = omegaNew)
 # set up the empty release vector
 #  MGDrivE pulls things out by name
 patchReleases <- replicate(n=sitesNumber,
-                           expr={list(maleReleases=NULL,femaleReleases=NULL)},
+                           expr={list(maleReleases=NULL,femaleReleases=NULL,
+                                      eggReleases=NULL,matedFemaleReleases=NULL)},
                            simplify=FALSE)
 
 # choose release parameters
-#  Releases start at time 25, occur every day, for 5 day.
-#  There are 50 mosquitoes relaeses every time.
+#  Releases start at time 100, occur every day, for 5 days.
+#  There are 50 mosquitoes released every time.
 releasesParameters <- list(releasesStart=100,
                            releasesNumber=5,
                            releasesInterval=0,
                            releaseProportion=50)
 
 # generate male release vector
-maleReleasesVector <- generateReleaseVector(driveCube=cube, 
-                                            releasesParameters=releasesParameters,
-                                            sex="M")
+maleReleasesVector <- generateReleaseVector(driveCube=cube,
+                                            releasesParameters=releasesParameters)
 
 # generate female release vector
 femaleReleasesVector <- generateReleaseVector(driveCube=cube,
-                                              releasesParameters=releasesParameters,
-                                              sex="F")
+                                              releasesParameters=releasesParameters)
 
 # put releases into the proper place in the release list
 patchReleases[[1]]$maleReleases <- maleReleasesVector
 patchReleases[[1]]$femaleReleases <- femaleReleasesVector
 
-
 # batch migration is disabled by setting the probability to 0
-# This is required because of the stochastic simulations, but doesn't make sense 
+# This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
                                      sexProbs=c(.5,.5),
                                      numPatches=sitesNumber)
 
-
 ####################
 # Combine parameters and run!
 ####################
 # set MGDrivE to run stochastic
-setupMGDrivE(stochasticityON = TRUE)
+setupMGDrivE(stochasticityON = TRUE, verbose = FALSE)
 
 # setup parameters for the network. This builds a list of parameters required for
-#  every population in the network. In ths case, we havee a network of 1 population.
+#  every population in the network. In ths case, we have a network of 2 populations.
 netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
                              beta=bioParameters$betaK, muAd=bioParameters$muAd,
                              popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
                              tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                             AdPopEQ=patchPops)
+                             AdPopEQ=adultPopEquilibrium, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
@@ -1257,10 +1211,10 @@ MGDrivESim <- Network$new(params=netPar,
                          migrationMale=moveMat,
                          migrationFemale=moveMat,
                          migrationBatch=batchMigration,
-                         directory=folderNames)
+                         directory=folderNames,
+                         verbose = FALSE)
 # run simulation
 MGDrivESim$multRun(verbose = FALSE)
-
 
 ####################
 # Post Analysis
@@ -1268,24 +1222,24 @@ MGDrivESim$multRun(verbose = FALSE)
 # First, split output by patch
 # Second, aggregate females by their mate choice
 for(i in 1:nRep){
- splitOutput(readDir=folderNames[i],remFile = TRUE,verbose = FALSE)
- aggregateFemales(readDir=folderNames[i],genotypes=cube$genotypesID,
-                  remFile=TRUE,verbose = FALSE)
+ splitOutput(readDir = folderNames[i], remFile = TRUE, verbose = FALSE)
+ aggregateFemales(readDir = folderNames[i], genotypes = cube$genotypesID,
+                  remFile = TRUE, verbose = FALSE)
 }
 
 # plot output of first run to see effect
 #  per the structure above, we are reading "mgdrive/001" for the single plot
-plotMGDrivESingle(readDir=folderNames[1],totalPop = TRUE, lwd=3.5,alpha=1)
+plotMGDrivESingle(readDir = folderNames[1], totalPop = TRUE, lwd = 3.5, alpha = 1)
 
 # plot all 50 repetitions together
 #  Here, we feed the function "mgdrive/", and it finds all repetition folders
 #   inside that.
-plotMGDrivEMult(readDir=outFolder,lwd=0.35,alpha=0.75)
+plotMGDrivEMult(readDir = outFolder, lwd = 0.35, alpha = 0.75)
 ```
 
-Looking at the first plot, a single repetition of our stochastic simulation, we see that the results are very similar. The population size first drops to about 300, 60% of the equilibration population, and then increases to about 400, as expected from the deterministic simulation and analysis performed before. Do notice however, the dynamics are slower in the first population than in the single-population exploration. This is because we performed the same releases, but with a second population, there is a small immigration of _AA_ individuals into the first patch and a small emigration of _aa_ and _Aa_ individuals out of patch 1 into patch 2. Thus, there is effectively twice the population size total, even though there is only a 1% chance of mixing per day.  
+Looking at the first plot, a single repetition of our stochastic simulation, we see that the results are very similar. The population size first drops to about 300, 60% of the equilibration population, and then increases to about 400, as expected from the deterministic simulation and analysis performed before. Do notice however, the dynamics are slower in the first population than in the single-population exploration. This is because we performed the same releases, but with a second population, there is a small immigration of _AA_ individuals into the first patch and a small emigration of _aa_ and _Aa_ individuals out of patch 1 into patch 2. Thus, there is effectively twice the population size total, even though there is only a 1% chance of mixing per day.
 
-The second plot shows all 25 repetitions of our simulation. The results clearly follow the one-node, deterministic simulation performed before. There is an initial population drop, as both patches are fully _AA_ until we perform releases, then releases and a small recovery in population size. The general dynamics remain very similar, with the shift from _AA_ to _Aa_ individuals in the population taking a little longer than originally. This is also something we saw in the one-node stochastic simulation, and is a result of stochasticity in the population dynamics, as well as migration to/from the second patch.  
+The second plot shows all 25 repetitions of our simulation. The results clearly follow the one-node, deterministic simulation performed before. There is an initial population drop, as both patches are fully _AA_ until we perform releases, then releases and a small recovery in population size. The general dynamics remain very similar, with the shift from _AA_ to _Aa_ individuals in the population taking a little longer than originally. This is also something we saw in the one-node stochastic simulation, and is a result of stochasticity in the population dynamics, as well as migration to/from the second patch.
 
 ```{r, echo=FALSE}
 ####################
@@ -1299,11 +1253,11 @@ rm(list=ls())
 
 ### Reciprocal Translocation Gene Drive Simulations, One Population
 
-[Reciprocal translocations](https://pubs.acs.org/doi/10.1021/acssynbio.7b00451) are a classic form of gene drive, utilizing the underdominance effects of gene dosage compensation to either suppress a population or replace a population, depending on fitness costs and release frequencies. The classic reciprocal translocation involves breaking two chromosomes, swapping the broken ends, and reattaching the ends to the opposite chromosomes. Theoretically, this creates a perfect 50% fitness cost on the population, as has been shown previously. However, previous simulations studying reciprocal translocations have been panmictic, deterministic, and ignore life-stages. Thus, we start with two deterministic simulations, to find the critical threshold when a complete life-history is included, and then explore how that threshold is affected by stochasticity.  
+[Reciprocal translocations](https://pubs.acs.org/doi/10.1021/acssynbio.7b00451) are a classic form of gene drive, utilizing the underdominance effects of gene dosage compensation to either suppress a population or replace a population, depending on fitness costs and release frequencies. The classic reciprocal translocation involves breaking two chromosomes, swapping the broken ends, and reattaching the ends to the opposite chromosomes. Theoretically, this creates a perfect 50% fitness cost on the population, as has been shown previously. However, previous simulations studying reciprocal translocations have been panmictic, deterministic, and ignore life-stages. Thus, we start with two deterministic simulations, to find the critical threshold when a complete life-history is included, and then explore how that threshold is affected by stochasticity.
 
 #### Deterministic, Below Threshold
 
-We maintain the same theoretical fitness cost, namely, that possession of only 1 copy of a reciprocal chromosome is always fatal. We perform 5 releases of transgenic critters, both male and female, every 7 days starting at day 25. This is not enough to make the population 50% transgenic, and therefore the transgenic critters should die out.  
+We maintain the same theoretical fitness cost, namely, that possession of only 1 copy of a reciprocal chromosome is always fatal. We perform 5 releases of transgenic critters, both male and female, every 7 days starting at day 25. This is not enough to make the population 50% transgenic, and therefore the transgenic critters should die out.
 
 ```{r}
 ####################
@@ -1311,7 +1265,7 @@ We maintain the same theoretical fitness cost, namely, that possession of only 1
 ####################
 library(MGDrivE)
 
-#################### 
+####################
 # Output Folder
 ####################
 outFolder <- "mgdrive"
@@ -1323,7 +1277,7 @@ outFolder <- "mgdrive"
 tMax <- 365*2
 
 # entomological parameters
-bioParameters <- list(betaK=20,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=0.09)
+bioParameters <- list(betaK=20, tEgg=5, tLarva=6, tPupa=4, popGrowth=1.175, muAd=0.09)
 
 # a 1-node network where mosquitoes do not leave
 moveMat <- as.matrix(1)
@@ -1331,14 +1285,12 @@ moveMat <- as.matrix(1)
 # parameters of the population equilibrium
 adultPopEquilibrium <- 500
 sitesNumber <- nrow(moveMat)
-patchPops <- rep(adultPopEquilibrium,sitesNumber)
 
 ####################
 # Basic Inheritance pattern
 ####################
-# Reciprocal translocation cube with standard (default) paraameters
+# Reciprocal translocation cube with standard (default) parameters
 cube <- cubeReciprocalTranslocations()
-
 
 ####################
 # Setup releases and batch migration
@@ -1346,53 +1298,50 @@ cube <- cubeReciprocalTranslocations()
 # set up the empty release vector
 #  MGDrivE pulls things out by name
 patchReleases <- replicate(n=sitesNumber,
-                          expr={list(maleReleases=NULL,femaleReleases=NULL)},
-                          simplify=FALSE)
+                           expr={list(maleReleases=NULL,femaleReleases=NULL,
+                                      eggReleases=NULL,matedFemaleReleases=NULL)},
+                           simplify=FALSE)
 
 # choose release parameters
 #  Releases start at time 25, occur once a week, for 5 weeks.
-#  There are 10 mosquitoes relaeses every time.
+#  There are 100 mosquitoes released every time.
 releasesParameters <- list(releasesStart=25,
                           releasesNumber=5,
                           releasesInterval=7,
                           releaseProportion=100)
 
 # generate male release vector
-maleReleasesVector <- generateReleaseVector(driveCube=cube, 
-                                           releasesParameters=releasesParameters,
-                                           sex="M")
+maleReleasesVector <- generateReleaseVector(driveCube=cube,
+                                           releasesParameters=releasesParameters)
 
 # generate female release vector
 femaleReleasesVector <- generateReleaseVector(driveCube=cube,
-                                             releasesParameters=releasesParameters,
-                                             sex="F")
+                                             releasesParameters=releasesParameters)
 
 # put releases into the proper place in the release list
 patchReleases[[1]]$maleReleases <- maleReleasesVector
 patchReleases[[1]]$femaleReleases <- femaleReleasesVector
 
-
 # batch migration is disabled by setting the probability to 0
-# This is required because of the stochastic simulations, but doesn't make sense 
+# This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
                                      sexProbs=c(.5,.5),
                                      numPatches=sitesNumber)
 
-
 ####################
 # Combine parameters and run!
 ####################
 # set MGDrivE to run deterministic
-setupMGDrivE(stochasticityON = FALSE)
+setupMGDrivE(stochasticityON = FALSE, verbose = FALSE)
 
 # setup parameters for the network. This builds a list of parameters required for
-#  every population in the network. In ths case, we havee a network of 1 population.
+#  every population in the network. In ths case, we have a network of 1 population.
 netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
                              beta=bioParameters$betaK, muAd=bioParameters$muAd,
                              popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
                              tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                             AdPopEQ=patchPops)
+                             AdPopEQ=adultPopEquilibrium, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
@@ -1401,28 +1350,28 @@ MGDrivESim <- Network$new(params=netPar,
                          migrationMale=moveMat,
                          migrationFemale=moveMat,
                          migrationBatch=batchMigration,
-                         directory=outFolder)
+                         directory=outFolder,
+                         verbose = FALSE)
 # run simulation
 MGDrivESim$oneRun(verbose = FALSE)
-
 
 ####################
 # Post Analysis
 ####################
 # split output by patch
 #  Required for plotting later
-splitOutput(readDir=outFolder, remFile = TRUE, verbose = FALSE)
+splitOutput(readDir = outFolder, remFile = TRUE, verbose = FALSE)
 
 # aggregate females by their mate choice
 #  This reduces the female file to have the same columns as the male file
-aggregateFemales(readDir=outFolder,genotypes=cube$genotypesID,
-                remFile=TRUE, verbose = FALSE)
+aggregateFemales(readDir = outFolder, genotypes = cube$genotypesID,
+                remFile = TRUE, verbose = FALSE)
 
 # plot output to see effect
-plotMGDrivESingle(readDir=outFolder,totalPop = TRUE, lwd=3.5,alpha=1)
+plotMGDrivESingle(readDir = outFolder, totalPop = TRUE, lwd = 3.5, alpha = 1)
 ```
 
-We plot the number of female (left) and male (right) critters over a period of two years. The total population is shown in purple, while wild-type (aabb) individuals are in orange and fully transgenic individuals (AABB) are in light blue. We see the total population increase dramatically during the releases, then fall back to a little below the equilibrium amount. This is because of offspring of transgenic and wile-type critters than are non-viable. Eventually, the transgenic individuals completely die out and the population is wild-type again. This is the expected behavior for reciprocal translocations when the 50% critical threshold is not achieved.  
+We plot the number of female (left) and male (right) critters over a period of two years. The total population is shown in purple, while wild-type (aabb) individuals are in orange and fully transgenic individuals (AABB) are in light blue. We see the total population increase dramatically during the releases, then fall back to a little below the equilibrium amount. This is because of offspring of transgenic and wild-type critters than are non-viable. Eventually, the transgenic individuals completely die out and the population is wild-type again. This is the expected behavior for reciprocal translocations when the 50% critical threshold is not achieved.
 
 ```{r, echo=FALSE}
 ####################
@@ -1434,7 +1383,7 @@ rm(list=ls())
 
 #### Deterministic, Above Threshold
 
-Now, we perform the same simulation as above, but increase the number of releases by one, from 5 releases to 6. This is enough to get over the critical threshold, so we should see the population turn entirely into transgenic individuals.  
+Now, we perform the same simulation as above, but increase the number of releases by one, from 5 releases to 6. This is enough to get over the critical threshold, so we should see the population turn entirely into transgenic individuals.
 
 ```{r}
 ####################
@@ -1454,7 +1403,7 @@ outFolder <- "mgdrive"
 tMax <- 365*2
 
 # entomological parameters
-bioParameters <- list(betaK=20,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=0.09)
+bioParameters <- list(betaK=20, tEgg=5, tLarva=6, tPupa=4, popGrowth=1.175, muAd=0.09)
 
 # a 1-node network where mosquitoes do not leave
 moveMat <- as.matrix(1)
@@ -1467,9 +1416,8 @@ patchPops <- rep(adultPopEquilibrium,sitesNumber)
 ####################
 # Basic Inheritance pattern
 ####################
-# Reciprocal translocation cube with standard (default) paraameters
+# Reciprocal translocation cube with standard (default) parameters
 cube <- cubeReciprocalTranslocations()
-
 
 ####################
 # Setup releases and batch migration
@@ -1477,53 +1425,46 @@ cube <- cubeReciprocalTranslocations()
 # set up the empty release vector
 #  MGDrivE pulls things out by name
 patchReleases <- replicate(n=sitesNumber,
-                          expr={list(maleReleases=NULL,femaleReleases=NULL)},
-                          simplify=FALSE)
+                           expr={list(maleReleases=NULL,femaleReleases=NULL,
+                                      eggReleases=NULL,matedFemaleReleases=NULL)},
+                           simplify=FALSE)
 
 # choose release parameters
 #  Releases start at time 25, occur once a week, for 6 weeks.
-#  There are 10 mosquitoes relaeses every time.
+#  There are 100 mosquitoes released every time.
 releasesParameters <- list(releasesStart=25,
                           releasesNumber=6,
                           releasesInterval=7,
                           releaseProportion=100)
 
-# generate male release vector
-maleReleasesVector <- generateReleaseVector(driveCube=cube, 
-                                           releasesParameters=releasesParameters,
-                                           sex="M")
-
-# generate female release vector
-femaleReleasesVector <- generateReleaseVector(driveCube=cube,
-                                             releasesParameters=releasesParameters,
-                                             sex="F")
+# generate release vector
+releasesVector <- generateReleaseVector(driveCube=cube,
+                                        releasesParameters=releasesParameters)
 
 # put releases into the proper place in the release list
-patchReleases[[1]]$maleReleases <- maleReleasesVector
-patchReleases[[1]]$femaleReleases <- femaleReleasesVector
-
+patchReleases[[1]]$maleReleases <- releasesVector
+patchReleases[[1]]$femaleReleases <- releasesVector
 
 # batch migration is disabled by setting the probability to 0
-# This is required because of the stochastic simulations, but doesn't make sense 
+# This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
                                      sexProbs=c(.5,.5),
                                      numPatches=sitesNumber)
 
-
 ####################
 # Combine parameters and run!
 ####################
 # set MGDrivE to run deterministic
-setupMGDrivE(stochasticityON = FALSE)
+setupMGDrivE(stochasticityON = FALSE, verbose = FALSE)
 
 # setup parameters for the network. This builds a list of parameters required for
-#  every population in the network. In ths case, we havee a network of 1 population.
+#  every population in the network. In ths case, we have a network of 1 population.
 netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
                              beta=bioParameters$betaK, muAd=bioParameters$muAd,
                              popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
                              tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                             AdPopEQ=patchPops)
+                             AdPopEQ=patchPops, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
@@ -1532,28 +1473,28 @@ MGDrivESim <- Network$new(params=netPar,
                          migrationMale=moveMat,
                          migrationFemale=moveMat,
                          migrationBatch=batchMigration,
-                         directory=outFolder)
+                         directory=outFolder,
+                         verbose = FALSE)
 # run simulation
 MGDrivESim$oneRun(verbose = FALSE)
-
 
 ####################
 # Post Analysis
 ####################
 # split output by patch
 #  Required for plotting later
-splitOutput(readDir=outFolder, remFile = TRUE, verbose = FALSE)
+splitOutput(readDir = outFolder, remFile = TRUE, verbose = FALSE)
 
 # aggregate females by their mate choice
 #  This reduces the female file to have the same columns as the male file
-aggregateFemales(readDir=outFolder,genotypes=cube$genotypesID,
-                remFile=TRUE, verbose = FALSE)
+aggregateFemales(readDir = outFolder, genotypes = cube$genotypesID,
+                 remFile = TRUE, verbose = FALSE)
 
 # plot output to see effect
-plotMGDrivESingle(readDir=outFolder,totalPop = TRUE,lwd=3.5,alpha=1)
+plotMGDrivESingle(readDir = outFolder, totalPop = TRUE, lwd = 3.5, alpha = 1)
 ```
 
-Analyzing the same plots as above, notice one more release and the dramatic change it has on the outcome of the simulation. This time, our releases surpassed the critical threshold and the transgenic critters took over the population. Again though, we see the slight depression in population size initially after releases, while the population is a mix of wild-type and transgenics. However, once the population is entirely transgenic, the total size returns to the equilibrium value.  
+Analyzing the same plots as above, notice one more release and the dramatic change it has on the outcome of the simulation. This time, our releases surpassed the critical threshold and the transgenic critters took over the population. Again though, we see the slight depression in population size initially after releases, while the population is a mix of wild-type and transgenics. However, once the population is entirely transgenic, the total size returns to the equilibrium value.
 
 ```{r, echo=FALSE}
 ####################
@@ -1566,7 +1507,7 @@ rm(list=ls())
 
 #### Stochastic, "Above" Threshold
 
-The preceding two simulations show dramatically different results with the addition of a single release. This implies that we are near the critical threshold but gives a false impression of how distinct or certain we are of the outcome. Stochastic fluctuations can quickly push us across a threshold, even deterministic simulations implied we had passed/not passed it. Using stochastic simulations, we can put a probability on an outcome, given that we are near the threshold. Thus, we perform the same simulation as above, 6 releases, that we think puts us over the critical threshold. However, as we will see below, this is not entirely the case.  
+The preceding two simulations show dramatically different results with the addition of a single release. This implies that we are near the critical threshold but gives a false impression of how distinct or certain we are of the outcome. Stochastic fluctuations can quickly push us across a threshold, even when deterministic simulations implied we had passed/not passed it. Using stochastic simulations, we can put a probability on an outcome, given that we are near the threshold. Thus, we perform the same simulation as above, 6 releases, that we think puts us over the critical threshold. However, as we will see below, this is not entirely the case.
 
 ```{r}
 ####################
@@ -1580,14 +1521,14 @@ library(MGDrivE)
 # This is slightly obtuse for vignette building reasons
 #  Really, all you need is a base directory, then the repetitions in folders inside that.
 #  Here, our base directory is "mgdrive", and the repetition folders are "001","002", etc.
-#  So, the final structure is "mgdrive/001","mgdrive/002", etc. 
+#  So, the final structure is "mgdrive/001","mgdrive/002", etc.
 outFolder <- "mgdrive"
 dir.create(path = outFolder)
 
 ####################
 # Simulation Parameters
 ####################
-# days to run the simulation, 2 years
+# days to run the simulation, 3 years
 tMax <- 365*3
 
 # number of Monte Carlo iterations
@@ -1598,7 +1539,7 @@ folderNames <- file.path(outFolder,
                         formatC(x = 1:nRep, width = 3, format = "d", flag = "0"))
 
 # entomological parameters
-bioParameters <- list(betaK=20,tEgg=5,tLarva=6,tPupa=4,popGrowth=1.175,muAd=0.09)
+bioParameters <- list(betaK=20, tEgg=5, tLarva=6, tPupa=4, popGrowth=1.175, muAd=0.09)
 
 # a 1-node network where mosquitoes do not leave
 moveMat <- as.matrix(1)
@@ -1606,14 +1547,12 @@ moveMat <- as.matrix(1)
 # parameters of the population equilibrium
 adultPopEquilibrium <- 500
 sitesNumber <- nrow(moveMat)
-patchPops <- rep(adultPopEquilibrium,sitesNumber)
 
 ####################
 # Basic Inheritance pattern
 ####################
-# Reciprocal translocation cube with standard (default) paraameters
+# Reciprocal translocation cube with standard (default) parameters
 cube <- cubeReciprocalTranslocations()
-
 
 ####################
 # Setup releases and batch migration
@@ -1621,53 +1560,50 @@ cube <- cubeReciprocalTranslocations()
 # set up the empty release vector
 #  MGDrivE pulls things out by name
 patchReleases <- replicate(n=sitesNumber,
-                          expr={list(maleReleases=NULL,femaleReleases=NULL)},
-                          simplify=FALSE)
+                           expr={list(maleReleases=NULL,femaleReleases=NULL,
+                                      eggReleases=NULL,matedFemaleReleases=NULL)},
+                           simplify=FALSE)
 
 # choose release parameters
 #  Releases start at time 25, occur once a week, for 6 weeks.
-#  There are 10 mosquitoes relaeses every time.
+#  There are 100 mosquitoes released every time.
 releasesParameters <- list(releasesStart=25,
                           releasesNumber=6,
                           releasesInterval=7,
                           releaseProportion=100)
 
 # generate male release vector
-maleReleasesVector <- generateReleaseVector(driveCube=cube, 
-                                           releasesParameters=releasesParameters,
-                                           sex="M")
+maleReleasesVector <- generateReleaseVector(driveCube=cube,
+                                           releasesParameters=releasesParameters)
 
 # generate female release vector
 femaleReleasesVector <- generateReleaseVector(driveCube=cube,
-                                             releasesParameters=releasesParameters,
-                                             sex="F")
+                                             releasesParameters=releasesParameters)
 
 # put releases into the proper place in the release list
 patchReleases[[1]]$maleReleases <- maleReleasesVector
 patchReleases[[1]]$femaleReleases <- femaleReleasesVector
 
-
 # batch migration is disabled by setting the probability to 0
-# This is required because of the stochastic simulations, but doesn't make sense 
+# This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
                                      sexProbs=c(.5,.5),
                                      numPatches=sitesNumber)
 
-
 ####################
 # Combine parameters and run!
 ####################
 # set MGDrivE to run stochastic
-setupMGDrivE(stochasticityON = TRUE)
+setupMGDrivE(stochasticityON = TRUE, verbose = FALSE)
 
 # setup parameters for the network. This builds a list of parameters required for
-#  every population in the network. In ths case, we havee a network of 1 population.
+#  every population in the network. In ths case, we have a network of 1 population.
 netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
                              beta=bioParameters$betaK, muAd=bioParameters$muAd,
                              popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
                              tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                             AdPopEQ=patchPops)
+                             AdPopEQ=adultPopEquilibrium, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
@@ -1676,10 +1612,10 @@ MGDrivESim <- Network$new(params=netPar,
                          migrationMale=moveMat,
                          migrationFemale=moveMat,
                          migrationBatch=batchMigration,
-                         directory=folderNames)
+                         directory=folderNames,
+                         verbose = TRUE)
 # run simulation
 MGDrivESim$multRun(verbose = FALSE)
-
 
 ####################
 # Post Analysis
@@ -1687,16 +1623,16 @@ MGDrivESim$multRun(verbose = FALSE)
 # First, split output by patch
 # Second, aggregate females by their mate choice
 for(i in 1:nRep){
- splitOutput(readDir=folderNames[i], remFile = TRUE, verbose = FALSE)
- aggregateFemales(readDir=folderNames[i],genotypes=cube$genotypesID,
-                  remFile=TRUE, verbose = FALSE)
+ splitOutput(readDir = folderNames[i], remFile = TRUE, verbose = FALSE)
+ aggregateFemales(readDir = folderNames[i], genotypes = cube$genotypesID,
+                  remFile = TRUE, verbose = FALSE)
 }
 
 # plot output of first run to see effect
-plotMGDrivESingle(readDir=folderNames[1],lwd=3.5,alpha=1)
+plotMGDrivESingle(readDir = folderNames[1], lwd = 3.5, alpha = 1)
 
 # plot all 50 repetitions together
-plotMGDrivEMult(readDir=outFolder,lwd=0.35,alpha=0.75)
+plotMGDrivEMult(readDir = outFolder, lwd = 0.35, alpha = 0.75)
 ```
 
 
@@ -1716,25 +1652,21 @@ for(f in mFiles){
  # read in files, one by one
  hold <- matrix(data = scan(file = f, what = double(), sep = ",", skip = 1, quiet = TRUE),
                 nrow = tMax, ncol = 1 + cube$genotypesN, byrow = TRUE)
- 
+
  # check if the simulation was successful
  successCount <- successCount + (hold[tMax,10]!=0)
 }
 
 # percentage of success
 sCPerc <- successCount / nRep * 100
-
 ```
 
 
-We perform 20 repetitions of our stochastic simulation. In an experimental setting, we should perform many more repetitions (the number of repetitions is related to the precision of your estimate. 100 repetitions would provide 1% resolution, while our 20 repetitions here only provides 5% resolution), but outcome resolution needs to be balanced against run time.  
+We perform 20 repetitions of our stochastic simulation. In an experimental setting, we should perform many more repetitions (the number of repetitions is related to the precision of your estimate. 100 repetitions would provide 1% resolution, while our 20 repetitions here only provides 5% resolution), but outcome resolution needs to be balanced against run time.
 
-First we plot a single repetition. Wild-type (aabb) critters are in orange, and transgenic (AABB) critters are in blue. We see that there is some fluctuation, but the final result is the same as the deterministic simulation. This is a good sign, it implies we are well above the critical threshold, but it is only one repetitions.  
+First we plot a single repetition. Wild-type (aabb) critters are in orange, and transgenic (AABB) critters are in blue. We see that there is some fluctuation, and then the final result does not match the deterministic simulation. This is a little worrisome, as it means we are so close to the threshold that it is easy to go back under.
 
-Plotting  all `r nRep` repetitions, we see that the results are not as clear as before. We have extended the simulation to `r tMax` days to allow all of the repetitions to achieve their final trajectory. First, near the critical threshold, stochastic fluctuations dramatically slow the population dynamics. The deterministic simulations were finished in two years, but stochastic simulations took nearly three years for all of the trajectories to reach equilibrium. Second, we notice that not all of the simulations ended with a fully transgenic population. In fact, only `r sCPerc`% of the repetitions ended with a fully transgenic population. More repetitions would provide a more precise answer, but now we know that this set of parameters is only `r sCPerc` +/-`r 1/nRep*100`% effective. 
-
-
-
+Plotting  all `r nRep` repetitions, we see that the results are not as clear as before. We have extended the simulation to `r tMax` days to allow all of the repetitions to achieve their final trajectory. First, near the critical threshold, stochastic fluctuations dramatically slow the population dynamics. The deterministic simulations were finished in two years, but stochastic simulations took nearly three years for all of the trajectories to reach equilibrium. Second, we notice that not all of the simulations ended with a fully transgenic population. In fact, only `r sCPerc`% of the repetitions ended with a fully transgenic population. More repetitions would provide a more precise answer, but now we know that this set of parameters is only `r sCPerc` +/-`r 1/nRep*100`% effective.
 
 
 ```{r, echo=FALSE}
@@ -1744,6 +1676,3 @@ Plotting  all `r nRep` repetitions, we see that the results are not as clear as 
 unlink(x = outFolder, recursive = TRUE)
 rm(list=ls())
 ```
-                                                         
-                                                         
-                                                         

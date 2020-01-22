@@ -4,28 +4,46 @@
 \alias{MGDrivE-Model}
 \title{MGDrivE: Model's Mathematical Description}
 \description{
-The original version of this model was based on work by \insertCite{Deredec2011,Hancock2007}{MGDrivE} and adapted to accommodate CRISPR homing dynamics in a previous publication by our team \insertCite{JohnMarshallAnnaBuchmanHectorMSanchezC.2017}{MGDrivE}.
-As it was described, we extended this framework to be able to handle a variable number of genotypes, and migration across spatial scenarios.
-We did this by adapting the equations to work in a tensor-oriented manner, where each genotype can have different processes affecting their particular strain (death rates, mating fitness, sex-ratio bias, et cetera).
+The original version of this model was based on work by \insertCite{Deredec2011,Hancock2007}{MGDrivE}
+and adapted to accommodate CRISPR homing dynamics in a previous publication by
+our team \insertCite{JohnMarshallAnnaBuchmanHectorMSanchezC.2017}{MGDrivE}. As
+it was described, we extended this framework to be able to handle a variable
+number of genotypes, and migration across spatial scenarios. We did this by
+adapting the equations to work in a tensor-oriented manner, where each genotype
+can have different processes affecting their particular strain
+(death rates, mating fitness, sex-ratio bias, et cetera).
 }
 \section{Inheritance Cube and Oviposition}{
 
 
-To allow the extension of the framework to an arbitrary number of genotypes we decided to transform traditional inheritance matrices into inheritance cubes where each of the axis represents the following information:
+To allow the extension of the framework to an arbitrary number of genotypes,
+we transformed traditional inheritance matrices into inheritance cubes, where
+each of the axis represents the following information:
 \itemize{
 \item x: female adult mate genotype
 \item y: male adult mate genotype
 \item z: proportion of the offspring that inherits a given genotype (slice)
 }
 
-The 'cube' structure gives us the flexibility to apply tensor operations to the elements within our equations, so that we can calculate the stratified population dynamics rapidly; and within a readable, flexible computational framework.
-This becomes apparent when we define the equation we use for the computation of eggs laid at any given point in time:
+The 'cube' structure gives us the flexibility to apply tensor operations to
+the elements within our equations, so that we can calculate the stratified
+population dynamics rapidly; and within a readable, flexible computational
+framework. This becomes apparent when we define the equation we use for the
+computation of eggs laid at any given point in time:
 \deqn{\overline{O(T_x)} = \sum_{j=1}^{n} \Bigg( \bigg( (\beta*\overline{s} * \overline{ \overline{Af_{[t-T_x]}}}) * \overline{\overline{\overline{Ih}}} \bigg) * \Lambda  \Bigg)^{\top}_{ij}}
-In this equation, the matrix containing the number of mated adult females (\eqn{\overline{\overline{Af}}}) is multiplied element-wise with each one of the slices containing the eggs genotypes proportions expected from this cross (\eqn{\overline{\overline{\overline{Ih}}}}).
-The resulting matrix is then multiplied by a binary 'viability mask' (\eqn{\Lambda}) that filters out female-parent to offspring genetic combinations that are not viable due to biological impediments (such as cytoplasmic incompatibility).
-The summation of the transposed resulting matrix returns us the total fraction of eggs resulting from all the male to female genotype crosses (\eqn{\overline{O(T_{x})}}).
+In this equation, the matrix containing the number of mated adult females
+(\eqn{\overline{\overline{Af}}}) is multiplied element-wise with each one of
+the slices containing the eggs genotypes proportions expected from this cross
+(\eqn{\overline{\overline{\overline{Ih}}}}). The resulting matrix is then
+multiplied by a binary 'viability mask' (\eqn{\Lambda}) that filters out
+female-parent to offspring genetic combinations that are not viable due to
+biological impediments (such as cytoplasmic incompatibility). The summation
+of the transposed resulting matrix returns us the total fraction of eggs
+resulting from all the male to female genotype crosses (\eqn{\overline{O(T_{x})}}).
 
-Note: For inheritance operations to be consistent within the framework the summation of each element in the 'z' axis (this is, the proportions of each one of the offspring's genotypes) must be equal to one.
+Note: For inheritance operations to be consistent within the framework, the
+summation of each element in the 'z' axis (this is, the proportions of each
+one of the offspring's genotypes) must be equal to one.
 }
 
 \section{Population Dynamics}{
@@ -35,17 +53,22 @@ During the three aquatic stages, a density-independent mortality process takes p
 \deqn{\theta_{st}=(1-\mu_{st})^{T_{st}}}
 Along with a density dependent process dependent on the number of larvae in the environment:
 \deqn{F(L[t])=\Bigg(\frac{\alpha}{\alpha+\sum{\overline{L[t]}}}\Bigg)^{1/T_l}}
-where \eqn{\alpha} represents the strength of the density-dependent process. This parameter  is calculated with:
+where \eqn{\alpha} represents the strength of the density-dependent process.
+This parameter  is calculated with:
 \deqn{\alpha=\Bigg( \frac{1/2 * \beta * \theta_e * Ad_{eq}}{R_m-1} \Bigg) * \Bigg( \frac{1-(\theta_l / R_m)}{1-(\theta_l / R_m)^{1/T_l}} \Bigg)}
-in which \eqn{\beta} is the species' fertility in the absence of gene-drives, \eqn{Ad_{eq}} is the adult mosquito population equilibrium size, and \eqn{R_{m}} is the population growth in the absence of density-dependent mortality.
-This population growth is calculated with the average generation time (\eqn{g}), the adult mortality rate (\eqn{\mu_{ad}}), and the daily population growth rate (\eqn{r_{m}}):
+in which \eqn{\beta} is the species' fertility in the absence of gene-drives,
+\eqn{Ad_{eq}} is the adult mosquito population equilibrium size, and \eqn{R_{m}}
+is the population growth in the absence of density-dependent mortality. This
+population growth is calculated with the average generation time (\eqn{g}),
+the adult mortality rate (\eqn{\mu_{ad}}), and the daily population growth rate (\eqn{r_{m}}):
 \deqn{	g=T_{e}+T_{l}+T_{p}+\frac{1}{\mu_{ad}}\\R_{m}=(r_{m})^{g}}
 
 \subsection{Larval Stages}{
-The computation of the larval stage in the population is crucial to the model because the density dependent processes necessary for equilibrium trajectories to be calculated occur here.
-This calculation is performed with the following equation:
+The computation of the larval stage in the population is crucial to the model
+because the density dependent processes necessary for equilibrium trajectories
+to be calculated occur here. This calculation is performed with the following equation:
 \deqn{
-D(\theta_l,T_x) = \left\{
+D(\theta_l,T_x) = \left
         \begin{array}{ll}
             \theta_{l[0]}^{'}=\theta_l 								& \quad i = 0 \\
             \theta_{l[i+1]}^{'} = \theta_{l[i]}^{'} *F(\overline{L_{[t-i-T_x]}})	& \quad i \leq T_l
@@ -68,41 +91,60 @@ With these mortality processes, we are now able to calculate the larval populati
 		%\prod_{i=1}^{T_{l}} F(\overline{L_{[t-i]}})
 		%\theta_{l}
 }
-where the first term accounts for larvae surviving one day to the other; the second therm accounts for the eggs that have hatched within the same period of time; and the last term computes the number of larvae that have transformed into pupae.
+where the first term accounts for larvae surviving one day to the other; the
+second term accounts for the eggs that have hatched within the same period of
+time; and the last term computes the number of larvae that have transformed into pupae.
 }
 
 \subsection{Adult Stages}{
-We are ultimately interested in calculating how many adults of each genotype exist at any given point in time. For this, we first calculate the number of eggs that are laid and survive to the adult stages with the equation:
+We are ultimately interested in calculating how many adults of each genotype
+exist at any given point in time. For this, we first calculate the number of
+eggs that are laid and survive to the adult stages with the equation:
 \deqn{
 	\overline{E^{'}}= \overline{O(T_{e}+T_{l}+T_{p})} \\
 	* \bigg(\overline{\xi_{m}} * (\theta_{e} * \theta_{p}) * (1-\mu_{ad}) * D(\theta_{l},T_{p}) \bigg)
 }
-With this information we can calculate the current number of male adults in the population by computing the following equation:
+With this information we can calculate the current number of male adults in
+the population by computing the following equation:
 \deqn{
 	\overline{Am_{[t]}}=
 		\overline{Am_{[t-1]}} * (1-\mu_{ad})*\overline{\omega_{m}}\\
 		+ (1-\overline{\phi}) *  \overline{E^{'}}\\
  		+ \overline{\nu m_{[t-1]}}
 }
-in which the first term represents the number of males surviving from one day to the next; the second one, the fraction of males that survive to adulthood (\eqn{\overline{E'}}) and emerge as males (\eqn{1-\phi}); the last one is used to add males into the population as part of gene-drive release campaigns.
+in which the first term represents the number of males surviving from one day
+to the next; the second one, the fraction of males that survive to adulthood
+(\eqn{\overline{E'}}) and emerge as males (\eqn{1-\phi}); the last one is used
+to add males into the population as part of gene-drive release campaigns.
 
 Female adult populations are calculated in a similar way:
 \deqn{
  \overline{\overline{Af_{[t]}}}=
    \overline{\overline{Af_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_{f}}\\
-   +  \bigg( \overline{\phi} * \overline{E^{'}}+\overline{\nu f_{[t-1]}}\bigg)^{\top} * \bigg( \frac{\overline{\eta}*\overline{Am_{[t-1]}}}{\sum{\overline{Am_{[t-1]}}}} \bigg)%\overline{\overline{Mf}}
+   +  \bigg( \overline{\phi} * \overline{E^{'}}+\overline{\nu f_{[t-1]}}\bigg)^{\top} * \bigg( \frac{\overline{\overline{\eta}}*\overline{Am_{[t-1]}}}{\sum{\overline{Am_{[t-1]}}}} \bigg)%\overline{\overline{Mf}}
 }
-where we first compute the surviving female adults from one day to the next; and then we calculate the mating composition of the female fraction emerging from pupa stage. To do this, we obtain the surviving fraction of eggs that survive to adulthood (\eqn{\overline{E'}}) and emerge as females (\eqn{\phi}), we then add the new females added as a result of gene-drive releases (\eqn{\overline{\nu f_{[t-1]}}}).
-After doing this, we calculate the proportion of males that are allocated to each female genotype, taking into account their respective mating fitnesses (\eqn{\overline{\eta}}) so that we can introduce the new adult females into the population pool.
+where we first compute the surviving female adults from one day to the next;
+and then we calculate the mating composition of the female fraction emerging
+from pupa stage. To do this, we obtain the surviving fraction of eggs that
+survive to adulthood (\eqn{\overline{E'}}) and emerge as females (\eqn{\phi}),
+we then add the new females added as a result of gene-drive releases (\eqn{\overline{\nu f_{[t-1]}}}).
+After doing this, we calculate the proportion of males that are allocated to
+each female genotype, taking into account their respective mating fitnesses
+(\eqn{\overline{\overline{\eta}}}) so that we can introduce the new adult
+females into the population pool.
 }
 }
 
 \section{Gene Drive Releases and Effects}{
 
 
-As it was briefly mentioned before, we are including the option to release both male and/or female individuals into the populations.
-Another important thing to emphasize is that we allow flexible releases sizes and schedules.
-Our model handles releases internally as lists of populations compositions so, it is possible to have releases performed at irregular intervals and with different numbers of mosquito genetic compositions as long as no new genotypes are introduced (which have not been previously defined in the inheritance cube).
+As it was briefly mentioned before, we are including the option to release
+both male and/or female individuals into the populations. Another important t
+hing to emphasize is that we allow flexible releases sizes and schedules. Our ]
+model handles releases internally as lists of populations compositions so, it
+is possible to have releases performed at irregular intervals and with different
+numbers of mosquito genetic compositions as long as no new genotypes are
+introduced (which have not been previously defined in the inheritance cube).
 \deqn{
  \overline{\nu} = \bigg\{
    \left(\begin{array}{c} g_1 \\ g_2 \\ g_3 \\ \vdots \\ g_n \end{array}\right)_{t=1} ,
@@ -111,11 +153,13 @@ Our model handles releases internally as lists of populations compositions so, i
    \left(\begin{array}{c} g_1 \\ g_2 \\ g_3 \\ \vdots \\ g_n \end{array}\right)_{t=x}
 \bigg\}
 }
-So far, however, we have not described the way in which the effects of these gene-drives are included into the mosquito populations dynamics. This is done through the use of various modifiers included in the equations:
+So far, however, we have not described the way in which the effects of these
+gene-drives are included into the mosquito populations dynamics. This is done
+through the use of various modifiers included in the equations:
 \itemize{
 \item \eqn{\overline{\omega}}: Relative increase in mortality (zero being full mortality effects and one no mortality effect)
 \item \eqn{\overline{\phi}}: Relative shift in the sex of the pupating mosquitoes (zero biases the sex ratio towards males, whilst 1 biases the ratio towards females).
-\item \eqn{\overline{\eta}}: Standardized mating fitness (zero being complete fitness ineptitude, and one being regular mating skills).
+\item \eqn{\overline{\overline{\eta}}}: Standardized mating fitness (zero being complete fitness ineptitude, and one being regular mating skills).
 \item \eqn{\overline{\beta}}: Fecundity (average number of eggs laid).
 \item \eqn{\overline{\xi}}: Pupation success (zero being full mortality and one full pupation success).
 }
@@ -124,16 +168,24 @@ So far, however, we have not described the way in which the effects of these gen
 \section{Migration}{
 
 
-To simulate migration within our framework we are considering patches (or nodes) of fully-mixed populations in a network structure.
-This allows us to handle mosquito movement across spatially-distributed populations with a transitions matrix, which is calculated with the tensor outer product of the genotypes populations tensors and the transitions matrix of the network as follows:
+To simulate migration within our framework we are considering patches (or nodes)
+of fully-mixed populations in a network structure. This allows us to handle
+mosquito movement across spatially-distributed populations with a transitions
+matrix, which is calculated with the tensor outer product of the genotypes
+populations tensors and the transitions matrix of the network as follows:
 \deqn{
    \overline{Am_{(t)}^{i}}=
    	\sum{\overline{A_{m}^j} \otimes \overline{\overline{\tau m_{[t-1]}}}} \\
      	\overline{\overline{Af_{(t)}^{i}}}=
      \sum{\overline{\overline{A_{f}^j}} \otimes \overline{\overline{\tau f_{[t-1]}}}}
 }
-In these equations the new population of the patch \eqn{i} is calculated by summing the migrating mosquitoes of all the \eqn{j} patches across the network defined by the transitions matrix \eqn{\tau}, which stores the mosquito migration probabilities from patch to patch.
-It is worth noting that the migration probabilities matrices can be different for males and females; and that there's no inherent need for them to be static (the migration probabilities may vary over time to accommodate wind changes due to seasonality).
+In these equations the new population of the patch \eqn{i} is calculated by
+summing the migrating mosquitoes of all the \eqn{j} patches across the network
+defined by the transitions matrix \eqn{\tau}, which stores the mosquito migration
+probabilities from patch to patch.mIt is worth noting that the migration
+probabilities matrices can be different for males and females; and that there's
+no inherent need for them to be static (the migration probabilities may vary
+over time to accommodate wind changes due to seasonality).
 }
 
 \section{Parameters}{
@@ -152,39 +204,57 @@ This table compiles all the parameters required to run MGDrivE clustered in six 
 
 \section{Stochasticity}{
 
-\emph{MGDrivE} allows stochasticity to be included in the dynamics of various processes; in an effort to simulate processes that affect various stages of mosquitoes lives.
-In the next section, we will describe all the stochastic processes that can be activated in the program.
-It should be noted that all of these can be turned on and off independently from one another as required by the researcher.
+\emph{MGDrivE} allows stochasticity to be included in the dynamics of various
+processes; in an effort to simulate processes that affect various stages of
+mosquitoes lives. In the next section, we will describe all the stochastic
+processes that can be activated in the program. It should be noted that all
+of these can be turned on and off independently from one another as required
+by the researcher.
 
 \subsection{Mosquito Biology}{
 \strong{Oviposition}
 
-Stochastic egg laying by female/male pairs is separated into two steps: calculating the number of eggs laid by the females and then distributing laid eggs according to their genotypes.
-The number of eggs laid follows a Poisson distribution conditioned on the number of female/male pairs and the fertility of each female.
+Stochastic egg laying by female/male pairs is separated into two steps:
+calculating the number of eggs laid by the females and then distributing laid
+eggs according to their genotypes. The number of eggs laid follows a Poisson
+distribution conditioned on the number of female/male pairs and the fertility
+of each female.
 \deqn{Poisson( \lambda = numFemales*Fertility)}
-Multinomial sampling, conditioned on the number of offspring and the relative viability of each genotype, determines the genotypes of the offspring.
+Multinomial sampling, conditioned on the number of offspring and the relative
+viability of each genotype, determines the genotypes of the offspring.
 \deqn{Multinomial \left(numOffspring, p_1, p_2\dots p_b \right)=\frac{numOffspring!}{p_1!\,p_2\,\dots p_n}p_1^{n_1}p_2^{n_2}\dots p_n^{n_n}}
 
 \strong{Sex Determination}
 
-Sex of the offspring is determined by multinomial sampling. This is conditioned on the number of eggs that live to hatching and a probability of being female, allowing the user to design systems that skew the sex ratio of the offspring through reproductive mechanisms.
+Sex of the offspring is determined by multinomial sampling. This is conditioned
+on the number of eggs that live to hatching and a probability of being female,
+allowing the user to design systems that skew the sex ratio of the offspring
+through reproductive mechanisms.
 \deqn{Multinomial(numHatchingEggs, p_{female}, p_{female})}
 
 \strong{Mating}
-Stochastic mating is determined by multinomial sampling conditioned on the number of males and their fitness.
-It is assumed that females mate only once in their life, therefore each female will sample from the available males and be done, while the males are free to potentially mate with multiple females.
-The males' ability to mate is modulated with a fitness term, thereby allowing some genotypes to be less fit than others (as seen often with lab releases).
+Stochastic mating is determined by multinomial sampling conditioned on the
+number of males and their fitness. It is assumed that females mate only once
+in their life, therefore each female will sample from the available males and
+be done, while the males are free to potentially mate with multiple females.
+The males' ability to mate is modulated with a fitness term, thereby allowing
+some genotypes to be less fit than others (as seen often with lab releases).
 \deqn{Multinomial(numFemales, p_1f_1, p_2f_2, \dots p_nf_n)}
 
 \strong{Hatching}
 
 \strong{Other Stochastic Processes}
-All remaining stochastic processes (larval survival, hatching , pupating, surviving to adult hood) are determined by multinomial sampling conditioned on factors affecting the current life stage. These factors are determined empirically from mosquito population data.
+All remaining stochastic processes (larval survival, hatching , pupating,
+surviving to adult hood) are determined by multinomial sampling conditioned
+on factors affecting the current life stage. These factors are determined
+empirically from mosquito population data.
 
 }
 
 \subsection{Migration}{
-Variance of stochastic movement (not used in diffusion model of migration). It affects the concentration of probability in the Dirchlet simplex, small values lead to high variance and large values lead to low variance.
+Variance of stochastic movement (not used in diffusion model of migration).
+It affects the concentration of probability in the Dirchlet simplex, small
+values lead to high variance and large values lead to low variance.
 }
 }
 

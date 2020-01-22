@@ -7,7 +7,7 @@
 get_batchProbs_Network(ix)
 }
 \arguments{
-\item{ix}{index of patch}
+\item{ix}{Index of patch}
 }
 \description{
 Return the probability of undergoing batch migration each day

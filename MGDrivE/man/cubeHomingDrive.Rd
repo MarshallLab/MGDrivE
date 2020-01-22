@@ -4,9 +4,23 @@
 \alias{cubeHomingDrive}
 \title{Inheritance Cube: CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Alleles and maternal deposition}
 \usage{
-cubeHomingDrive(cM = 1, cF = 1, dF = 0, chM = 0, crM = 0,
-  chF = 0, crF = 0, dhF = 0, drF = 0, eta = NULL, phi = NULL,
-  omega = NULL, xiF = NULL, xiM = NULL, s = NULL)
+cubeHomingDrive(
+  cM = 1,
+  cF = 1,
+  dF = 0,
+  chM = 0,
+  crM = 0,
+  chF = 0,
+  crF = 0,
+  dhF = 0,
+  drF = 0,
+  eta = NULL,
+  phi = NULL,
+  omega = NULL,
+  xiF = NULL,
+  xiM = NULL,
+  s = NULL
+)
 }
 \arguments{
 \item{cM}{Male homing rate}
@@ -44,10 +58,10 @@ Named list containing the inheritance cube, transition matrix, genotypes, wild-t
 and all genotype-specific parameters.
 }
 \description{
-This is a sex-specific version of the original cube. It assumes that the construct
+This is a sex-specific version of the original cube \code{\link{cubeHoming1RA}}. It assumes that the construct
 is on an autosome and there can be different male/female homing rates. It also has
 maternal deposition, ie, when the male provides a W allele to a female with a H allele,
 some portion are cut during oogenesis.
 If the maternal deposition parameters are zero (d* parameters), this is a normal
-CRISPR drive
+CRISPR drive.
 }

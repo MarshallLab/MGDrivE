@@ -7,7 +7,7 @@
 #
 #   MGDrivE: Mosquito Gene Drive Explorer
 #   tGD (trans-complementing gene drive )
-#   Héctor Sanchez, Jared Bennett, Sean Wu, John M. Marshall
+#   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
 #   jared_bennett@berkeley.edu
 #   February 2018
 #
@@ -33,6 +33,9 @@
 #'    * G: gRNAs
 #'    * R: Resistant 1
 #'    * B: Resistant 2
+#'
+#' This drive corresponds to the [transcomplementing gene drive](https://www.nature.com/articles/s41467-019-13977-7) 
+#' developed by the Gantz and Bier lab.
 #'
 #' @param cM1 Maternally inherited Cas9 cutting rate at locus 1
 #' @param cM2 Maternally inherited Cas9 cutting rate at locus 2
@@ -63,15 +66,7 @@ cubeTGD <- function(cM1=0, cM2=0, cP1=0, cP2=0,
                      rM1=0, rM2=0, rP1=0, rP2=0, crM=0, crP=0,
                      eta=NULL, phi=NULL,omega=NULL, xiF=NULL, xiM=NULL, s=NULL){
 
-
-  # testVec <- rep.int(x = 0, times = 14)#  runif(n = 12)
-  # cM1=testVec[1]; cM2=testVec[2]; cP1=testVec[3]; cP2=testVec[4];
-  # hM1=testVec[5]; hM2=testVec[6]; hP1=testVec[7]; hP2=testVec[8];
-  # rM1=testVec[9]; rM2=testVec[10]; rP1=testVec[11]; rP2=testVec[12];
-  # crM=testVec[13]; crP=testVec[14];
-
-
-  ## safety checks in case someone is dumb
+  ## safety checks
   if(any(c(cM1,cM2,cP1,cP2,hM1,hM2,hP1,hP2,rM1,rM2,rP1,rP2,crM,crP)>1) || any(c(cM1,cM2,cP1,cP2,hM1,hM2,hP1,hP2,rM1,rM2,rP1,rP2,crM,crP)<0)){
     stop("Parameters are rates.\n0 <= x <= 1")
   }

@@ -1,4 +1,4 @@
-########################################################################
+###############################################################################
 #       __  _____________       _       ______
 #      /  |/  / ____/ __ \_____(_)   __/ ____/
 #     / /|_/ / / __/ / / / ___/ / | / / __/
@@ -7,13 +7,15 @@
 #
 #   setupMGDrivE
 #   Marshall Lab
-#   November 2017
+#   jared_bennett@berkeley.edu
+#   December 2019
 #
-########################################################################
+###############################################################################
 
 #' Setup MGDrivE
 #'
-#' Initialize methods in \code{\link{Patch}} to run deterministic or stochastic simulations. This sets internal function definitions so that \code{\link{oneRun_Network}}
+#' Initialize methods in \code{\link{Patch}} to run deterministic or stochastic simulations.
+#' This sets internal function definitions so that \code{\link{oneRun_Network}}
 #' and \code{\link{multRun_Network}} run either deterministic or stochastic functions.
 #'
 #' @param stochasticityON Enable/disable stochastic simulation. Default is FALSE, implying deterministic simulation
@@ -26,182 +28,100 @@
 #' # run stochastic MGDrivE
 #' setupMGDrivE(stochasticityON = TRUE)
 #'
-#'
 #' @export
 setupMGDrivE <- function(stochasticityON = FALSE, verbose = TRUE){
 
   overwrite=TRUE
   if(verbose){cat("initializing MGDrivE\n",sep="")}
 
-  stoBools=turnStochasticityOnOrOff(stochasticityON)
-  stochasticMove=stoBools[["stochasticMove"]]
-  layEggs=stoBools[["layEggs"]]
-  larSurvival=stoBools[["larSurvival"]]
-  hatchingFract=stoBools[["hatchingFract"]]
-  larHatching=stoBools[["larHatching"]]
-  eggsFract2=stoBools[["eggsFract2"]]
-  larPupating=stoBools[["larPupating"]]
-  numMaleFemale=stoBools[["numMaleFemale"]]
-  admSurvival=stoBools[["admSurvival"]]
-  admPupating=stoBools[["admPupating"]]
-  af1Survival=stoBools[["af1Survival"]]
-  af1Pupation=stoBools[["af1Pupation"]]
-  af1Mating=stoBools[["af1Mating"]]
+  ##########
+  # Things that change
+  ##########
+  if(stochasticityON){
+    # stochastic option
+    Patch$set(which = "public", name = "setPopulation",
+              value = set_population_stochastic_Patch, overwrite = overwrite)
 
+    Patch$set(which = "public",name = "oneDay_adultD",
+              value = oneDay_adultDeath_stochastic_Patch, overwrite = overwrite)
 
-  if(stochasticMove){
+    Patch$set(which = "public",name = "oneDay_pupaDM",
+              value = oneDay_pupaDM_stochastic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_larvaDM",
+              value = oneDay_larvaDM_stochastic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_eggDM",
+              value = oneDay_eggDM_stochastic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_pupation",
+              value = oneDay_pupation_stochastic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_mating",
+              value = oneDay_mating_stochastic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_layEggs",
+              value = oneDay_oviposit_stochastic_Patch, overwrite = overwrite)
+
     Patch$set(which = "public",name = "oneDay_migrationOut",
-              value = oneDay_migrationOut_stochastic_Patch, overwrite = overwrite
-    )
+          value = oneDay_migrationOut_stochastic_Patch, overwrite = overwrite)
+
   } else {
+    # deterministic option
+    Patch$set(which = "public", name = "setPopulation",
+              value = set_population_deterministic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_adultD",
+              value = oneDay_adultDeath_deterministic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_pupaDM",
+              value = oneDay_pupaDM_deterministic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_larvaDM",
+              value = oneDay_larvaDM_deterministic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_eggDM",
+              value = oneDay_eggDM_deterministic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_pupation",
+              value = oneDay_pupation_deterministic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_mating",
+              value = oneDay_mating_deterministic_Patch, overwrite = overwrite)
+
+    Patch$set(which = "public",name = "oneDay_layEggs",
+              value = oneDay_oviposit_deterministic_Patch, overwrite = overwrite)
+
     Patch$set(which = "public",name = "oneDay_migrationOut",
-              value = oneDay_migrationOut_deterministic_Patch, overwrite = overwrite
-    )
-  }
+              value = oneDay_migrationOut_deterministic_Patch, overwrite = overwrite)
 
-  if(layEggs){
-    Patch$set(which = "public",name = "oneDay_ovipositG1",
-              value = oneDay_ovipositG1_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_ovipositG1",
-              value = oneDay_ovipositG1_deterministic_Patch, overwrite = overwrite
-    )
-  }
+  } # end if
 
-  if(larSurvival){
-    Patch$set(which = "public",name = "oneDay_larSurvival",
-              value = oneDay_larSurvival_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_larSurvival",
-              value = oneDay_larSurvival_deterministic_Patch, overwrite = overwrite
-    )
-  }
+  ##########
+  # Things that stay the same
+  ##########
+  Patch$set(which = "public", name = "initialPopulation",
+          value = set_initialPopulation_Patch, overwrite = overwrite)
 
-  if(hatchingFract){
-    Patch$set(which = "public",name = "oneDay_hatchingFract",
-              value = oneDay_hatchingFract_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_hatchingFract",
-              value = oneDay_hatchingFract_deterministic_Patch, overwrite = overwrite
-    )
-  }
+  Patch$set(which = "public", name = "reset",
+          value = reset_Patch, overwrite = overwrite)
 
-  if(larHatching){
-    Patch$set(which = "public",name = "oneDay_larHatching",
-              value = oneDay_larHatching_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_larHatching",
-              value = oneDay_larHatching_deterministic_Patch, overwrite = overwrite
-    )
-  }
+  Patch$set(which = "public",name = "oneDay_initOutput",
+          value = oneDay_initOutput_Patch, overwrite = overwrite)
 
-  if(eggsFract2){
-    Patch$set(which = "public",name = "oneDay_eggsFract2",
-              value = oneDay_eggsFract2_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_eggsFract2",
-              value = oneDay_eggsFract2_deterministic_Patch, overwrite = overwrite
-    )
-  }
+  Patch$set(which = "public",name = "oneDay_writeOutput",
+          value = oneDay_writeOutput_Patch, overwrite = overwrite)
 
-  if(larPupating){
-    Patch$set(which = "public",name = "oneDay_larPupating",
-              value = oneDay_larPupating_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_larPupating",
-              value = oneDay_larPupating_deterministic_Patch, overwrite = overwrite
-    )
-  }
+  Patch$set(which = "public",name = "oneDay_releases",
+          value = oneDay_releases_Patch, overwrite = overwrite)
 
-  if(numMaleFemale){
-    Patch$set(which = "public",name = "oneDay_numMaleFemale",
-              value = oneDay_numMaleFemale_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_numMaleFemale",
-              value = oneDay_numMaleFemale_deterministic_Patch, overwrite = overwrite
-    )
-  }
+  Patch$set(which = "public",name = "oneDay_releaseEggs",
+          value = oneDay_eggReleases_Patch, overwrite = overwrite)
 
-  if(admSurvival){
-    Patch$set(which = "public",name = "oneDay_admSurvival",
-              value = oneDay_admSurvival_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_admSurvival",
-              value = oneDay_admSurvival_deterministic_Patch, overwrite = overwrite
-    )
-  }
+  Patch$set(which = "public",name = "oneDay_migrationIn",
+          value = oneDay_migrationIn_Patch, overwrite = overwrite)
 
-  if(admPupating){
-    Patch$set(which = "public",name = "oneDay_admPupating",
-              value = oneDay_admPupating_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_admPupating",
-              value = oneDay_admPupating_deterministic_Patch, overwrite = overwrite
-    )
-  }
+  Patch$set(which = "public",name = "oneDay_PopDynamics",
+          value = oneDay_PopDynamics_Patch, overwrite = overwrite)
 
-  if(af1Survival){
-    Patch$set(which = "public",name = "oneDay_af1Survival",
-              value = oneDay_af1Survival_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_af1Survival",
-              value = oneDay_af1Survival_deterministic_Patch, overwrite = overwrite
-    )
-  }
-
-  if(af1Pupation){
-    Patch$set(which = "public",name = "oneDay_af1Pupation",
-              value = oneDay_af1Pupation_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_af1Pupation",
-              value = oneDay_af1Pupation_deterministic_Patch, overwrite = overwrite
-    )
-  }
-
-  if(af1Mating){
-    Patch$set(which = "public",name = "oneDay_af1Mating",
-              value = oneDay_af1Mating_stochastic_Patch, overwrite = overwrite
-    )
-  } else {
-    Patch$set(which = "public",name = "oneDay_af1Mating",
-              value = oneDay_af1Mating_deterministic_Patch, overwrite = overwrite
-    )
-  }
-
-}
-
-
-#' Enable or Disable Stochastic Model
-#'
-#' Set switches for deterministic or stochastic model
-#'
-#' @param on enable/disable stochastic behaviour
-#'
-turnStochasticityOnOrOff=function(on=TRUE){
-  returnList=c(
-    larSurvival=FALSE,larHatching=FALSE,larPupating=FALSE,sexDet=FALSE,
-    admSurvival=FALSE,admPupating=FALSE,af1Survival=FALSE,af1Pupation=FALSE,
-    af1Mating=FALSE, layEggs=FALSE, hatchingFract=FALSE, eggsFract2=FALSE,
-    stochasticMove=FALSE,numMaleFemale=FALSE
-  )
-  if(on){
-    returnList=c(
-      larSurvival=TRUE,larHatching=TRUE,larPupating=TRUE,sexDet=TRUE,
-      admSurvival=TRUE,admPupating=TRUE,af1Survival=TRUE,af1Pupation=TRUE,
-      af1Mating=TRUE, layEggs=TRUE, hatchingFract=TRUE, eggsFract2=TRUE,
-      stochasticMove=TRUE,numMaleFemale=TRUE
-    )
-  }
-  return(returnList)
 }

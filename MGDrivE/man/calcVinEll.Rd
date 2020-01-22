@@ -4,8 +4,14 @@
 \alias{calcVinEll}
 \title{Calculate Geodesic Distance - Vincenty Ellipsoid Method}
 \usage{
-calcVinEll(latLongs, a = 6378137, b = 6356752.3142,
-  f = 1/298.257223563, eps = 1e-12, iter = 100)
+calcVinEll(
+  latLongs,
+  a = 6378137,
+  b = 6356752.3142,
+  f = 1/298.257223563,
+  eps = 1e-12,
+  iter = 100
+)
 }
 \arguments{
 \item{latLongs}{Two column matrix of latitudes/longitudes}

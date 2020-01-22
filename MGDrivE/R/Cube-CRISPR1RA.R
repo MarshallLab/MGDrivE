@@ -7,7 +7,7 @@
 #
 #   MGDrivE: Mosquito Gene Drive Explorer
 #   Homing 1 Resistance Allele Inheritance Cube
-#   Héctor Sanchez, Jared Bennett, Sean Wu, John M. Marshall
+#   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
 #   July 2017
 #   jared_bennett@berkeley.edu
 #   December 2018
@@ -34,14 +34,13 @@
 #' @param xiM Genotype-specific male pupatory success
 #' @param s Genotype-specific fractional reduction(increase) in fertility
 #'
-#' @return Named list(inheritance cube, viability mask, genotypes ID, genotypes number,
-#' wild-type allele, mating fitness, sex ratio, adult mortality modifier, female pupatory success,
-#' male pupatory success, fertility modifier, release genotype)
+#' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
+#' and all genotype-specific parameters.
 #' @export
 cubeHoming1RA <- function(c = 1.0, ch = 0, eta = NULL, phi = NULL, omega = NULL,
                            xiF = NULL, xiM = NULL, s = NULL){
 
-  ## safety checks in case someone is dumb
+  ## safety checks
   if(any(c(c,ch)>1) || any(c(c,ch)<0) ){
     stop("e and p are rates.
          0 <= e <= 1

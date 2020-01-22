@@ -7,7 +7,7 @@
 #
 #   MGDrivE: Mosquito Gene Drive Explorer
 #   CRISPR 2 Resistance Alleles Inheritance Cube - Sex-Specific homing
-#   Héctor Sanchez, Jared Bennett, Sean Wu, John M. Marshall
+#   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
 #   July 2017
 #   jared_bennett@berkeley.edu
 #   December 2018
@@ -17,12 +17,12 @@
 
 #' Inheritance Cube: CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Alleles and maternal deposition
 #'
-#' This is a sex-specific version of the original cube. It assumes that the construct
+#' This is a sex-specific version of the original cube \code{\link{cubeHoming1RA}}. It assumes that the construct
 #' is on an autosome and there can be different male/female homing rates. It also has
 #' maternal deposition, ie, when the male provides a W allele to a female with a H allele,
 #' some portion are cut during oogenesis.
 #' If the maternal deposition parameters are zero (d* parameters), this is a normal
-#' CRISPR drive
+#' CRISPR drive.
 #'
 #' @param cM Male homing rate
 #' @param cF Female homing rate
@@ -47,7 +47,7 @@ cubeHomingDrive <- function(cM = 1.0, cF = 1.0, dF=0, chM = 0, crM = 0, chF = 0,
                              crF = 0, dhF = 0, drF = 0, eta = NULL, phi = NULL,
                             omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
 
-  ## safety cWecks in case someone is dumb
+  ## safety checks
   if(any(c(cM, cF, dF, chM, crM, chF, crF, dhF, drF)>1) || any(c(cM, cF, dF, chM, crM, chF, crF, dhF, drF)<0)){
     stop("Parameters are rates, they must be between 0 and 1.")
   }

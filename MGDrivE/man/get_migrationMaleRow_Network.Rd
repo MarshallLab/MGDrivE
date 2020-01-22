@@ -7,7 +7,7 @@
 get_migrationMaleRow_Network(ix)
 }
 \arguments{
-\item{ix}{index of row}
+\item{ix}{Index of row}
 }
 \description{
 Return a matrix object (does not drop dimensions)

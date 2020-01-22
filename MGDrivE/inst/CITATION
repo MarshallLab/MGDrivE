@@ -1,20 +1,20 @@
 citHeader("To cite MGDrivE in publications use:")
 
 citEntry(entry = "Article",
-	 title = "MGDrivE: A modular simulation framework for the spread of gene drives through spatially-explicit mosquito populations",
+	 title = "MGDrivE: A modular simulation framework for the spread of gene drives through spatially explicit mosquito populations",
 	 author = personList(person("H{\\'e}ctor Manuel", "S{\\'a}nchez Castellanos"),
 			     person("Jared", "Bennett"),
 			     person("Sean", "Wu"),
 			     person("John M.", "Marshall")),
 	 year = "2019",
-	 doi = "10.1101/350488",
-	 publisher = "Cold Spring Harbor Laboratory",
-	 abstract = "Malaria, dengue, Zika, and other mosquito-borne diseases continue to pose a major global health burden through much of the world, despite the widespread distribution of insecticide-based tools and antimalarial drugs. The advent of CRISPR/Cas9-based gene editing and its demonstrated ability to streamline the development of gene drive systems has reignited interest in the application of this technology to the control of mosquitoes and the diseases they transmit. The versatility of this technology has also enabled a wide range of gene drive architectures to be realized, creating a need for their population-level and spatial dynamics to be explored. To this end, we present MGDrivE (Mosquito Gene Drive Explorer): a simulation framework designed to investigate the population dynamics of a variety of gene drive architectures and their spread through spatially-explicit mosquito populations. A key strength of the MGDrivE framework is its modularity: a) a genetic inheritance module accommodates the dynamics of gene drive systems displaying user-defined inheritance patterns, b) a population dynamic module accommodates the life history of a variety of mosquito disease vectors and insect agricultural pest species, and c) a landscape module accommodates the distribution of insect metapopulations connected by migration in space. Example MGDrivE simulations are presented to demonstrate the application of the framework to CRISPR/Cas9-based homing gene drive for: a) driving a disease-refractory gene into a population (i.e. population replacement), and b) disrupting a gene required for female fertility (i.e. population suppression), incorporating homing-resistant alleles in both cases. We compare MGDrivE with other genetic simulation packages, and conclude with a discussion of future directions in gene drive modeling.",
-	 URL = "https://www.biorxiv.org/content/early/2019/04/11/350488",
-	 eprint = "https://www.biorxiv.org/content/early/2019/04/11/350488.full.pdf",
-	 journal = "bioRxiv",
+	 doi = "10.1111/2041-210X.13318",
+	 publisher = "British Ecological Society",
+	 abstract = "Malaria, dengue, Zika and other mosquito-borne diseases continue to pose a major global health burden through much of the world, despite the widespread distribution of insecticide-based tools and antimalarial drugs. The advent of CRISPR/Cas9-based gene editing and its demonstrated ability to streamline the development of gene drive systems has reignited interest in the application of this technology to the control of mosquitoes and the diseases they transmit. The versatility of this technology has enabled a wide range of gene drive architectures to be realized, creating a need for their population-level and spatial dynamics to be explored. We present MGDrivE (Mosquito Gene Drive Explorer): a simulation framework designed to investigate the population dynamics of a variety of gene drive architectures and their spread through spatially explicit mosquito populations. A key strength of the MGDrivE framework is its modularity: (a) a genetic inheritance module accommodates the dynamics of gene drive systems displaying user-defined inheritance patterns, (b) a population dynamic module accommodates the life history of a variety of mosquito disease vectors and insect agricultural pests, and (c) a landscape module generates the metapopulation model by which insect populations are connected via migration over space. Example MGDrivE simulations are presented to demonstrate the application of the framework to CRISPR/Cas9-based homing gene drive for: (a) driving a disease-refractory gene into a population (i.e. population replacement), and (b) disrupting a gene required for female fertility (i.e. population suppression), incorporating homing-resistant alleles in both cases. Further documentation and use examples are provided at the project's Github repository. MGDrivE is an open-source r package freely available on CRAN. We intend the package to provide a flexible tool capable of modelling novel inheritance-modifying constructs as they are proposed and become available. The field of gene drive is moving very quickly, and we welcome suggestions for future development.",
+	 URL = "https://doi.org/10.1111/2041-210X.13318",
+	 eprint = "https://besjournals.onlinelibrary.wiley.com/doi/epdf/10.1111/2041-210X.13318",
+	 journal = "Methods in Ecology and Evolution",
 
 	 textVersion = paste("Sanchez et al. (2019).",
-	                     "MGDrivE: A Modular Simulation Framework for the Spread of Gene Drives Through Spatially-Explicit Mosquito Populations.",
-	                     "bioRxiv. URL https://www.biorxiv.org/content/early/2019/04/11/350488.")
+	                     "MGDrivE: A modular simulation framework for the spread of gene drives through spatially explicit mosquito populations",
+	                     "Methods Ecol. Evol. URL https://doi.org/10.1111/2041-210X.13318.")
 )

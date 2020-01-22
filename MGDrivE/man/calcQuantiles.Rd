@@ -4,8 +4,7 @@
 \alias{calcQuantiles}
 \title{Summary Statistics for Stochastic MGDrivE}
 \usage{
-calcQuantiles(readDir, writeDir, mean = TRUE, quantiles = NULL,
-  numCores = 1, verbose = TRUE)
+calcQuantiles(readDir, writeDir, mean = TRUE, quantiles = NULL, verbose = TRUE)
 }
 \arguments{
 \item{readDir}{Directory to find repetition folders in}
@@ -15,8 +14,6 @@ calcQuantiles(readDir, writeDir, mean = TRUE, quantiles = NULL,
 \item{mean}{Boolean, calculate mean or not. Default is TRUE}
 
 \item{quantiles}{Vector of quantiles to calculate. Default is NULL}
-
-\item{numCores}{Number of cores when reading/writing. Default is 1.}
 
 \item{verbose}{Chatty? Default is TRUE}
 }
@@ -67,11 +64,11 @@ oPath <- "my/path/output"
 # here, only calculate mean, no quantiles
 #  no return value
 calcQuantiles(readDir = fPath, writeDir = oPath, mean = TRUE,
-              quantiles = NULL, numCores = 1)
+              quantiles = NULL)
 
 # here, calculate 2.5\% and 97.5\% quantiles
 calcQuantiles(readDir = fPath, writeDir = oPath, mean = FALSE,
-              quantiles = c(0.025, 0.975), numCores = 1)
+              quantiles = c(0.025, 0.975))
 }
 
 }

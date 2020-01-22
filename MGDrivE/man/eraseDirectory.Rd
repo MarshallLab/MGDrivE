@@ -7,12 +7,12 @@
 eraseDirectory(directory, verbose = TRUE)
 }
 \arguments{
-\item{directory}{directory whose contents will be deleted}
+\item{directory}{Directory whose contents will be deleted}
 
 \item{verbose}{Chatty? Default is TRUE}
 }
 \description{
-Given a directory path, check it exists and if so delete all its contents.
+Given a directory path, check that it exists, and if so, delete all its contents.
 }
 \examples{
 \dontrun{

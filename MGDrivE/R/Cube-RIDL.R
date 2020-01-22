@@ -7,7 +7,7 @@
 #
 #   MGDrivE: Mosquito Gene Drive Explorer
 #   RIDL
-#   Héctor Sanchez, Jared Bennett, Sean Wu, John M. Marshall
+#   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
 #   August 2017
 #   Jared_Bennett@berkeley.edu
 #
@@ -15,7 +15,7 @@
 
 #' Inheritance Cube: RIDL (Release of Insects with Dominant Lethality)
 #'
-#' This function creates a RIDL system
+#' This function creates a RIDL system.
 #' RIDL (Release of Insects with Dominant Lethality), is a form of SIT.
 #' Created by Oxitec, this is based on a positive feedback loop using the
 #' toxic tTAV gene, controlled under lab conditions by the TetO promoter.

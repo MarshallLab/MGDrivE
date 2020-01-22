@@ -4,8 +4,17 @@
 \alias{cubeMEDEA}
 \title{Inheritance Cube: MEDEA (Maternal Effect Dominant Embryonic Arrest)}
 \usage{
-cubeMEDEA(rM = 0, rW = 0, Teff = 1, eta = NULL, phi = NULL,
-  omega = NULL, xiF = NULL, xiM = NULL, s = NULL)
+cubeMEDEA(
+  rM = 0,
+  rW = 0,
+  Teff = 1,
+  eta = NULL,
+  phi = NULL,
+  omega = NULL,
+  xiF = NULL,
+  xiM = NULL,
+  s = NULL
+)
 }
 \arguments{
 \item{rM}{Breakdown of MEDEA allele, no homing/toxin/antidote, M -> R conversion}

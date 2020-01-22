@@ -7,5 +7,5 @@
 oneDay_initOutput_Patch()
 }
 \description{
-Writes output to the text connections specified in the enclosing \code{\link{Network}}
+Writes output to the text connections specified in the enclosing \code{\link{Network}}.
 }

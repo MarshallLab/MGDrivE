@@ -28,11 +28,12 @@ oPath <- "folder/to/write/stuff"
 
 # first, split output by patch and aggregate females by mate genotype
 # remember, cube is for example and changes with simulation
+#  landscape aggregation will work if females are not aggregated, but it's slower
 cube <- cubeMendelian()
 
-splitOutput(readDir = fPath, writeDir = NULL, remFile = TRUE, numCores = 1)
+splitOutput(readDir = fPath, writeDir = NULL, remFile = TRUE)
 aggregateFemales(readDir= fPath, writeDi = NULL, genotypes = cube$genotypesID,
-                 remFile = FALSE, numCores = 1)
+                 remFile = TRUE)
 
 # aggregate mosquitoes over entire landscape
 #  no return value

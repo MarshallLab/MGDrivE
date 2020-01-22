@@ -4,12 +4,12 @@
 \alias{get_patchReleases_Network}
 \title{Get Patch Release Schedule}
 \usage{
-get_patchReleases_Network(ix, sex = "M")
+get_patchReleases_Network(patch, sex = "M")
 }
 \arguments{
-\item{ix}{index of patch}
+\item{patch}{Index of patch}
 
-\item{sex}{character in 'M', 'F'}
+\item{sex}{Character in 'M', 'F', 'Egg', 'mF'}
 }
 \description{
 Return the release schedule for a patch for male or female

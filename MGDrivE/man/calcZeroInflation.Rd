@@ -7,13 +7,15 @@
 calcZeroInflation(stayThroughLifespanProbability, adultMortality)
 }
 \arguments{
-\item{stayThroughLifespanProbability}{Probability of a mosquito to spend its whole lifespan in the same node}
+\item{stayThroughLifespanProbability}{Probability of a mosquito to spend its
+whole lifespan in the same node}
 
 \item{adultMortality}{Adult mortality rate}
 }
 \description{
-Given the probability of an adult mosquito to stay in the same patch throughout its whole lifespan, and its mortality, it
-calculates the height of the pulse-density part of the hurdle kernel.
+Given the probability of an adult mosquito to stay in the same patch throughout
+its whole lifespan, and its mortality, it calculates the height of the pulse-density
+part of the hurdle kernel.
 }
 \examples{
 # setup distance matrix

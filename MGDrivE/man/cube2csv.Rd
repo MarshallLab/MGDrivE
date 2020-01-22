@@ -15,7 +15,7 @@ cube2csv(cube, directory, digits = 3)
 }
 \description{
 Export a cube as multiple .csv files (one for each genotype; slices of z-axis).
-This function will create the directory if it doesn't  exist. Files are stored
+This function will create the directory if it doesn't exist. Files are stored
 as slice_(z-slice)_(genotype).csv
 }
 \examples{
@@ -29,6 +29,5 @@ cube <- cubeMendelian()
 # write out
 cube2csv(cube = cube, directory = oPath, digits = 3)
 }
-
 
 }

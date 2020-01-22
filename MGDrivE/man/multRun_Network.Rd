@@ -4,13 +4,9 @@
 \alias{multRun_Network}
 \title{Run Simulation}
 \usage{
-multRun_Network(conM = NULL, conF = NULL, verbose = TRUE)
+multRun_Network(verbose = TRUE)
 }
 \arguments{
-\item{conM}{Optional vector of \code{\link[base]{connection}} to write male population dynamics to}
-
-\item{conF}{Optional vector of \code{\link[base]{connection}} to write female population dynamics to}
-
 \item{verbose}{Chatty? Default is TRUE}
 }
 \description{

@@ -7,9 +7,9 @@
 oneDay_migrationIn_Patch(maleIn, femaleIn)
 }
 \arguments{
-\item{maleIn}{vector of inbound migration}
+\item{maleIn}{Vector of inbound migration}
 
-\item{femaleIn}{matrix of inbound migration}
+\item{femaleIn}{Matrix of inbound migration}
 }
 \description{
 Accumulate all inbound migration to this patch.

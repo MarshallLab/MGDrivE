@@ -7,7 +7,7 @@
 get_batchLocRow_Network(ix)
 }
 \arguments{
-\item{ix}{index of patch}
+\item{ix}{Index of patch}
 }
 \description{
 Return the distribution of location probabilities

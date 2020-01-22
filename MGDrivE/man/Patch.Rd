@@ -5,9 +5,6 @@
 \alias{Patch}
 \title{Patch Class Definition}
 \format{An \code{\link{R6Class}} generator object}
-\usage{
-Patch
-}
 \description{
 A Patch is a single well-mixed population that is the smallest unit of simulation for MGDrivE.
 }
@@ -16,66 +13,45 @@ A Patch is a single well-mixed population that is the smallest unit of simulatio
 \itemize{
 \item patchID: integer ID of this patch
 \item genotypesID: character vector of genotypes
-\item simTime: maximum time of simulation
-\item windowSize: necessary memory window size for model
-\item EGGt0: initial egg population, \eqn{L_{eq}}
-\item LARt0: initial larval population
-\item PUPt0: initial pupae population
-\item ADMt0: initial adult male population, \eqn{Ad_{eq}}
-\item AF1t0: initial adult female population, \eqn{Ad_{eq}}
-\item maleReleases: integer ID of this patch
+\item timeAq: integer vector of length 3 specifying the length of each aquatic stage
+\item numPatches: integer, total number of patches in this simulation
+\item adultEQ: integer, total adult population in this patch for the duration of the simulation
+\item larvalEQ: integer, total larval population in this patch for the duration of the simulation
+\item muAq: double vector, length 3, daily death rate for each aquatic stage
+\item alpha: double, density-dependent centering parameter, see \code{\link{parameterizeMGDrivE}}
+\item adultRatioF: named double vector, distribution of adult female genotypes, see \code{\link{parameterizeMGDrivE}}
+\item adultRatioM: named double vector, distribution of adult male genotypes, see \code{\link{parameterizeMGDrivE}}
+\item larvalRatio: named double vector, distribution of all aquatic genotypes, see \code{\link{parameterizeMGDrivE}}
+\item eggReleases: egg release schedule for this patch, see \code{\link{basicRepeatedReleases}}
+\item maleReleases: male release schedule for this patch, see \code{\link{basicRepeatedReleases}}
 \item femaleReleases: female release schedule for this patch, see \code{\link{basicRepeatedReleases}}
-\item larvaeReleases: male release schedule for this patch, see \code{\link{basicRepeatedReleases}}
+\item matedFemaleReleases: mated females release schedule for this patch, see \code{\link{basicRepeatedReleases}}
 }
 }
 
 \section{\strong{Methods}}{
 
 \itemize{
-\item get_patchID: see \code{\link{get_patchID_Patch}}
-\item get_AF1new: see \code{\link{get_AF1new_Patch}}
-\item set_AF1new: see \code{\link{set_AF1new_Patch}}
-\item get_ADMnew: see \code{\link{get_ADMnew_Patch}}
-\item set_ADMnew: see \code{\link{set_ADMnew_Patch}}
-\item accumulate_ADMnew: see \code{\link{accumulate_ADMnew_Patch}}
-\item get_EGG: see \code{\link{get_EGG_Patch}}
-\item get_LAR: see \code{\link{get_LAR_Patch}}
-\item get_PUP: see \code{\link{get_PUP_Patch}}
-\item get_ADM: see \code{\link{get_M_Patch}}
-\item get_AF1: see \code{\link{get_F_Patch}}
-\item get_EGGdly: see \code{\link{get_EGGdly_Patch}}
-\item get_LARdly: see \code{\link{get_LARdly_Patch}}
-\item get_PUPdly: see \code{\link{get_PUPdly_Patch}}
-\item get_ADMdly: see \code{\link{get_ADMdly_Patch}}
-\item get_AF1dly: see \code{\link{get_AF1dly_Patch}}
+\item set_NetworkPointer: see \code{\link{set_NetworkPointer_Patch}}
 \item get_maleMigration: see \code{\link{get_maleMigration_Patch}}
 \item get_femaleMigration: see \code{\link{get_femaleMigration_Patch}}
-\item set_NetworkPointer: see \code{\link{set_NetworkPointer_Patch}}
-\item get_NetworkPointer: see \code{\link{get_NetworkPointer_Patch}}
+\item initialPopulation: see \code{\link{set_initialPopulation_Patch}}
+\item setPopulation: see \code{\link{set_population_deterministic_Patch}} or \code{\link{set_population_stochastic_Patch}}
 \item reset: see \code{\link{reset_Patch}}
 \item oneDay_initOutput: see \code{\link{oneDay_initOutput_Patch}}
 \item oneDay_writeOutput: see \code{\link{oneDay_writeOutput_Patch}}
+\item oneDay_migrationOut: see \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}}
 \item oneDay_migrationIn: see \code{\link{oneDay_migrationIn_Patch}}
-\item oneDay_maleReleases: see \code{\link{oneDay_maleReleases_Patch}}
-\item oneDay_femaleReleases: see \code{\link{oneDay_femaleReleases_Patch}}
 \item oneDay_PopDynamics: see \code{\link{oneDay_PopDynamics_Patch}}
-\item oneDay_updatePopulation: see \code{\link{oneDay_updatePopulation_Patch}}
-\item oneDay_calcLarvalDensityDependentFactor: see \code{\link{oneDay_calcLarvalDensityDependentFactor_Patch}}
-\item oneDay_calcCumulativeLarvalDensityDependentFactor: see \code{\link{oneDay_calcCumulativeLarvalDensityDependentFactor_Patch}}
-\item oneDay_calcCumulativePupaDensityDependentFactor: see \code{\link{oneDay_calcCumulativePupaDensityDependentFactor_Patch}}
-\item oneDay_migrationOut: see \code{\link{oneDay_migrationOut_stochastic_Patch}} or \code{\link{oneDay_migrationOut_deterministic_Patch}}
-\item oneDay_ovipositG1: see \code{\link{oneDay_ovipositG1_stochastic_Patch}} or \code{\link{oneDay_ovipositG1_deterministic_Patch}}
-\item oneDay_larSurvival: see \code{\link{oneDay_larSurvival_stochastic_Patch}} or \code{\link{oneDay_larSurvival_deterministic_Patch}}
-\item oneDay_hatchingFract: see \code{\link{oneDay_hatchingFract_stochastic_Patch}} or \code{\link{oneDay_hatchingFract_deterministic_Patch}}
-\item oneDay_larHatching: see \code{\link{oneDay_larHatching_stochastic_Patch}} or \code{\link{oneDay_larHatching_deterministic_Patch}}
-\item oneDay_eggsFract2: see \code{\link{oneDay_eggsFract2_stochastic_Patch}} or \code{\link{oneDay_eggsFract2_deterministic_Patch}}
-\item oneDay_larPupating: see \code{\link{oneDay_larPupating_stochastic_Patch}} or \code{\link{oneDay_larPupating_deterministic_Patch}}
-\item oneDay_numMaleFemale: see \code{\link{oneDay_numMaleFemale_stochastic_Patch}} or \code{\link{oneDay_numMaleFemale_deterministic_Patch}}
-\item oneDay_admSurvival: see \code{\link{oneDay_admSurvival_stochastic_Patch}} or \code{\link{oneDay_admSurvival_deterministic_Patch}}
-\item oneDay_admPupating: see \code{\link{oneDay_admPupating_stochastic_Patch}} or \code{\link{oneDay_admPupating_deterministic_Patch}}
-\item oneDay_af1Survival: see \code{\link{oneDay_af1Survival_stochastic_Patch}} or \code{\link{oneDay_af1Survival_deterministic_Patch}}
-\item oneDay_af1Pupation: see \code{\link{oneDay_af1Pupation_stochastic_Patch}} or \code{\link{oneDay_af1Pupation_deterministic_Patch}}
-\item oneDay_af1Mating: see \code{\link{oneDay_af1Mating_stochastic_Patch}} or \code{\link{oneDay_af1Mating_deterministic_Patch}}
+\item oneDay_adultD: see \code{\link{oneDay_adultDeath_deterministic_Patch}} or \code{\link{oneDay_adultDeath_stochastic_Patch}}
+\item oneDay_pupaDM: see \code{\link{oneDay_pupaDM_deterministic_Patch}} or \code{\link{oneDay_pupaDM_stochastic_Patch}}
+\item oneDay_larvaDM: see \code{\link{oneDay_larvaDM_deterministic_Patch}} or \code{\link{oneDay_larvaDM_stochastic_Patch}}
+\item oneDay_eggDM: see \code{\link{oneDay_eggDM_deterministic_Patch}} or \code{\link{oneDay_eggDM_stochastic_Patch}}
+\item oneDay_pupation: see \code{\link{oneDay_pupation_deterministic_Patch}} or \code{\link{oneDay_pupation_stochastic_Patch}}
+\item oneDay_releases: see \code{\link{oneDay_releases_Patch}}
+\item oneDay_releaseEggs: see \code{\link{oneDay_eggReleases_Patch}}
+\item oneDay_mating: see \code{\link{oneDay_mating_deterministic_Patch}} or \code{\link{oneDay_mating_stochastic_Patch}}
+\item oneDay_layEggs: see \code{\link{oneDay_oviposit_deterministic_Patch}} or \code{\link{oneDay_oviposit_stochastic_Patch}}
 }
 }
 
@@ -83,40 +59,22 @@ A Patch is a single well-mixed population that is the smallest unit of simulatio
 
 \itemize{
 \item patchID: integer ID of this patch
-\item EGGt0: vector of initial egg stage population
-\item LARt0: vector of initial larval stage population
-\item PUPt0: vector of initial pupae stage population
-\item ADMt0: vector of initial adult male stage population
-\item AF1t0: matrix of initial adult female stage population
-\item EGG: egg stage population
-\item LAR: larvae stage population
-\item PUP: pupae stage population
-\item ADM: adult male stage population
-\item AF1: adult female stage population
-\item EGGdly: delay egg stage population
-\item LARdly: delay larvae stage population
-\item PUPdly: delay pupae stage population
-\item ADMdly: delay adult male stage population
-\item AF1dly: delay adult female stage population
-\item LARnew: new larval population after difference equations; needed to store population prior to migration exchange
-\item ADMnew: new adult male population after difference equations; needed to store population prior to migration exchange
-\item AF1new: new adult female population after difference equations; needed to store population prior to migration exchange
-\item maleMigration: matrix of outbound migrating males of dimension nGenotypes X nPatch
-\item femaleMigration: array of outbound migrating females of dimension nGenotypes X nGenotypes X nPatch
+\item popAquatic: matrix, nGenotype x sum(timeAquatic), holding all eggs, larva, and pupa
+\item popMale: vector, nGenotype x 1, holds adult males
+\item popFemale: matrix, nGenotype x nGenotype, holds mated adult females
+\item popHolder: vector, nGenotype x 1, temporary population storage
+\item popPupSex: vector, nGenotype x 1, used in stochastic pupation as another temporary population
+\item popUnmated: vector, nGenotype x 1, holds unmated females
+\item mMig: matrix, nGenotype x nPatches, holds outbound males for migration, see \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}}
+\item fMig: array, nGenotype x nGenotype x nPatches, holds outbound females for migration, see \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}}
+\item popAquatict0: matrix, nGenotype x sum(timeAquatic), holding all eggs, larva, and pupa for reset, see \code{\link{reset_Patch}}
+\item popMalet0: vector, nGenotype x 1, holds adult males for reset see \code{\link{reset_Patch}}
+\item popFemalet0: matrix, nGenotype x nGenotype, holds mated adult females for reset see \code{\link{reset_Patch}}
+\item eggReleases: list of egg releases for this patch. See \code{\link{oneDay_eggReleases_Patch}}
+\item maleReleases: list of adult male releases for this patch. See \code{\link{oneDay_releases_Patch}}
+\item femaleReleases: list of adult female releases for this patch. See \code{\link{oneDay_releases_Patch}}
+\item matedFemaleReleases: list of mated adult female releases for this patch. See \code{\link{oneDay_releases_Patch}}
 \item NetworkPointer: a reference to enclosing \code{\link{Network}}
-\item ovipositG1: new eggs after oviposition by mated female mosquitoes
-\item larSurvival: surviving larvae
-\item hatchingFract: fraction of larvae that hatch
-\item larPupating: fraction of larvae that undergo pupation
-\item numMaleFemale: number of male vs. female emerging imago stage adults
-\item admSurvival: number of surviving adult males
-\item admPupating: number of pupating imago stage adults that become males
-\item af1Survival: number of surviving adult females
-\item af1Pupation: number of pupating imago stage adults that become females
-\item maleMatrix: row of male migration matrix corresponding to migration from this patch
-\item femaleMatrix: row of female migration matrix corresponding to migration from this patch
-\item larDDMortal: larval mortality
-\item f: density dependent factor in larval mortality
 }
 }
 

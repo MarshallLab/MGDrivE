@@ -5,11 +5,9 @@
 \alias{Network}
 \title{Network Class Definition}
 \format{An \code{\link{R6Class}} generator object}
-\usage{
-Network
-}
 \description{
-A \code{Network} class object stores all the information for a simulation on a defined landscape.
+A \code{Network} class object stores all the information for a simulation on
+a defined landscape.
 }
 \section{\strong{Constructor}}{
 
@@ -19,7 +17,9 @@ A \code{Network} class object stores all the information for a simulation on a d
 \item patchReleases: see \code{\link{basicRepeatedReleases}} for examples on how to set up release schedules
 \item migrationMale: a stochastic matrix whose dimensions conform to the number of patches
 \item migrationFemale: a stochastic matrix whose dimensions conform to the number of patches
+\item migrationBatch: a list of batch migration parameters. See\code{\link{basicBatchMigration}}
 \item directory: character string of output directory
+\item verbose: Chatty? Default is TRUE
 }
 }
 
@@ -28,72 +28,58 @@ A \code{Network} class object stores all the information for a simulation on a d
 \itemize{
 \item get_moveVar: see \code{\link{get_moveVar_Network}}
 \item get_timeAq: see \code{\link{get_timeAq_Network}}
-\item get_thetaAq: see \code{\link{get_thetaAq_Network}}
-\item get_windowSize: see \code{\link{get_windowSize_Network}}
 \item get_beta: see \code{\link{get_beta_Network}}
 \item get_muAd: see \code{\link{get_muAd_Network}}
-\item get_dayPopGrowth: see \code{\link{get_dayPopGrowth_Network}}
-\item get_AdPopEQ: see \code{\link{get_AdPopEQ_Network}}
-\item get_g: see \code{\link{get_g_Network}}
-\item get_genPopGrowth: see \code{\link{get_genPopGrowth_Network}}
 \item get_muAq: see \code{\link{get_muAq_Network}}
 \item get_alpha: see \code{\link{get_alpha_Network}}
-\item get_Leq_Network: see \code{\link{get_Leq_Network}}
-\item get_drivecubegenotype: see \code{\link{get_drivecubegenotype_Network}}
 \item get_drivecubeindex: see \code{\link{get_drivecubeindex_Network}}
 \item get_tau: see \code{\link{get_tau_Network}}
 \item get_genotypesID: see \code{\link{get_genotypesID_Network}}
 \item get_genotypesN: see \code{\link{get_genotypesN_Network}}
-\item get_wildType: see \code{\link{get_wildType_Network}}
 \item get_eta: see \code{\link{get_eta_Network}}
 \item get_phi: see \code{\link{get_phi_Network}}
-\item getOmega: see \code{\link{getOmega_Network}}
+\item get_omega: see \code{\link{get_omega_Network}}
 \item get_xiF: see \code{\link{get_xiF_Network}}
 \item get_xiM: see \code{\link{get_xiM_Network}}
 \item get_s: see \code{\link{get_s_Network}}
-\item get_releaseType: see \code{\link{get_releaseType_Network}}
-\item get_patch: see \code{\link{get_patch_Network}}
-\item get_patches: see \code{\link{get_patches_Network}}
 \item get_nPatch: see \code{\link{get_nPatch_Network}}
-\item get_directory: see \code{\link{get_directory_Network}}
-\item get_simTime: see \code{\link{get_simTime_Network}}
 \item get_conADM: see \code{\link{get_conM_Network}}
-\item get_conAF1: see \code{\link{get_conF_Network}}
-\item close_allConnections: see \code{\link{close_allConnections_Network}}
+\item get_conADF: see \code{\link{get_conF_Network}}
 \item get_tNow: see \code{\link{get_tNow_Network}}
-\item get_migrationMale: see \code{\link{get_migrationMale_Network}}
 \item get_migrationMaleRow: see \code{\link{get_migrationMaleRow_Network}}
-\item set_migrationMale: see \code{\link{set_migrationMale_Network}}
-\item get_migrationFemale: see \code{\link{get_migrationFemale_Network}}
 \item get_migrationFemaleRow: see \code{\link{get_migrationFemaleRow_Network}}
-\item set_migrationFemale: see \code{\link{set_migrationFemale_Network}}
 \item get_patchReleases: see \code{\link{get_patchReleases_Network}}
+\item get_batchProbs: see \code{\link{get_batchProbs_Network}}
+\item get_batchSex: see \code{\link{get_batchSex_Network}}
+\item get_batchLocations: see \code{\link{get_batchLocRow_Network}}
 \item oneDay_Migration: see \code{\link{oneDay_Migration_Network}}
 \item reset: see \code{\link{reset_Network}}
+\item oneDay: see \code{\link{oneDay_Network}}
 \item oneRun: see \code{\link{oneRun_Network}}
 \item multRun: see \code{\link{multRun_Network}}
-\item oneDay: see \code{\link{oneDay_Network}}
 }
 }
 
 \section{\strong{Fields}}{
 
 \itemize{
-\item params: see \code{\link{parameterizeMGDrivE}}
+\item parameters: see \code{\link{parameterizeMGDrivE}}
 \item patches: a list of \code{\link{Patch}} objects
 \item nPatch: number of patches
 \item simTime: maximum time of simulation
+\item sampTime: how often to write output, tNow \%\% sampTime
 \item driveCube: an inheritance cube
 \item tNow: current time of simulation (time starts at 2 because time 1 is the initial equilibrium state)
 \item runID: an identifier for the current simulation run, useful for Monte Carlo simulation
 \item directory: a character string of where to store output
 \item conADM: a \code{\link[base]{connection}} to write male population dynamics out to
-\item conAF1: a \code{\link[base]{connection}} to write female population dynamics out to
+\item conADF: a \code{\link[base]{connection}} to write female population dynamics out to
 \item migrationMale: a stochastic matrix whose dimensions conform to the number of patches
 \item migrationFemale: a stochastic matrix whose dimensions conform to the number of patches
 \item migrationBatch: list of items for batch migration in stochastic sim.
+\item mMoveMat: holder object for male migration
+\item fMoveArray: holder object for female migration
 \item patchReleases: a list of release schedules for each patch
-\item verbose: Chatty? Default is TRUE
 }
 }
 
@@ -107,6 +93,7 @@ A \code{Network} class object stores all the information for a simulation on a d
 
  # One example, explored in great detail. This is probably more helpful.
  vignette("MGDrivE-Run", package = "MGDrivE")
+
  }
 
 }

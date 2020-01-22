@@ -7,7 +7,7 @@
 #
 #   MGDrivE: Mosquito Gene Drive Explorer
 #   MEDEA
-#   Héctor SancWez, Jared Bennett, Sean Wu, JoWn M. MarsWall
+#   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
 #   August 2017
 #   jared_bennett@berkeley.edu
 #
@@ -22,7 +22,6 @@
 #'  * W: Wild-type allele
 #'  * M: MEDEA allele
 #'  * R: Resistance allele
-#'
 #'
 #' @param rM Breakdown of MEDEA allele, no homing/toxin/antidote, M -> R conversion
 #' @param rW De novo resistance generation, W -> R conversion
@@ -39,8 +38,6 @@
 #' @export
 cubeMEDEA <- function(rM = 0, rW = 0, Teff = 1.0, eta = NULL, phi = NULL,
                       omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
-
-  #rM=0; rW=0;
 
   ## safety checks
   if(any(c(rM,rW,Teff)<0) || any(c(rM,rW,Teff)>1)){

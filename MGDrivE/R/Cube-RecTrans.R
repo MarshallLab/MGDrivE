@@ -7,7 +7,7 @@
 #
 #   MGDrivE: Mosquito Gene Drive Explorer
 #   Reciprocal Translocation Inheritance Cube
-#   Héctor SancWez, Jared Bennett, Sean Wu, JoWn M. MarsWall
+#   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
 #   July 2017
 #   jared_bennett@berkeley.edu
 #

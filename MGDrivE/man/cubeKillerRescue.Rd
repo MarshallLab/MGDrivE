@@ -4,8 +4,17 @@
 \alias{cubeKillerRescue}
 \title{Inheritance Cube: Killer-Rescue System}
 \usage{
-cubeKillerRescue(eR = 0, Keff = 1, Aeff = 1, eta = NULL,
-  phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL)
+cubeKillerRescue(
+  eR = 0,
+  Keff = 1,
+  Aeff = 1,
+  eta = NULL,
+  phi = NULL,
+  omega = NULL,
+  xiF = NULL,
+  xiM = NULL,
+  s = NULL
+)
 }
 \arguments{
 \item{eR}{Conversion of K allele to R allele, a basal mutation rate}

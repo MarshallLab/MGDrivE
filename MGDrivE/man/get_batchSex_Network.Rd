@@ -7,9 +7,9 @@
 get_batchSex_Network(ix, sex)
 }
 \arguments{
-\item{ix}{index of patch}
+\item{ix}{Index of patch}
 
-\item{sex}{number, M=1 and F=2}
+\item{sex}{Number, M=1 and F=2}
 }
 \description{
 Return the batch migration size for each sex
