@@ -92,7 +92,7 @@ Rcpp::NumericMatrix calcLognormalKernel(const Rcpp::NumericMatrix& distMat,
   }
 
   return kernMat;
-};
+}
 
 /**************************************
  * Gamma
@@ -146,7 +146,7 @@ Rcpp::NumericMatrix calcGammaKernel(const Rcpp::NumericMatrix& distMat,
   }
 
   return kernMat;
-};
+}
 
 /**************************************
  * Exponential
@@ -198,7 +198,7 @@ Rcpp::NumericMatrix calcExpKernel(const Rcpp::NumericMatrix& distMat, const doub
   }
 
   return kernMat;
-};
+}
 
 /**************************************
  * Zero-inflated Exponential (point mass at zero + zero-truncated exponential distribution)
