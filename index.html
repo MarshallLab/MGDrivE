@@ -33,23 +33,23 @@ MathJax.Hub.Config({
 </div>
 
     <hr><h1>How does it work?</h1>
+
+    <img src="https://marshalllab.github.io/MGDrivE/images/modelDiagram.png" align="middle">
+
       <p>
-        The main idea behind this model is to consider the inheritance matrix of genotypes a three-dimensional structure
+        The main idea behind this model is to consider the inheritance matrix of genotypes (A) a three-dimensional structure
         in which each intersection point determines the ratio/probability of a specific offspring genotype (z axis) provided that a certain combination of
         male-female genotypes (x and y axis). This allows us to use <a href="https://marshalllab.github.io/MGDrivE/docs/reference/MGDrivE-Model.html">tensors</a> as the basis for our calculations which has many advantages, some of them being: computational speed,
-        model's transparency and extendability.
+        model's transparency and extendability (B).
       </p>
         <center><img src="./images/equations01.png" width="60%"></center>
       <p>
-        The second novel idea in our framework is to consider the spatial layout as a network of inter-connected breeding habitats. By performing this abstraction we are able to
+        The second novel idea in our framework is to consider the spatial layout as a network of inter-connected breeding habitats (D). By performing this abstraction we are able to
         transform these landscapes into distances matrices, and then into transition probabilities matrices (through the use of movement kernels).
         This allows our framework to be able to model arbitrary topologies in which we can simulate mosquito populations mating and migrating in realistic geographical settings.
       </p>
         <center><img src="./images/equations02.png" width="60%"></center>
       <br>
-
-      <img src="https://marshalllab.github.io/MGDrivE/images/modelDiagram.png" align="middle">
-
 
   <hr><h1>Installation</h1>
 
