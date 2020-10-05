@@ -18,3 +18,13 @@ OUTPUT/
 *.history
 MGDrivE/man/get_Rm_Network.Rd
 MGDrivE/man/get_Rm_Network.Rd
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+MGDrivE/src/MGDrivE-Auxilary.o
+MGDrivE/src/MGDrivE-DistanceFunctions.o
+MGDrivE/src/MGDrivE-Kernels.o
+MGDrivE/src/MGDrivE.so
+MGDrivE/src/RcppExports.o

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Inheritance Cube: Homing Drive with 1 Resistance Allele — cubeHoming1RA • MGDrivE</title>
+<title>Inheritance Cube: ClvR (Cleave and Rescue) — cubeClvR • MGDrivE</title>
 
 
 <!-- jquery -->
@@ -33,10 +33,14 @@
 
 
 
-<meta property="og:title" content="Inheritance Cube: Homing Drive with 1 Resistance Allele — cubeHoming1RA" />
-<meta property="og:description" content="This function creates an inheritance cube to model a homing gene drive (such as a CRISPR-Cas9 system)
-that creates 1 type of resistance allele. It assumes no sex-specific inheritance patterns and the
-construct is on an autosome." />
+<meta property="og:title" content="Inheritance Cube: ClvR (Cleave and Rescue) — cubeClvR" />
+<meta property="og:description" content="Based on the Cleave-and-Rescue system of Oberhofer,
+this is a 2-locus Cas9-based toxin-antidote system. The first locus carries the
+Cas9, gRNAs, and a recoded copy of an essential gene. The second locus is the
+targeted essential gene. This gene can be completely haplosufficient (hSuf = 1)
+or completely haploinsufficient (hSuf = 0). It is assumed that having
+2 copies of the gene (be it wild-type at the second locus or recoded at the first)
+confers complete viability." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -115,20 +119,35 @@ construct is on an autosome." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Inheritance Cube: Homing Drive with 1 Resistance Allele</h1>
+    <h1>Inheritance Cube: ClvR (Cleave and Rescue)</h1>
     
-    <div class="hidden name"><code>cubeHoming1RA.Rd</code></div>
+    <div class="hidden name"><code>cubeClvR.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function creates an inheritance cube to model a homing gene drive (such as a CRISPR-Cas9 system)
-that creates 1 type of resistance allele. It assumes no sex-specific inheritance patterns and the
-construct is on an autosome.</p>
+    <p>Based on the Cleave-and-Rescue system of <a href='https://doi.org/10.1073/pnas.1921698117'>Oberhofer</a>,
+this is a 2-locus Cas9-based toxin-antidote system. The first locus carries the
+Cas9, gRNAs, and a recoded copy of an essential gene. The second locus is the
+targeted essential gene. This gene can be completely haplosufficient (<code>hSuf</code> = 1)
+or completely haploinsufficient (<code>hSuf</code> = 0). It is assumed that having
+2 copies of the gene (be it wild-type at the second locus or recoded at the first)
+confers complete viability.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cubeHoming1RA</span>(
-  <span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>ch</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+    <pre class="usage"><span class='fu'>cubeClvR</span>(
+  <span class='kw'>cF</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>crF</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>ccF</span> <span class='kw'>=</span> <span class='no'>cF</span>,
+  <span class='kw'>ccrF</span> <span class='kw'>=</span> <span class='no'>crF</span>,
+  <span class='kw'>cM</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>crM</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>ccM</span> <span class='kw'>=</span> <span class='no'>cM</span>,
+  <span class='kw'>ccrM</span> <span class='kw'>=</span> <span class='no'>crM</span>,
+  <span class='kw'>dW</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>drW</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>ddW</span> <span class='kw'>=</span> <span class='no'>dW</span>,
+  <span class='kw'>ddrW</span> <span class='kw'>=</span> <span class='no'>drW</span>,
+  <span class='kw'>hSuf</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>eta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>phi</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>omega</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -141,12 +160,56 @@ construct is on an autosome.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>c</th>
-      <td><p>Cutting rate</p></td>
+      <th>cF</th>
+      <td><p>Female cutting rate, one ClvR allele</p></td>
     </tr>
     <tr>
-      <th>ch</th>
-      <td><p>Successful homing rate rate</p></td>
+      <th>crF</th>
+      <td><p>Female functional resistance rate, one ClvR allele</p></td>
+    </tr>
+    <tr>
+      <th>ccF</th>
+      <td><p>Female cutting rate, two ClvR alleles</p></td>
+    </tr>
+    <tr>
+      <th>ccrF</th>
+      <td><p>Female functional resistance rate, two ClvR alleles</p></td>
+    </tr>
+    <tr>
+      <th>cM</th>
+      <td><p>Male cutting rate, one ClvR allele</p></td>
+    </tr>
+    <tr>
+      <th>crM</th>
+      <td><p>Male functional resistance rate, one ClvR allele</p></td>
+    </tr>
+    <tr>
+      <th>ccM</th>
+      <td><p>Male cutting rate, two ClvR alleles</p></td>
+    </tr>
+    <tr>
+      <th>ccrM</th>
+      <td><p>Male functional resistance rate, two ClvR alleles</p></td>
+    </tr>
+    <tr>
+      <th>dW</th>
+      <td><p>Female deposition cutting rate</p></td>
+    </tr>
+    <tr>
+      <th>drW</th>
+      <td><p>Female deposition functional resistance rate</p></td>
+    </tr>
+    <tr>
+      <th>ddW</th>
+      <td><p>Female deposition (HH) cutting rate</p></td>
+    </tr>
+    <tr>
+      <th>ddrW</th>
+      <td><p>Female deposition (HH) functional resistance rate</p></td>
+    </tr>
+    <tr>
+      <th>hSuf</th>
+      <td><p>Haplosufficiency level, default is completely sufficient</p></td>
     </tr>
     <tr>
       <th>eta</th>

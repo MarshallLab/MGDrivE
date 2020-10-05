@@ -18,15 +18,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -53,7 +51,6 @@ a defined landscape." />
 <![endif]-->
 
 
-
   </head>
 
   <body>
@@ -70,7 +67,7 @@ a defined landscape." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
       </span>
     </div>
 
@@ -112,7 +109,6 @@ a defined landscape." />
 </div><!--/.navbar -->
 
       
-
       </header>
 
 <div class="row">
@@ -136,8 +132,7 @@ a defined landscape.</p>
     <h2 class="hasAnchor" id="constructor"><a class="anchor" href="#constructor"></a><strong>Constructor</strong></h2>
 
     
-
-<ul>
+    <ul>
 <li><p>params: see <code><a href='parameterizeMGDrivE.html'>parameterizeMGDrivE</a></code></p></li>
 <li><p>driveCube: an inheritance cube</p></li>
 <li><p>patchReleases: see <code><a href='basicRepeatedReleases.html'>basicRepeatedReleases</a></code> for examples on how to set up release schedules</p></li>
@@ -147,13 +142,10 @@ a defined landscape.</p>
 <li><p>directory: character string of output directory</p></li>
 <li><p>verbose: Chatty? Default is TRUE</p></li>
 </ul>
-
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a><strong>Methods</strong></h2>
 
     
-
-<ul>
-<li><p>get_moveVar: see <code><a href='get_moveVar_Network.html'>get_moveVar_Network</a></code></p></li>
+    <ul>
 <li><p>get_timeAq: see <code><a href='get_timeAq_Network.html'>get_timeAq_Network</a></code></p></li>
 <li><p>get_beta: see <code><a href='get_beta_Network.html'>get_beta_Network</a></code></p></li>
 <li><p>get_muAd: see <code><a href='get_muAd_Network.html'>get_muAd_Network</a></code></p></li>
@@ -173,24 +165,17 @@ a defined landscape.</p>
 <li><p>get_conADM: see <code><a href='get_conM_Network.html'>get_conM_Network</a></code></p></li>
 <li><p>get_conADF: see <code><a href='get_conF_Network.html'>get_conF_Network</a></code></p></li>
 <li><p>get_tNow: see <code><a href='get_tNow_Network.html'>get_tNow_Network</a></code></p></li>
-<li><p>get_migrationMaleRow: see <code><a href='get_migrationMaleRow_Network.html'>get_migrationMaleRow_Network</a></code></p></li>
-<li><p>get_migrationFemaleRow: see <code><a href='get_migrationFemaleRow_Network.html'>get_migrationFemaleRow_Network</a></code></p></li>
 <li><p>get_patchReleases: see <code><a href='get_patchReleases_Network.html'>get_patchReleases_Network</a></code></p></li>
-<li><p>get_batchProbs: see <code><a href='get_batchProbs_Network.html'>get_batchProbs_Network</a></code></p></li>
-<li><p>get_batchSex: see <code><a href='get_batchSex_Network.html'>get_batchSex_Network</a></code></p></li>
-<li><p>get_batchLocations: see <code><a href='get_batchLocRow_Network.html'>get_batchLocRow_Network</a></code></p></li>
-<li><p>oneDay_Migration: see <code><a href='oneDay_Migration_Network.html'>oneDay_Migration_Network</a></code></p></li>
+<li><p>oneDay_Migration: see <code><a href='oneDay_Migration_Deterministic_Network.html'>oneDay_Migration_Deterministic_Network</a></code> or see <code><a href='oneDay_Migration_Stochastic_Network.html'>oneDay_Migration_Stochastic_Network</a></code></p></li>
 <li><p>reset: see <code><a href='reset_Network.html'>reset_Network</a></code></p></li>
 <li><p>oneDay: see <code><a href='oneDay_Network.html'>oneDay_Network</a></code></p></li>
 <li><p>oneRun: see <code><a href='oneRun_Network.html'>oneRun_Network</a></code></p></li>
 <li><p>multRun: see <code><a href='multRun_Network.html'>multRun_Network</a></code></p></li>
 </ul>
-
     <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a><strong>Fields</strong></h2>
 
     
-
-<ul>
+    <ul>
 <li><p>parameters: see <code><a href='parameterizeMGDrivE.html'>parameterizeMGDrivE</a></code></p></li>
 <li><p>patches: a list of <code><a href='Patch.html'>Patch</a></code> objects</p></li>
 <li><p>nPatch: number of patches</p></li>
@@ -200,8 +185,8 @@ a defined landscape.</p>
 <li><p>tNow: current time of simulation (time starts at 2 because time 1 is the initial equilibrium state)</p></li>
 <li><p>runID: an identifier for the current simulation run, useful for Monte Carlo simulation</p></li>
 <li><p>directory: a character string of where to store output</p></li>
-<li><p>conADM: a <code><a href='https://rdrr.io/r/base/connections.html'>connection</a></code> to write male population dynamics out to</p></li>
-<li><p>conADF: a <code><a href='https://rdrr.io/r/base/connections.html'>connection</a></code> to write female population dynamics out to</p></li>
+<li><p>conADM: a <code><a href='https://www.rdocumentation.org/packages/base/topics/connections'>connection</a></code> to write male population dynamics out to</p></li>
+<li><p>conADF: a <code><a href='https://www.rdocumentation.org/packages/base/topics/connections'>connection</a></code> to write female population dynamics out to</p></li>
 <li><p>migrationMale: a stochastic matrix whose dimensions conform to the number of patches</p></li>
 <li><p>migrationFemale: a stochastic matrix whose dimensions conform to the number of patches</p></li>
 <li><p>migrationBatch: list of items for batch migration in stochastic sim.</p></li>
@@ -210,19 +195,20 @@ a defined landscape.</p>
 <li><p>patchReleases: a list of release schedules for each patch</p></li>
 </ul>
 
-
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'> <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'> </div><span class='co'># NOT RUN {</span>
  <span class='co'># There are no simple examples for this, so looking at the vignettes would be</span>
  <span class='co'>#  most useful.</span>
 
  <span class='co'># Complete manual with examples, but none explored in depth.</span>
- <span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"MGDrivE-Examples"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"MGDrivE"</span>)
+ <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/vignette'>vignette</a></span>(<span class='st'>"MGDrivE-Examples"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"MGDrivE"</span>)
 
  <span class='co'># One example, explored in great detail. This is probably more helpful.</span>
- <span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"MGDrivE-Run"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"MGDrivE"</span>)
+ <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/vignette'>vignette</a></span>(<span class='st'>"MGDrivE-Run"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"MGDrivE"</span>)
 
- }</div></pre>
+
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -237,23 +223,19 @@ a defined landscape.</p>
   </div>
 </div>
 
-
       <footer>
       <div class="copyright">
   <p>Developed by <a href='https://chipdelmal.github.io'>Héctor Manuel Sánchez Castellanos</a>, <a href='https://github.com/GilChrist19'>Jared Bennett</a>, <a href='https://slwu89.github.io'>Sean Wu</a>, <a href='https://www.marshalllab.com'>John M. Marshall</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
    </div>
 
   
 
-
   </body>
 </html>
-
 

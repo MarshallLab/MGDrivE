@@ -31,6 +31,10 @@ reference:
   desc: >
     A description of the available inheritance cubes for simulation, and some associated helper functions.
   contents:
+  - '`cubeClvR`'
+  - '`cubeClvR2`'
+  - '`cubeECHACR`'
+  - '`cubeECHACRX`'
   - '`cubeHoming1RA`'
   - '`cubeHomingDrive`'
   - '`cubeKillerRescue`'

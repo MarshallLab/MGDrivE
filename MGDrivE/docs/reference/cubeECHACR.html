@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Inheritance Cube: Homing Drive with 1 Resistance Allele — cubeHoming1RA • MGDrivE</title>
+<title>Inheritance Cube: ECHACR — cubeECHACR • MGDrivE</title>
 
 
 <!-- jquery -->
@@ -33,10 +33,18 @@
 
 
 
-<meta property="og:title" content="Inheritance Cube: Homing Drive with 1 Resistance Allele — cubeHoming1RA" />
-<meta property="og:description" content="This function creates an inheritance cube to model a homing gene drive (such as a CRISPR-Cas9 system)
-that creates 1 type of resistance allele. It assumes no sex-specific inheritance patterns and the
-construct is on an autosome." />
+<meta property="og:title" content="Inheritance Cube: ECHACR — cubeECHACR" />
+<meta property="og:description" content="This function creates an ECHACR construct, it has 5 alleles at the first locus
+and 4 alleles at the second.
+W: Wild-type
+H: Homing allele
+E: Eraser allele
+R: No-cost resistance allele
+B: Detrimental resistance allele
+cHW: Rate of homing from H, W -&amp;gt; H transition
+cEH: Rate of homing from E, H -&amp;gt; E transition
+cEW: Rate of homing from E, W -&amp;gt; E transition
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -115,20 +123,38 @@ construct is on an autosome." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Inheritance Cube: Homing Drive with 1 Resistance Allele</h1>
+    <h1>Inheritance Cube: ECHACR</h1>
     
-    <div class="hidden name"><code>cubeHoming1RA.Rd</code></div>
+    <div class="hidden name"><code>cubeECHACR.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function creates an inheritance cube to model a homing gene drive (such as a CRISPR-Cas9 system)
-that creates 1 type of resistance allele. It assumes no sex-specific inheritance patterns and the
-construct is on an autosome.</p>
+    <p>This function creates an ECHACR construct, it has 5 alleles at the first locus
+and 4 alleles at the second.</p><ul>
+<li><p>W: Wild-type</p></li>
+<li><p>H: Homing allele</p></li>
+<li><p>E: Eraser allele</p></li>
+<li><p>R: No-cost resistance allele</p></li>
+<li><p>B: Detrimental resistance allele</p></li>
+<li><p>cHW: Rate of homing from H, W -&gt; H transition</p></li>
+<li><p>cEH: Rate of homing from E, H -&gt; E transition</p></li>
+<li><p>cEW: Rate of homing from E, W -&gt; E transition</p></li>
+</ul>
     </div>
 
-    <pre class="usage"><span class='fu'>cubeHoming1RA</span>(
-  <span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>ch</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+    <pre class="usage"><span class='fu'>cubeECHACR</span>(
+  <span class='kw'>cHW</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>cEW</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>cEH</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>chHW</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>crHW</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>ceEW</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>crEW</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>ceEH</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>crEH</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>d1</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>d2</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>d3</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>eta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>phi</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>omega</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -141,12 +167,52 @@ construct is on an autosome.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>c</th>
-      <td><p>Cutting rate</p></td>
+      <th>cHW</th>
+      <td><p>Cutting efficiency of drive allele at locus 1</p></td>
     </tr>
     <tr>
-      <th>ch</th>
-      <td><p>Successful homing rate rate</p></td>
+      <th>cEW</th>
+      <td><p>Cutting efficiency of ECHACR element into W</p></td>
+    </tr>
+    <tr>
+      <th>cEH</th>
+      <td><p>Cutting efficiency of ECHACR element into H</p></td>
+    </tr>
+    <tr>
+      <th>chHW</th>
+      <td><p>Homing efficiency of drive allele at locus 1</p></td>
+    </tr>
+    <tr>
+      <th>crHW</th>
+      <td><p>Resistance allele efficiency of drive allele at locus 1</p></td>
+    </tr>
+    <tr>
+      <th>ceEW</th>
+      <td><p>Homing efficiency of ECHACR element into W</p></td>
+    </tr>
+    <tr>
+      <th>crEW</th>
+      <td><p>Resistance allele efficiency of ECHACR element into W</p></td>
+    </tr>
+    <tr>
+      <th>ceEH</th>
+      <td><p>Homing efficiency of ECHACR element into H</p></td>
+    </tr>
+    <tr>
+      <th>crEH</th>
+      <td><p>Resistance allele efficiency of ECHACR element into H</p></td>
+    </tr>
+    <tr>
+      <th>d1</th>
+      <td><p>Background mutation rate from W into R allele</p></td>
+    </tr>
+    <tr>
+      <th>d2</th>
+      <td><p>Background mutation rate from H into R allele</p></td>
+    </tr>
+    <tr>
+      <th>d3</th>
+      <td><p>Background mutation rate from E into R allele</p></td>
     </tr>
     <tr>
       <th>eta</th>
@@ -178,6 +244,9 @@ construct is on an autosome.</p>
 
     <p>Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
 and all genotype-specific parameters.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This inheritance pattern corresponds to the <a href='https://doi.org/10.1016/j.molcel.2020.09.003'>Active Genetic Neutralizing Elements for Halting or Deleting Gene Drives</a> publication.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -185,6 +254,7 @@ and all genotype-specific parameters.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>

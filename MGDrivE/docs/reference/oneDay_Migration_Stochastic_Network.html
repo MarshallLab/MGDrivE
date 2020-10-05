@@ -6,13 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get windowSize — get_windowSize_Network • MGDrivE</title>
+<title>Stochastic Inter-Patch Migration — oneDay_Migration_Stochastic_Network • MGDrivE</title>
+
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,10 +32,23 @@
 
 
 
-<meta property="og:title" content="Get windowSize — get_windowSize_Network" />
 
-<meta property="og:description" content="Return memory window size, see calcMemoryWindow" />
+<meta property="og:title" content="Stochastic Inter-Patch Migration — oneDay_Migration_Stochastic_Network" />
+<meta property="og:description" content="Stochastic model of interpatch migration from each patch.
+popFemale/popMale is retrieved from each patch using
+get_femalePop_Patch/get_malePop_Patch. Migration
+location is determined from the supplied matrices, private$migrationFemale
+or private$migrationMale. Migration is modeled as a Multinomial
+process parameterized by migration location probabilities corresponding to each
+patch . Movement is sampled from rmultinom. 
+Batch migration begins as a rbinom sampled from
+private$migrationBatch$batchProbs.If there is batch migration, the
+location of migration is sampled uniformly (see sample),
+parameterized by private$migrationBatch$moveProbs. The amount of each sex
+that migrations is sampled from rbinom, parameterized by
+private$migrationBatch$sexProbs." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -63,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
       </span>
     </div>
 
@@ -91,7 +106,6 @@
   <a href="../reference/index.html">Functions</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/MarshallLab/MGDrivE">
@@ -111,25 +125,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get windowSize</h1>
+    <h1>Stochastic Inter-Patch Migration</h1>
     
-    <div class="hidden name"><code>get_windowSize_Network.Rd</code></div>
+    <div class="hidden name"><code>oneDay_Migration_Stochastic_Network.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>Return memory window size, see <code><a href='calcMemoryWindow.html'>calcMemoryWindow</a></code></p>
-    
+    <p>Stochastic model of interpatch migration from each patch.
+<code>popFemale</code>/<code>popMale</code> is retrieved from each patch using
+<code><a href='get_femalePop_Patch.html'>get_femalePop_Patch</a></code>/<code><a href='get_malePop_Patch.html'>get_malePop_Patch</a></code>. Migration
+location is determined from the supplied matrices, <code>private$migrationFemale</code>
+or <code>private$migrationMale</code>. Migration is modeled as a Multinomial
+process parameterized by migration location probabilities corresponding to each
+patch . Movement is sampled from <code><a href='https://www.rdocumentation.org/packages/stats/topics/Multinom'>rmultinom</a></code>. <br />
+Batch migration begins as a <code><a href='https://www.rdocumentation.org/packages/stats/topics/Binomial'>rbinom</a></code> sampled from
+<code>private$migrationBatch$batchProbs</code>.If there is batch migration, the
+location of migration is sampled uniformly (see <code><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></code>),
+parameterized by <code>private$migrationBatch$moveProbs</code>. The amount of each sex
+that migrations is sampled from <code><a href='https://www.rdocumentation.org/packages/stats/topics/Binomial'>rbinom</a></code>, parameterized by
+<code>private$migrationBatch$sexProbs</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_windowSize_Network</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>oneDay_Migration_Stochastic_Network</span>()</pre>
+
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function handles outbound and inbound migration. See <code><a href='MGDrivE-Model.html'>MGDrivE-Model</a></code>,
+'Migration' section for more details on how inter-patch migration is handled.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      <li><a href="#details">Details</a></li>
+    </ul>
 
   </div>
 </div>
