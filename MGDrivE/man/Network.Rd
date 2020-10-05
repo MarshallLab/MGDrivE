@@ -4,7 +4,9 @@
 \name{Network}
 \alias{Network}
 \title{Network Class Definition}
-\format{An \code{\link{R6Class}} generator object}
+\format{
+An \code{\link{R6Class}} generator object
+}
 \description{
 A \code{Network} class object stores all the information for a simulation on
 a defined landscape.
@@ -26,7 +28,6 @@ a defined landscape.
 \section{\strong{Methods}}{
 
 \itemize{
-\item get_moveVar: see \code{\link{get_moveVar_Network}}
 \item get_timeAq: see \code{\link{get_timeAq_Network}}
 \item get_beta: see \code{\link{get_beta_Network}}
 \item get_muAd: see \code{\link{get_muAd_Network}}
@@ -46,13 +47,8 @@ a defined landscape.
 \item get_conADM: see \code{\link{get_conM_Network}}
 \item get_conADF: see \code{\link{get_conF_Network}}
 \item get_tNow: see \code{\link{get_tNow_Network}}
-\item get_migrationMaleRow: see \code{\link{get_migrationMaleRow_Network}}
-\item get_migrationFemaleRow: see \code{\link{get_migrationFemaleRow_Network}}
 \item get_patchReleases: see \code{\link{get_patchReleases_Network}}
-\item get_batchProbs: see \code{\link{get_batchProbs_Network}}
-\item get_batchSex: see \code{\link{get_batchSex_Network}}
-\item get_batchLocations: see \code{\link{get_batchLocRow_Network}}
-\item oneDay_Migration: see \code{\link{oneDay_Migration_Network}}
+\item oneDay_Migration: see \code{\link{oneDay_Migration_Deterministic_Network}} or see \code{\link{oneDay_Migration_Stochastic_Network}}
 \item reset: see \code{\link{reset_Network}}
 \item oneDay: see \code{\link{oneDay_Network}}
 \item oneRun: see \code{\link{oneRun_Network}}

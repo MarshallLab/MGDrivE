@@ -60,7 +60,7 @@ cubeWolbachia <- function(eta = NULL, phi = NULL, omega = NULL, xiF = NULL,
 
 
   ## initialize viability mask.
-  viabilityMask <- array(data = 1L, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
+  viabilityMask <- array(data = 1, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## set cytoplasmic incompatability
   viabilityMask["w","W", ] <- 0

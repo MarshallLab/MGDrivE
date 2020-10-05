@@ -1,7 +1,7 @@
 Package: MGDrivE
 Type: Package
 Title: Mosquito Gene Drive Explorer
-Version: 1.5.0
+Version: 1.6.0
 Authors@R: c(
     person("Héctor Manuel", "Sánchez Castellanos", email = "sanchez.hmsc@berkeley.edu", role = c("aut","cre")),
     person("Jared", "Bennett", email = "jared_bennett@berkeley.edu ", role = "aut"),
@@ -17,7 +17,7 @@ Description: Provides a model designed to be a reliable testbed where various ge
     population dynamics framework that allows migration of individuals between patches 
     in landscape. Previous work developing the population dynamics can be found in Deredec et al. 
     (2001) <doi:10.1073/pnas.1110717108> and Hancock & Godfray (2007) <doi:10.1186/1475-2875-6-98>, 
-    and extensions to accommodate basic CRISPR homing dynamics in Marshall et al. (2017) 
+    and extensions to accommodate CRISPR homing dynamics in Marshall et al. (2017) 
     <doi:10.1038/s41598-017-02744-7>.
 License: GPL-3
 Encoding: UTF-8
@@ -27,7 +27,7 @@ LinkingTo: Rcpp
 Depends: R (>= 2.10)
 ByteCompile: true
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE, r6 = FALSE)
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr

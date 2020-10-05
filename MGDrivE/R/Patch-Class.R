@@ -41,14 +41,13 @@
 #'
 #' @section **Methods**:
 #'  * set_NetworkPointer: see \code{\link{set_NetworkPointer_Patch}}
-#'  * get_maleMigration: see \code{\link{get_maleMigration_Patch}}
-#'  * get_femaleMigration: see \code{\link{get_femaleMigration_Patch}}
+#'  * get_femalePopulation: see \code{\link{get_femalePop_Patch}}
+#'  * get_malePopulation: see \code{\link{get_malePop_Patch}}
 #'  * initialPopulation: see \code{\link{set_initialPopulation_Patch}}
 #'  * setPopulation: see \code{\link{set_population_deterministic_Patch}} or \code{\link{set_population_stochastic_Patch}}
 #'  * reset: see \code{\link{reset_Patch}}
 #'  * oneDay_initOutput: see \code{\link{oneDay_initOutput_Patch}}
 #'  * oneDay_writeOutput: see \code{\link{oneDay_writeOutput_Patch}}
-#'  * oneDay_migrationOut: see \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}}
 #'  * oneDay_migrationIn: see \code{\link{oneDay_migrationIn_Patch}}
 #'  * oneDay_PopDynamics: see \code{\link{oneDay_PopDynamics_Patch}}
 #'  * oneDay_adultD: see \code{\link{oneDay_adultDeath_deterministic_Patch}} or \code{\link{oneDay_adultDeath_stochastic_Patch}}
@@ -69,8 +68,6 @@
 #'  * popHolder: vector, nGenotype x 1, temporary population storage
 #'  * popPupSex: vector, nGenotype x 1, used in stochastic pupation as another temporary population
 #'  * popUnmated: vector, nGenotype x 1, holds unmated females
-#'  * mMig: matrix, nGenotype x nPatches, holds outbound males for migration, see \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}}
-#'  * fMig: array, nGenotype x nGenotype x nPatches, holds outbound females for migration, see \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}}
 #'  * popAquatict0: matrix, nGenotype x sum(timeAquatic), holding all eggs, larva, and pupa for reset, see \code{\link{reset_Patch}}
 #'  * popMalet0: vector, nGenotype x 1, holds adult males for reset see \code{\link{reset_Patch}}
 #'  * popFemalet0: matrix, nGenotype x nGenotype, holds mated adult females for reset see \code{\link{reset_Patch}}
@@ -117,9 +114,6 @@ Patch <- R6::R6Class(classname = "Patch",
                   private$popPupSex = setNames(object = numeric(length = nGeno), nm = genotypesID)
                   private$popUnmated = setNames(object = numeric(length = nGeno), nm = genotypesID)
 
-                  private$mMig = matrix(data=0, nrow=nGeno, ncol=numPatches)
-                  private$fMig = array(data = 0, dim=c(nGeno,nGeno,numPatches))
-
                   # set initial population
                   self$setPopulation(adultEQ = adultEQ, larvalEQ = larvalEQ,
                                      adultRatioF = adultRatioF,
@@ -153,10 +147,6 @@ Patch <- R6::R6Class(classname = "Patch",
               popHolder = NULL,
               popPupSex = NULL, # only used in stochastic pupation function
               popUnmated = NULL,
-
-              # migration
-              mMig = NULL,
-              fMig = NULL,
 
               # reset populations
               popAquatict0 = NULL,
@@ -192,22 +182,23 @@ Patch$set(which = "public",name = "set_NetworkPointer",
           value = set_NetworkPointer_Patch,overwrite = TRUE
 )
 
-#' Get maleMigration
+#' Get male Population
 #'
-#' Return outbound males (nGenotypes X nPatch integer matrix)
+#' Return males (nGenotypes vector)
 #'
-get_maleMigration_Patch <- function(){return(private$mMig)}
+get_malePop_Patch <- function(){return(private$popMale)}
 
-Patch$set(which = "public",name = "get_maleMigration",
-          value = get_maleMigration_Patch,overwrite = TRUE
+Patch$set(which = "public",name = "get_malePopulation",
+          value = get_malePop_Patch,overwrite = TRUE
 )
 
-#' Get femaleMigration
+#' Get female Population
 #'
-#' Return outbound females (nGenotypes X nGenotypes X nPatch array)
+#' Return  females (nGenotypes X nGenotypes matrix)
 #'
-get_femaleMigration_Patch <- function(){return(private$fMig)}
+get_femalePop_Patch <- function(){return(private$popFemale)}
 
-Patch$set(which = "public",name = "get_femaleMigration",
-          value = get_femaleMigration_Patch,overwrite = TRUE
+Patch$set(which = "public",name = "get_femalePopulation",
+          value = get_femalePop_Patch,overwrite = TRUE
 )
+

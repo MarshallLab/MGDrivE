@@ -8,7 +8,7 @@ oneDay_eggDM_stochastic_Patch()
 }
 \description{
 Daily egg survival is sampled from a binomial distribution, where survival
-probability is given by \eqn{1-\mu_{aq}}. \eqn{\mu_{aq}} corresdponds
+probability is given by \eqn{1-\mu_{aq}}. \eqn{\mu_{aq}} corresponds
 to daily non-density-dependent aquatic mortality. \cr
 Eggs transition into larvae at the end of \eqn{T_e}. \cr
 See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.

@@ -93,7 +93,7 @@ cubeHoming1RA <- function(c = 1.0, ch = 0, eta = NULL, phi = NULL, omega = NULL,
 
 
   ## initialize viability mask. No mother-specific death, so use basic mask
-  viabilityMask <- array(data = 1L, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
+  viabilityMask <- array(data = 1, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## genotype-specific modifiers
   modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)

@@ -211,7 +211,7 @@ sitesNumber <- nrow(moveMat)
 ####################
 # Basic Inheritance pattern
 ####################
-# Mendelian cube with standard (default) paraameters
+# Mendelian cube with standard (default) parameters
 cube <- cubeMendelian()
 
 ####################
@@ -367,7 +367,7 @@ rm(list=ls())
 
 #### Deterministic, With Fitness Cost
 
-Now that we have shown a basic Mendelian simulation, we will expand it a little by including a fitness cost on certain genotypes. In the following simulation, the homozygotes, _AA_ and _aa_, are only 60% as fit as the heterozygote over their adult lifetime. This is an example of a heterozygote advantage, and we should see the population become primarily heterozygous. We will increase the size and number of releases and perform them a little bit later, to see the effects of the fitness cost and then speed up the equilibration process, but everything else will remain the same, ie., one population and a deterministic simulation.
+Now that we have shown a basic Mendelian simulation, we will expand it a little by including a fitness cost on certain genotypes. In the following simulation, the homozygotes, _AA_ and _aa_, are only 60% as fit as the heterozygote over their adult lifetime. This is an example of a heterozygote advantage, and we should see the population become primarily heterozygous. We will increase the size and number of releases and perform them a little bit later, to see the effects of the fitness cost and then speed up the equilibration process, but everything else will remain the same, i.e., one population and a deterministic simulation.
 
 ```{r}
 ####################
@@ -400,7 +400,7 @@ patchPops <- rep(adultPopEquilibrium,sitesNumber)
 ####################
 # Basic Inheritance pattern
 ####################
-# Mendelian cube with standard (default) paraameters
+# Mendelian cube with standard (default) parameters
 
 # This time, lets put fitness cost on the homozygotes, giving the heterozygote
 #  an advantage
@@ -587,7 +587,7 @@ sitesNumber <- nrow(moveMat)
 ####################
 # Basic Inheritance pattern
 ####################
-# Mendelian cube with standard (default) paraameters
+# Mendelian cube with standard (default) parameters
 
 # This time, lets put fitness cost on the homozygotes, giving the heterozygote
 #  an advantage
@@ -735,7 +735,7 @@ sitesNumber <- nrow(moveMat)
 ####################
 # Basic Inheritance pattern
 ####################
-# Mendelian cube with standard (default) paraameters
+# Mendelian cube with standard (default) parameters
 cube <- cubeMendelian()
 
 ####################
@@ -859,7 +859,7 @@ patchPops <- rep(adultPopEquilibrium,sitesNumber)
 ####################
 # Basic Inheritance pattern
 ####################
-# Mendelian cube with standard (default) paraameters
+# Mendelian cube with standard (default) parameters
 cube <- cubeMendelian()
 
 ####################
@@ -998,7 +998,7 @@ sitesNumber <- nrow(moveMat)
 ####################
 # Basic Inheritance pattern
 ####################
-# Mendelian cube with standard (default) paraameters
+# Mendelian cube with standard (default) parameters
 cube <- cubeMendelian()
 
 ####################
@@ -1093,7 +1093,7 @@ rm(list=ls())
 
 #### Stochastic, Small Migration and Fitness Cost
 
-As a final example, we perform a stochastic, two-population simulation with the same fitness cost explored previously, ie., a 60% reduction in lifetime on _AA_ and _aa_ individuals. We first explored this in a single, panmictic population using a deterministic simulation, then explored the effect of stochasticity on the results. Here, we extend our analysis to a two-population setting, to explore how population structure might affect our results.
+As a final example, we perform a stochastic, two-population simulation with the same fitness cost explored previously, i.e., a 60% reduction in lifetime on _AA_ and _aa_ individuals. We first explored this in a single, panmictic population using a deterministic simulation, then explored the effect of stochasticity on the results. Here, we extend our analysis to a two-population setting, to explore how population structure might affect our results.
 
 ```{r}
 ####################

@@ -18,5 +18,4 @@ Releases: \code{\link{oneDay_releases_Patch}} \cr
 Mating: \code{\link{oneDay_mating_deterministic_Patch}} or \code{\link{oneDay_mating_stochastic_Patch}} \cr
 Lay Eggs: \code{\link{oneDay_oviposit_deterministic_Patch}} or \code{\link{oneDay_oviposit_stochastic_Patch}} \cr
 Release Eggs: \code{\link{oneDay_eggReleases_Patch}} \cr
-Migration: \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}} \cr
 }

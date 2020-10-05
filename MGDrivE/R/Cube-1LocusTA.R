@@ -90,7 +90,7 @@ cubeOneLocusTA <- function(TAEfficacy = 1.0, TBEfficacy = 1.0,
 
 
   ## initialize viability mask.
-  viabilityMask <- array(data = 1L, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
+  viabilityMask <- array(data = 1, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## fill mother/offspring specific death, then muliply by efficacy of toxins
   mixed <- (1-TAEfficacy)+(1-TBEfficacy)-(1-TAEfficacy)*(1-TBEfficacy)

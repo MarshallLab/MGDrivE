@@ -19,7 +19,7 @@
 #'
 #' This is a sex-specific version of the original cube \code{\link{cubeHoming1RA}}. It assumes that the construct
 #' is on an autosome and there can be different male/female homing rates. It also has
-#' maternal deposition, ie, when the male provides a W allele to a female with a H allele,
+#' maternal deposition, i.e., when the male provides a W allele to a female with a H allele,
 #' some portion are cut during oogenesis.
 #' If the maternal deposition parameters are zero (d* parameters), this is a normal
 #' CRISPR drive.
@@ -223,7 +223,7 @@ cubeHomingDrive <- function(cM = 1.0, cF = 1.0, dF=0, chM = 0, crM = 0, chF = 0,
   tMatrix[tMatrix < .Machine$double.eps] <- 0
 
   ## initialize viability mask. No mother/father-specific death, so use basic mask
-  viabilityMask <- array(data = 1L, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
+  viabilityMask <- array(data = 1, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## genotype-specific modifiers
   modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)

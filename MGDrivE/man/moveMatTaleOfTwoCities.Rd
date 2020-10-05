@@ -4,10 +4,12 @@
 \name{moveMatTaleOfTwoCities}
 \alias{moveMatTaleOfTwoCities}
 \title{Movement Matrix: Tale of Two Cities}
-\format{A matrix with 2 rows and 2 columns:
+\format{
+A matrix with 2 rows and 2 columns:
 \describe{
 Mosquitoes do not move between the two patches.
-}}
+}
+}
 \usage{
 data(moveMatTaleOfTwoCities)
 }

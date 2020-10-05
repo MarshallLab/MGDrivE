@@ -45,8 +45,12 @@ MGDrivE provides the following cubes to model different gene drive systems:
 \itemize{
 \item \code{\link{cubeOneLocusTA}}: 1 Locus Maternal-Toxin/Zygotic-Antidote System
 \item \code{\link{cubeTwoLocusTA}}: 2 Locus Maternal-Toxin/Zygotic-Antidote System
+\item \code{\link{cubeClvR}}: 1 Locus Cleave and Rescue (ClvR)
+\item \code{\link{cubeClvR2}}: 2 Locus Cleave and Rescue (ClvR)
 \item \code{\link{cubeHoming1RA}}: Homing Drive with 1 Resistance Allele
 \item \code{\link{cubeHomingDrive}}: CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Allele
+\item \code{\link{cubeECHACR}}: ERACR-CHACR
+\item \code{\link{cubeECHACRX}}: ECHACR, X-Linked
 \item \code{\link{cubeKillerRescue}}: Killer-Rescue System
 \item \code{\link{cubeMEDEA}}: MEDEA (Maternal Effect Dominant Embryonic Arrest)
 \item \code{\link{cubeReciprocalTranslocations}}: Reciprocal Translocation

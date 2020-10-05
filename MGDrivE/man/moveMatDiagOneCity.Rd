@@ -4,10 +4,12 @@
 \name{moveMatDiagOneCity}
 \alias{moveMatDiagOneCity}
 \title{Movement Matrix: Diagonal One City}
-\format{A matrix with 1 rows and 1 columns:
+\format{
+A matrix with 1 rows and 1 columns:
 \describe{
 A 1 by 1 matrix with entry 1.
-}}
+}
+}
 \usage{
 data(moveMatDiagOneCity)
 }

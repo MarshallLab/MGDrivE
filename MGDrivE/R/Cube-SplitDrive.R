@@ -5,13 +5,15 @@
 #   / /___/ /_/ / /_/ /  __/
 #   \____/\__,_/_.___/\___/
 #
-#   MGDrivE: Mosquito Gene Drive Explorer
 #   Split Drive with 2 Resistance Alleles and Sex-Specific homing
 #   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
 #   August 2018
 #   jared_bennett@berkeley.edu
 #   January 2019
 #    Update to reflect cutting, homing, resistance generation rates
+#   June 2020
+#    Updated with copy-number dependent homing
+#    Updateed with copy-number dependent maternal deposition
 #
 ###############################################################################
 
@@ -20,16 +22,34 @@
 #' This is a sex-specific version of a split CRISPR drive. At one locus is the Cas9, inherited
 #' in a Mendelian fashion. At a second, unlinked, locus are the gRNAs. When the two loci occur
 #' together, the gRNAs drive, with potential damaged alleles, but the Cas9 remains
-#' Mendelian. It is assumed that this is an autosomal drive.  
-#' This drive corresponds to the [confinable gene drive system](https://elifesciences.org/articles/51701) 
-#' developed by the Akbari lab.  
+#' Mendelian. It is assumed that this is an autosomal drive.
+#' This drive corresponds to the [confinable gene drive system](https://elifesciences.org/articles/51701)
+#' developed by the Akbari lab.
 #'
-#' @param cM Cutting efficiency in males
-#' @param cF Cutting efficiency in females
-#' @param chM Homing efficiency in males
-#' @param chF Homing efficiency in females
-#' @param crM Resistance efficiency in males
-#' @param crF Resistance efficiency in females
+#' @param cM Cutting efficiency in males, one Cas9 allele
+#' @param chM Homing efficiency in males, one Cas9 allele
+#' @param crM Resistance efficiency in males, one Cas9 allele
+#'
+#' @param ccM Cutting efficiency in males, two Cas9 alleles
+#' @param cchM Homing efficiency in males, two Cas9 alleles
+#' @param ccrM Resistance efficiency in males, two Cas9 alleles
+#'
+#' @param cF Cutting efficiency in females, one Cas9 allele
+#' @param chF Homing efficiency in females, one Cas9 allele
+#' @param crF Resistance efficiency in females, one Cas9 allele
+#'
+#' @param ccF Cutting efficiency in females, two Cas9 alleles
+#' @param cchF Homing efficiency in females, two Cas9 alleles
+#' @param ccrF Resistance efficiency in females, two Cas9 alleles
+#'
+#' @param dW Maternal deposition cutting, one Cas9 allele
+#' @param dhW Maternal deposition homing, one Cas9 allele
+#' @param drW Maternal deposition resistance, one Cas9 allele
+#'
+#' @param ddW Maternal deposition cutting, two Cas9 alleles
+#' @param ddhW Maternal deposition homing, two Cas9 alleles
+#' @param ddrW Maternal deposition resistance, two Cas9 alleles
+#'
 #' @param eta Genotype-specific mating fitness
 #' @param phi Genotype-specific sex ratio at emergence
 #' @param omega Genotype-specific multiplicative modifier of adult mortality
@@ -40,11 +60,37 @@
 #' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
 #' and all genotype-specific parameters.
 #' @export
-cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 0,
-                             eta = NULL, phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
+cubeSplitDrive <- function(cM = 1.0, chM = 0, crM = 0, ccM = cM, cchM = chM, ccrM = crM,
+                           cF = 1.0, chF = 0, crF = 0, ccF = cF, cchF = chF, ccrF = crF,
+                           dW = 0, dhW = 0, drW = 0, ddW = dW, ddhW = dhW, ddrW = drW,
+                           eta = NULL, phi = NULL, omega = NULL, xiF = NULL, xiM = NULL, s = NULL){
+
+  # # for testing
+  # testVec <- runif(n = 18)
+  #
+  # cF <- testVec[1]; chF <- testVec[2]; crF <- testVec[3];
+  # ccF <- testVec[4]; cchF <- testVec[5]; ccrF <- testVec[6];
+  #
+  # cM <- testVec[7]; chM <- testVec[8]; crM <- testVec[9];
+  # ccM <- testVec[10]; cchM <- testVec[11]; ccrM <- testVec[12];
+  #
+  # dW <- testVec[13]; dhW <- testVec[14]; drW <- testVec[15];
+  # ddW <- testVec[16]; ddhW <- testVec[17]; ddrW <- testVec[18];
+  #
+  # # this would run at the bottom, to check that all cells sum to 1
+  # #  size is defined below
+  # for(mID in 1:size){
+  #   for(fID in 1:size){
+  #     if((abs(sum(tMatrix[fID,mID,])-1)) > 1e-6){
+  #       print(paste0("Fail: mID= ",gtype[mID],", fID= ",gtype[fID]))
+  #     }
+  #   }
+  # }
+
 
   ## safety checks
-  if(any(c(cM, cF, chM, crM, chF, crF)>1) || any(c(cM, cF, chM, crM, chF, crF)<0)){
+  params <- c(cM, chM, crM, ccM, cchM, ccrM, cF, chF, crF, ccF, cchF, ccrF)
+  if(any(params>1) || any(params<0)){
     stop("Parameters are rates, they must be between 0 and 1.")
   }
 
@@ -141,7 +187,7 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
   tMatrix['WCWR', 'WWWH', c('WWWW','WWWH','WWWR','WWHR',
                             'WCWW','WCWH','WCWR','WCHR')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCWR', 'WWWR', c('WWWW','WWWR','WWRR',
-                            'WCWW','WCWR','WCRR')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
+                            'WCWW','WCWR','WCRR')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['WCWR', 'WWWB', c('WWWW','WWWR','WWWB','WWRB',
                             'WCWW','WCWR','WCWB','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCWR', 'WWHH', c('WWWH','WWHR','WCWH','WCHR')] <- c(0.25,0.25,0.25,0.25)
@@ -154,10 +200,10 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
                             'WCWR','WCWB','WCRR','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCWR', 'WWBB', c('WWWB','WWRB','WCWB','WCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCWR', 'WCWW', c('WWWW','WWWR','WCWW',
-                            'WCWR','CCWW','CCWR')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCWR','CCWW','CCWR')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCWR', 'WCWR', c('WWWW','WWWR','WWRR',
                             'WCWW','WCWR','WCRR',
-                            'CCWW','CCWR','CCRR')] <- c(1/16,1/8,1/16,1/8,1/4,1/8,1/16,1/8,1/16)
+                            'CCWW','CCWR','CCRR')] <- c(1/16,0.125,1/16,0.125,0.25,0.125,1/16,0.125,1/16)
 
   tMatrix['WCWB', 'WWWW', c('WWWW','WWWB','WCWW','WCWB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCWB', 'WWWH', c('WWWW','WWWH','WWWB','WWHB',
@@ -165,7 +211,7 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
   tMatrix['WCWB', 'WWWR', c('WWWW','WWWR','WWWB','WWRB',
                             'WCWW','WCWR','WCWB','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCWB', 'WWWB', c('WWWW','WWWB','WWBB',
-                            'WCWW','WCWB','WCBB')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
+                            'WCWW','WCWB','WCBB')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['WCWB', 'WWHH', c('WWWH','WWHB','WCWH','WCHB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCWB', 'WWHR', c('WWWH','WWWR','WWHB','WWRB',
                             'WCWH','WCWR','WCHB','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
@@ -176,105 +222,58 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
                             'WCWR','WCWB','WCRB','WCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCWB', 'WWBB', c('WWWB','WWBB','WCWB','WCBB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCWB', 'WCWW', c('WWWW','WWWB','WCWW',
-                            'WCWB','CCWW','CCWB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCWB','CCWW','CCWB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCWB', 'WCWR', c('WWWW','WWWR','WWWB','WWRB',
                             'WCWW','WCWR','WCWB','WCRB',
                             'CCWW','CCWR','CCWB','CCRB')] <- c(1/16,1/16,1/16,1/16,
-                                                               1/8,1/8,1/8,1/8,
+                                                               0.125,0.125,0.125,0.125,
                                                                1/16,1/16,1/16,1/16)
   tMatrix['WCWB', 'WCWB', c('WWWW','WWWB','WWBB',
                             'WCWW','WCWB','WCBB',
-                            'CCWW','CCWB','CCBB')] <- c(1/16,1/8,1/16,1/8,1/4,1/8,1/16,1/8,1/16)
+                            'CCWW','CCWB','CCBB')] <- c(1/16,0.125,1/16,0.125,0.25,0.125,1/16,0.125,1/16)
 
-  tMatrix['WCHH', 'WWWW', c('WWWH','WCWH')] <- c(0.5,0.5)
-  tMatrix['WCHH', 'WWWH', c('WWWH','WWHH','WCWH','WCHH')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['WCHH', 'WWWR', c('WWWH','WWHR','WCWH','WCHR')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['WCHH', 'WWWB', c('WWWH','WWHB','WCWH','WCHB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCHH', 'WWHH', c('WWHH','WCHH')] <- c(0.5,0.5)
   tMatrix['WCHH', 'WWHR', c('WWHH','WWHR','WCHH','WCHR')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCHH', 'WWHB', c('WWHH','WWHB','WCHH','WCHB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCHH', 'WWRR', c('WWHR','WCHR')] <- c(0.5,0.5)
   tMatrix['WCHH', 'WWRB', c('WWHR','WWHB','WCHR','WCHB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCHH', 'WWBB', c('WWHB','WCHB')] <- c(0.5,0.5)
-  tMatrix['WCHH', 'WCWW', c('WWWH','WCWH','CCWH')] <- c(0.25,0.5,0.25)
-  tMatrix['WCHH', 'WCWR', c('WWWH','WWHR','WCWH',
-                            'WCHR','CCWH','CCHR')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
-  tMatrix['WCHH', 'WCWB', c('WWWH','WWHB','WCWH',
-                            'WCHB','CCWH','CCHB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
   tMatrix['WCHH', 'WCHH', c('WWHH','WCHH','CCHH')] <- c(0.25,0.5,0.25)
 
-  tMatrix['WCHR', 'WWWW', c('WWWH','WWWR','WCWH','WCWR')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['WCHR', 'WWWH', c('WWWH','WWWR','WWHH','WWHR',
-                            'WCWH','WCWR','WCHH','WCHR')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
-  tMatrix['WCHR', 'WWWR', c('WWWH','WWWR','WWHR','WWRR',
-                            'WCWH','WCWR','WCHR','WCRR')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
-  tMatrix['WCHR', 'WWWB', c('WWWH','WWWR','WWHB','WWRB',
-                            'WCWH','WCWR','WCHB','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCHR', 'WWHH', c('WWHH','WWHR','WCHH','WCHR')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCHR', 'WWHR', c('WWHH','WWHR','WWRR',
-                            'WCHH','WCHR','WCRR')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
+                            'WCHH','WCHR','WCRR')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['WCHR', 'WWHB', c('WWHH','WWHR','WWHB','WWRB',
                             'WCHH','WCHR','WCHB','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCHR', 'WWRR', c('WWHR','WWRR','WCHR','WCRR')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCHR', 'WWRB', c('WWHR','WWHB','WWRR','WWRB',
                             'WCHR','WCHB','WCRR','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCHR', 'WWBB', c('WWHB','WWRB','WCHB','WCRB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['WCHR', 'WCWW', c('WWWH','WWWR','WCWH',
-                            'WCWR','CCWH','CCWR')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
-  tMatrix['WCHR', 'WCWR', c('WWWH','WWWR','WWHR','WWRR',
-                            'WCWH','WCWR','WCHR','WCRR',
-                            'CCWH','CCWR','CCHR','CCRR')] <- c(1/16,1/16,1/16,1/16,
-                                                               1/8,1/8,1/8,1/8,
-                                                               1/16,1/16,1/16,1/16)
-  tMatrix['WCHR', 'WCWB', c('WWWH','WWWR','WWHB','WWRB',
-                            'WCWH','WCWR','WCHB','WCRB',
-                            'CCWH','CCWR','CCHB','CCRB')] <- c(1/16,1/16,1/16,1/16,
-                                                               1/8,1/8,1/8,1/8,
-                                                               1/16,1/16,1/16,1/16)
   tMatrix['WCHR', 'WCHH', c('WWHH','WWHR','WCHH',
-                            'WCHR','CCHH','CCHR')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
+                            'WCHR','CCHH','CCHR')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['WCHR', 'WCHR', c('WWHH','WWHR','WWRR',
                             'WCHH','WCHR','WCRR',
-                            'CCHH','CCHR','CCRR')] <- c(1/16,1/8,1/16,1/8,1/4,1/8,1/16,1/8,1/16)
+                            'CCHH','CCHR','CCRR')] <- c(1/16,0.125,1/16,0.125,0.25,0.125,1/16,0.125,1/16)
 
-  tMatrix['WCHB', 'WWWW', c('WWWH','WWWB','WCWH','WCWB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['WCHB', 'WWWH', c('WWWH','WWWB','WWHH','WWHB',
-                            'WCWH','WCWB','WCHH','WCHB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
-  tMatrix['WCHB', 'WWWR', c('WWWH','WWWB','WWHR','WWRB',
-                            'WCWH','WCWB','WCHR','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
-  tMatrix['WCHB', 'WWWB', c('WWWH','WWWB','WWHB','WWBB',
-                            'WCWH','WCWB','WCHB','WCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCHB', 'WWHH', c('WWHH','WWHB','WCHH','WCHB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCHB', 'WWHR', c('WWHH','WWHR','WWHB','WWRB',
                             'WCHH','WCHR','WCHB','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCHB', 'WWHB', c('WWHH','WWHB','WWBB',
-                            'WCHH','WCHB','WCBB')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
+                            'WCHH','WCHB','WCBB')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['WCHB', 'WWRR', c('WWHR','WWRB','WCHR','WCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCHB', 'WWRB', c('WWHR','WWHB','WWRB','WWBB',
                             'WCHR','WCHB','WCRB','WCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCHB', 'WWBB', c('WWHB','WWBB','WCHB','WCBB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['WCHB', 'WCWW', c('WWWH','WWWB','WCWH',
-                            'WCWB','CCWH','CCWB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
-  tMatrix['WCHB', 'WCWR', c('WWWH','WWWB','WWHR','WWRB',
-                            'WCWH','WCWB','WCHR','WCRB',
-                            'CCWH','CCWB','CCHR','CCRB')] <- c(1/16,1/16,1/16,1/16,
-                                                               1/8,1/8,1/8,1/8,
-                                                               1/16,1/16,1/16,1/16)
-  tMatrix['WCHB', 'WCWB', c('WWWH','WWWB','WWHB','WWBB',
-                            'WCWH','WCWB','WCHB','WCBB',
-                            'CCWH','CCWB','CCHB','CCBB')] <- c(1/16,1/16,1/16,1/16,
-                                                               1/8,1/8,1/8,1/8,
-                                                               1/16,1/16,1/16,1/16)
   tMatrix['WCHB', 'WCHH', c('WWHH','WWHB','WCHH',
-                            'WCHB','CCHH','CCHB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCHB','CCHH','CCHB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCHB', 'WCHR', c('WWHH','WWHR','WWHB','WWRB',
                             'WCHH','WCHR','WCHB','WCRB',
                             'CCHH','CCHR','CCHB','CCRB')] <- c(1/16,1/16,1/16,1/16,
-                                                               1/8,1/8,1/8,1/8,
+                                                               0.125,0.125,0.125,0.125,
                                                                1/16,1/16,1/16,1/16)
   tMatrix['WCHB', 'WCHB', c('WWHH','WWHB','WWBB',
                             'WCHH','WCHB','WCBB',
-                            'CCHH','CCHB','CCBB')] <- c(1/16,1/8,1/16,1/8,1/4,1/8,1/16,1/8,1/16)
+                            'CCHH','CCHB','CCBB')] <- c(1/16,0.125,1/16,0.125,0.25,0.125,1/16,0.125,1/16)
 
   tMatrix['WCRR', 'WWWW', c('WWWR','WCWR')] <- c(0.5,0.5)
   tMatrix['WCRR', 'WWWH', c('WWWR','WWHR','WCWR','WCHR')] <- c(0.25,0.25,0.25,0.25)
@@ -288,14 +287,14 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
   tMatrix['WCRR', 'WWBB', c('WWRB','WCRB')] <- c(0.5,0.5)
   tMatrix['WCRR', 'WCWW', c('WWWR','WCWR','CCWR')] <- c(0.25,0.5,0.25)
   tMatrix['WCRR', 'WCWR', c('WWWR','WWRR','WCWR',
-                            'WCRR','CCWR','CCRR')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCRR','CCWR','CCRR')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCRR', 'WCWB', c('WWWR','WWRB','WCWR',
-                            'WCRB','CCWR','CCRB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCRB','CCWR','CCRB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCRR', 'WCHH', c('WWHR','WCHR','CCHR')] <- c(0.25,0.5,0.25)
   tMatrix['WCRR', 'WCHR', c('WWHR','WWRR','WCHR',
-                            'WCRR','CCHR','CCRR')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCRR','CCHR','CCRR')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCRR', 'WCHB', c('WWHR','WWRB','WCHR',
-                            'WCRB','CCHR','CCRB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCRB','CCHR','CCRB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCRR', 'WCRR', c('WWRR','WCRR','CCRR')] <- c(0.25,0.5,0.25)
 
   tMatrix['WCRB', 'WWWW', c('WWWR','WWWB','WCWR','WCWB')] <- c(0.25,0.25,0.25,0.25)
@@ -312,37 +311,37 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
                            'WCHR','WCHB','WCRB','WCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['WCRB', 'WWRR', c('WWRR','WWRB','WCRR','WCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCRB', 'WWRB', c('WWRR','WWRB','WWBB',
-                            'WCRR','WCRB','WCBB')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
+                            'WCRR','WCRB','WCBB')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['WCRB', 'WWBB', c('WWRB','WWBB','WCRB','WCBB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['WCRB', 'WCWW', c('WWWR','WWWB','WCWR',
-                            'WCWB','CCWR','CCWB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCWB','CCWR','CCWB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCRB', 'WCWR', c('WWWR','WWWB','WWRR','WWRB',
                             'WCWR','WCWB','WCRR','WCRB',
                             'CCWR','CCWB','CCRR','CCRB')] <- c(1/16,1/16,1/16,1/16,
-                                                               1/8,1/8,1/8,1/8,
+                                                               0.125,0.125,0.125,0.125,
                                                                1/16,1/16,1/16,1/16)
   tMatrix['WCRB', 'WCWB', c('WWWR','WWWB','WWRB','WWBB',
                             'WCWR','WCWB','WCRB','WCBB',
                             'CCWR','CCWB','CCRB','CCBB')] <- c(1/16,1/16,1/16,1/16,
-                                                               1/8,1/8,1/8,1/8,
+                                                               0.125,0.125,0.125,0.125,
                                                                1/16,1/16,1/16,1/16)
   tMatrix['WCRB', 'WCHH', c('WWHR','WWHB','WCHR',
-                            'WCHB','CCHR','CCHB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCHB','CCHR','CCHB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCRB', 'WCHR', c('WWHR','WWHB','WWRR','WWRB',
                             'WCHR','WCHB','WCRR','WCRB',
                             'CCHR','CCHB','CCRR','CCRB')] <- c(1/16,1/16,1/16,1/16,
-                                                               1/8,1/8,1/8,1/8,
+                                                               0.125,0.125,0.125,0.125,
                                                                1/16,1/16,1/16,1/16)
   tMatrix['WCRB', 'WCHB', c('WWHR','WWHB','WWRB','WWBB',
                             'WCHR','WCHB','WCRB','WCBB',
                             'CCHR','CCHB','CCRB','CCBB')] <- c(1/16,1/16,1/16,1/16,
-                                                               1/8,1/8,1/8,1/8,
+                                                               0.125,0.125,0.125,0.125,
                                                                1/16,1/16,1/16,1/16)
   tMatrix['WCRB', 'WCRR', c('WWRR','WWRB','WCRR',
-                            'WCRB','CCRR','CCRB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCRB','CCRR','CCRB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCRB', 'WCRB', c('WWRR','WWRB','WWBB',
                             'WCRR','WCRB','WCBB',
-                            'CCRR','CCRB','CCBB')] <- c(1/16,1/8,1/16,1/8,1/4,1/8,1/16,1/8,1/16)
+                            'CCRR','CCRB','CCBB')] <- c(1/16,0.125,1/16,0.125,0.25,0.125,1/16,0.125,1/16)
 
   tMatrix['WCBB', 'WWWW', c('WWWB','WCWB')] <- c(0.5,0.5)
   tMatrix['WCBB', 'WWWH', c('WWWB','WWHB','WCWB','WCHB')] <- c(0.25,0.25,0.25,0.25)
@@ -356,17 +355,17 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
   tMatrix['WCBB', 'WWBB', c('WWBB','WCBB')] <- c(0.5,0.5)
   tMatrix['WCBB', 'WCWW', c('WWWB','WCWB','CCWB')] <- c(0.25,0.5,0.25)
   tMatrix['WCBB', 'WCWR', c('WWWB','WWRB','WCWB',
-                            'WCRB','CCWB','CCRB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCRB','CCWB','CCRB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCBB', 'WCWB', c('WWWB','WWBB','WCWB',
-                            'WCBB','CCWB','CCBB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCBB','CCWB','CCBB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCBB', 'WCHH', c('WWHB','WCHB','CCHB')] <- c(0.25,0.5,0.25)
   tMatrix['WCBB', 'WCHR', c('WWHB','WWRB','WCHB',
-                            'WCRB','CCHB','CCRB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCRB','CCHB','CCRB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCBB', 'WCHB', c('WWHB','WWBB','WCHB',
-                            'WCBB','CCHB','CCBB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCBB','CCHB','CCBB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCBB', 'WCRR', c('WWRB','WCRB','CCRB')] <- c(0.25,0.5,0.25)
   tMatrix['WCBB', 'WCRB', c('WWRB','WWBB','WCRB',
-                            'WCBB','CCRB','CCBB')] <- c(1/8,1/8,1/4,1/4,1/8,1/8)
+                            'WCBB','CCRB','CCBB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
   tMatrix['WCBB', 'WCBB', c('WWBB','WCBB','CCBB')] <- c(0.25,0.5,0.25)
 
   tMatrix['CCWW', 'WWWW', 'WCWW'] <- 1
@@ -382,9 +381,6 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
   tMatrix['CCWW', 'WCWW', c('WCWW','CCWW')] <- c(0.5,0.5)
   tMatrix['CCWW', 'WCWR', c('WCWW','WCWR','CCWW','CCWR')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCWW', 'WCWB', c('WCWW','WCWB','CCWW','CCWB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCWW', 'WCHH', c('WCWH','CCWH')] <- c(0.5,0.5)
-  tMatrix['CCWW', 'WCHR', c('WCWH','WCWR','CCWH','CCWR')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCWW', 'WCHB', c('WCWH','WCWB','CCWH','CCWB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCWW', 'WCRR', c('WCWR','CCWR')] <- c(0.5,0.5)
   tMatrix['CCWW', 'WCRB', c('WCWR','WCWB','CCWR','CCWB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCWW', 'WCBB', c('WCWB','CCWB')] <- c(0.5,0.5)
@@ -402,14 +398,9 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
   tMatrix['CCWR', 'WWBB', c('WCWB','WCRB')] <- c(0.5,0.5)
   tMatrix['CCWR', 'WCWW', c('WCWW','WCWR','CCWW','CCWR')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCWR', 'WCWR', c('WCWW','WCWR','WCRR',
-                            'CCWW','CCWR','CCRR')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
+                            'CCWW','CCWR','CCRR')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['CCWR', 'WCWB', c('WCWW','WCWR','WCWB','WCRB',
                             'CCWW','CCWR','CCWB','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
-  tMatrix['CCWR', 'WCHH', c('WCWH','WCHR','CCWH','CCHR')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCWR', 'WCHR', c('WCWH','WCWR','WCHR','WCRR',
-                            'CCWH','CCWR','CCHR','CCRR')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
-  tMatrix['CCWR', 'WCHB', c('WCWH','WCWB','WCHR','WCRB',
-                            'CCWH','CCWB','CCHR','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['CCWR', 'WCRR', c('WCWR','WCRR','CCWR','CCRR')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCWR', 'WCRB', c('WCWR','WCWB','WCRR','WCRB',
                             'CCWR','CCWB','CCRR','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
@@ -431,12 +422,7 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
   tMatrix['CCWB', 'WCWR', c('WCWW','WCWR','WCWB','WCRB',
                             'CCWW','CCWR','CCWB','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['CCWB', 'WCWB', c('WCWW','WCWB','WCBB',
-                            'CCWW','CCWB','CCBB')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
-  tMatrix['CCWB', 'WCHH', c('WCWH','WCHB','CCWH','CCHB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCWB', 'WCHR', c('WCWH','WCWR','WCHB','WCRB',
-                            'CCWH','CCWR','CCHB','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
-  tMatrix['CCWB', 'WCHB', c('WCWH','WCWB','WCHB','WCBB',
-                            'CCWH','CCWB','CCHB','CCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+                            'CCWW','CCWB','CCBB')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['CCWB', 'WCRR', c('WCWR','WCRB','CCWR','CCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCWB', 'WCRB', c('WCWR','WCWB','WCRB','WCBB',
                             'CCWR','CCWB','CCRB','CCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
@@ -445,87 +431,53 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
   tMatrix['CCWB', 'CCWR', c('CCWW','CCWR','CCWB','CCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCWB', 'CCWB', c('CCWW','CCWB','CCBB')] <- c(0.25,0.5,0.25)
 
-  tMatrix['CCHH', 'WWWW', 'WCWH'] <- 1
-  tMatrix['CCHH', 'WWWH', c('WCWH','WCHH')] <- c(0.5,0.5)
-  tMatrix['CCHH', 'WWWR', c('WCWH','WCHR')] <- c(0.5,0.5)
-  tMatrix['CCHH', 'WWWB', c('WCWH','WCHB')] <- c(0.5,0.5)
   tMatrix['CCHH', 'WWHH', 'WCHH'] <- 1
   tMatrix['CCHH', 'WWHR', c('WCHH','WCHR')] <- c(0.5,0.5)
   tMatrix['CCHH', 'WWHB', c('WCHH','WCHB')] <- c(0.5,0.5)
   tMatrix['CCHH', 'WWRR', 'WCHR'] <- 1
   tMatrix['CCHH', 'WWRB', c('WCHR','WCHB')] <- c(0.5,0.5)
   tMatrix['CCHH', 'WWBB', 'WCHB'] <- 1
-  tMatrix['CCHH', 'WCWW', c('WCWH','CCWH')] <- c(0.5,0.5)
-  tMatrix['CCHH', 'WCWR', c('WCWH','WCHR','CCWH','CCHR')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHH', 'WCWB', c('WCWH','WCHB','CCWH','CCHB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHH', 'WCHH', c('WCHH','CCHH')] <- c(0.5,0.5)
   tMatrix['CCHH', 'WCHR', c('WCHH','WCHR','CCHH','CCHR')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHH', 'WCHB', c('WCHH','WCHB','CCHH','CCHB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHH', 'WCRR', c('WCHR','CCHR')] <- c(0.5,0.5)
   tMatrix['CCHH', 'WCRB', c('WCHR','WCHB','CCHR','CCHB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHH', 'WCBB', c('WCHB','CCHB')] <- c(0.5,0.5)
-  tMatrix['CCHH', 'CCWW', 'CCWH'] <- 1
-  tMatrix['CCHH', 'CCWR', c('CCWH','CCHR')] <- c(0.5,0.5)
-  tMatrix['CCHH', 'CCWB', c('CCWH','CCHB')] <- c(0.5,0.5)
   tMatrix['CCHH', 'CCHH', 'CCHH'] <- 1
 
-  tMatrix['CCHR', 'WWWW', c('WCWH','WCWR')] <- c(0.5,0.5)
-  tMatrix['CCHR', 'WWWH', c('WCWH','WCWR','WCHH','WCHR')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHR', 'WWWR', c('WCWH','WCWR','WCHR','WCRR')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHR', 'WWWB', c('WCWH','WCWR','WCHB','WCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHR', 'WWHH', c('WCHH','WCHR')] <- c(0.5,0.5)
   tMatrix['CCHR', 'WWHR', c('WCHH','WCHR','WCRR')] <- c(0.25,0.5,0.25)
   tMatrix['CCHR', 'WWHB', c('WCHH','WCHR','WCHB','WCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHR', 'WWRR', c('WCHR','WCRR')] <- c(0.5,0.5)
   tMatrix['CCHR', 'WWRB', c('WCHR','WCHB','WCRR','WCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHR', 'WWBB', c('WCHB','WCRB')] <- c(0.5,0.5)
-  tMatrix['CCHR', 'WCWW', c('WCWH','WCWR','CCWH','CCWR')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHR', 'WCWR', c('WCWH','WCWR','WCHR','WCRR',
-                            'CCWH','CCWR','CCHR','CCRR')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
-  tMatrix['CCHR', 'WCWB', c('WCWH','WCWR','WCHB','WCRB',
-                            'CCWH','CCWR','CCHB','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['CCHR', 'WCHH', c('WCHH','WCHR','CCHH','CCHR')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHR', 'WCHR', c('WCHH','WCHR','WCRR',
-                            'CCHH','CCHR','CCRR')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
+                            'CCHH','CCHR','CCRR')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['CCHR', 'WCHB', c('WCHH','WCHR','WCHB','WCRB',
                             'CCHH','CCHR','CCHB','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['CCHR', 'WCRR', c('WCHR','WCRR','CCHR','CCRR')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHR', 'WCRB', c('WCHR','WCHB','WCRR','WCRB',
                             'CCHR','CCHB','CCRR','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['CCHR', 'WCBB', c('WCHB','WCRB','CCHB','CCRB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHR', 'CCWW', c('CCWH','CCWR')] <- c(0.5,0.5)
-  tMatrix['CCHR', 'CCWR', c('CCWH','CCWR','CCHR','CCRR')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHR', 'CCWB', c('CCWH','CCWR','CCHB','CCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHR', 'CCHH', c('CCHH','CCHR')] <- c(0.5,0.5)
   tMatrix['CCHR', 'CCHR', c('CCHH','CCHR','CCRR')] <- c(0.25,0.5,0.25)
 
-  tMatrix['CCHB', 'WWWW', c('WCWH','WCWB')] <- c(0.5,0.5)
-  tMatrix['CCHB', 'WWWH', c('WCWH','WCWB','WCHH','WCHB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHB', 'WWWR', c('WCWH','WCWB','WCHR','WCRB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHB', 'WWWB', c('WCWH','WCWB','WCHB','WCBB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHB', 'WWHH', c('WCHH','WCHB')]<- c(0.5,0.5)
   tMatrix['CCHB', 'WWHR', c('WCHH','WCHR','WCHB','WCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHB', 'WWHB', c('WCHH','WCHB','WCBB')] <- c(0.25,0.5,0.25)
   tMatrix['CCHB', 'WWRR', c('WCHR','WCRB')] <- c(0.5,0.5)
   tMatrix['CCHB', 'WWRB', c('WCHR','WCHB','WCRB','WCBB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHB', 'WWBB', c('WCHB','WCBB')] <- c(0.5,0.5)
-  tMatrix['CCHB', 'WCWW', c('WCWH','WCWB','CCWH','CCWB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHB', 'WCWR', c('WCWH','WCWB','WCHR','WCRB',
-                            'CCWH','CCWB','CCHR','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
-  tMatrix['CCHB', 'WCWB', c('WCWH','WCWB','WCHB','WCBB',
-                            'CCWH','CCWB','CCHB','CCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['CCHB', 'WCHH', c('WCHH','WCHB','CCHH','CCHB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHB', 'WCHR', c('WCHH','WCHR','WCHB','WCRB',
                             'CCHH','CCHR','CCHB','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['CCHB', 'WCHB', c('WCHH','WCHB','WCBB',
-                            'CCHH','CCHB','CCBB')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
+                            'CCHH','CCHB','CCBB')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['CCHB', 'WCRR', c('WCHR','WCRB','CCHR','CCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHB', 'WCRB', c('WCHR','WCHB','WCRB','WCBB',
                             'CCHR','CCHB','CCRB','CCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['CCHB', 'WCBB', c('WCHB','WCBB','CCHB','CCBB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHB', 'CCWW', c('CCWH','CCWB')] <- c(0.5,0.5)
-  tMatrix['CCHB', 'CCWR', c('CCWH','CCWB','CCHR','CCRB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCHB', 'CCWB', c('CCWH','CCWB','CCHB','CCBB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHB', 'CCHH', c('CCHH','CCHB')] <- c(0.5,0.5)
   tMatrix['CCHB', 'CCHR', c('CCHH','CCHR','CCHB','CCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCHB', 'CCHB', c('CCHH','CCHB','CCBB')] <- c(0.25,0.5,0.25)
@@ -577,7 +529,7 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
                             'CCHR','CCHB','CCRB','CCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['CCRB', 'WCRR', c('WCRR','WCRB','CCRR','CCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCRB', 'WCRB', c('WCRR','WCRB','WCBB',
-                            'CCRR','CCRB','CCBB')] <- c(1/8,1/4,1/8,1/8,1/4,1/8)
+                            'CCRR','CCRB','CCBB')] <- c(0.125,0.25,0.125,0.125,0.25,0.125)
   tMatrix['CCRB', 'WCBB', c('WCRB','WCBB','CCRB','CCBB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCRB', 'CCWW', c('CCWR','CCWB')] <- c(0.5,0.5)
   tMatrix['CCRB', 'CCWR', c('CCWR','CCWB','CCRR','CCRB')] <- c(0.25,0.25,0.25,0.25)
@@ -625,19 +577,282 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
 
 
   ## fill asymmetric parts of tMatrix
-  #female specific homing
-  tMatrix['WCWH', 'WWWW', c('WWWW','WWWH','WWWR','WWWB',
-                            'WCWW','WCWH','WCWR','WCWB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                               1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['WCWH', 'WWWH', c('WWWW','WWWH','WWWR','WWWB','WWHH','WWHR','WWHB',
-                            'WCWW','WCWH','WCWR','WCWB','WCHH','WCHR','WCHB')] <- c(1-cF, 1+cF*chF + 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                    1-cF, 1+cF*chF + 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/8
-  tMatrix['WCWH', 'WWWR', c('WWWW','WWWH','WWWR','WWWB','WWHR','WWRR','WWRB',
-                            'WCWW','WCWH','WCWR','WCWB','WCHR','WCRR','WCRB')]<- c(1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                   1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/8
-  tMatrix['WCWH', 'WWWB', c('WWWW','WWWH','WWWR','WWWB','WWHB','WWRB','WWBB',
-                            'WCWW','WCWH','WCWR','WCWB','WCHB','WCRB','WCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                    1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/8
+  ## non-deposition stuff
+  tMatrix['WWWW', 'WCHH', c('WWWH','WCWH')] <- c(0.5,0.5)
+  tMatrix['WWWH', 'WCHH', c('WWWH','WWHH','WCWH','WCHH')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WWWR', 'WCHH', c('WWWH','WWHR','WCWH','WCHR')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WWWB', 'WCHH', c('WWWH','WWHB','WCWH','WCHB')] <- c(0.25,0.25,0.25,0.25)
+
+  tMatrix['WWWW', 'WCHR', c('WWWH','WWWR','WCWH','WCWR')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WWWH', 'WCHR', c('WWWH','WWWR','WWHH','WWHR',
+                            'WCWH','WCWR','WCHH','WCHR')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+  tMatrix['WWWR', 'WCHR', c('WWWH','WWWR','WWHR','WWRR',
+                            'WCWH','WCWR','WCHR','WCRR')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+  tMatrix['WWWB', 'WCHR', c('WWWH','WWWR','WWHB','WWRB',
+                            'WCWH','WCWR','WCHB','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+
+  tMatrix['WWWW', 'WCHB', c('WWWH','WWWB','WCWH','WCWB')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WWWH', 'WCHB', c('WWWH','WWWB','WWHH','WWHB',
+                            'WCWH','WCWB','WCHH','WCHB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+  tMatrix['WWWR', 'WCHB', c('WWWH','WWWB','WWHR','WWRB',
+                            'WCWH','WCWB','WCHR','WCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+  tMatrix['WWWB', 'WCHB', c('WWWH','WWWB','WWHB','WWBB',
+                            'WCWH','WCWB','WCHB','WCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+
+
+  tMatrix['WCWW', 'WCHH', c('WWWH','WCWH','CCWH')] <- c(0.25,0.5,0.25)
+  tMatrix['WCWR', 'WCHH', c('WWWH','WWHR','WCWH',
+                            'WCHR','CCWH','CCHR')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
+  tMatrix['WCWB', 'WCHH', c('WWWH','WWHB','WCWH',
+                            'WCHB','CCWH','CCHB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
+
+
+  tMatrix['WCWW', 'WCHR', c('WWWH','WWWR','WCWH',
+                            'WCWR','CCWH','CCWR')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
+  tMatrix['WCWR', 'WCHR', c('WWWH','WWWR','WWHR','WWRR',
+                            'WCWH','WCWR','WCHR','WCRR',
+                            'CCWH','CCWR','CCHR','CCRR')] <- c(1/16,1/16,1/16,1/16,
+                                                               0.125,0.125,0.125,0.125,
+                                                               1/16,1/16,1/16,1/16)
+  tMatrix['WCWB', 'WCHR', c('WWWH','WWWR','WWHB','WWRB',
+                            'WCWH','WCWR','WCHB','WCRB',
+                            'CCWH','CCWR','CCHB','CCRB')] <- c(1/16,1/16,1/16,1/16,
+                                                               0.125,0.125,0.125,0.125,
+                                                               1/16,1/16,1/16,1/16)
+
+
+  tMatrix['WCWW', 'WCHB', c('WWWH','WWWB','WCWH',
+                            'WCWB','CCWH','CCWB')] <- c(0.125,0.125,0.25,0.25,0.125,0.125)
+  tMatrix['WCWR', 'WCHB', c('WWWH','WWWB','WWHR','WWRB',
+                            'WCWH','WCWB','WCHR','WCRB',
+                            'CCWH','CCWB','CCHR','CCRB')] <- c(1/16,1/16,1/16,1/16,
+                                                               0.125,0.125,0.125,0.125,
+                                                               1/16,1/16,1/16,1/16)
+  tMatrix['WCWB', 'WCHB', c('WWWH','WWWB','WWHB','WWBB',
+                            'WCWH','WCWB','WCHB','WCBB',
+                            'CCWH','CCWB','CCHB','CCBB')] <- c(1/16,1/16,1/16,1/16,
+                                                               0.125,0.125,0.125,0.125,
+                                                               1/16,1/16,1/16,1/16)
+
+
+  tMatrix['CCWW', 'WCHH', c('WCWH','CCWH')] <- c(0.5,0.5)
+  tMatrix['CCWW', 'WCHR', c('WCWH','WCWR','CCWH','CCWR')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['CCWW', 'WCHB', c('WCWH','WCWB','CCWH','CCWB')] <- c(0.25,0.25,0.25,0.25)
+
+  tMatrix['CCWR', 'WCHH', c('WCWH','WCHR','CCWH','CCHR')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['CCWR', 'WCHR', c('WCWH','WCWR','WCHR','WCRR',
+                            'CCWH','CCWR','CCHR','CCRR')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+  tMatrix['CCWR', 'WCHB', c('WCWH','WCWB','WCHR','WCRB',
+                            'CCWH','CCWB','CCHR','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+
+  tMatrix['CCWB', 'WCHH', c('WCWH','WCHB','CCWH','CCHB')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['CCWB', 'WCHR', c('WCWH','WCWR','WCHB','WCRB',
+                            'CCWH','CCWR','CCHB','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+  tMatrix['CCWB', 'WCHB', c('WCWH','WCWB','WCHB','WCBB',
+                            'CCWH','CCWB','CCHB','CCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+
+
+  tMatrix['WWWW', 'CCHH', 'WCWH'] <- 1
+  tMatrix['WWWH', 'CCHH', c('WCWH','WCHH')] <- c(0.5,0.5)
+  tMatrix['WWWR', 'CCHH', c('WCWH','WCHR')] <- c(0.5,0.5)
+  tMatrix['WWWB', 'CCHH', c('WCWH','WCHB')] <- c(0.5,0.5)
+
+  tMatrix['WWWW', 'CCHR', c('WCWH','WCWR')] <- c(0.5,0.5)
+  tMatrix['WWWH', 'CCHR', c('WCWH','WCWR','WCHH','WCHR')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WWWR', 'CCHR', c('WCWH','WCWR','WCHR','WCRR')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WWWB', 'CCHR', c('WCWH','WCWR','WCHB','WCRB')] <- c(0.25,0.25,0.25,0.25)
+
+  tMatrix['WWWW', 'CCHB', c('WCWH','WCWB')] <- c(0.5,0.5)
+  tMatrix['WWWH', 'CCHB', c('WCWH','WCWB','WCHH','WCHB')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WWWR', 'CCHB', c('WCWH','WCWB','WCHR','WCRB')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WWWB', 'CCHB', c('WCWH','WCWB','WCHB','WCBB')] <- c(0.25,0.25,0.25,0.25)
+
+
+  tMatrix['WCWW', 'CCHH', c('WCWH','CCWH')] <- c(0.5,0.5)
+  tMatrix['WCWR', 'CCHH', c('WCWH','WCHR','CCWH','CCHR')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WCWB', 'CCHH', c('WCWH','WCHB','CCWH','CCHB')] <- c(0.25,0.25,0.25,0.25)
+
+  tMatrix['WCWW', 'CCHR', c('WCWH','WCWR','CCWH','CCWR')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WCWR', 'CCHR', c('WCWH','WCWR','WCHR','WCRR',
+                            'CCWH','CCWR','CCHR','CCRR')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+  tMatrix['WCWB', 'CCHR', c('WCWH','WCWR','WCHB','WCRB',
+                            'CCWH','CCWR','CCHB','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+
+  tMatrix['WCWW', 'CCHB', c('WCWH','WCWB','CCWH','CCWB')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['WCWR', 'CCHB', c('WCWH','WCWB','WCHR','WCRB',
+                            'CCWH','CCWB','CCHR','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+  tMatrix['WCWB', 'CCHB', c('WCWH','WCWB','WCHB','WCBB',
+                            'CCWH','CCWB','CCHB','CCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+
+
+  tMatrix['CCWW', 'CCHH', 'CCWH'] <- 1
+  tMatrix['CCWR', 'CCHH', c('CCWH','CCHR')] <- c(0.5,0.5)
+  tMatrix['CCWB', 'CCHH', c('CCWH','CCHB')] <- c(0.5,0.5)
+
+  tMatrix['CCWW', 'CCHR', c('CCWH','CCWR')] <- c(0.5,0.5)
+  tMatrix['CCWR', 'CCHR', c('CCWH','CCWR','CCHR','CCRR')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['CCWB', 'CCHR', c('CCWH','CCWR','CCHB','CCRB')] <- c(0.25,0.25,0.25,0.25)
+
+  tMatrix['CCWW', 'CCHB', c('CCWH','CCWB')] <- c(0.5,0.5)
+  tMatrix['CCWR', 'CCHB', c('CCWH','CCWB','CCHR','CCRB')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['CCWB', 'CCHB', c('CCWH','CCWB','CCHB','CCBB')] <- c(0.25,0.25,0.25,0.25)
+
+
+  ## deposition stuff
+  eTen <- rep.int(x = 0, times = 10)
+
+  wrbTen <- c(0, 1-dW, 0, 0, 0, dW*drW, dW*(1-drW), 0, 0, 0)
+  tMatrix['WCHH', 'WWWW', ] <- c(wrbTen, wrbTen, eTen)/2
+  tMatrix['WCHH', 'WCWW', ] <- c(wrbTen, 2*wrbTen, wrbTen)/4
+  tMatrix['WCHH', 'CCWW', ] <- c(eTen, wrbTen, wrbTen)/2
+
+  wrbTen <- c(0, 1-dW, 0, 0, 1+dW*dhW, dW*(1-dhW)*drW, dW*(1-dhW)*(1-drW), 0, 0, 0)
+  tMatrix['WCHH', 'WWWH', ] <- c(wrbTen, wrbTen, eTen)/4
+
+  wrbTen <- c(0, 1-dW, 0, 0, 0, 1+dW*drW, dW*(1-drW), 0, 0, 0)
+  tMatrix['WCHH', 'WWWR', ] <- c(wrbTen, wrbTen, eTen)/4
+  tMatrix['WCHH', 'WCWR', ] <- c(wrbTen, 2*wrbTen, wrbTen)/8
+  tMatrix['WCHH', 'CCWR', ] <- c(eTen, wrbTen, wrbTen)/4
+
+  wrbTen <- c(0, 1-dW, 0, 0, 0, dW*drW, 1+dW*(1-drW), 0, 0, 0)
+  tMatrix['WCHH', 'WWWB', ] <- c(wrbTen, wrbTen, eTen)/4
+  tMatrix['WCHH', 'WCWB', ] <- c(wrbTen, 2*wrbTen, wrbTen)/8
+  tMatrix['WCHH', 'CCWB', ] <- c(eTen, wrbTen, wrbTen)/4
+
+
+  wrbTen <- c(0, 1-dW, 1-dW, 0, 0, dW*drW, dW*(1-drW), dW*drW, dW*(1-drW), 0)
+  tMatrix['WCHR', 'WWWW', ] <- c(wrbTen, wrbTen, eTen)/4
+  tMatrix['WCHR', 'WCWW', ] <- c(wrbTen, 2*wrbTen, wrbTen)/8
+  tMatrix['WCHR', 'CCWW', ] <- c(eTen, wrbTen, wrbTen)/4
+
+  wrbTen <- c(0, 1-dW, 1-dW, 0, 1+dW*dhW, 1+dW*dhW + dW*(1-dhW)*drW,
+              dW*(1-dhW)*(1-drW), dW*(1-dhW)*drW, dW*(1-dhW)*(1-drW), 0)
+  tMatrix['WCHR', 'WWWH', ] <- c(wrbTen, wrbTen, eTen)/8
+
+  wrbTen <- c(0, 1-dW, 1-dW, 0, 0, 1+dW*drW, dW*(1-drW), 1+dW*drW, dW*(1-drW), 0)
+  tMatrix['WCHR', 'WWWR', ] <- c(wrbTen, wrbTen, eTen)/8
+  tMatrix['WCHR', 'WCWR', ] <- c(wrbTen, 2*wrbTen, wrbTen)/16
+  tMatrix['WCHR', 'CCWR', ] <- c(eTen, wrbTen, wrbTen)/8
+
+  wrbTen <- c(0, 1-dW, 1-dW, 0, 0, dW*drW, 1+dW*(1-drW), dW*drW, 1+dW*(1-drW), 0)
+  tMatrix['WCHR', 'WWWB', ] <- c(wrbTen, wrbTen, eTen)/8
+  tMatrix['WCHR', 'WCWB', ] <- c(wrbTen, 2*wrbTen, wrbTen)/16
+  tMatrix['WCHR', 'CCWB', ] <- c(eTen, wrbTen, wrbTen)/8
+
+
+  wrbTen <- c(0, 1-dW, 0, 1-dW, 0, dW*drW, dW*(1-drW), 0, dW*drW, dW*(1-drW))
+  tMatrix['WCHB', 'WWWW', ] <- c(wrbTen, wrbTen, eTen)/4
+  tMatrix['WCHB', 'WCWW', ] <- c(wrbTen, 2*wrbTen, wrbTen)/8
+  tMatrix['WCHB', 'CCWW', ] <- c(eTen, wrbTen, wrbTen)/4
+
+  wrbTen <- c(0, 1-dW, 0, 1-dW, 1+dW*dhW, dW*(1-dhW)*drW,
+              1+dW*dhW + dW*(1-dhW)*(1-drW), 0, dW*(1-dhW)*drW, dW*(1-dhW)*(1-drW))
+  tMatrix['WCHB', 'WWWH', ] <- c(wrbTen, wrbTen, eTen)/8
+
+  wrbTen <- c(0, 1-dW, 0, 1-dW, 0, 1+dW*drW, dW*(1-drW), 0, 1+dW*drW, dW*(1-drW))
+  tMatrix['WCHB', 'WWWR', ] <- c(wrbTen, wrbTen, eTen)/8
+  tMatrix['WCHB', 'WCWR', ] <- c(wrbTen, 2*wrbTen, wrbTen)/16
+  tMatrix['WCHB', 'CCWR', ] <- c(eTen, wrbTen, wrbTen)/8
+
+  wrbTen <- c(0, 1-dW, 0, 1-dW, 0, dW*drW, 1+dW*(1-drW), 0, dW*drW, 1+dW*(1-drW))
+  tMatrix['WCHB', 'WWWB', ] <- c(wrbTen, wrbTen, eTen)/8
+  tMatrix['WCHB', 'WCWB', ] <- c(wrbTen, 2*wrbTen, wrbTen)/16
+  tMatrix['WCHB', 'CCWB', ] <- c(eTen, wrbTen, wrbTen)/8
+
+
+  # double deposition stuff
+  wrbTen <- c(0, 1-ddW, 0, 0, 0, ddW*ddrW, ddW*(1-ddrW), 0, 0, 0)
+  tMatrix['CCHH', 'WWWW', ] <- c(eTen, wrbTen, eTen)
+  tMatrix['CCHH', 'WCWW', ] <- c(eTen, wrbTen, wrbTen)/2
+  tMatrix['CCHH', 'CCWW', ] <- c(eTen, eTen, wrbTen)
+
+  wrbTen <- c(0, 1-ddW, 0, 0, 1+ddW*ddhW, ddW*(1-ddhW)*ddrW, ddW*(1-ddhW)*(1-ddrW), 0, 0, 0)
+  tMatrix['CCHH', 'WWWH', ] <- c(eTen, wrbTen, eTen)/2
+
+  wrbTen <- c(0, 1-ddW, 0, 0, 0, 1+ddW*ddrW, ddW*(1-ddrW), 0, 0, 0)
+  tMatrix['CCHH', 'WWWR', ] <- c(eTen, wrbTen, eTen)/2
+  tMatrix['CCHH', 'WCWR', ] <- c(eTen, wrbTen, wrbTen)/4
+  tMatrix['CCHH', 'CCWR', ] <- c(eTen, eTen, wrbTen)/2
+
+  wrbTen <- c(0, 1-ddW, 0, 0, 0, ddW*ddrW, 1+ddW*(1-ddrW), 0, 0, 0)
+  tMatrix['CCHH', 'WWWB', ] <- c(eTen, wrbTen, eTen)/2
+  tMatrix['CCHH', 'WCWB', ] <- c(eTen, wrbTen, wrbTen)/4
+  tMatrix['CCHH', 'CCWB', ] <- c(eTen, eTen, wrbTen)/2
+
+
+  wrbTen <- c(0, 1-ddW, 1-ddW, 0, 0, ddW*ddrW, ddW*(1-ddrW), ddW*ddrW, ddW*(1-ddrW), 0)
+  tMatrix['CCHR', 'WWWW', ] <- c(eTen, wrbTen, eTen)/2
+  tMatrix['CCHR', 'WCWW', ] <- c(eTen, wrbTen, wrbTen)/4
+  tMatrix['CCHR', 'CCWW', ] <- c(eTen, eTen, wrbTen)/2
+
+  wrbTen <- c(0, 1-ddW, 1-ddW, 0, 1+ddW*ddhW, 1+ddW*ddhW + ddW*(1-ddhW)*ddrW,
+              ddW*(1-ddhW)*(1-ddrW), ddW*(1-ddhW)*ddrW, ddW*(1-ddhW)*(1-ddrW), 0)
+  tMatrix['CCHR', 'WWWH', ] <- c(eTen, wrbTen, eTen)/4
+
+  wrbTen <- c(0, 1-ddW, 1-ddW, 0, 0, 1+ddW*ddrW, ddW*(1-ddrW), 1+ddW*ddrW, ddW*(1-ddrW), 0)
+  tMatrix['CCHR', 'WWWR', ] <- c(eTen, wrbTen, eTen)/4
+  tMatrix['CCHR', 'WCWR', ] <- c(eTen, wrbTen, wrbTen)/8
+  tMatrix['CCHR', 'CCWR', ] <- c(eTen, eTen, wrbTen)/4
+
+  wrbTen <- c(0, 1-ddW, 1-ddW, 0, 0, ddW*ddrW, 1+ddW*(1-ddrW), ddW*ddrW, 1+ddW*(1-ddrW), 0)
+  tMatrix['CCHR', 'WWWB', ] <- c(eTen, wrbTen, eTen)/4
+  tMatrix['CCHR', 'WCWB', ] <- c(eTen, wrbTen, wrbTen)/8
+  tMatrix['CCHR', 'CCWB', ] <- c(eTen, eTen, wrbTen)/4
+
+
+  wrbTen <- c(0, 1-ddW, 0, 1-ddW, 0, ddW*ddrW, ddW*(1-ddrW), 0, ddW*ddrW, ddW*(1-ddrW))
+  tMatrix['CCHB', 'WWWW', ] <- c(eTen, wrbTen, eTen)/2
+  tMatrix['CCHB', 'WCWW', ] <- c(eTen, wrbTen, wrbTen)/4
+  tMatrix['CCHB', 'CCWW', ] <- c(eTen, eTen, wrbTen)/2
+
+  wrbTen <- c(0, 1-ddW, 0, 1-ddW, 1+ddW*ddhW, ddW*(1-ddhW)*ddrW,
+              1+ddW*ddhW + ddW*(1-ddhW)*(1-ddrW), 0, ddW*(1-ddhW)*ddrW, ddW*(1-ddhW)*(1-ddrW))
+  tMatrix['CCHB', 'WWWH', ] <- c(eTen, wrbTen, eTen)/4
+
+  wrbTen <- c(0, 1-ddW, 0, 1-ddW, 0, 1+ddW*ddrW, ddW*(1-ddrW), 0, 1+ddW*ddrW, ddW*(1-ddrW))
+  tMatrix['CCHB', 'WWWR', ] <- c(eTen, wrbTen, eTen)/4
+  tMatrix['CCHB', 'WCWR', ] <- c(eTen, wrbTen, wrbTen)/8
+  tMatrix['CCHB', 'CCWR', ] <- c(eTen, eTen, wrbTen)/4
+
+  wrbTen <- c(0, 1-ddW, 0, 1-ddW, 0, ddW*ddrW, 1+ddW*(1-ddrW), 0, ddW*ddrW, 1+ddW*(1-ddrW))
+  tMatrix['CCHB', 'WWWB', ] <- c(eTen, wrbTen, eTen)/4
+  tMatrix['CCHB', 'WCWB', ] <- c(eTen, wrbTen, wrbTen)/8
+  tMatrix['CCHB', 'CCWB', ] <- c(eTen, eTen, wrbTen)/4
+
+
+  ## female specific homing (with any deposition stuff)
+  wrbTen <- c((1-cF)*(1-dW), (1+cF*chF)*(1-dW), (1-cF)*dW*drW + cF*(1-chF)*crF*(1-dW),
+              (1-cF)*dW*(1-drW) + cF*(1-chF)*(1-crF)*(1-dW), 0, (1+cF*chF)*dW*drW,
+              (1+cF*chF)*dW*(1-drW), cF*(1-chF)*crF*dW*drW,
+              cF*(1-chF)*crF*dW*(1-drW) + cF*(1-chF)*(1-crF)*dW*drW, cF*(1-chF)*(1-crF)*dW*(1-drW) )
+  tMatrix['WCWH', 'WWWW', ] <- c(wrbTen, wrbTen, eTen)/4
+  tMatrix['WCWH', 'WCWW', ] <- c(wrbTen, 2*wrbTen, wrbTen)/8
+  tMatrix['WCWH', 'CCWW', ] <- c(eTen, wrbTen, wrbTen)/4
+
+  wrbTen <- c((1-cF)*(1-dW), (1-cF)*(1+dW*dhW) + (1+cF*chF)*(1-dW), (1-cF)*dW*(1-dhW)*drW + cF*(1-chF)*crF*(1-dW),
+              (1-cF)*dW*(1-dhW)*(1-drW) + cF*(1-chF)*(1-crF)*(1-dW), (1+cF*chF)*(1+dW*dhW),
+              (1+cF*chF)*dW*(1-dhW)*drW + cF*(1-chF)*crF*(1+dW*dhW),
+              (1+cF*chF)*dW*(1-dhW)*(1-drW) + cF*(1-chF)*(1-crF)*(1+dW*dhW), cF*(1-chF)*crF*dW*(1-dhW)*drW,
+              cF*(1-chF)*crF*dW*(1-dhW)*(1-drW) + cF*(1-chF)*(1-crF)*dW*(1-dhW)*drW,
+              cF*(1-chF)*(1-crF)*dW*(1-dhW)*(1-drW) )
+  tMatrix['WCWH', 'WWWH', ] <- c(wrbTen, wrbTen, eTen)/8
+
+  wrbTen <- c((1-cF)*(1-dW), (1+cF*chF)*(1-dW), (1-cF)*(1+dW*drW) + cF*(1-chF)*crF*(1-dW),
+              (1-cF)*dW*(1-drW) + cF*(1-chF)*(1-crF)*(1-dW), 0, (1+cF*chF)*(1+dW*drW),
+              (1+cF*chF)*dW*(1-drW), cF*(1-chF)*crF*(1+dW*drW),
+              cF*(1-chF)*crF*dW*(1-drW) + cF*(1-chF)*(1-crF)*(1+dW*drW), cF*(1-chF)*(1-crF)*dW*(1-drW) )
+  tMatrix['WCWH', 'WWWR', ] <- c(wrbTen, wrbTen, eTen)/8
+  tMatrix['WCWH', 'WCWR', ] <- c(wrbTen, 2*wrbTen, wrbTen)/16
+  tMatrix['WCWH', 'CCWR', ] <- c(eTen, wrbTen, wrbTen)/8
+
+  wrbTen <- c((1-cF)*(1-dW), (1+cF*chF)*(1-dW), (1-cF)*dW*drW + cF*(1-chF)*crF*(1-dW),
+              (1-cF)*(1+dW*(1-drW)) + cF*(1-chF)*(1-crF)*(1-dW), 0, (1+cF*chF)*dW*drW,
+              (1+cF*chF)*(1+dW*(1-drW)), cF*(1-chF)*crF*dW*drW,
+              cF*(1-chF)*crF*(1+dW*(1-drW)) + cF*(1-chF)*(1-crF)*dW*drW, cF*(1-chF)*(1-crF)*(1+dW*(1-drW)) )
+  tMatrix['WCWH', 'WWWB', ] <- c(wrbTen, wrbTen, eTen)/8
+  tMatrix['WCWH', 'WCWB', ] <- c(wrbTen, 2*wrbTen, wrbTen)/16
+  tMatrix['WCWH', 'CCWB', ] <- c(eTen, wrbTen, wrbTen)/8
+
   tMatrix['WCWH', 'WWHH', c('WWWH','WWHH','WWHR','WWHB',
                             'WCWH','WCHH','WCHR','WCHB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
                                                                1-cF, 1+cF*chF, cF*(1-chF)*crF,cF*(1-chF)*(1-crF))/4
@@ -656,21 +871,7 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
   tMatrix['WCWH', 'WWBB', c('WWWB','WWHB','WWRB','WWBB',
                             'WCWB','WCHB','WCRB','WCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
                                                                1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['WCWH', 'WCWW', c('WWWW','WWWH','WWWR','WWWB',
-                            'WCWW','WCWH','WCWR','WCWB',
-                            'CCWW','CCWH','CCWR','CCWB')] <- c(c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2,
-                                                               1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                               c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2)/4
-  tMatrix['WCWH', 'WCWR', c('WWWW','WWWH','WWWR','WWWB','WWHR','WWRR','WWRB',
-                            'WCWW','WCWH','WCWR','WCWB','WCHR','WCRR','WCRB',
-                            'CCWW','CCWH','CCWR','CCWB','CCHR','CCRR','CCRB')] <- c(c(1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2,
-                                                                                    1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                    c(1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2)/8
-  tMatrix['WCWH', 'WCWB', c('WWWW','WWWH','WWWR','WWWB','WWHB','WWRB','WWBB',
-                            'WCWW','WCWH','WCWR','WCWB','WCHB','WCRB','WCBB',
-                            'CCWW','CCWH','CCWR','CCWB','CCHB','CCRB','CCBB')] <- c(c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2,
-                                                                                    1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                    c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2)/8
+
   tMatrix['WCWH', 'WCHH', c('WWWH','WWHH','WWHR','WWHB',
                             'WCWH','WCHH','WCHR','WCHB',
                             'CCWH','CCHH','CCHR','CCHB')] <- c(c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2,
@@ -702,16 +903,6 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
                                                                1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
                                                                c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2)/4
 
-
-  tMatrix['WCWH', 'CCWW', c('WCWW','WCWH','WCWR','WCWB',
-                            'CCWW','CCWH','CCWR','CCWB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                               1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['WCWH', 'CCWR', c('WCWW','WCWH','WCWR','WCWB','WCHR','WCRR','WCRB',
-                            'CCWW','CCWH','CCWR','CCWB','CCHR','CCRR','CCRB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                    1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/8
-  tMatrix['WCWH', 'CCWB', c('WCWW','WCWH','WCWR','WCWB','WCHB','WCRB','WCBB',
-                            'CCWW','CCWH','CCWR','CCWB','CCHB','CCRB','CCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                    1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/8
   tMatrix['WCWH', 'CCHH', c('WCWH','WCHH','WCHR','WCHB',
                             'CCWH','CCHH','CCHR','CCHB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
                                                                1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
@@ -732,80 +923,192 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
                                                                1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
 
 
-  tMatrix['CCWH', 'WWWW', c('WCWW','WCWH','WCWR','WCWB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2
-  tMatrix['CCWH', 'WWWH', c('WCWW','WCWH','WCWR','WCWB','WCHH','WCHR','WCHB')] <- c(1-cF, 1+cF*chF + 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'WWWR', c('WCWW','WCWH','WCWR','WCWB','WCHR','WCRR','WCRB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'WWWB', c('WCWW','WCWH','WCWR','WCWB','WCHB','WCRB','WCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'WWHH', c('WCWH','WCHH','WCHR','WCHB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2
-  tMatrix['CCWH', 'WWHR', c('WCWH','WCHH','WCHR','WCHB','WCWR','WCRR','WCRB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF + 1+cF*chF, cF*(1-chF)*(1-crF), 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'WWHB', c('WCWH','WCHH','WCHR','WCHB','WCWB','WCRB','WCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1+cF*chF, 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'WWRR', c('WCWR','WCHR','WCRR','WCRB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2
-  tMatrix['CCWH', 'WWRB', c('WCWR','WCHR','WCRR','WCRB','WCWB','WCHB','WCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + cF*(1-chF)*crF, 1-cF, 1+cF*chF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'WWBB', c('WCWB','WCHB','WCRB','WCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2
+  wrbTen <- c((1-ccF)*(1-ddW), (1+ccF*cchF)*(1-ddW), (1-ccF)*ddW*ddrW + ccF*(1-cchF)*ccrF*(1-ddW),
+              (1-ccF)*ddW*(1-ddrW) + ccF*(1-cchF)*(1-ccrF)*(1-ddW), 0, (1+ccF*cchF)*ddW*ddrW,
+              (1+ccF*cchF)*ddW*(1-ddrW), ccF*(1-cchF)*ccrF*ddW*ddrW,
+              ccF*(1-cchF)*ccrF*ddW*(1-ddrW) + ccF*(1-cchF)*(1-ccrF)*ddW*ddrW, ccF*(1-cchF)*(1-ccrF)*ddW*(1-ddrW) )
+  tMatrix['CCWH', 'WWWW', ] <- c(eTen, wrbTen, eTen)/2
+  tMatrix['CCWH', 'WCWW', ] <- c(eTen, wrbTen, wrbTen)/4
+  tMatrix['CCWH', 'CCWW', ] <- c(eTen, eTen, wrbTen)/2
+
+  wrbTen <- c((1-ccF)*(1-ddW), (1-ccF)*(1+ddW*ddhW) + (1+ccF*cchF)*(1-ddW), (1-ccF)*ddW*(1-ddhW)*ddrW + ccF*(1-cchF)*ccrF*(1-ddW),
+              (1-ccF)*ddW*(1-ddhW)*(1-ddrW) + ccF*(1-cchF)*(1-ccrF)*(1-ddW), (1+ccF*cchF)*(1+ddW*ddhW),
+              (1+ccF*cchF)*ddW*(1-ddhW)*ddrW + ccF*(1-cchF)*ccrF*(1+ddW*ddhW),
+              (1+ccF*cchF)*ddW*(1-ddhW)*(1-ddrW) + ccF*(1-cchF)*(1-ccrF)*(1+ddW*ddhW), ccF*(1-cchF)*ccrF*ddW*(1-ddhW)*ddrW,
+              ccF*(1-cchF)*ccrF*ddW*(1-ddhW)*(1-ddrW) + ccF*(1-cchF)*(1-ccrF)*ddW*(1-ddhW)*ddrW,
+              ccF*(1-cchF)*(1-ccrF)*ddW*(1-ddhW)*(1-ddrW) )
+  tMatrix['CCWH', 'WWWH', ] <- c(eTen, wrbTen, eTen)/4
+
+  wrbTen <- c((1-ccF)*(1-ddW), (1+ccF*cchF)*(1-ddW), (1-ccF)*(1+ddW*ddrW) + ccF*(1-cchF)*ccrF*(1-ddW),
+              (1-ccF)*ddW*(1-ddrW) + ccF*(1-cchF)*(1-ccrF)*(1-ddW), 0, (1+ccF*cchF)*(1+ddW*ddrW),
+              (1+ccF*cchF)*ddW*(1-ddrW), ccF*(1-cchF)*ccrF*(1+ddW*ddrW),
+              ccF*(1-cchF)*ccrF*ddW*(1-ddrW) + ccF*(1-cchF)*(1-ccrF)*(1+ddW*ddrW), ccF*(1-cchF)*(1-ccrF)*ddW*(1-ddrW) )
+  tMatrix['CCWH', 'WWWR', ] <- c(eTen, wrbTen, eTen)/4
+  tMatrix['CCWH', 'WCWR', ] <- c(eTen, wrbTen, wrbTen)/8
+  tMatrix['CCWH', 'CCWR', ] <- c(eTen, eTen, wrbTen)/4
+
+  wrbTen <- c((1-ccF)*(1-ddW), (1+ccF*cchF)*(1-ddW), (1-ccF)*ddW*ddrW + ccF*(1-cchF)*ccrF*(1-ddW),
+              (1-ccF)*(1+ddW*(1-ddrW)) + ccF*(1-cchF)*(1-ccrF)*(1-ddW), 0, (1+ccF*cchF)*ddW*ddrW,
+              (1+ccF*cchF)*(1+ddW*(1-ddrW)), ccF*(1-cchF)*ccrF*ddW*ddrW,
+              ccF*(1-cchF)*ccrF*(1+ddW*(1-ddrW)) + ccF*(1-cchF)*(1-ccrF)*ddW*ddrW, ccF*(1-cchF)*(1-ccrF)*(1+ddW*(1-ddrW)) )
+  tMatrix['CCWH', 'WWWB', ] <- c(eTen, wrbTen, eTen)/4
+  tMatrix['CCWH', 'WCWB', ] <- c(eTen, wrbTen, wrbTen)/8
+  tMatrix['CCWH', 'CCWB', ] <- c(eTen, eTen, wrbTen)/4
 
 
-  tMatrix['CCWH', 'WCWW', c('WCWW','WCWH','WCWR','WCWB',
-                            'CCWW','CCWH','CCWR','CCWB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                               1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'WCWR', c('WCWW','WCWH','WCWR','WCWB','WCHR','WCRR','WCRB',
-                            'CCWW','CCWH','CCWR','CCWB','CCHR','CCRR','CCRB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                    1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/8
-  tMatrix['CCWH', 'WCWB', c('WCWW','WCWH','WCWR','WCWB','WCHB','WCRB','WCBB',
-                            'CCWW','CCWH','CCWR','CCWB','CCHB','CCRB','CCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                    1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/8
+  tMatrix['CCWH', 'WWHH', c('WCWH','WCHH','WCHR','WCHB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/2
+  tMatrix['CCWH', 'WWHR', c('WCWH','WCHH','WCHR','WCHB','WCWR','WCRR','WCRB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF + 1+ccF*cchF, ccF*(1-cchF)*(1-ccrF), 1-ccF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/4
+  tMatrix['CCWH', 'WWHB', c('WCWH','WCHH','WCHR','WCHB','WCWB','WCRB','WCBB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF) + 1+ccF*cchF, 1-ccF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/4
+  tMatrix['CCWH', 'WWRR', c('WCWR','WCHR','WCRR','WCRB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/2
+  tMatrix['CCWH', 'WWRB', c('WCWR','WCHR','WCRR','WCRB','WCWB','WCHB','WCBB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF) + ccF*(1-cchF)*ccrF, 1-ccF, 1+ccF*cchF, ccF*(1-cchF)*(1-ccrF))/4
+  tMatrix['CCWH', 'WWBB', c('WCWB','WCHB','WCRB','WCBB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/2
+
+
   tMatrix['CCWH', 'WCHH', c('WCWH','WCHH','WCHR','WCHB',
-                            'CCWH','CCHH','CCHR','CCHB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                               1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
+                            'CCWH','CCHH','CCHR','CCHB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF),
+                                                               1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/4
   tMatrix['CCWH', 'WCHR', c('WCWH','WCHH','WCHR','WCHB','WCWR','WCRR','WCRB',
-                            'CCWH','CCHH','CCHR','CCHB','CCWR','CCRR','CCRB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF + 1+cF*chF, cF*(1-chF)*(1-crF), 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                    1-cF, 1+cF*chF, cF*(1-chF)*crF + 1+cF*chF, cF*(1-chF)*(1-crF), 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/8
+                            'CCWH','CCHH','CCHR','CCHB','CCWR','CCRR','CCRB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF + 1+ccF*cchF, ccF*(1-cchF)*(1-ccrF), 1-ccF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF),
+                                                                                    1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF + 1+ccF*cchF, ccF*(1-cchF)*(1-ccrF), 1-ccF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/8
   tMatrix['CCWH', 'WCHB', c('WCWH','WCHH','WCHR','WCHB','WCWB','WCRB','WCBB',
-                            'CCWH','CCHH','CCHR','CCHB','CCWB','CCRB','CCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1+cF*chF, 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                                                    1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1+cF*chF, 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/8
+                            'CCWH','CCHH','CCHR','CCHB','CCWB','CCRB','CCBB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF) + 1+ccF*cchF, 1-ccF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF),
+                                                                                    1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF) + 1+ccF*cchF, 1-ccF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/8
   tMatrix['CCWH', 'WCRR', c('WCWR','WCHR','WCRR','WCRB',
-                            'CCWR','CCHR','CCRR','CCRB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                               1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
+                            'CCWR','CCHR','CCRR','CCRB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF),
+                                                               1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/4
   tMatrix['CCWH', 'WCRB', c('WCWR','WCHR','WCRR','WCRB','WCWB','WCHB','WCBB',
-                            'CCWR','CCHR','CCRR','CCRB','CCWB','CCHB','CCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + cF*(1-chF)*crF, 1-cF, 1+cF*chF, cF*(1-chF)*(1-crF),
-                                                                                    1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + cF*(1-chF)*crF, 1-cF, 1+cF*chF, cF*(1-chF)*(1-crF))/8
+                            'CCWR','CCHR','CCRR','CCRB','CCWB','CCHB','CCBB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF) + ccF*(1-cchF)*ccrF, 1-ccF, 1+ccF*cchF, ccF*(1-cchF)*(1-ccrF),
+                                                                                    1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF) + ccF*(1-cchF)*ccrF, 1-ccF, 1+ccF*cchF, ccF*(1-cchF)*(1-ccrF))/8
   tMatrix['CCWH', 'WCBB', c('WCWB','WCHB','WCRB','WCBB',
-                            'CCWB','CCHB','CCRB','CCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF),
-                                                               1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
+                            'CCWB','CCHB','CCRB','CCBB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF),
+                                                               1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/4
 
 
-  tMatrix['CCWH', 'CCWW', c('CCWW','CCWH','CCWR','CCWB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2
-  tMatrix['CCWH', 'CCWR', c('CCWW','CCWH','CCWR','CCWB','CCHR','CCRR','CCRB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF + 1-cF, cF*(1-chF)*(1-crF), 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'CCWB', c('CCWW','CCWH','CCWR','CCWB','CCHB','CCRB','CCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'CCHH', c('CCWH','CCHH','CCHR','CCHB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2
-  tMatrix['CCWH', 'CCHR', c('CCWH','CCHH','CCHR','CCHB','CCWR','CCRR','CCRB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF + 1+cF*chF, cF*(1-chF)*(1-crF), 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'CCHB', c('CCWH','CCHH','CCHR','CCHB','CCWB','CCRB','CCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + 1+cF*chF, 1-cF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'CCRR', c('CCWR','CCHR','CCRR','CCRB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2
-  tMatrix['CCWH', 'CCRB', c('CCWR','CCHR','CCRR','CCRB','CCWB','CCHB','CCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF) + cF*(1-chF)*crF, 1-cF, 1+cF*chF, cF*(1-chF)*(1-crF))/4
-  tMatrix['CCWH', 'CCBB', c('CCWB','CCHB','CCRB','CCBB')] <- c(1-cF, 1+cF*chF, cF*(1-chF)*crF, cF*(1-chF)*(1-crF))/2
+  tMatrix['CCWH', 'CCHH', c('CCWH','CCHH','CCHR','CCHB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/2
+  tMatrix['CCWH', 'CCHR', c('CCWH','CCHH','CCHR','CCHB','CCWR','CCRR','CCRB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF + 1+ccF*cchF, ccF*(1-cchF)*(1-ccrF), 1-ccF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/4
+  tMatrix['CCWH', 'CCHB', c('CCWH','CCHH','CCHR','CCHB','CCWB','CCRB','CCBB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF) + 1+ccF*cchF, 1-ccF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/4
+  tMatrix['CCWH', 'CCRR', c('CCWR','CCHR','CCRR','CCRB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/2
+  tMatrix['CCWH', 'CCRB', c('CCWR','CCHR','CCRR','CCRB','CCWB','CCHB','CCBB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF) + ccF*(1-cchF)*ccrF, 1-ccF, 1+ccF*cchF, ccF*(1-cchF)*(1-ccrF))/4
+  tMatrix['CCWH', 'CCBB', c('CCWB','CCHB','CCRB','CCBB')] <- c(1-ccF, 1+ccF*cchF, ccF*(1-cchF)*ccrF, ccF*(1-cchF)*(1-ccrF))/2
 
 
-  # mixed sex homing
-  probs <- c( (1-cF)*(1-cM), (1+cF*chF)*(1-cM) + (1-cF)*(1+cM*chM), (cF*(1-chF)*crF)*(1-cM) + (1-cF)*(cM*(1-chM)*crM),
-              (cF*(1-chF)*(1-crF))*(1-cM) + (1-cF)*(cM*(1-chM)*(1-crM)), (1+cF*chF)*(1+cM*chM),
-              (cF*(1-chF)*crF)*(1+cM*chM) + (1+cF*chF)*(cM*(1-chM)*crM), (cF*(1-chF)*(1-crF))*(1+cM*chM) + (1+cF*chF)*(cM*(1-chM)*(1-crM)),
-              (cF*(1-chF)*crF)*(cM*(1-chM)*crM), (cF*(1-chF)*(1-crF))*(cM*(1-chM)*crM) + (cF*(1-chF)*crF)*(cM*(1-chM)*(1-crM)),
-              (cF*(1-chF)*(1-crF))*(cM*(1-chM)*(1-crM)))
+  # mixed sex homing/deposition stuff
+  wrbTen <- c((1-cF)*(1-cM)*(1-dW), (1+cF*chF)*(1-cM)*(1-dW) + (1-cF)*(1+cM*chM),
+              (1-cF)*(1-cM)*dW*drW + (cF*(1-chF)*crF)*(1-cM)*(1-dW) + (1-cF)*(cM*(1-chM)*crM),
+              (1-cF)*(1-cM)*dW*(1-drW) + (cF*(1-chF)*(1-crF))*(1-cM)*(1-dW) + (1-cF)*(cM*(1-chM)*(1-crM)),
+              (1+cF*chF)*(1-cM)*dW*dhW + (1+cF*chF)*(1+cM*chM),
+              (1+cF*chF)*(1-cM)*dW*(1-dhW)*drW + (cF*(1-chF)*crF)*(1+cM*chM) + (1+cF*chF)*(cM*(1-chM)*crM),
+              (1+cF*chF)*(1-cM)*dW*(1-dhW)*(1-drW) + (cF*(1-chF)*(1-crF))*(1+cM*chM) + (1+cF*chF)*(cM*(1-chM)*(1-crM)),
+              (cF*(1-chF)*crF)*(1-cM)*dW*drW + (cF*(1-chF)*crF)*(cM*(1-chM)*crM),
+              (cF*(1-chF)*crF)*(1-cM)*dW*(1-drW) + (cF*(1-chF)*(1-crF))*(1-cM)*dW*drW + (cF*(1-chF)*(1-crF))*(cM*(1-chM)*crM) + (cF*(1-chF)*crF)*(cM*(1-chM)*(1-crM)),
+              (cF*(1-chF)*(1-crF))*(1-cM)*dW*(1-drW) + (cF*(1-chF)*(1-crF))*(cM*(1-chM)*(1-crM)) )
+  tMatrix['WCWH', 'WCWH', ] <- c(wrbTen, 2*wrbTen, wrbTen)/16
 
-  tMatrix['WCWH', 'WCWH', ] <- c(probs/16, probs/8, probs/16)
-  tMatrix['WCWH', 'CCWH', c('WCWW', 'WCWH', 'WCWR', 'WCWB', 'WCHH', 'WCHR', 'WCHB',
-                            'WCRR', 'WCRB', 'WCBB', 'CCWW', 'CCWH', 'CCWR', 'CCWB',
-                            'CCHH', 'CCHR', 'CCHB', 'CCRR', 'CCRB', 'CCBB')] <- c(probs, probs)/8
-  tMatrix['CCWH', 'WCWH', c('WCWW', 'WCWH', 'WCWR', 'WCWB', 'WCHH', 'WCHR', 'WCHB',
-                            'WCRR', 'WCRB', 'WCBB', 'CCWW', 'CCWH', 'CCWR', 'CCWB',
-                            'CCHH', 'CCHR', 'CCHB', 'CCRR', 'CCRB', 'CCBB')] <- c(probs, probs)/8
-  tMatrix['CCWH', 'CCWH', c('CCWW', 'CCWH', 'CCWR', 'CCWB', 'CCHH',
-                            'CCHR', 'CCHB', 'CCRR', 'CCRB', 'CCBB')] <- probs/4
+  wrbTen <- c((1-cF)*(1-ccM)*(1-dW), (1+cF*chF)*(1-ccM)*(1-dW) + (1-cF)*(1+ccM*cchM),
+              (1-cF)*(1-ccM)*dW*drW + (cF*(1-chF)*crF)*(1-ccM)*(1-dW) + (1-cF)*(ccM*(1-cchM)*ccrM),
+              (1-cF)*(1-ccM)*dW*(1-drW) + (cF*(1-chF)*(1-crF))*(1-ccM)*(1-dW) + (1-cF)*(ccM*(1-cchM)*(1-ccrM)),
+              (1+cF*chF)*(1-ccM)*dW*dhW + (1+cF*chF)*(1+ccM*cchM),
+              (1+cF*chF)*(1-ccM)*dW*(1-dhW)*drW + (cF*(1-chF)*crF)*(1+ccM*cchM) + (1+cF*chF)*(ccM*(1-cchM)*ccrM),
+              (1+cF*chF)*(1-ccM)*dW*(1-dhW)*(1-drW) + (cF*(1-chF)*(1-crF))*(1+ccM*cchM) + (1+cF*chF)*(ccM*(1-cchM)*(1-ccrM)),
+              (cF*(1-chF)*crF)*(1-ccM)*dW*drW + (cF*(1-chF)*crF)*(ccM*(1-cchM)*ccrM),
+              (cF*(1-chF)*crF)*(1-ccM)*dW*(1-drW) + (cF*(1-chF)*(1-crF))*(1-ccM)*dW*drW + (cF*(1-chF)*(1-crF))*(ccM*(1-cchM)*ccrM) + (cF*(1-chF)*crF)*(ccM*(1-cchM)*(1-ccrM)),
+              (cF*(1-chF)*(1-crF))*(1-ccM)*dW*(1-drW) + (cF*(1-chF)*(1-crF))*(ccM*(1-cchM)*(1-ccrM)) )
+  tMatrix['WCWH', 'CCWH', ] <- c(eTen, wrbTen, wrbTen)/8
 
-  # cleanup
-  rm(probs)
+  wrbTen <- c((1-ccF)*(1-cM)*(1-ddW), (1+ccF*cchF)*(1-cM)*(1-ddW) + (1-ccF)*(1+cM*chM),
+              (1-ccF)*(1-cM)*ddW*ddrW + (ccF*(1-cchF)*ccrF)*(1-cM)*(1-ddW) + (1-ccF)*(cM*(1-chM)*crM),
+              (1-ccF)*(1-cM)*ddW*(1-ddrW) + (ccF*(1-cchF)*(1-ccrF))*(1-cM)*(1-ddW) + (1-ccF)*(cM*(1-chM)*(1-crM)),
+              (1+ccF*cchF)*(1-cM)*ddW*ddhW + (1+ccF*cchF)*(1+cM*chM),
+              (1+ccF*cchF)*(1-cM)*ddW*(1-ddhW)*ddrW + (ccF*(1-cchF)*ccrF)*(1+cM*chM) + (1+ccF*cchF)*(cM*(1-chM)*crM),
+              (1+ccF*cchF)*(1-cM)*ddW*(1-ddhW)*(1-ddrW) + (ccF*(1-cchF)*(1-ccrF))*(1+cM*chM) + (1+ccF*cchF)*(cM*(1-chM)*(1-crM)),
+              (ccF*(1-cchF)*ccrF)*(1-cM)*ddW*ddrW + (ccF*(1-cchF)*ccrF)*(cM*(1-chM)*crM),
+              (ccF*(1-cchF)*ccrF)*(1-cM)*ddW*(1-ddrW) + (ccF*(1-cchF)*(1-ccrF))*(1-cM)*ddW*ddrW + (ccF*(1-cchF)*(1-ccrF))*(cM*(1-chM)*crM) + (ccF*(1-cchF)*ccrF)*(cM*(1-chM)*(1-crM)),
+              (ccF*(1-cchF)*(1-ccrF))*(1-cM)*ddW*(1-ddrW) + (ccF*(1-cchF)*(1-ccrF))*(cM*(1-chM)*(1-crM)) )
+  tMatrix['CCWH', 'WCWH', ] <- c(eTen, wrbTen, wrbTen)/8
+
+  wrbTen <- c((1-ccF)*(1-ccM)*(1-ddW), (1+ccF*cchF)*(1-ccM)*(1-ddW) + (1-ccF)*(1+ccM*cchM),
+              (1-ccF)*(1-ccM)*ddW*ddrW + (ccF*(1-cchF)*ccrF)*(1-ccM)*(1-ddW) + (1-ccF)*(ccM*(1-cchM)*ccrM),
+              (1-ccF)*(1-ccM)*ddW*(1-ddrW) + (ccF*(1-cchF)*(1-ccrF))*(1-ccM)*(1-ddW) + (1-ccF)*(ccM*(1-cchM)*(1-ccrM)),
+              (1+ccF*cchF)*(1-ccM)*ddW*ddhW + (1+ccF*cchF)*(1+ccM*cchM),
+              (1+ccF*cchF)*(1-ccM)*ddW*(1-ddhW)*ddrW + (ccF*(1-cchF)*ccrF)*(1+ccM*cchM) + (1+ccF*cchF)*(ccM*(1-cchM)*ccrM),
+              (1+ccF*cchF)*(1-ccM)*ddW*(1-ddhW)*(1-ddrW) + (ccF*(1-cchF)*(1-ccrF))*(1+ccM*cchM) + (1+ccF*cchF)*(ccM*(1-cchM)*(1-ccrM)),
+              (ccF*(1-cchF)*ccrF)*(1-ccM)*ddW*ddrW + (ccF*(1-cchF)*ccrF)*(ccM*(1-cchM)*ccrM),
+              (ccF*(1-cchF)*ccrF)*(1-ccM)*ddW*(1-ddrW) + (ccF*(1-cchF)*(1-ccrF))*(1-ccM)*ddW*ddrW + (ccF*(1-cchF)*(1-ccrF))*(ccM*(1-cchM)*ccrM) + (ccF*(1-cchF)*ccrF)*(ccM*(1-cchM)*(1-ccrM)),
+              (ccF*(1-cchF)*(1-ccrF))*(1-ccM)*ddW*(1-ddrW) + (ccF*(1-cchF)*(1-ccrF))*(ccM*(1-cchM)*(1-ccrM)) )
+  tMatrix['CCWH', 'CCWH', ] <- c(eTen, eTen, wrbTen/4)
 
 
-  #male specific homing
+  ## male specific homing (with any deposition stuff)
+  wrbTen <- c(0, (1-cM)*(1-dW), 0, 0, (1-cM)*dW*dhW + 1+cM*chM,
+              (1-cM)*dW*(1-dhW)*drW + cM*(1-chM)*crM,
+              (1-cM)*dW*(1-dhW)*(1-drW) + cM*(1-chM)*(1-crM), 0, 0, 0)
+  tMatrix['WCHH', 'WCWH', ] <- c(wrbTen, 2*wrbTen, wrbTen)/8
+
+  wrbTen <- c(0, (1-ccM)*(1-dW), 0, 0, (1-ccM)*dW*dhW + 1+ccM*cchM,
+              (1-ccM)*dW*(1-dhW)*drW + ccM*(1-cchM)*ccrM,
+              (1-ccM)*dW*(1-dhW)*(1-drW) + ccM*(1-cchM)*(1-ccrM), 0, 0, 0)
+  tMatrix['WCHH', 'CCWH', ] <- c(eTen, wrbTen, wrbTen)/4
+
+  wrbTen <- c(0, (1-cM)*(1-dW), (1-cM)*(1-dW), 0, (1-cM)*dW*dhW + 1+cM*chM,
+              (1-cM)*dW*(1-dhW)*drW + cM*(1-chM)*crM  + 1+cM*chM,
+              (1-cM)*dW*(1-dhW)*(1-drW) + cM*(1-chM)*(1-crM),
+              (1-cM)*dW*drW + cM*(1-chM)*crM, (1-cM)*dW*(1-drW) + cM*(1-chM)*(1-crM), 0)
+  tMatrix['WCHR', 'WCWH', ] <- c(wrbTen, 2*wrbTen, wrbTen)/16
+
+  wrbTen <- c(0, (1-ccM)*(1-dW), (1-ccM)*(1-dW), 0, (1-ccM)*dW*dhW + 1+ccM*cchM,
+              (1-ccM)*dW*(1-dhW)*drW + ccM*(1-cchM)*ccrM  + 1+ccM*cchM,
+              (1-ccM)*dW*(1-dhW)*(1-drW) + ccM*(1-cchM)*(1-ccrM),
+              (1-ccM)*dW*drW + ccM*(1-cchM)*ccrM, (1-ccM)*dW*(1-drW) + ccM*(1-cchM)*(1-ccrM), 0)
+  tMatrix['WCHR', 'CCWH', ] <- c(eTen, wrbTen, wrbTen)/8
+
+  wrbTen <- c(0, (1-cM)*(1-dW), 0, (1-cM)*(1-dW), (1-cM)*dW*dhW + 1+cM*chM,
+              (1-cM)*dW*(1-dhW)*drW + cM*(1-chM)*crM,
+              (1-cM)*dW*(1-dhW)*(1-drW) + cM*(1-chM)*(1-crM) + 1+cM*chM,
+              0, cM*(1-chM)*crM + (1-cM)*dW*drW, cM*(1-chM)*(1-crM) + (1-cM)*dW*(1-drW) )
+  tMatrix['WCHB', 'WCWH', ] <- c(wrbTen, 2*wrbTen, wrbTen)/16
+
+  wrbTen <- c(0, (1-ccM)*(1-dW), 0, (1-ccM)*(1-dW), (1-ccM)*dW*dhW + 1+ccM*cchM,
+              (1-ccM)*dW*(1-dhW)*drW + ccM*(1-cchM)*ccrM,
+              (1-ccM)*dW*(1-dhW)*(1-drW) + ccM*(1-cchM)*(1-ccrM) + 1+ccM*cchM,
+              0, ccM*(1-cchM)*ccrM + (1-ccM)*dW*drW, ccM*(1-cchM)*(1-ccrM) + (1-ccM)*dW*(1-drW) )
+  tMatrix['WCHB', 'CCWH', ] <- c(eTen, wrbTen, wrbTen)/8
+
+
+  wrbTen <- c(0, (1-cM)*(1-ddW), 0, 0, (1-cM)*ddW*ddhW + 1+cM*chM,
+              (1-cM)*ddW*(1-ddhW)*ddrW + cM*(1-chM)*crM,
+              (1-cM)*ddW*(1-ddhW)*(1-ddrW) + cM*(1-chM)*(1-crM), 0, 0, 0)
+  tMatrix['CCHH', 'WCWH', ] <- c(eTen, wrbTen, wrbTen)/4
+
+  wrbTen <- c(0, (1-ccM)*(1-ddW), 0, 0, (1-ccM)*ddW*ddhW + 1+ccM*cchM,
+              (1-ccM)*ddW*(1-ddhW)*ddrW + ccM*(1-cchM)*ccrM,
+              (1-ccM)*ddW*(1-ddhW)*(1-ddrW) + ccM*(1-cchM)*(1-ccrM), 0, 0, 0)
+  tMatrix['CCHH', 'CCWH', ] <- c(eTen, eTen, wrbTen)/2
+
+  wrbTen <- c(0, (1-cM)*(1-ddW), (1-cM)*(1-ddW), 0, (1-cM)*ddW*ddhW + 1+cM*chM,
+              (1-cM)*ddW*(1-ddhW)*ddrW + cM*(1-chM)*crM  + 1+cM*chM,
+              (1-cM)*ddW*(1-ddhW)*(1-ddrW) + cM*(1-chM)*(1-crM),
+              (1-cM)*ddW*ddrW + cM*(1-chM)*crM, (1-cM)*ddW*(1-ddrW) + cM*(1-chM)*(1-crM), 0)
+  tMatrix['CCHR', 'WCWH', ] <- c(eTen, wrbTen, wrbTen)/8
+
+  wrbTen <- c(0, (1-ccM)*(1-ddW), (1-ccM)*(1-ddW), 0, (1-ccM)*ddW*ddhW + 1+ccM*cchM,
+              (1-ccM)*ddW*(1-ddhW)*ddrW + ccM*(1-cchM)*ccrM  + 1+ccM*cchM,
+              (1-ccM)*ddW*(1-ddhW)*(1-ddrW) + ccM*(1-cchM)*(1-ccrM),
+              (1-ccM)*ddW*ddrW + ccM*(1-cchM)*ccrM, (1-ccM)*ddW*(1-ddrW) + ccM*(1-cchM)*(1-ccrM), 0)
+  tMatrix['CCHR', 'CCWH', ] <- c(eTen, eTen, wrbTen)/4
+
+  wrbTen <- c(0, (1-cM)*(1-ddW), 0, (1-cM)*(1-ddW), (1-cM)*ddW*ddhW + 1+cM*chM,
+              (1-cM)*ddW*(1-ddhW)*ddrW + cM*(1-chM)*crM,
+              (1-cM)*ddW*(1-ddhW)*(1-ddrW) + cM*(1-chM)*(1-crM) + 1+cM*chM,
+              0, cM*(1-chM)*crM + (1-cM)*ddW*ddrW, cM*(1-chM)*(1-crM) + (1-cM)*ddW*(1-ddrW) )
+  tMatrix['CCHB', 'WCWH', ] <- c(eTen, wrbTen, wrbTen)/8
+
+  wrbTen <- c(0, (1-ccM)*(1-ddW), 0, (1-ccM)*(1-ddW), (1-ccM)*ddW*ddhW + 1+ccM*cchM,
+              (1-ccM)*ddW*(1-ddhW)*ddrW + ccM*(1-cchM)*ccrM,
+              (1-ccM)*ddW*(1-ddhW)*(1-ddrW) + ccM*(1-cchM)*(1-ccrM) + 1+ccM*cchM,
+              0, ccM*(1-cchM)*ccrM + (1-ccM)*ddW*ddrW, ccM*(1-cchM)*(1-ccrM) + (1-ccM)*ddW*(1-ddrW) )
+  tMatrix['CCHB', 'CCWH', ] <- c(eTen, eTen, wrbTen)/4
+
+
   tMatrix['WWWW', 'WCWH', c('WWWW','WWWH','WWWR','WWWB',
                             'WCWW','WCWH','WCWR','WCWB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
                                                                1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
@@ -851,21 +1154,6 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
                             'CCWW','CCWH','CCWR','CCWB','CCHB','CCRB','CCBB')] <- c(c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2,
                                                                                     1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
                                                                                     c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2)/8
-  tMatrix['WCHH', 'WCWH', c('WWWH','WWHH','WWHR','WWHB',
-                            'WCWH','WCHH','WCHR','WCHB',
-                            'CCWH','CCHH','CCHR','CCHB')] <- c(c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2,
-                                                               1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                               c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2)/4
-  tMatrix['WCHR', 'WCWH', c('WWWH','WWHH','WWHR','WWHB','WWWR','WWRR','WWRB',
-                            'WCWH','WCHH','WCHR','WCHB','WCWR','WCRR','WCRB',
-                            'CCWH','CCHH','CCHR','CCHB','CCWR','CCRR','CCRB')] <- c(c(1-cM, 1+cM*chM, cM*(1-chM)*crM + 1+cM*chM, cM*(1-chM)*(1-crM), 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2,
-                                                                                    1-cM, 1+cM*chM, cM*(1-chM)*crM + 1+cM*chM, cM*(1-chM)*(1-crM), 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                                                    c(1-cM, 1+cM*chM, cM*(1-chM)*crM + 1+cM*chM, cM*(1-chM)*(1-crM), 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2)/8
-  tMatrix['WCHB', 'WCWH', c('WWWH','WWHH','WWHR','WWHB','WWWB','WWRB','WWBB',
-                            'WCWH','WCHH','WCHR','WCHB','WCWB','WCRB','WCBB',
-                            'CCWH','CCHH','CCHR','CCHB','CCWB','CCRB','CCBB')] <- c(c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1+cM*chM, 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2,
-                                                                                    1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1+cM*chM, 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                                                    c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1+cM*chM, 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2)/8
   tMatrix['WCRR', 'WCWH', c('WWWR','WWHR','WWRR','WWRB',
                             'WCWR','WCHR','WCRR','WCRB',
                             'CCWR','CCHR','CCRR','CCRB')] <- c(c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2,
@@ -892,15 +1180,6 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
   tMatrix['CCWB', 'WCWH', c('WCWW','WCWH','WCWR','WCWB','WCHB','WCRB','WCBB',
                             'CCWW','CCWH','CCWR','CCWB','CCHB','CCRB','CCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
                                                                                     1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/8
-  tMatrix['CCHH', 'WCWH', c('WCWH','WCHH','WCHR','WCHB',
-                            'CCWH','CCHH','CCHR','CCHB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                               1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['CCHR', 'WCWH', c('WCWH','WCHH','WCHR','WCHB','WCWR','WCRR','WCRB',
-                            'CCWH','CCHH','CCHR','CCHB','CCWR','CCRR','CCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM + 1+cM*chM, cM*(1-chM)*(1-crM), 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                                                    1-cM, 1+cM*chM, cM*(1-chM)*crM + 1+cM*chM, cM*(1-chM)*(1-crM), 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/8
-  tMatrix['CCHB', 'WCWH', c('WCWH','WCHH','WCHR','WCHB','WCWB','WCRB','WCBB',
-                            'CCWH','CCHH','CCHR','CCHB','CCWB','CCRB','CCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1+cM*chM, 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                                                    1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1+cM*chM, 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/8
   tMatrix['CCRR', 'WCWH', c('WCWR','WCHR','WCRR','WCRB',
                             'CCWR','CCHR','CCRR','CCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
                                                                1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
@@ -912,63 +1191,52 @@ cubeSplitDrive <- function(cM = 1.0, cF = 1.0, chM = 0, crM = 0, chF = 0, crF = 
                                                                1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
 
 
-  tMatrix['WWWW', 'CCWH', c('WCWW','WCWH','WCWR','WCWB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2
-  tMatrix['WWWH', 'CCWH', c('WCWW','WCWH','WCWR','WCWB','WCHH','WCHR','WCHB')] <- c(1-cM, 1+cM*chM + 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM), 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['WWWR', 'CCWH', c('WCWW','WCWH','WCWR','WCWB','WCHR','WCRR','WCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM + 1-cM, cM*(1-chM)*(1-crM), 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['WWWB', 'CCWH', c('WCWW','WCWH','WCWR','WCWB','WCHB','WCRB','WCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['WWHH', 'CCWH', c('WCWH','WCHH','WCHR','WCHB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2
-  tMatrix['WWHR', 'CCWH', c('WCWH','WCHH','WCHR','WCHB','WCWR','WCRR','WCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM + 1+cM*chM, cM*(1-chM)*(1-crM), 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['WWHB', 'CCWH', c('WCWH','WCHH','WCHR','WCHB','WCWB','WCRB','WCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1+cM*chM, 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['WWRR', 'CCWH', c('WCWR','WCHR','WCRR','WCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2
-  tMatrix['WWRB', 'CCWH', c('WCWR','WCHR','WCRR','WCRB','WCWB','WCHB','WCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + cM*(1-chM)*crM, 1-cM, 1+cM*chM, cM*(1-chM)*(1-crM))/4
-  tMatrix['WWBB', 'CCWH', c('WCWB','WCHB','WCRB','WCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2
+  tMatrix['WWWW', 'CCWH', c('WCWW','WCWH','WCWR','WCWB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/2
+  tMatrix['WWWH', 'CCWH', c('WCWW','WCWH','WCWR','WCWB','WCHH','WCHR','WCHB')] <- c(1-ccM, 1+ccM*cchM + 1-ccM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM), 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/4
+  tMatrix['WWWR', 'CCWH', c('WCWW','WCWH','WCWR','WCWB','WCHR','WCRR','WCRB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM + 1-ccM, ccM*(1-cchM)*(1-ccrM), 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/4
+  tMatrix['WWWB', 'CCWH', c('WCWW','WCWH','WCWR','WCWB','WCHB','WCRB','WCBB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM) + 1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/4
+  tMatrix['WWHH', 'CCWH', c('WCWH','WCHH','WCHR','WCHB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/2
+  tMatrix['WWHR', 'CCWH', c('WCWH','WCHH','WCHR','WCHB','WCWR','WCRR','WCRB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM + 1+ccM*cchM, ccM*(1-cchM)*(1-ccrM), 1-ccM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/4
+  tMatrix['WWHB', 'CCWH', c('WCWH','WCHH','WCHR','WCHB','WCWB','WCRB','WCBB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM) + 1+ccM*cchM, 1-ccM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/4
+  tMatrix['WWRR', 'CCWH', c('WCWR','WCHR','WCRR','WCRB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/2
+  tMatrix['WWRB', 'CCWH', c('WCWR','WCHR','WCRR','WCRB','WCWB','WCHB','WCBB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM) + ccM*(1-cchM)*ccrM, 1-ccM, 1+ccM*cchM, ccM*(1-cchM)*(1-ccrM))/4
+  tMatrix['WWBB', 'CCWH', c('WCWB','WCHB','WCRB','WCBB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/2
 
 
   tMatrix['WCWW', 'CCWH', c('WCWW','WCWH','WCWR','WCWB',
-                            'CCWW','CCWH','CCWR','CCWB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                               1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
+                            'CCWW','CCWH','CCWR','CCWB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM),
+                                                               1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/4
   tMatrix['WCWR', 'CCWH', c('WCWW','WCWH','WCWR','WCWB','WCHR','WCRR','WCRB',
-                            'CCWW','CCWH','CCWR','CCWB','CCHR','CCRR','CCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM + 1-cM, cM*(1-chM)*(1-crM), 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                                                    1-cM, 1+cM*chM, cM*(1-chM)*crM + 1-cM, cM*(1-chM)*(1-crM), 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/8
+                            'CCWW','CCWH','CCWR','CCWB','CCHR','CCRR','CCRB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM + 1-ccM, ccM*(1-cchM)*(1-ccrM), 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM),
+                                                                                    1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM + 1-ccM, ccM*(1-cchM)*(1-ccrM), 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/8
   tMatrix['WCWB', 'CCWH', c('WCWW','WCWH','WCWR','WCWB','WCHB','WCRB','WCBB',
-                            'CCWW','CCWH','CCWR','CCWB','CCHB','CCRB','CCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                                                    1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/8
-  tMatrix['WCHH', 'CCWH', c('WCWH','WCHH','WCHR','WCHB',
-                            'CCWH','CCHH','CCHR','CCHB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                               1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['WCHR', 'CCWH', c('WCWH','WCHH','WCHR','WCHB','WCWR','WCRR','WCRB',
-                            'CCWH','CCHH','CCHR','CCHB','CCWR','CCRR','CCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM + 1+cM*chM, cM*(1-chM)*(1-crM), 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                                                    1-cM, 1+cM*chM, cM*(1-chM)*crM + 1+cM*chM, cM*(1-chM)*(1-crM), 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/8
-  tMatrix['WCHB', 'CCWH', c('WCWH','WCHH','WCHR','WCHB','WCWB','WCRB','WCBB',
-                            'CCWH','CCHH','CCHR','CCHB','CCWB','CCRB','CCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1+cM*chM, 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                                                    1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1+cM*chM, 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/8
+                            'CCWW','CCWH','CCWR','CCWB','CCHB','CCRB','CCBB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM) + 1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM),
+                                                                                    1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM) + 1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/8
   tMatrix['WCRR', 'CCWH', c('WCWR','WCHR','WCRR','WCRB',
-                            'CCWR','CCHR','CCRR','CCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                               1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
+                            'CCWR','CCHR','CCRR','CCRB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM),
+                                                               1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/4
   tMatrix['WCRB', 'CCWH', c('WCWR','WCHR','WCRR','WCRB','WCWB','WCHB','WCBB',
-                            'CCWR','CCHR','CCRR','CCRB','CCWB','CCHB','CCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + cM*(1-chM)*crM, 1-cM, 1+cM*chM, cM*(1-chM)*(1-crM),
-                                                                                    1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + cM*(1-chM)*crM, 1-cM, 1+cM*chM, cM*(1-chM)*(1-crM))/8
+                            'CCWR','CCHR','CCRR','CCRB','CCWB','CCHB','CCBB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM) + ccM*(1-cchM)*ccrM, 1-ccM, 1+ccM*cchM, ccM*(1-cchM)*(1-ccrM),
+                                                                                    1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM) + ccM*(1-cchM)*ccrM, 1-ccM, 1+ccM*cchM, ccM*(1-cchM)*(1-ccrM))/8
   tMatrix['WCBB', 'CCWH', c('WCWB','WCHB','WCRB','WCBB',
-                            'CCWB','CCHB','CCRB','CCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM),
-                                                               1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
+                            'CCWB','CCHB','CCRB','CCBB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM),
+                                                               1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/4
 
 
-  tMatrix['CCWW', 'CCWH', c('CCWW','CCWH','CCWR','CCWB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2
-  tMatrix['CCWR', 'CCWH', c('CCWW','CCWH','CCWR','CCWB','CCHR','CCRR','CCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM + 1-cM, cM*(1-chM)*(1-crM), 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['CCWB', 'CCWH', c('CCWW','CCWH','CCWR','CCWB','CCHB','CCRB','CCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['CCHH', 'CCWH', c('CCWH','CCHH','CCHR','CCHB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2
-  tMatrix['CCHR', 'CCWH', c('CCWH','CCHH','CCHR','CCHB','CCWR','CCRR','CCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM + 1+cM*chM, cM*(1-chM)*(1-crM), 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['CCHB', 'CCWH', c('CCWH','CCHH','CCHR','CCHB','CCWB','CCRB','CCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + 1+cM*chM, 1-cM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/4
-  tMatrix['CCRR', 'CCWH', c('CCWR','CCHR','CCRR','CCRB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2
-  tMatrix['CCRB', 'CCWH', c('CCWR','CCHR','CCRR','CCRB','CCWB','CCHB','CCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM) + cM*(1-chM)*crM, 1-cM, 1+cM*chM, cM*(1-chM)*(1-crM))/4
-  tMatrix['CCBB', 'CCWH', c('CCWB','CCHB','CCRB','CCBB')] <- c(1-cM, 1+cM*chM, cM*(1-chM)*crM, cM*(1-chM)*(1-crM))/2
+  tMatrix['CCWW', 'CCWH', c('CCWW','CCWH','CCWR','CCWB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/2
+  tMatrix['CCWR', 'CCWH', c('CCWW','CCWH','CCWR','CCWB','CCHR','CCRR','CCRB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM + 1-ccM, ccM*(1-cchM)*(1-ccrM), 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/4
+  tMatrix['CCWB', 'CCWH', c('CCWW','CCWH','CCWR','CCWB','CCHB','CCRB','CCBB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM) + 1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/4
+  tMatrix['CCRR', 'CCWH', c('CCWR','CCHR','CCRR','CCRB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/2
+  tMatrix['CCRB', 'CCWH', c('CCWR','CCHR','CCRR','CCRB','CCWB','CCHB','CCBB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM) + ccM*(1-cchM)*ccrM, 1-ccM, 1+ccM*cchM, ccM*(1-cchM)*(1-ccrM))/4
+  tMatrix['CCBB', 'CCWH', c('CCWB','CCHB','CCRB','CCBB')] <- c(1-ccM, 1+ccM*cchM, ccM*(1-cchM)*ccrM, ccM*(1-cchM)*(1-ccrM))/2
 
 
   #protection from underflow errors
   tMatrix[tMatrix < .Machine$double.eps] <- 0
 
+
   ## initialize viability mask. No mother/father-specific death, so use basic mask
-  viabilityMask <- array(data = 1L, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
+  viabilityMask <- array(data = 1, dim = c(size,size,size), dimnames = list(gtype, gtype, gtype))
 
   ## genotype-specific modifiers
   modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)

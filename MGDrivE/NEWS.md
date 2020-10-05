@@ -24,7 +24,7 @@
 * Complete internal rebuild of MGDrivE implementation.
   * The underlying mathematics are the same, only the implementation has been changed.
   * Significant memory reductions.
-  * Signficant computational reduction.
+  * Significant computational reduction.
   * All internal objects and functions have been updated.
   * Most important, the stochastic implementation had a bug in it, which has been resolved.
   * All releases are now numeric vectors/matrices indicating the genotype and release number; this is handled internally.
@@ -46,8 +46,25 @@
 * All parameters that previously had to be vectors the same length as the number of patches have been updated to take a single number, implying that all parameters are the same for each patch, or as a vector, so each patch can be specified individually.
 * Plotting functions have been updated to handle any sampling scheme (i.e., if output is not written every day). 
 * `parameterizeMGDrivE()` had internal loops replaced with vectorized functions.
-* Spelling errors and documentaton inconsistencies were addressed.
+* Spelling errors and documentation inconsistencies were addressed.
 * Citation was updated to reflect publication in [Methods in Ecology and Evolution](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13318).
 
 
+# MGDrivE 1.6.0
+
+### Major Changes
+
+* Rebuild of the Migration Function
+  * Migration is handled at the Network level now. This removes objects from the Patch class, making the package lighter and more efficient.
+  * Migration is no longer Dirichlet distributed.
+* New Inheritance Patterns
+  * One and Two locus Cleave and Rescue (ClvR) constructs have been made available.
+  * ERACR/eCHACR constructs have been made available.
+
+
+
+### Minor Changes
+
+* Spelling checked and errors corrected.
+* Function links in the documentation have been updated.
 

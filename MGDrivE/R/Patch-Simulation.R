@@ -28,7 +28,6 @@
 #' Mating: \code{\link{oneDay_mating_deterministic_Patch}} or \code{\link{oneDay_mating_stochastic_Patch}} \cr
 #' Lay Eggs: \code{\link{oneDay_oviposit_deterministic_Patch}} or \code{\link{oneDay_oviposit_stochastic_Patch}} \cr
 #' Release Eggs: \code{\link{oneDay_eggReleases_Patch}} \cr
-#' Migration: \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}} \cr
 #'
 oneDay_PopDynamics_Patch <- function(){
 
@@ -61,11 +60,6 @@ oneDay_PopDynamics_Patch <- function(){
   self$oneDay_layEggs()
   self$oneDay_releaseEggs()
 
-  ###########
-  #Migration#
-  ###########
-  self$oneDay_migrationOut()
-
 }
 
 
@@ -75,7 +69,7 @@ oneDay_PopDynamics_Patch <- function(){
 ##########
 # Adult
 ##########
-#' Deterministc Adult Survival
+#' Deterministic Adult Survival
 #'
 #' Daily adult survival is calculated according to \deqn{\overline{\overline{Af_{[t-1]}}} * (1-\mu_{ad}) * \overline{\omega_{m/f}}},
 #' where \eqn{\mu_{ad}} corresponds to adult mortality rate and \eqn{\overline{\omega_{m/f}}}
@@ -261,7 +255,7 @@ oneDay_larvaDM_stochastic_Patch <- function(){
 #' Deterministic Egg Death and Pupation
 #'
 #' Daily egg survival is calculated according to \deqn{\overline{E_{[t-1]}} * (1-\mu_{aq})},
-#' where \eqn{\mu_{aq}} corresdponds to daily non-density-dependent aquatic mortality.
+#' where \eqn{\mu_{aq}} corresponds to daily non-density-dependent aquatic mortality.
 #' Eggs transition into larvae at the end of \eqn{T_e}. \cr
 #' See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 #'
@@ -281,7 +275,7 @@ oneDay_eggDM_deterministic_Patch <- function(){
 #' Stochastic Egg Death and Pupation
 #'
 #' Daily egg survival is sampled from a binomial distribution, where survival
-#' probability is given by \eqn{1-\mu_{aq}}. \eqn{\mu_{aq}} corresdponds
+#' probability is given by \eqn{1-\mu_{aq}}. \eqn{\mu_{aq}} corresponds
 #' to daily non-density-dependent aquatic mortality. \cr
 #' Eggs transition into larvae at the end of \eqn{T_e}. \cr
 #' See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
@@ -307,7 +301,7 @@ oneDay_eggDM_stochastic_Patch <- function(){
 # Pupation
 ###############################################################################
 
-#' Deterministc Pupation
+#' Deterministic Pupation
 #'
 #' Pupa first undergo one extra day of survival, calculated as \deqn{\overline{P_{[t-1]}} * (1-\mu_{ad})}.
 #' This is an artifact of the conversion from continuous to discrete time (as mentioned
@@ -448,7 +442,7 @@ oneDay_eggReleases_Patch <- function(){
 # Mating
 ###############################################################################
 
-#' Deterministc Mating
+#' Deterministic Mating
 #'
 #' Mating is calculated as the outer product of newly emerging adult females and
 #' all-current adult males, modulated by \eqn{\overline{\overline{\eta}}}, the genotype-specific
@@ -538,7 +532,7 @@ oneDay_mating_stochastic_Patch <- function(){
 # Lay Eggs
 ###############################################################################
 
-#' Deterministc Oviposition
+#' Deterministic Oviposition
 #'
 #' Calculate the number of eggs oviposited by female mosquitoes following:
 #' \deqn{\overline{O(T_x)} = \sum_{j=1}^{n} \Bigg( \bigg( (\beta*\overline{s} * \overline{ \overline{Af_{[t]}}}) * \overline{\overline{\overline{Ih}}} \bigg) * \Lambda \Bigg)^{\top}_{ij}}

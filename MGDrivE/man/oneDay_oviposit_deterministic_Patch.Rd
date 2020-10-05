@@ -2,7 +2,7 @@
 % Please edit documentation in R/Patch-Simulation.R
 \name{oneDay_oviposit_deterministic_Patch}
 \alias{oneDay_oviposit_deterministic_Patch}
-\title{Deterministc Oviposition}
+\title{Deterministic Oviposition}
 \usage{
 oneDay_oviposit_deterministic_Patch()
 }

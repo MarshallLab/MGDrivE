@@ -4,10 +4,12 @@
 \name{moveMatDiag}
 \alias{moveMatDiag}
 \title{Movement Matrix: Diagonal}
-\format{A matrix with 3 rows and 3 columns:
+\format{
+A matrix with 3 rows and 3 columns:
 \describe{
 3 independent patches.
-}}
+}
+}
 \usage{
 data(moveMatDiag)
 }

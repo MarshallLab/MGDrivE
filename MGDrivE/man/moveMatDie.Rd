@@ -4,10 +4,12 @@
 \name{moveMatDie}
 \alias{moveMatDie}
 \title{Movement Matrix: Die}
-\format{A matrix with 3 rows and 3 columns:
+\format{
+A matrix with 3 rows and 3 columns:
 \describe{
 All entries of matrix are 0 for testing that all mosquitoes will be killed.
-}}
+}
+}
 \usage{
 data(moveMatDie)
 }

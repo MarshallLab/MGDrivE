@@ -8,7 +8,7 @@ oneDay_eggDM_deterministic_Patch()
 }
 \description{
 Daily egg survival is calculated according to \deqn{\overline{E_{[t-1]}} * (1-\mu_{aq})},
-where \eqn{\mu_{aq}} corresdponds to daily non-density-dependent aquatic mortality.
+where \eqn{\mu_{aq}} corresponds to daily non-density-dependent aquatic mortality.
 Eggs transition into larvae at the end of \eqn{T_e}. \cr
 See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 }

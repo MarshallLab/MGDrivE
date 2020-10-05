@@ -27,9 +27,6 @@
 #' @param nPatch Number of \code{\link{Patch}}
 #' @param simTime Maximum time to run simulation
 #' @param sampTime Times to sample, used as tNow %% sampTime, default is every day
-#' @param moveVar Variance of stochastic movement (not used in diffusion model of migration).
-#' It affects the concentration of probability in the Dirchlet simplex, small values
-#' lead to high variance and large values lead to low variance.
 #' @param tEgg Length of egg stage
 #' @param tLarva Length of larval instar stage
 #' @param tPupa Length of pupal stage
@@ -61,7 +58,6 @@ parameterizeMGDrivE <- function(
   nPatch,
   simTime,
   sampTime = 1L,
-  moveVar = 1000L,
   tEgg = 1L,
   tLarva = 14L,
   tPupa = 1L,
@@ -87,7 +83,6 @@ parameterizeMGDrivE <- function(
   pars$nPatch = nPatch
   pars$simTime = simTime
   pars$sampTime = sampTime
-  pars$moveVar = moveVar
   pars$runID = runID
 
   # biological parameters

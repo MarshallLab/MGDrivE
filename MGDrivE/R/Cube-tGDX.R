@@ -361,7 +361,7 @@ cubeTGDX <- function(cM1=0, cM2=0, cP1=0, cP2=0,
   tMatrix[tMatrix < .Machine$double.eps] <- 0 #protection from underflow errors
 
   ## initialize viability mask. No mother-specific death.
-  viabilityMask <- array(data = 1L, dim = c(numGen,numGen,numGen),
+  viabilityMask <- array(data = 1, dim = c(numGen,numGen,numGen),
                          dimnames = list(c(femaleGen,maleGen), c(femaleGen,maleGen), c(femaleGen,maleGen)))
 
   ## genotype-specific modifiers

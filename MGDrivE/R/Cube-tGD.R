@@ -34,7 +34,7 @@
 #'    * R: Resistant 1
 #'    * B: Resistant 2
 #'
-#' This drive corresponds to the [transcomplementing gene drive](https://www.nature.com/articles/s41467-019-13977-7) 
+#' This drive corresponds to the [transcomplementing gene drive](https://www.nature.com/articles/s41467-019-13977-7)
 #' developed by the Gantz and Bier lab.
 #'
 #' @param cM1 Maternally inherited Cas9 cutting rate at locus 1
@@ -226,15 +226,15 @@ cubeTGD <- function(cM1=0, cM2=0, cP1=0, cP2=0,
   for (fi in 1:numGen){
     #do female stuff here
     #This splits all characters.
-    fSplit <- strsplit(x = genotypes[fi], split = "")[[1]]
+    fSplit <- strsplit(x = genotypes[fi], split = "", useBytes = TRUE)[[1]]
     #Matrix of alleles and target sites
     #  Each row is an allele, there are 2 alleles
     #  Each column is the target site on that allele, there are 2 target sites
     #  this is because target sites are linked on an allele
     fAlleleMat <- matrix(data = fSplit, nrow = numAlleles, ncol = numAlleles, byrow = TRUE)
     #Score them
-    fScore[1] <- any(grepl(pattern = "P|M", x = fAlleleMat[ ,1], fixed = FALSE, perl = FALSE))
-    fScore[2] <- any(grepl(pattern = "G", x = fAlleleMat[ ,2], fixed = TRUE))
+    fScore[1] <- any("P" == fAlleleMat) || any("M" == fAlleleMat)
+    fScore[2] <- any("G" == fAlleleMat)
 
     #setup offspring allele lists
     fPHold <- rep(x = list(list()), times = numAlleles) #vector(mode = "list", length = numAlleles)
@@ -314,15 +314,15 @@ cubeTGD <- function(cM1=0, cM2=0, cP1=0, cP2=0,
       #do male stuff here
       #split male genotype
       #This splits all characters.
-      mSplit <- strsplit(x = genotypes[mi], split = "")[[1]]
+      mSplit <- strsplit(x = genotypes[mi], split = "", useBytes = TRUE)[[1]]
       #Matrix of alleles and target sites
       #  Each row is an allele, there are 2 alleles
       #  Each column is the target site on that allele, there are 2 target sites
       #  this is because target sites are linked on an allele
       mAlleleMat <- matrix(data = mSplit, nrow = numAlleles, ncol = numAlleles, byrow = TRUE)
       #Score them
-      mScore[1] <- any(grepl(pattern = "P|M", x = mAlleleMat[ ,1], fixed = FALSE, perl = FALSE))
-      mScore[2] <- any(grepl(pattern = "G", x = mAlleleMat[ ,2], fixed = TRUE))
+      mScore[1] <- any("P" == mAlleleMat) || any("M" == mAlleleMat)
+      mScore[2] <- any("G" == mAlleleMat)
 
       #setup offspring allele lists
       mPHold <- rep(x = list(list()), times = numAlleles) #vector(mode = "list", length = numAlleles)
@@ -429,7 +429,7 @@ cubeTGD <- function(cM1=0, cM2=0, cP1=0, cP2=0,
   tMatrix[tMatrix < .Machine$double.eps] <- 0 #protection from underflow errors
 
   ## initialize viability mask. No mother-specific death.
-  viabilityMask <- array(data = 1L, dim = c(numGen,numGen,numGen),
+  viabilityMask <- array(data = 1, dim = c(numGen,numGen,numGen),
                          dimnames = list(genotypes, genotypes, genotypes))
 
   ## genotype-specific modifiers

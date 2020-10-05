@@ -6,11 +6,23 @@
 \usage{
 cubeSplitDrive(
   cM = 1,
-  cF = 1,
   chM = 0,
   crM = 0,
+  ccM = cM,
+  cchM = chM,
+  ccrM = crM,
+  cF = 1,
   chF = 0,
   crF = 0,
+  ccF = cF,
+  cchF = chF,
+  ccrF = crF,
+  dW = 0,
+  dhW = 0,
+  drW = 0,
+  ddW = dW,
+  ddhW = dhW,
+  ddrW = drW,
   eta = NULL,
   phi = NULL,
   omega = NULL,
@@ -20,17 +32,41 @@ cubeSplitDrive(
 )
 }
 \arguments{
-\item{cM}{Cutting efficiency in males}
+\item{cM}{Cutting efficiency in males, one Cas9 allele}
 
-\item{cF}{Cutting efficiency in females}
+\item{chM}{Homing efficiency in males, one Cas9 allele}
 
-\item{chM}{Homing efficiency in males}
+\item{crM}{Resistance efficiency in males, one Cas9 allele}
 
-\item{crM}{Resistance efficiency in males}
+\item{ccM}{Cutting efficiency in males, two Cas9 alleles}
 
-\item{chF}{Homing efficiency in females}
+\item{cchM}{Homing efficiency in males, two Cas9 alleles}
 
-\item{crF}{Resistance efficiency in females}
+\item{ccrM}{Resistance efficiency in males, two Cas9 alleles}
+
+\item{cF}{Cutting efficiency in females, one Cas9 allele}
+
+\item{chF}{Homing efficiency in females, one Cas9 allele}
+
+\item{crF}{Resistance efficiency in females, one Cas9 allele}
+
+\item{ccF}{Cutting efficiency in females, two Cas9 alleles}
+
+\item{cchF}{Homing efficiency in females, two Cas9 alleles}
+
+\item{ccrF}{Resistance efficiency in females, two Cas9 alleles}
+
+\item{dW}{Maternal deposition cutting, one Cas9 allele}
+
+\item{dhW}{Maternal deposition homing, one Cas9 allele}
+
+\item{drW}{Maternal deposition resistance, one Cas9 allele}
+
+\item{ddW}{Maternal deposition cutting, two Cas9 alleles}
+
+\item{ddhW}{Maternal deposition homing, two Cas9 alleles}
+
+\item{ddrW}{Maternal deposition resistance, two Cas9 alleles}
 
 \item{eta}{Genotype-specific mating fitness}
 

@@ -4,11 +4,13 @@
 \name{moveMatCascade3}
 \alias{moveMatCascade3}
 \title{Movement Matrix: Cascade 3}
-\format{A matrix with 3 rows and 3 columns:
+\format{
+A matrix with 3 rows and 3 columns:
 \describe{
 Mosquitoes in patch 1 have equal probability to stay or move to 2; mosquitoes
 in patch 2 have equal probability to stay or move to 3; mosquitoes in patch 3 stay there.
-}}
+}
+}
 \usage{
 data(moveMatCascade3)
 }

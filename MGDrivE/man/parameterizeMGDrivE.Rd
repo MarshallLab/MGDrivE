@@ -9,7 +9,6 @@ parameterizeMGDrivE(
   nPatch,
   simTime,
   sampTime = 1L,
-  moveVar = 1000L,
   tEgg = 1L,
   tLarva = 14L,
   tPupa = 1L,
@@ -31,10 +30,6 @@ parameterizeMGDrivE(
 \item{simTime}{Maximum time to run simulation}
 
 \item{sampTime}{Times to sample, used as tNow \%\% sampTime, default is every day}
-
-\item{moveVar}{Variance of stochastic movement (not used in diffusion model of migration).
-It affects the concentration of probability in the Dirchlet simplex, small values
-lead to high variance and large values lead to low variance.}
 
 \item{tEgg}{Length of egg stage}
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Patch-Simulation.R
 \name{oneDay_adultDeath_deterministic_Patch}
 \alias{oneDay_adultDeath_deterministic_Patch}
-\title{Deterministc Adult Survival}
+\title{Deterministic Adult Survival}
 \usage{
 oneDay_adultDeath_deterministic_Patch()
 }

@@ -4,7 +4,9 @@
 \name{Patch}
 \alias{Patch}
 \title{Patch Class Definition}
-\format{An \code{\link{R6Class}} generator object}
+\format{
+An \code{\link{R6Class}} generator object
+}
 \description{
 A Patch is a single well-mixed population that is the smallest unit of simulation for MGDrivE.
 }
@@ -33,14 +35,13 @@ A Patch is a single well-mixed population that is the smallest unit of simulatio
 
 \itemize{
 \item set_NetworkPointer: see \code{\link{set_NetworkPointer_Patch}}
-\item get_maleMigration: see \code{\link{get_maleMigration_Patch}}
-\item get_femaleMigration: see \code{\link{get_femaleMigration_Patch}}
+\item get_femalePopulation: see \code{\link{get_femalePop_Patch}}
+\item get_malePopulation: see \code{\link{get_malePop_Patch}}
 \item initialPopulation: see \code{\link{set_initialPopulation_Patch}}
 \item setPopulation: see \code{\link{set_population_deterministic_Patch}} or \code{\link{set_population_stochastic_Patch}}
 \item reset: see \code{\link{reset_Patch}}
 \item oneDay_initOutput: see \code{\link{oneDay_initOutput_Patch}}
 \item oneDay_writeOutput: see \code{\link{oneDay_writeOutput_Patch}}
-\item oneDay_migrationOut: see \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}}
 \item oneDay_migrationIn: see \code{\link{oneDay_migrationIn_Patch}}
 \item oneDay_PopDynamics: see \code{\link{oneDay_PopDynamics_Patch}}
 \item oneDay_adultD: see \code{\link{oneDay_adultDeath_deterministic_Patch}} or \code{\link{oneDay_adultDeath_stochastic_Patch}}
@@ -65,8 +66,6 @@ A Patch is a single well-mixed population that is the smallest unit of simulatio
 \item popHolder: vector, nGenotype x 1, temporary population storage
 \item popPupSex: vector, nGenotype x 1, used in stochastic pupation as another temporary population
 \item popUnmated: vector, nGenotype x 1, holds unmated females
-\item mMig: matrix, nGenotype x nPatches, holds outbound males for migration, see \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}}
-\item fMig: array, nGenotype x nGenotype x nPatches, holds outbound females for migration, see \code{\link{oneDay_migrationOut_deterministic_Patch}} or \code{\link{oneDay_migrationOut_stochastic_Patch}}
 \item popAquatict0: matrix, nGenotype x sum(timeAquatic), holding all eggs, larva, and pupa for reset, see \code{\link{reset_Patch}}
 \item popMalet0: vector, nGenotype x 1, holds adult males for reset see \code{\link{reset_Patch}}
 \item popFemalet0: matrix, nGenotype x nGenotype, holds mated adult females for reset see \code{\link{reset_Patch}}

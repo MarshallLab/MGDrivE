@@ -24,7 +24,7 @@ Sets up a list containing the probability of a batch migration, the fractional
 amount of males/females that migrate, and the weighted probabilities for where
 to migrate. The default weights for migration are equal for all patches.
 These can be changed after running the function. This is only used in
-\code{\link{oneDay_migrationOut_stochastic_Patch}}.
+\code{\link{oneDay_Migration_Stochastic_Network}}.
 }
 \examples{
 # to setup for 3 patches

@@ -15,7 +15,7 @@
 #' Calculate Distribution of Larval Population
 #'
 #' This hidden function calculates the distribution of larvae through time by
-#' treating the larval-stage as a discrete-time markov chain, and solving for the
+#' treating the larval-stage as a discrete-time Markov chain, and solving for the
 #' stationary distribution. As the only aquatic population known for initializing
 #' MGDrivE is the equilibrium larval population, this acts as an anchor from which
 #' to calculate the egg and pupae distributions from (see \code{\link{set_initialPopulation_Patch}}).
@@ -24,7 +24,7 @@
 #' @param t Integer, stage time
 #'
 calcLarvalDist <- function(mu, t){
-  # treat the world as a markov chain, solve for the stable distribution
+  # treat the world as a Markov chain, solve for the stable distribution
   # set diagonals to 1
   M = diag(x = t)
 

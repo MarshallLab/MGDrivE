@@ -188,7 +188,7 @@ generateReleaseVector <- function(driveCube, releasesParameters, nameGenotypes =
 #' amount of males/females that migrate, and the weighted probabilities for where
 #' to migrate. The default weights for migration are equal for all patches.
 #' These can be changed after running the function. This is only used in
-#' \code{\link{oneDay_migrationOut_stochastic_Patch}}.
+#' \code{\link{oneDay_Migration_Stochastic_Network}}.
 #'
 #' @param batchProbs Probability of a batch migration, either 1 number or a vector
 #' of length equal to the number of patches
@@ -205,8 +205,8 @@ basicBatchMigration <- function(batchProbs = 1e-5, sexProbs = c(0.01, 0.01),
                                 numPatches = 1){
 
   # check length of probs
-  if(!all(batchProbs<1)){
-    stop("Probability of batch migration must be less than 1")
+  if(!all(batchProbs<=1)){
+    stop("Probability of batch migration must be less than pr equal to 1")
   }
   if(length(batchProbs) == 1){
     batchProbs = rep(x = batchProbs, numPatches)
@@ -216,8 +216,8 @@ basicBatchMigration <- function(batchProbs = 1e-5, sexProbs = c(0.01, 0.01),
   }
 
   # check length of sexes, make sure less than 1
-  if(!all(sexProbs<1)){
-    stop("Sex specific movement fraction must be less than 1")
+  if(!all(sexProbs<=1)){
+    stop("Sex specific movement fraction must be less than or equal to 1")
   }
   if(is.null(dim(sexProbs))){
     sexProbs = matrix(data = sexProbs, nrow = numPatches, ncol = 2,

@@ -39,6 +39,10 @@ setupMGDrivE <- function(stochasticityON = FALSE, verbose = TRUE){
   ##########
   if(stochasticityON){
     # stochastic option
+    Network$set(which = "public",name = "oneDay_Migration",
+                value = oneDay_Migration_Stochastic_Network, overwrite = overwrite)
+
+
     Patch$set(which = "public", name = "setPopulation",
               value = set_population_stochastic_Patch, overwrite = overwrite)
 
@@ -63,11 +67,12 @@ setupMGDrivE <- function(stochasticityON = FALSE, verbose = TRUE){
     Patch$set(which = "public",name = "oneDay_layEggs",
               value = oneDay_oviposit_stochastic_Patch, overwrite = overwrite)
 
-    Patch$set(which = "public",name = "oneDay_migrationOut",
-          value = oneDay_migrationOut_stochastic_Patch, overwrite = overwrite)
-
   } else {
     # deterministic option
+    Network$set(which = "public",name = "oneDay_Migration",
+                value = oneDay_Migration_Deterministic_Network, overwrite = overwrite)
+
+
     Patch$set(which = "public", name = "setPopulation",
               value = set_population_deterministic_Patch, overwrite = overwrite)
 
@@ -91,9 +96,6 @@ setupMGDrivE <- function(stochasticityON = FALSE, verbose = TRUE){
 
     Patch$set(which = "public",name = "oneDay_layEggs",
               value = oneDay_oviposit_deterministic_Patch, overwrite = overwrite)
-
-    Patch$set(which = "public",name = "oneDay_migrationOut",
-              value = oneDay_migrationOut_deterministic_Patch, overwrite = overwrite)
 
   } # end if
 

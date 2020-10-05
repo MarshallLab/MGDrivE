@@ -164,7 +164,7 @@ calcLognormalKernel <- function(distMat, meanlog, sdlog) {
 #' \deqn{
 #' f(x)=\frac{\beta^{\alpha}}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}
 #' }
-#' where \eqn{\Gamma(\alpha)} is the Gamma function, \eqn{\gamma(\alpha,\beta x)} is hte lower incomplete
+#' where \eqn{\Gamma(\alpha)} is the Gamma function, \eqn{\gamma(\alpha,\beta x)} is the lower incomplete
 #' gamma function, and \eqn{\alpha,\beta} are the shape and rate parameters, respectively.
 #'
 #' @param distMat Distance matrix from \code{\link[MGDrivE]{calcVinEll}}

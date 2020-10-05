@@ -2,7 +2,7 @@
 % Please edit documentation in R/Patch-Simulation.R
 \name{oneDay_pupation_deterministic_Patch}
 \alias{oneDay_pupation_deterministic_Patch}
-\title{Deterministc Pupation}
+\title{Deterministic Pupation}
 \usage{
 oneDay_pupation_deterministic_Patch()
 }

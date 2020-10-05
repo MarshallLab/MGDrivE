@@ -4,11 +4,13 @@
 \name{moveMatTriDiagonal}
 \alias{moveMatTriDiagonal}
 \title{Movement Matrix: Tri-diagonal}
-\format{A matrix with 12 rows and 12 columns:
+\format{
+A matrix with 12 rows and 12 columns:
 \describe{
 Tri-diagonal matrix with approximately 0.985 probability on diagonal and
 rest of probability mass on k-1 and k+1 off-diagonal elements.
-}}
+}
+}
 \usage{
 data(moveMatTriDiagonal)
 }

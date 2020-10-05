@@ -68,12 +68,11 @@ The computation of the larval stage in the population is crucial to the model
 because the density dependent processes necessary for equilibrium trajectories
 to be calculated occur here. This calculation is performed with the following equation:
 \deqn{
-D(\theta_l,T_x) = \left
+D(\theta_l,T_x) =
         \begin{array}{ll}
             \theta_{l[0]}^{'}=\theta_l 								& \quad i = 0 \\
             \theta_{l[i+1]}^{'} = \theta_{l[i]}^{'} *F(\overline{L_{[t-i-T_x]}})	& \quad i \leq T_l
         \end{array}
-    \right.
 }
 In addition to this, we need the larval mortality (\eqn{\mu_{l}}):
 \deqn{
@@ -182,7 +181,7 @@ populations tensors and the transitions matrix of the network as follows:
 In these equations the new population of the patch \eqn{i} is calculated by
 summing the migrating mosquitoes of all the \eqn{j} patches across the network
 defined by the transitions matrix \eqn{\tau}, which stores the mosquito migration
-probabilities from patch to patch.mIt is worth noting that the migration
+probabilities from patch to patch. It is worth noting that the migration
 probabilities matrices can be different for males and females; and that there's
 no inherent need for them to be static (the migration probabilities may vary
 over time to accommodate wind changes due to seasonality).
@@ -253,8 +252,6 @@ empirically from mosquito population data.
 
 \subsection{Migration}{
 Variance of stochastic movement (not used in diffusion model of migration).
-It affects the concentration of probability in the Dirchlet simplex, small
-values lead to high variance and large values lead to low variance.
 }
 }
 

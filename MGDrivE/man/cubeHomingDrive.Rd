@@ -60,7 +60,7 @@ and all genotype-specific parameters.
 \description{
 This is a sex-specific version of the original cube \code{\link{cubeHoming1RA}}. It assumes that the construct
 is on an autosome and there can be different male/female homing rates. It also has
-maternal deposition, ie, when the male provides a W allele to a female with a H allele,
+maternal deposition, i.e., when the male provides a W allele to a female with a H allele,
 some portion are cut during oogenesis.
 If the maternal deposition parameters are zero (d* parameters), this is a normal
 CRISPR drive.

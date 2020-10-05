@@ -4,10 +4,12 @@
 \name{moveMatTriple}
 \alias{moveMatTriple}
 \title{Movement Matrix: Triple}
-\format{A matrix with 3 rows and 3 columns:
+\format{
+A matrix with 3 rows and 3 columns:
 \describe{
 All entries of matrix are 1 for testing that mosquitoes will be produced.
-}}
+}
+}
 \usage{
 data(moveMatTriple)
 }

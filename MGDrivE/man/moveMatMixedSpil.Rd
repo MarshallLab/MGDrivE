@@ -4,11 +4,13 @@
 \name{moveMatMixedSpil}
 \alias{moveMatMixedSpil}
 \title{Movement Matrix: Mixed Spill}
-\format{A matrix with 3 rows and 3 columns:
+\format{
+A matrix with 3 rows and 3 columns:
 \describe{
 Mosquitoes in patch 1 stay with probability 0.999, move to patch 2 with probability 0.001,
 mosquitoes in patch 2 and 3 stay in their patches.
-}}
+}
+}
 \usage{
 data(moveMatMixedSpil)
 }

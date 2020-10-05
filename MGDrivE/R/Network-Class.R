@@ -35,7 +35,6 @@
 #'  * verbose: Chatty? Default is TRUE
 #'
 #' @section **Methods**:
-#'  * get_moveVar: see \code{\link{get_moveVar_Network}}
 #'  * get_timeAq: see \code{\link{get_timeAq_Network}}
 #'  * get_beta: see \code{\link{get_beta_Network}}
 #'  * get_muAd: see \code{\link{get_muAd_Network}}
@@ -55,13 +54,8 @@
 #'  * get_conADM: see \code{\link{get_conM_Network}}
 #'  * get_conADF: see \code{\link{get_conF_Network}}
 #'  * get_tNow: see \code{\link{get_tNow_Network}}
-#'  * get_migrationMaleRow: see \code{\link{get_migrationMaleRow_Network}}
-#'  * get_migrationFemaleRow: see \code{\link{get_migrationFemaleRow_Network}}
 #'  * get_patchReleases: see \code{\link{get_patchReleases_Network}}
-#'  * get_batchProbs: see \code{\link{get_batchProbs_Network}}
-#'  * get_batchSex: see \code{\link{get_batchSex_Network}}
-#'  * get_batchLocations: see \code{\link{get_batchLocRow_Network}}
-#'  * oneDay_Migration: see \code{\link{oneDay_Migration_Network}}
+#'  * oneDay_Migration: see \code{\link{oneDay_Migration_Deterministic_Network}} or see \code{\link{oneDay_Migration_Stochastic_Network}}
 #'  * reset: see \code{\link{reset_Network}}
 #'  * oneDay: see \code{\link{oneDay_Network}}
 #'  * oneRun: see \code{\link{oneRun_Network}}
@@ -231,16 +225,6 @@ Network <- R6::R6Class(classname = "Network",
 ###############################################################################
 # Getters & Setters: Parameters
 ###############################################################################
-
-#' Get moveVar
-#'
-#' Return numeric variance in Dirchlet-Multinomial movement
-#'
-get_moveVar_Network <- function(){return(private$parameters$moveVar)}
-
-Network$set(which = "public",name = "get_moveVar",
-  value = get_moveVar_Network,overwrite = TRUE
-)
 
 #' Get timeAq
 #'
@@ -470,30 +454,6 @@ Network$set(which = "public",name = "get_tNow",
   value = get_tNow_Network,overwrite = TRUE
 )
 
-#' Get Row of Male Migration Matrix
-#'
-#' Return a matrix object (does not drop dimensions)
-#'
-#' @param ix Index of row
-#'
-get_migrationMaleRow_Network <- function(ix){return(private$migrationMale[ix,,drop=FALSE])}
-
-Network$set(which = "public",name = "get_migrationMaleRow",
-  value = get_migrationMaleRow_Network,overwrite = TRUE
-)
-
-#' Get Row of Female Migration Matrix
-#'
-#' Return a matrix object (does not drop dimensions)
-#'
-#' @param ix Index of row
-#'
-get_migrationFemaleRow_Network <- function(ix){return(private$migrationFemale[ix,,drop=FALSE])}
-
-Network$set(which = "public",name = "get_migrationFemaleRow",
-  value = get_migrationFemaleRow_Network,overwrite = TRUE
-)
-
 #' Get Patch Release Schedule
 #'
 #' Return the release schedule for a patch for male or female
@@ -514,39 +474,3 @@ Network$set(which = "public",name = "get_patchReleases",
   value = get_patchReleases_Network,overwrite = TRUE
 )
 
-#' Get Batch Migration Probability
-#'
-#' Return the probability of undergoing batch migration each day
-#'
-#' @param ix Index of patch
-#'
-get_batchProbs_Network <- function(ix){return(private$migrationBatch[[1L]][ix])}
-
-Network$set(which = "public",name = "get_batchProbs",
-            value = get_batchProbs_Network,overwrite = TRUE
-)
-
-#' Get Batch Migration Sex
-#'
-#' Return the batch migration size for each sex
-#'
-#' @param ix Index of patch
-#' @param sex Number, M=1 and F=2
-#'
-get_batchSex_Network <- function(ix, sex){return(private$migrationBatch[[2]][ix,sex])}
-
-Network$set(which = "public",name = "get_batchSex",
-            value = get_batchSex_Network,overwrite = TRUE
-)
-
-#' Get Batch Location Distribution
-#'
-#' Return the distribution of location probabilities
-#'
-#' @param ix Index of patch
-#'
-get_batchLocRow_Network <- function(ix){return(private$migrationBatch[[3]][ix, ,drop=FALSE])}
-
-Network$set(which = "public",name = "get_batchLocations",
-            value = get_batchLocRow_Network,overwrite = TRUE
-)

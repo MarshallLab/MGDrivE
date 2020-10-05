@@ -2,7 +2,7 @@
 % Please edit documentation in R/Patch-Simulation.R
 \name{oneDay_mating_deterministic_Patch}
 \alias{oneDay_mating_deterministic_Patch}
-\title{Deterministc Mating}
+\title{Deterministic Mating}
 \usage{
 oneDay_mating_deterministic_Patch()
 }

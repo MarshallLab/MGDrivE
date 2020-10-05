@@ -77,7 +77,7 @@ cubeMendelian <- function(gtype = c("AA", "Aa", "aa"), eta = NULL, phi = NULL,
 
 
   ## initialize viability mask. No mother-specific death, so use basic mask
-  viabilityMask <- array(data = 1L, dim = c(size,size,size),
+  viabilityMask <- array(data = 1, dim = c(size,size,size),
                          dimnames = list(gtype, gtype, gtype))
 
   ## genotype-specific modifiers

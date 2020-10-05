@@ -4,14 +4,16 @@
 \name{kernels}
 \alias{kernels}
 \title{Kernels Parameters}
-\format{named list with 5 elements:
+\format{
+named list with 5 elements:
 \describe{
 \item{lnorm_mean}{log mean of log-normal density}
 \item{lnorm_sd}{log standard deviation of log-normal density}
 \item{gamma_shape}{shape parameter of gamma density}
 \item{gamma_sd}{rate parameter of gamma density}
 \item{exp_rate}{rate parameter of exponential density}
-}}
+}
+}
 \usage{
 data(kernels)
 }
