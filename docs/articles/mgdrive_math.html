@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MGDrivE Mathematical Description • MGDrivE</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="MGDrivE Mathematical Description">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -31,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
       </span>
     </div>
 
@@ -75,7 +74,6 @@
 <!--/.navbar -->
 
       
-
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -152,15 +150,19 @@ Fig. 1: <strong>MGDrivE</strong> Conceptual Model Framework
 <ul>
 <li><a href="../reference/cubeOneLocusTA.html">1 Locus Maternal-Toxin/Zygotic-Antidote System</a></li>
 <li><a href="../reference/cubeTwoLocusTA.html">2 Locus Maternal-Toxin/Zygotic-Antidote System</a></li>
+<li><a href="../reference/cubeClvR.html">1 Locus Cleave and Rescue (ClvR)</a></li>
+<li><a href="../reference/cubeClvR2.html">2 Locus Cleave and Rescue (ClvR)</a></li>
 <li><a href="../reference/cubeHoming1RA.html">Homing Drive with 1 Resistance Allele</a></li>
 <li><a href="../reference/cubeHomingDrive.html">CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Alleles and maternal deposition</a></li>
+<li><a href="../reference/cubeECHACR.html">Autosomal ECHACR</a></li>
+<li><a href="../reference/cubeECHACRX.html">X-Linked ECHACR</a></li>
 <li><a href="../reference/cubeKillerRescue.html">Killer-Rescue System</a></li>
 <li><a href="../reference/cubeMEDEA.html">MEDEA (Maternal Effect Dominant Embryonic Arrest)</a></li>
 <li><a href="../reference/cubeReciprocalTranslocations.html">Reciprocal Translocations</a></li>
 <li><a href="../reference/cubeRIDL.html">RIDL (Release of Insects with Dominant Lethality)</a></li>
 <li><a href="../reference/cubeMendelian.html">Mendelian</a></li>
 <li><a href="../reference/cubeSplitDrive.html">Split-Drive</a></li>
-<li><a href="../reference/cubeTGD.html">trans-Vomplementing Gene Drive</a></li>
+<li><a href="../reference/cubeTGD.html">trans-Complementing Gene Drive</a></li>
 <li><a href="../reference/cubeTGDX.html">X-Linked trans-Complementing Gene Drive</a></li>
 <li><a href="../reference/cubeWolbachia.html">Wolbachia</a></li>
 </ul>
@@ -179,7 +181,6 @@ D(\theta_l,T_x) = \left\{
              \theta_{l[0]}^{'}=\theta_l                                 &amp; \quad i = 0 \\
              \theta_{l[i+1]}^{'} = \theta_{l[i]}^{'} *F(\overline{L_{[t-i-T_x]}})   &amp; \quad i \leq T_l
          \end{array}
-     \right.
 \]</span></p>
 <p>In addition to this, we need the larval mortality (<span class="math inline">\(\mu_{l}\)</span>): <span class="math display">\[
     %L_{eq}=&amp;\alpha*\lfloor R_{m} -1\rfloor
@@ -274,7 +275,7 @@ D(\theta_l,T_x) = \left\{
 <p><strong>Other Stochastic Processes</strong></p>
 <p>All remaining stochastic processes (larval survival, hatching ,pupating, surviving to adult hood) are determined by binomial sampling conditioned on factors affecting the current life stage. These factors are determined empirically from mosquito population data.</p>
 <p><strong>Migration</strong></p>
-<p>Variance of stochastic movement (not used in diffusion model of migration). It affects the concentration of probability in the Dirchlet simplex, small values lead to high variance and large values lead to low variance.</p>
+<p>Variance of stochastic movement (not used in diffusion model of migration).</p>
 </div>
 </div>
 <div id="references" class="section level1">
@@ -317,20 +318,17 @@ D(\theta_l,T_x) = \left\{
 </div>
 
 
-
       <footer><div class="copyright">
   <p>Developed by <a href="https://chipdelmal.github.io">Héctor Manuel Sánchez Castellanos</a>, <a href="https://github.com/GilChrist19">Jared Bennett</a>, <a href="https://slwu89.github.io">Sean Wu</a>, <a href="https://www.marshalllab.com">John M. Marshall</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
 </div>
 
   
-
 
   </body>
 </html>

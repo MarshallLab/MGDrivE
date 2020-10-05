@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MGDrivE Examples • MGDrivE</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="MGDrivE Examples">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -31,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
       </span>
     </div>
 
@@ -75,7 +74,6 @@
 <!--/.navbar -->
 
       
-
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -109,7 +107,7 @@ pre {
 <a href="#single-population" class="anchor"></a>Single Population</h3>
 <p>Each node on our network represents an independent population. Thus, it is important that <em>MGDrivE</em> run on a on a single node. A single population can be provided by parameterizing <em>MGDrivE</em> with a 1-by-1 matrix, where there is a 100% chance of individuals staying at that location (i.e., there is no where else to move, thus they have to remain).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># setup movement matrix for 1 node</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="dv">1</span>, <span class="dt">nrow =</span> <span class="dv">1</span>, <span class="dt">ncol =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="dv">1</span>, <span class="dt">nrow =</span> <span class="dv">1</span>, <span class="dt">ncol =</span> <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">moveMat</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt;      [,1]</span></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; [1,]    1</span></a></code></pre></div>
@@ -123,7 +121,7 @@ pre {
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># 2 nodes, no migration</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb2-7" data-line-number="7">moveMat</a>
 <a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;      [,1] [,2]</span></a>
 <a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [1,]    1    0</span></a>
@@ -135,7 +133,7 @@ pre {
 <a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co"># 5% migration per day from population 1</span></a>
 <a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co"># 10% migraton per day from population 2</span></a>
 <a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#  Notice that the rows sum to 1</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.95</span>, <span class="fl">0.05</span>, <span class="fl">0.10</span>, <span class="fl">0.90</span>),</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.95</span>, <span class="fl">0.05</span>, <span class="fl">0.10</span>, <span class="fl">0.90</span>),</a>
 <a class="sourceLine" id="cb2-19" data-line-number="19">                  <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb2-20" data-line-number="20">moveMat</a>
 <a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;      [,1] [,2]</span></a>
@@ -154,10 +152,10 @@ pre {
 <a class="sourceLine" id="cb3-6" data-line-number="6">nNodes &lt;-<span class="st"> </span><span class="dv">5</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co"># fill with random data</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dt">n =</span> nNodes<span class="op">*</span>nNodes), <span class="dt">nrow =</span> nNodes, <span class="dt">ncol =</span> nNodes)</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(<span class="dt">n =</span> nNodes<span class="op">*</span>nNodes), <span class="dt">nrow =</span> nNodes, <span class="dt">ncol =</span> nNodes)</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co"># normalize</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">moveMat &lt;-<span class="st"> </span>moveMat<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(<span class="dt">x =</span> moveMat)</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">moveMat &lt;-<span class="st"> </span>moveMat<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colSums">rowSums</a></span>(<span class="dt">x =</span> moveMat)</a>
 <a class="sourceLine" id="cb3-13" data-line-number="13">moveMat</a>
 <a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;           [,1]       [,2]       [,3]       [,4]       [,5]</span></a>
 <a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; [1,] 0.2448828 0.13895585 0.12253207 0.25163078 0.24199852</span></a>
@@ -176,25 +174,25 @@ pre {
 <a class="sourceLine" id="cb4-9" data-line-number="9">triDiag &lt;-<span class="st"> </span><span class="cf">function</span>(upper, lower){</a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb4-11" data-line-number="11">  <span class="co"># return matrix</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">  retMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="dv">0</span>, <span class="dt">nrow =</span> <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(upper) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">ncol =</span> <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(upper) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">  retMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="dv">0</span>, <span class="dt">nrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(upper) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">ncol =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(upper) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb4-14" data-line-number="14">  <span class="co"># set index values for upper/lower triangles</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">  indx &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(upper)</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">  indx &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(upper)</a>
 <a class="sourceLine" id="cb4-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb4-17" data-line-number="17">  <span class="co"># set forward/backward migration using matrix access</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">  retMat[<span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(indx<span class="op">+</span><span class="dv">1</span>,indx)] &lt;-<span class="st"> </span>lower</a>
-<a class="sourceLine" id="cb4-19" data-line-number="19">  retMat[<span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(indx,indx<span class="op">+</span><span class="dv">1</span>)] &lt;-<span class="st"> </span>upper</a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">  retMat[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(indx<span class="op">+</span><span class="dv">1</span>,indx)] &lt;-<span class="st"> </span>lower</a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">  retMat[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(indx,indx<span class="op">+</span><span class="dv">1</span>)] &lt;-<span class="st"> </span>upper</a>
 <a class="sourceLine" id="cb4-20" data-line-number="20"></a>
 <a class="sourceLine" id="cb4-21" data-line-number="21">  <span class="co"># set stay probs</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22">  <span class="kw"><a href="https://rdrr.io/r/base/diag.html">diag</a></span>(<span class="dt">x =</span> retMat) &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(<span class="dt">x =</span> retMat)</a>
+<a class="sourceLine" id="cb4-22" data-line-number="22">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/diag">diag</a></span>(<span class="dt">x =</span> retMat) &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">-</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colSums">rowSums</a></span>(<span class="dt">x =</span> retMat)</a>
 <a class="sourceLine" id="cb4-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(retMat)</a>
+<a class="sourceLine" id="cb4-24" data-line-number="24">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(retMat)</a>
 <a class="sourceLine" id="cb4-25" data-line-number="25">}</a>
 <a class="sourceLine" id="cb4-26" data-line-number="26"></a>
 <a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co"># fill movement matrix</span></a>
 <a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#  Remember, rows need to sum to 1.</span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29">moveMat &lt;-<span class="st"> </span><span class="kw">triDiag</span>(<span class="dt">upper =</span> <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep.int</a></span>(<span class="dt">x =</span> <span class="fl">0.05</span>, <span class="dt">times =</span> nNodes<span class="dv">-1</span>),</a>
-<a class="sourceLine" id="cb4-30" data-line-number="30">                   <span class="dt">lower =</span> <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep.int</a></span>(<span class="dt">x =</span> <span class="fl">0.05</span>, <span class="dt">times =</span> nNodes<span class="dv">-1</span>))</a>
+<a class="sourceLine" id="cb4-29" data-line-number="29">moveMat &lt;-<span class="st"> </span><span class="kw">triDiag</span>(<span class="dt">upper =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep.int</a></span>(<span class="dt">x =</span> <span class="fl">0.05</span>, <span class="dt">times =</span> nNodes<span class="dv">-1</span>),</a>
+<a class="sourceLine" id="cb4-30" data-line-number="30">                   <span class="dt">lower =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep.int</a></span>(<span class="dt">x =</span> <span class="fl">0.05</span>, <span class="dt">times =</span> nNodes<span class="dv">-1</span>))</a>
 <a class="sourceLine" id="cb4-31" data-line-number="31"></a>
 <a class="sourceLine" id="cb4-32" data-line-number="32">moveMat</a>
 <a class="sourceLine" id="cb4-33" data-line-number="33"><span class="co">#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></a>
@@ -219,16 +217,16 @@ pre {
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># realistic landscape</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># matrix of coordinates as latitude/longitude pairs</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">lat_longs &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">37.873507</span>, <span class="fl">-122.268181</span>,</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">lat_longs &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">37.873507</span>, <span class="fl">-122.268181</span>,</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">                             <span class="fl">37.873578</span>, <span class="fl">-122.254430</span>,</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">                             <span class="fl">37.869806</span>, <span class="fl">-122.267639</span>),</a>
 <a class="sourceLine" id="cb5-7" data-line-number="7">                    <span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">                    <span class="dt">dimnames =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="ot">NULL</span>, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Lat'</span>,<span class="st">'Lon'</span>)))</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">                    <span class="dt">dimnames =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="ot">NULL</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'Lat'</span>,<span class="st">'Lon'</span>)))</a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co"># calculate distance matrix between points</span></a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># dmat &lt;- MGDrivE::calcHaversine(latLongs = lat_longs)</span></a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co"># dmat &lt;- MGDrivE::calcVinSph(latLongs = lat_longs)</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">distMat &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/MGDrivE/man/calcVinEll.html">calcVinEll</a></span>(<span class="dt">latLongs =</span> lat_longs)</a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">distMat &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/MGDrivE/topics/calcVinEll">calcVinEll</a></span>(<span class="dt">latLongs =</span> lat_longs)</a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"></a>
 <a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># calculate a zero-inflated movement kernal over the distances</span></a>
 <a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co"># p0 is the probability, per day, that a mosquito doesn't move.</span></a>
@@ -240,7 +238,7 @@ pre {
 <a class="sourceLine" id="cb5-22" data-line-number="22">p0 &lt;-<span class="st"> </span><span class="fl">0.991</span></a>
 <a class="sourceLine" id="cb5-23" data-line-number="23">rate &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="fl">55.5</span></a>
 <a class="sourceLine" id="cb5-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25">moveMat &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/MGDrivE/man/calcHurdleExpKernel.html">calcHurdleExpKernel</a></span>(<span class="dt">distMat =</span> distMat, <span class="dt">rate =</span> rate, <span class="dt">p0 =</span> p0)</a>
+<a class="sourceLine" id="cb5-25" data-line-number="25">moveMat &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/MGDrivE/topics/calcHurdleExpKernel">calcHurdleExpKernel</a></span>(<span class="dt">distMat =</span> distMat, <span class="dt">rate =</span> rate, <span class="dt">p0 =</span> p0)</a>
 <a class="sourceLine" id="cb5-26" data-line-number="26">moveMat</a>
 <a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co">#&gt;             [,1]         [,2]        [,3]</span></a>
 <a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt; [1,] 0.991000000 5.282449e-09 0.008999995</span></a>
@@ -264,7 +262,7 @@ pre {
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MGDrivE)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">####################</span></a>
@@ -279,19 +277,19 @@ pre {
 <a class="sourceLine" id="cb6-16" data-line-number="16">tMax &lt;-<span class="st"> </span><span class="dv">365</span></a>
 <a class="sourceLine" id="cb6-17" data-line-number="17"></a>
 <a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
 <a class="sourceLine" id="cb6-20" data-line-number="20"></a>
 <a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co"># a 1-node network where mosquitoes do not leave</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="dv">1</span>, <span class="dt">nrow =</span> <span class="dv">1</span>, <span class="dt">ncol =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb6-22" data-line-number="22">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="dv">1</span>, <span class="dt">nrow =</span> <span class="dv">1</span>, <span class="dt">ncol =</span> <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb6-23" data-line-number="23"></a>
 <a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co"># parameters of the population equilibrium</span></a>
 <a class="sourceLine" id="cb6-25" data-line-number="25">adultPopEquilibrium &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(moveMat)</a>
+<a class="sourceLine" id="cb6-26" data-line-number="26">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(moveMat)</a>
 <a class="sourceLine" id="cb6-27" data-line-number="27"></a>
 <a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co"># Basic Inheritance pattern</span></a>
 <a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co"># Mendelian cube with standard (default) paraameters</span></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co"># Mendelian cube with standard (default) parameters</span></a>
 <a class="sourceLine" id="cb6-32" data-line-number="32">cube &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cubeMendelian.html">cubeMendelian</a></span>()</a>
 <a class="sourceLine" id="cb6-33" data-line-number="33"></a>
 <a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">####################</span></a>
@@ -299,15 +297,15 @@ pre {
 <a class="sourceLine" id="cb6-36" data-line-number="36"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb6-37" data-line-number="37"><span class="co"># set up the empty release vector</span></a>
 <a class="sourceLine" id="cb6-38" data-line-number="38"><span class="co">#  MGDrivE pulls things out by name</span></a>
-<a class="sourceLine" id="cb6-39" data-line-number="39">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
-<a class="sourceLine" id="cb6-40" data-line-number="40">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb6-39" data-line-number="39">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
+<a class="sourceLine" id="cb6-40" data-line-number="40">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb6-41" data-line-number="41">                                      <span class="dt">eggReleases=</span><span class="ot">NULL</span>,<span class="dt">matedFemaleReleases=</span><span class="ot">NULL</span>)},</a>
 <a class="sourceLine" id="cb6-42" data-line-number="42">                           <span class="dt">simplify=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb6-43" data-line-number="43"></a>
 <a class="sourceLine" id="cb6-44" data-line-number="44"><span class="co"># choose release parameters</span></a>
 <a class="sourceLine" id="cb6-45" data-line-number="45"><span class="co">#  Releases start at time 25, occur every day, for 1 day.</span></a>
 <a class="sourceLine" id="cb6-46" data-line-number="46"><span class="co">#  There are 10 mosquitoes released every time.</span></a>
-<a class="sourceLine" id="cb6-47" data-line-number="47">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
+<a class="sourceLine" id="cb6-47" data-line-number="47">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
 <a class="sourceLine" id="cb6-48" data-line-number="48">                           <span class="dt">releasesNumber=</span><span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb6-49" data-line-number="49">                           <span class="dt">releasesInterval=</span><span class="dv">0</span>,</a>
 <a class="sourceLine" id="cb6-50" data-line-number="50">                           <span class="dt">releaseProportion=</span><span class="dv">10</span>)</a>
@@ -325,7 +323,7 @@ pre {
 <a class="sourceLine" id="cb6-62" data-line-number="62"><span class="co"># This is required because of the stochastic simulations, but doesn't make sense</span></a>
 <a class="sourceLine" id="cb6-63" data-line-number="63"><span class="co">#  in a deterministic simulation.</span></a>
 <a class="sourceLine" id="cb6-64" data-line-number="64">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb6-65" data-line-number="65">                                      <span class="dt">sexProbs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb6-65" data-line-number="65">                                      <span class="dt">sexProbs=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
 <a class="sourceLine" id="cb6-66" data-line-number="66">                                      <span class="dt">numPatches=</span>sitesNumber)</a>
 <a class="sourceLine" id="cb6-67" data-line-number="67"></a>
 <a class="sourceLine" id="cb6-68" data-line-number="68"><span class="co">####################</span></a>
@@ -446,11 +444,11 @@ pre {
 <div id="deterministic-with-fitness-cost" class="section level4">
 <h4 class="hasAnchor">
 <a href="#deterministic-with-fitness-cost" class="anchor"></a>Deterministic, With Fitness Cost</h4>
-<p>Now that we have shown a basic Mendelian simulation, we will expand it a little by including a fitness cost on certain genotypes. In the following simulation, the homozygotes, <em>AA</em> and <em>aa</em>, are only 60% as fit as the heterozygote over their adult lifetime. This is an example of a heterozygote advantage, and we should see the population become primarily heterozygous. We will increase the size and number of releases and perform them a little bit later, to see the effects of the fitness cost and then speed up the equilibration process, but everything else will remain the same, ie., one population and a deterministic simulation.</p>
+<p>Now that we have shown a basic Mendelian simulation, we will expand it a little by including a fitness cost on certain genotypes. In the following simulation, the homozygotes, <em>AA</em> and <em>aa</em>, are only 60% as fit as the heterozygote over their adult lifetime. This is an example of a heterozygote advantage, and we should see the population become primarily heterozygous. We will increase the size and number of releases and perform them a little bit later, to see the effects of the fitness cost and then speed up the equilibration process, but everything else will remain the same, i.e., one population and a deterministic simulation.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MGDrivE)</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co"># Output Folder</span></a>
@@ -464,20 +462,20 @@ pre {
 <a class="sourceLine" id="cb7-15" data-line-number="15">tMax &lt;-<span class="st"> </span><span class="dv">365</span><span class="op">*</span><span class="dv">2</span></a>
 <a class="sourceLine" id="cb7-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
+<a class="sourceLine" id="cb7-18" data-line-number="18">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
 <a class="sourceLine" id="cb7-19" data-line-number="19"></a>
 <a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co"># a 1-node network where mosquitoes do not leave</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb7-21" data-line-number="21">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb7-22" data-line-number="22"></a>
 <a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co"># parameters of the population equilibrium</span></a>
 <a class="sourceLine" id="cb7-24" data-line-number="24">adultPopEquilibrium &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb7-25" data-line-number="25">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(moveMat)</a>
-<a class="sourceLine" id="cb7-26" data-line-number="26">patchPops &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(adultPopEquilibrium,sitesNumber)</a>
+<a class="sourceLine" id="cb7-25" data-line-number="25">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(moveMat)</a>
+<a class="sourceLine" id="cb7-26" data-line-number="26">patchPops &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(adultPopEquilibrium,sitesNumber)</a>
 <a class="sourceLine" id="cb7-27" data-line-number="27"></a>
 <a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co"># Basic Inheritance pattern</span></a>
 <a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co"># Mendelian cube with standard (default) paraameters</span></a>
+<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co"># Mendelian cube with standard (default) parameters</span></a>
 <a class="sourceLine" id="cb7-32" data-line-number="32"></a>
 <a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co"># This time, lets put fitness cost on the homozygotes, giving the heterozygote</span></a>
 <a class="sourceLine" id="cb7-34" data-line-number="34"><span class="co">#  an advantage</span></a>
@@ -488,7 +486,7 @@ pre {
 <a class="sourceLine" id="cb7-39" data-line-number="39"><span class="co">#  Since omega is the adult daily death rate, we use the built-in function to</span></a>
 <a class="sourceLine" id="cb7-40" data-line-number="40"><span class="co">#  calculate our desired lifetime cost as applied daily</span></a>
 <a class="sourceLine" id="cb7-41" data-line-number="41">dayOmega &lt;-<span class="st"> </span><span class="kw"><a href="../reference/calcOmega.html">calcOmega</a></span>(<span class="dt">mu =</span> bioParameters<span class="op">$</span>muAd, <span class="dt">lifespanReduction =</span> <span class="fl">0.60</span>)</a>
-<a class="sourceLine" id="cb7-42" data-line-number="42">omegaNew &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AA"</span>=dayOmega, <span class="st">"aa"</span>=dayOmega)</a>
+<a class="sourceLine" id="cb7-42" data-line-number="42">omegaNew &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AA"</span>=dayOmega, <span class="st">"aa"</span>=dayOmega)</a>
 <a class="sourceLine" id="cb7-43" data-line-number="43"></a>
 <a class="sourceLine" id="cb7-44" data-line-number="44"><span class="co"># setup cube</span></a>
 <a class="sourceLine" id="cb7-45" data-line-number="45">cube &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cubeMendelian.html">cubeMendelian</a></span>(<span class="dt">omega =</span> omegaNew)</a>
@@ -498,15 +496,15 @@ pre {
 <a class="sourceLine" id="cb7-49" data-line-number="49"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb7-50" data-line-number="50"><span class="co"># set up the empty release vector</span></a>
 <a class="sourceLine" id="cb7-51" data-line-number="51"><span class="co">#  MGDrivE pulls things out by name</span></a>
-<a class="sourceLine" id="cb7-52" data-line-number="52">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
-<a class="sourceLine" id="cb7-53" data-line-number="53">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb7-52" data-line-number="52">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
+<a class="sourceLine" id="cb7-53" data-line-number="53">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb7-54" data-line-number="54">                                      <span class="dt">eggReleases=</span><span class="ot">NULL</span>,<span class="dt">matedFemaleReleases=</span><span class="ot">NULL</span>)},</a>
 <a class="sourceLine" id="cb7-55" data-line-number="55">                           <span class="dt">simplify=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb7-56" data-line-number="56"></a>
 <a class="sourceLine" id="cb7-57" data-line-number="57"><span class="co"># choose release parameters</span></a>
 <a class="sourceLine" id="cb7-58" data-line-number="58"><span class="co">#  Releases start at time 100, occur every day, for 5 days.</span></a>
 <a class="sourceLine" id="cb7-59" data-line-number="59"><span class="co">#  There are 50 mosquitoes released every time.</span></a>
-<a class="sourceLine" id="cb7-60" data-line-number="60">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb7-60" data-line-number="60">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">100</span>,</a>
 <a class="sourceLine" id="cb7-61" data-line-number="61">                           <span class="dt">releasesNumber=</span><span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb7-62" data-line-number="62">                           <span class="dt">releasesInterval=</span><span class="dv">0</span>,</a>
 <a class="sourceLine" id="cb7-63" data-line-number="63">                           <span class="dt">releaseProportion=</span><span class="dv">50</span>)</a>
@@ -528,7 +526,7 @@ pre {
 <a class="sourceLine" id="cb7-79" data-line-number="79"><span class="co"># This is required because of the stochastic simulations, but doesn't make sense</span></a>
 <a class="sourceLine" id="cb7-80" data-line-number="80"><span class="co">#  in a deterministic simulation.</span></a>
 <a class="sourceLine" id="cb7-81" data-line-number="81">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb7-82" data-line-number="82">                                      <span class="dt">sexProbs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb7-82" data-line-number="82">                                      <span class="dt">sexProbs=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
 <a class="sourceLine" id="cb7-83" data-line-number="83">                                      <span class="dt">numPatches=</span>sitesNumber)</a>
 <a class="sourceLine" id="cb7-84" data-line-number="84"></a>
 <a class="sourceLine" id="cb7-85" data-line-number="85"><span class="co">####################</span></a>
@@ -606,7 +604,7 @@ pre {
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MGDrivE)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
 <a class="sourceLine" id="cb8-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co"># Output Folder</span></a>
@@ -617,7 +615,7 @@ pre {
 <a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#  Here, our base directory is "mgdrive", and the repetition folders are "001","002", etc.</span></a>
 <a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#  So, the final structure is "mgdrive/001","mgdrive/002", etc.</span></a>
 <a class="sourceLine" id="cb8-14" data-line-number="14">outFolder &lt;-<span class="st"> "mgdrive"</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="kw"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span>(<span class="dt">path =</span> outFolder)</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files2">dir.create</a></span>(<span class="dt">path =</span> outFolder)</a>
 <a class="sourceLine" id="cb8-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co"># Simulation Parameters</span></a>
@@ -629,23 +627,23 @@ pre {
 <a class="sourceLine" id="cb8-24" data-line-number="24">nRep &lt;-<span class="st"> </span><span class="dv">50</span></a>
 <a class="sourceLine" id="cb8-25" data-line-number="25"></a>
 <a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co"># each Monte Carlo iteration gets its own folder</span></a>
-<a class="sourceLine" id="cb8-27" data-line-number="27">folderNames &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(outFolder,</a>
-<a class="sourceLine" id="cb8-28" data-line-number="28">                         <span class="kw"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span>nRep, <span class="dt">width =</span> <span class="dv">3</span>, <span class="dt">format =</span> <span class="st">"d"</span>, <span class="dt">flag =</span> <span class="st">"0"</span>))</a>
+<a class="sourceLine" id="cb8-27" data-line-number="27">folderNames &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(outFolder,</a>
+<a class="sourceLine" id="cb8-28" data-line-number="28">                         <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/formatc">formatC</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span>nRep, <span class="dt">width =</span> <span class="dv">3</span>, <span class="dt">format =</span> <span class="st">"d"</span>, <span class="dt">flag =</span> <span class="st">"0"</span>))</a>
 <a class="sourceLine" id="cb8-29" data-line-number="29"></a>
 <a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb8-31" data-line-number="31">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
+<a class="sourceLine" id="cb8-31" data-line-number="31">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
 <a class="sourceLine" id="cb8-32" data-line-number="32"></a>
 <a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co"># a 1-node network where mosquitoes do not leave</span></a>
-<a class="sourceLine" id="cb8-34" data-line-number="34">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb8-34" data-line-number="34">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb8-35" data-line-number="35"></a>
 <a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co"># parameters of the population equilibrium</span></a>
 <a class="sourceLine" id="cb8-37" data-line-number="37">adultPopEquilibrium &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb8-38" data-line-number="38">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(moveMat)</a>
+<a class="sourceLine" id="cb8-38" data-line-number="38">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(moveMat)</a>
 <a class="sourceLine" id="cb8-39" data-line-number="39"></a>
 <a class="sourceLine" id="cb8-40" data-line-number="40"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb8-41" data-line-number="41"><span class="co"># Basic Inheritance pattern</span></a>
 <a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co"># Mendelian cube with standard (default) paraameters</span></a>
+<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co"># Mendelian cube with standard (default) parameters</span></a>
 <a class="sourceLine" id="cb8-44" data-line-number="44"></a>
 <a class="sourceLine" id="cb8-45" data-line-number="45"><span class="co"># This time, lets put fitness cost on the homozygotes, giving the heterozygote</span></a>
 <a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#  an advantage</span></a>
@@ -656,7 +654,7 @@ pre {
 <a class="sourceLine" id="cb8-51" data-line-number="51"><span class="co">#  Since omega is the adult daily death rate, we use the built-in function to</span></a>
 <a class="sourceLine" id="cb8-52" data-line-number="52"><span class="co">#  calculate our desired lifetime cost as applied daily</span></a>
 <a class="sourceLine" id="cb8-53" data-line-number="53">dayOmega &lt;-<span class="st"> </span><span class="kw"><a href="../reference/calcOmega.html">calcOmega</a></span>(<span class="dt">mu =</span> bioParameters<span class="op">$</span>muAd, <span class="dt">lifespanReduction =</span> <span class="fl">0.60</span>)</a>
-<a class="sourceLine" id="cb8-54" data-line-number="54">omegaNew &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AA"</span>=dayOmega, <span class="st">"aa"</span>=dayOmega)</a>
+<a class="sourceLine" id="cb8-54" data-line-number="54">omegaNew &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AA"</span>=dayOmega, <span class="st">"aa"</span>=dayOmega)</a>
 <a class="sourceLine" id="cb8-55" data-line-number="55"></a>
 <a class="sourceLine" id="cb8-56" data-line-number="56"><span class="co"># setup cube</span></a>
 <a class="sourceLine" id="cb8-57" data-line-number="57">cube &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cubeMendelian.html">cubeMendelian</a></span>(<span class="dt">omega =</span> omegaNew)</a>
@@ -666,15 +664,15 @@ pre {
 <a class="sourceLine" id="cb8-61" data-line-number="61"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb8-62" data-line-number="62"><span class="co"># set up the empty release vector</span></a>
 <a class="sourceLine" id="cb8-63" data-line-number="63"><span class="co">#  MGDrivE pulls things out by name</span></a>
-<a class="sourceLine" id="cb8-64" data-line-number="64">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
-<a class="sourceLine" id="cb8-65" data-line-number="65">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb8-64" data-line-number="64">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
+<a class="sourceLine" id="cb8-65" data-line-number="65">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb8-66" data-line-number="66">                                      <span class="dt">eggReleases=</span><span class="ot">NULL</span>,<span class="dt">matedFemaleReleases=</span><span class="ot">NULL</span>)},</a>
 <a class="sourceLine" id="cb8-67" data-line-number="67">                           <span class="dt">simplify=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb8-68" data-line-number="68"></a>
 <a class="sourceLine" id="cb8-69" data-line-number="69"><span class="co"># choose release parameters</span></a>
 <a class="sourceLine" id="cb8-70" data-line-number="70"><span class="co">#  Releases start at time 100, occur every day, for 5 days.</span></a>
 <a class="sourceLine" id="cb8-71" data-line-number="71"><span class="co">#  There are 50 mosquitoes released every time.</span></a>
-<a class="sourceLine" id="cb8-72" data-line-number="72">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb8-72" data-line-number="72">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">100</span>,</a>
 <a class="sourceLine" id="cb8-73" data-line-number="73">                           <span class="dt">releasesNumber=</span><span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb8-74" data-line-number="74">                           <span class="dt">releasesInterval=</span><span class="dv">0</span>,</a>
 <a class="sourceLine" id="cb8-75" data-line-number="75">                           <span class="dt">releaseProportion=</span><span class="dv">50</span>)</a>
@@ -696,7 +694,7 @@ pre {
 <a class="sourceLine" id="cb8-91" data-line-number="91"><span class="co"># This is required because of the stochastic simulations, but doesn't make sense</span></a>
 <a class="sourceLine" id="cb8-92" data-line-number="92"><span class="co">#  in a deterministic simulation.</span></a>
 <a class="sourceLine" id="cb8-93" data-line-number="93">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb8-94" data-line-number="94">                                      <span class="dt">sexProbs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb8-94" data-line-number="94">                                      <span class="dt">sexProbs=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
 <a class="sourceLine" id="cb8-95" data-line-number="95">                                      <span class="dt">numPatches=</span>sitesNumber)</a>
 <a class="sourceLine" id="cb8-96" data-line-number="96"></a>
 <a class="sourceLine" id="cb8-97" data-line-number="97"><span class="co">####################</span></a>
@@ -757,7 +755,7 @@ pre {
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MGDrivE)</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co"># Output Folder</span></a>
@@ -771,10 +769,10 @@ pre {
 <a class="sourceLine" id="cb10-15" data-line-number="15">tMax &lt;-<span class="st"> </span><span class="dv">365</span></a>
 <a class="sourceLine" id="cb10-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb10-18" data-line-number="18">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
+<a class="sourceLine" id="cb10-18" data-line-number="18">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
 <a class="sourceLine" id="cb10-19" data-line-number="19"></a>
 <a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co"># a 2-node network where mosquitoes do not leave</span></a>
-<a class="sourceLine" id="cb10-21" data-line-number="21">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb10-21" data-line-number="21">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb10-22" data-line-number="22">moveMat</a>
 <a class="sourceLine" id="cb10-23" data-line-number="23"><span class="co">#&gt;      [,1] [,2]</span></a>
 <a class="sourceLine" id="cb10-24" data-line-number="24"><span class="co">#&gt; [1,]    1    0</span></a>
@@ -782,12 +780,12 @@ pre {
 <a class="sourceLine" id="cb10-26" data-line-number="26"></a>
 <a class="sourceLine" id="cb10-27" data-line-number="27"><span class="co"># parameters of the population equilibrium</span></a>
 <a class="sourceLine" id="cb10-28" data-line-number="28">adultPopEquilibrium &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb10-29" data-line-number="29">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(moveMat)</a>
+<a class="sourceLine" id="cb10-29" data-line-number="29">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(moveMat)</a>
 <a class="sourceLine" id="cb10-30" data-line-number="30"></a>
 <a class="sourceLine" id="cb10-31" data-line-number="31"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb10-32" data-line-number="32"><span class="co"># Basic Inheritance pattern</span></a>
 <a class="sourceLine" id="cb10-33" data-line-number="33"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb10-34" data-line-number="34"><span class="co"># Mendelian cube with standard (default) paraameters</span></a>
+<a class="sourceLine" id="cb10-34" data-line-number="34"><span class="co"># Mendelian cube with standard (default) parameters</span></a>
 <a class="sourceLine" id="cb10-35" data-line-number="35">cube &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cubeMendelian.html">cubeMendelian</a></span>()</a>
 <a class="sourceLine" id="cb10-36" data-line-number="36"></a>
 <a class="sourceLine" id="cb10-37" data-line-number="37"><span class="co">####################</span></a>
@@ -795,15 +793,15 @@ pre {
 <a class="sourceLine" id="cb10-39" data-line-number="39"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb10-40" data-line-number="40"><span class="co"># set up the empty release vector</span></a>
 <a class="sourceLine" id="cb10-41" data-line-number="41"><span class="co">#  MGDrivE pulls things out by name</span></a>
-<a class="sourceLine" id="cb10-42" data-line-number="42">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
-<a class="sourceLine" id="cb10-43" data-line-number="43">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb10-42" data-line-number="42">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
+<a class="sourceLine" id="cb10-43" data-line-number="43">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb10-44" data-line-number="44">                                      <span class="dt">eggReleases=</span><span class="ot">NULL</span>,<span class="dt">matedFemaleReleases=</span><span class="ot">NULL</span>)},</a>
 <a class="sourceLine" id="cb10-45" data-line-number="45">                           <span class="dt">simplify=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb10-46" data-line-number="46"></a>
 <a class="sourceLine" id="cb10-47" data-line-number="47"><span class="co"># choose release parameters</span></a>
 <a class="sourceLine" id="cb10-48" data-line-number="48"><span class="co">#  Releases start at time 25, occur every day, for 5 days.</span></a>
 <a class="sourceLine" id="cb10-49" data-line-number="49"><span class="co">#  There are 50 mosquitoes released every time.</span></a>
-<a class="sourceLine" id="cb10-50" data-line-number="50">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
+<a class="sourceLine" id="cb10-50" data-line-number="50">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
 <a class="sourceLine" id="cb10-51" data-line-number="51">                           <span class="dt">releasesNumber=</span><span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb10-52" data-line-number="52">                           <span class="dt">releasesInterval=</span><span class="dv">0</span>,</a>
 <a class="sourceLine" id="cb10-53" data-line-number="53">                           <span class="dt">releaseProportion=</span><span class="dv">50</span>)</a>
@@ -820,7 +818,7 @@ pre {
 <a class="sourceLine" id="cb10-64" data-line-number="64"><span class="co"># This is required because of the stochastic simulations, but doesn't make sense</span></a>
 <a class="sourceLine" id="cb10-65" data-line-number="65"><span class="co">#  in a deterministic simulation.</span></a>
 <a class="sourceLine" id="cb10-66" data-line-number="66">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb10-67" data-line-number="67">                                      <span class="dt">sexProbs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb10-67" data-line-number="67">                                      <span class="dt">sexProbs=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
 <a class="sourceLine" id="cb10-68" data-line-number="68">                                      <span class="dt">numPatches=</span>sitesNumber)</a>
 <a class="sourceLine" id="cb10-69" data-line-number="69"></a>
 <a class="sourceLine" id="cb10-70" data-line-number="70"><span class="co">####################</span></a>
@@ -873,7 +871,7 @@ pre {
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MGDrivE)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co"># Output Folder</span></a>
@@ -887,10 +885,10 @@ pre {
 <a class="sourceLine" id="cb11-15" data-line-number="15">tMax &lt;-<span class="st"> </span><span class="dv">365</span></a>
 <a class="sourceLine" id="cb11-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb11-18" data-line-number="18">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
+<a class="sourceLine" id="cb11-18" data-line-number="18">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
 <a class="sourceLine" id="cb11-19" data-line-number="19"></a>
 <a class="sourceLine" id="cb11-20" data-line-number="20"><span class="co"># a 2-node network with 1% per day migration rate</span></a>
-<a class="sourceLine" id="cb11-21" data-line-number="21">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.99</span>,<span class="fl">0.01</span>,<span class="fl">0.01</span>,<span class="fl">0.99</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb11-21" data-line-number="21">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.99</span>,<span class="fl">0.01</span>,<span class="fl">0.01</span>,<span class="fl">0.99</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb11-22" data-line-number="22">moveMat</a>
 <a class="sourceLine" id="cb11-23" data-line-number="23"><span class="co">#&gt;      [,1] [,2]</span></a>
 <a class="sourceLine" id="cb11-24" data-line-number="24"><span class="co">#&gt; [1,] 0.99 0.01</span></a>
@@ -898,13 +896,13 @@ pre {
 <a class="sourceLine" id="cb11-26" data-line-number="26"></a>
 <a class="sourceLine" id="cb11-27" data-line-number="27"><span class="co"># parameters of the population equilibrium</span></a>
 <a class="sourceLine" id="cb11-28" data-line-number="28">adultPopEquilibrium &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb11-29" data-line-number="29">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(moveMat)</a>
-<a class="sourceLine" id="cb11-30" data-line-number="30">patchPops &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(adultPopEquilibrium,sitesNumber)</a>
+<a class="sourceLine" id="cb11-29" data-line-number="29">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(moveMat)</a>
+<a class="sourceLine" id="cb11-30" data-line-number="30">patchPops &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(adultPopEquilibrium,sitesNumber)</a>
 <a class="sourceLine" id="cb11-31" data-line-number="31"></a>
 <a class="sourceLine" id="cb11-32" data-line-number="32"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb11-33" data-line-number="33"><span class="co"># Basic Inheritance pattern</span></a>
 <a class="sourceLine" id="cb11-34" data-line-number="34"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb11-35" data-line-number="35"><span class="co"># Mendelian cube with standard (default) paraameters</span></a>
+<a class="sourceLine" id="cb11-35" data-line-number="35"><span class="co"># Mendelian cube with standard (default) parameters</span></a>
 <a class="sourceLine" id="cb11-36" data-line-number="36">cube &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cubeMendelian.html">cubeMendelian</a></span>()</a>
 <a class="sourceLine" id="cb11-37" data-line-number="37"></a>
 <a class="sourceLine" id="cb11-38" data-line-number="38"><span class="co">####################</span></a>
@@ -912,15 +910,15 @@ pre {
 <a class="sourceLine" id="cb11-40" data-line-number="40"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb11-41" data-line-number="41"><span class="co"># set up the empty release vector</span></a>
 <a class="sourceLine" id="cb11-42" data-line-number="42"><span class="co">#  MGDrivE pulls things out by name</span></a>
-<a class="sourceLine" id="cb11-43" data-line-number="43">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
-<a class="sourceLine" id="cb11-44" data-line-number="44">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb11-43" data-line-number="43">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
+<a class="sourceLine" id="cb11-44" data-line-number="44">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb11-45" data-line-number="45">                                      <span class="dt">eggReleases=</span><span class="ot">NULL</span>,<span class="dt">matedFemaleReleases=</span><span class="ot">NULL</span>)},</a>
 <a class="sourceLine" id="cb11-46" data-line-number="46">                           <span class="dt">simplify=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb11-47" data-line-number="47"></a>
 <a class="sourceLine" id="cb11-48" data-line-number="48"><span class="co"># choose release parameters</span></a>
 <a class="sourceLine" id="cb11-49" data-line-number="49"><span class="co">#  Releases start at time 25, occur every day, for 5 days.</span></a>
 <a class="sourceLine" id="cb11-50" data-line-number="50"><span class="co">#  There are 50 mosquitoes released every time.</span></a>
-<a class="sourceLine" id="cb11-51" data-line-number="51">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
+<a class="sourceLine" id="cb11-51" data-line-number="51">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
 <a class="sourceLine" id="cb11-52" data-line-number="52">                           <span class="dt">releasesNumber=</span><span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb11-53" data-line-number="53">                           <span class="dt">releasesInterval=</span><span class="dv">0</span>,</a>
 <a class="sourceLine" id="cb11-54" data-line-number="54">                           <span class="dt">releaseProportion=</span><span class="dv">50</span>)</a>
@@ -941,7 +939,7 @@ pre {
 <a class="sourceLine" id="cb11-69" data-line-number="69"><span class="co"># This is required because of the stochastic simulations, but doesn't make sense</span></a>
 <a class="sourceLine" id="cb11-70" data-line-number="70"><span class="co">#  in a deterministic simulation.</span></a>
 <a class="sourceLine" id="cb11-71" data-line-number="71">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb11-72" data-line-number="72">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb11-72" data-line-number="72">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
 <a class="sourceLine" id="cb11-73" data-line-number="73">                                     <span class="dt">numPatches=</span>sitesNumber)</a>
 <a class="sourceLine" id="cb11-74" data-line-number="74"></a>
 <a class="sourceLine" id="cb11-75" data-line-number="75"><span class="co">####################</span></a>
@@ -994,7 +992,7 @@ pre {
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MGDrivE)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
 <a class="sourceLine" id="cb12-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co"># Output Folder</span></a>
@@ -1004,7 +1002,7 @@ pre {
 <a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#  Here, our base directory is "mgdrive", and the repetition folders are "001","002", etc.</span></a>
 <a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#  So, the final structure is "mgdrive/001","mgdrive/002", etc.</span></a>
 <a class="sourceLine" id="cb12-13" data-line-number="13">outFolder &lt;-<span class="st"> "mgdrive"</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="kw"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span>(<span class="dt">path =</span> outFolder)</a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files2">dir.create</a></span>(<span class="dt">path =</span> outFolder)</a>
 <a class="sourceLine" id="cb12-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co"># Simulation Parameters</span></a>
@@ -1016,14 +1014,14 @@ pre {
 <a class="sourceLine" id="cb12-23" data-line-number="23">nRep &lt;-<span class="st"> </span><span class="dv">25</span></a>
 <a class="sourceLine" id="cb12-24" data-line-number="24"></a>
 <a class="sourceLine" id="cb12-25" data-line-number="25"><span class="co"># each Monte Carlo iteration gets its own folder</span></a>
-<a class="sourceLine" id="cb12-26" data-line-number="26">folderNames &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(outFolder,</a>
-<a class="sourceLine" id="cb12-27" data-line-number="27">                        <span class="kw"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span>nRep, <span class="dt">width =</span> <span class="dv">3</span>, <span class="dt">format =</span> <span class="st">"d"</span>, <span class="dt">flag =</span> <span class="st">"0"</span>))</a>
+<a class="sourceLine" id="cb12-26" data-line-number="26">folderNames &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(outFolder,</a>
+<a class="sourceLine" id="cb12-27" data-line-number="27">                        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/formatc">formatC</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span>nRep, <span class="dt">width =</span> <span class="dv">3</span>, <span class="dt">format =</span> <span class="st">"d"</span>, <span class="dt">flag =</span> <span class="st">"0"</span>))</a>
 <a class="sourceLine" id="cb12-28" data-line-number="28"></a>
 <a class="sourceLine" id="cb12-29" data-line-number="29"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb12-30" data-line-number="30">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
+<a class="sourceLine" id="cb12-30" data-line-number="30">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
 <a class="sourceLine" id="cb12-31" data-line-number="31"></a>
 <a class="sourceLine" id="cb12-32" data-line-number="32"><span class="co"># a 2-node network with 1% per day migration rate</span></a>
-<a class="sourceLine" id="cb12-33" data-line-number="33">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.99</span>,<span class="fl">0.01</span>,<span class="fl">0.01</span>,<span class="fl">0.99</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb12-33" data-line-number="33">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.99</span>,<span class="fl">0.01</span>,<span class="fl">0.01</span>,<span class="fl">0.99</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb12-34" data-line-number="34">moveMat</a>
 <a class="sourceLine" id="cb12-35" data-line-number="35"><span class="co">#&gt;      [,1] [,2]</span></a>
 <a class="sourceLine" id="cb12-36" data-line-number="36"><span class="co">#&gt; [1,] 0.99 0.01</span></a>
@@ -1031,12 +1029,12 @@ pre {
 <a class="sourceLine" id="cb12-38" data-line-number="38"></a>
 <a class="sourceLine" id="cb12-39" data-line-number="39"><span class="co"># parameters of the population equilibrium</span></a>
 <a class="sourceLine" id="cb12-40" data-line-number="40">adultPopEquilibrium &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb12-41" data-line-number="41">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(moveMat)</a>
+<a class="sourceLine" id="cb12-41" data-line-number="41">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(moveMat)</a>
 <a class="sourceLine" id="cb12-42" data-line-number="42"></a>
 <a class="sourceLine" id="cb12-43" data-line-number="43"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb12-44" data-line-number="44"><span class="co"># Basic Inheritance pattern</span></a>
 <a class="sourceLine" id="cb12-45" data-line-number="45"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb12-46" data-line-number="46"><span class="co"># Mendelian cube with standard (default) paraameters</span></a>
+<a class="sourceLine" id="cb12-46" data-line-number="46"><span class="co"># Mendelian cube with standard (default) parameters</span></a>
 <a class="sourceLine" id="cb12-47" data-line-number="47">cube &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cubeMendelian.html">cubeMendelian</a></span>()</a>
 <a class="sourceLine" id="cb12-48" data-line-number="48"></a>
 <a class="sourceLine" id="cb12-49" data-line-number="49"><span class="co">####################</span></a>
@@ -1044,15 +1042,15 @@ pre {
 <a class="sourceLine" id="cb12-51" data-line-number="51"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb12-52" data-line-number="52"><span class="co"># set up the empty release vector</span></a>
 <a class="sourceLine" id="cb12-53" data-line-number="53"><span class="co">#  MGDrivE pulls things out by name</span></a>
-<a class="sourceLine" id="cb12-54" data-line-number="54">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
-<a class="sourceLine" id="cb12-55" data-line-number="55">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb12-54" data-line-number="54">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
+<a class="sourceLine" id="cb12-55" data-line-number="55">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb12-56" data-line-number="56">                                      <span class="dt">eggReleases=</span><span class="ot">NULL</span>,<span class="dt">matedFemaleReleases=</span><span class="ot">NULL</span>)},</a>
 <a class="sourceLine" id="cb12-57" data-line-number="57">                           <span class="dt">simplify=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb12-58" data-line-number="58"></a>
 <a class="sourceLine" id="cb12-59" data-line-number="59"><span class="co"># choose release parameters</span></a>
 <a class="sourceLine" id="cb12-60" data-line-number="60"><span class="co">#  Releases start at time 25, occur every day, for 5 days.</span></a>
 <a class="sourceLine" id="cb12-61" data-line-number="61"><span class="co">#  There are 50 mosquitoes released every time.</span></a>
-<a class="sourceLine" id="cb12-62" data-line-number="62">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
+<a class="sourceLine" id="cb12-62" data-line-number="62">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
 <a class="sourceLine" id="cb12-63" data-line-number="63">                          <span class="dt">releasesNumber=</span><span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb12-64" data-line-number="64">                          <span class="dt">releasesInterval=</span><span class="dv">0</span>,</a>
 <a class="sourceLine" id="cb12-65" data-line-number="65">                          <span class="dt">releaseProportion=</span><span class="dv">50</span>)</a>
@@ -1069,7 +1067,7 @@ pre {
 <a class="sourceLine" id="cb12-76" data-line-number="76"><span class="co"># This is required because of the stochastic simulations, but doesn't make sense</span></a>
 <a class="sourceLine" id="cb12-77" data-line-number="77"><span class="co">#  in a deterministic simulation.</span></a>
 <a class="sourceLine" id="cb12-78" data-line-number="78">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb12-79" data-line-number="79">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb12-79" data-line-number="79">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
 <a class="sourceLine" id="cb12-80" data-line-number="80">                                     <span class="dt">numPatches=</span>sitesNumber)</a>
 <a class="sourceLine" id="cb12-81" data-line-number="81"></a>
 <a class="sourceLine" id="cb12-82" data-line-number="82"><span class="co">####################</span></a>
@@ -1122,11 +1120,11 @@ pre {
 <div id="stochastic-small-migration-and-fitness-cost" class="section level4">
 <h4 class="hasAnchor">
 <a href="#stochastic-small-migration-and-fitness-cost" class="anchor"></a>Stochastic, Small Migration and Fitness Cost</h4>
-<p>As a final example, we perform a stochastic, two-population simulation with the same fitness cost explored previously, ie., a 60% reduction in lifetime on <em>AA</em> and <em>aa</em> individuals. We first explored this in a single, panmictic population using a deterministic simulation, then explored the effect of stochasticity on the results. Here, we extend our analysis to a two-population setting, to explore how population structure might affect our results.</p>
+<p>As a final example, we perform a stochastic, two-population simulation with the same fitness cost explored previously, i.e., a 60% reduction in lifetime on <em>AA</em> and <em>aa</em> individuals. We first explored this in a single, panmictic population using a deterministic simulation, then explored the effect of stochasticity on the results. Here, we extend our analysis to a two-population setting, to explore how population structure might affect our results.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MGDrivE)</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
 <a class="sourceLine" id="cb14-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co"># Output Folder</span></a>
@@ -1136,7 +1134,7 @@ pre {
 <a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#  Here, our base directory is "mgdrive", and the repetition folders are "001","002", etc.</span></a>
 <a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#  So, the final structure is "mgdrive/001","mgdrive/002", etc.</span></a>
 <a class="sourceLine" id="cb14-13" data-line-number="13">outFolder &lt;-<span class="st"> "mgdrive"</span></a>
-<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="kw"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span>(<span class="dt">path =</span> outFolder)</a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files2">dir.create</a></span>(<span class="dt">path =</span> outFolder)</a>
 <a class="sourceLine" id="cb14-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co"># Simulation Parameters</span></a>
@@ -1148,18 +1146,18 @@ pre {
 <a class="sourceLine" id="cb14-23" data-line-number="23">nRep &lt;-<span class="st"> </span><span class="dv">25</span></a>
 <a class="sourceLine" id="cb14-24" data-line-number="24"></a>
 <a class="sourceLine" id="cb14-25" data-line-number="25"><span class="co"># each Monte Carlo iteration gets its own folder</span></a>
-<a class="sourceLine" id="cb14-26" data-line-number="26">folderNames &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(outFolder,</a>
-<a class="sourceLine" id="cb14-27" data-line-number="27">                         <span class="kw"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span>nRep, <span class="dt">width =</span> <span class="dv">3</span>, <span class="dt">format =</span> <span class="st">"d"</span>, <span class="dt">flag =</span> <span class="st">"0"</span>))</a>
+<a class="sourceLine" id="cb14-26" data-line-number="26">folderNames &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(outFolder,</a>
+<a class="sourceLine" id="cb14-27" data-line-number="27">                         <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/formatc">formatC</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span>nRep, <span class="dt">width =</span> <span class="dv">3</span>, <span class="dt">format =</span> <span class="st">"d"</span>, <span class="dt">flag =</span> <span class="st">"0"</span>))</a>
 <a class="sourceLine" id="cb14-28" data-line-number="28"></a>
 <a class="sourceLine" id="cb14-29" data-line-number="29"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb14-30" data-line-number="30">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
+<a class="sourceLine" id="cb14-30" data-line-number="30">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
 <a class="sourceLine" id="cb14-31" data-line-number="31"></a>
 <a class="sourceLine" id="cb14-32" data-line-number="32"><span class="co"># a 2-node network with 1% per day migration rate</span></a>
-<a class="sourceLine" id="cb14-33" data-line-number="33">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.99</span>,<span class="fl">0.01</span>,<span class="fl">0.01</span>,<span class="fl">0.99</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb14-33" data-line-number="33">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.99</span>,<span class="fl">0.01</span>,<span class="fl">0.01</span>,<span class="fl">0.99</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb14-34" data-line-number="34"></a>
 <a class="sourceLine" id="cb14-35" data-line-number="35"><span class="co"># parameters of the population equilibrium</span></a>
 <a class="sourceLine" id="cb14-36" data-line-number="36">adultPopEquilibrium &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb14-37" data-line-number="37">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(moveMat)</a>
+<a class="sourceLine" id="cb14-37" data-line-number="37">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(moveMat)</a>
 <a class="sourceLine" id="cb14-38" data-line-number="38"></a>
 <a class="sourceLine" id="cb14-39" data-line-number="39"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb14-40" data-line-number="40"><span class="co"># Basic Inheritance pattern</span></a>
@@ -1175,7 +1173,7 @@ pre {
 <a class="sourceLine" id="cb14-50" data-line-number="50"><span class="co">#  Since omega is a daily death rate, we use the built-in function to calculate</span></a>
 <a class="sourceLine" id="cb14-51" data-line-number="51"><span class="co">#  our desired lifetime cost as applied daily</span></a>
 <a class="sourceLine" id="cb14-52" data-line-number="52">dayOmega &lt;-<span class="st"> </span><span class="kw"><a href="../reference/calcOmega.html">calcOmega</a></span>(<span class="dt">mu =</span> bioParameters<span class="op">$</span>muAd, <span class="dt">lifespanReduction =</span> <span class="fl">0.60</span>)</a>
-<a class="sourceLine" id="cb14-53" data-line-number="53">omegaNew &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AA"</span>=dayOmega, <span class="st">"aa"</span>=dayOmega)</a>
+<a class="sourceLine" id="cb14-53" data-line-number="53">omegaNew &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AA"</span>=dayOmega, <span class="st">"aa"</span>=dayOmega)</a>
 <a class="sourceLine" id="cb14-54" data-line-number="54"></a>
 <a class="sourceLine" id="cb14-55" data-line-number="55"><span class="co"># setup cube</span></a>
 <a class="sourceLine" id="cb14-56" data-line-number="56">cube &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cubeMendelian.html">cubeMendelian</a></span>(<span class="dt">omega =</span> omegaNew)</a>
@@ -1185,15 +1183,15 @@ pre {
 <a class="sourceLine" id="cb14-60" data-line-number="60"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb14-61" data-line-number="61"><span class="co"># set up the empty release vector</span></a>
 <a class="sourceLine" id="cb14-62" data-line-number="62"><span class="co">#  MGDrivE pulls things out by name</span></a>
-<a class="sourceLine" id="cb14-63" data-line-number="63">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
-<a class="sourceLine" id="cb14-64" data-line-number="64">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb14-63" data-line-number="63">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
+<a class="sourceLine" id="cb14-64" data-line-number="64">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb14-65" data-line-number="65">                                      <span class="dt">eggReleases=</span><span class="ot">NULL</span>,<span class="dt">matedFemaleReleases=</span><span class="ot">NULL</span>)},</a>
 <a class="sourceLine" id="cb14-66" data-line-number="66">                           <span class="dt">simplify=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb14-67" data-line-number="67"></a>
 <a class="sourceLine" id="cb14-68" data-line-number="68"><span class="co"># choose release parameters</span></a>
 <a class="sourceLine" id="cb14-69" data-line-number="69"><span class="co">#  Releases start at time 100, occur every day, for 5 days.</span></a>
 <a class="sourceLine" id="cb14-70" data-line-number="70"><span class="co">#  There are 50 mosquitoes released every time.</span></a>
-<a class="sourceLine" id="cb14-71" data-line-number="71">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb14-71" data-line-number="71">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">100</span>,</a>
 <a class="sourceLine" id="cb14-72" data-line-number="72">                           <span class="dt">releasesNumber=</span><span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb14-73" data-line-number="73">                           <span class="dt">releasesInterval=</span><span class="dv">0</span>,</a>
 <a class="sourceLine" id="cb14-74" data-line-number="74">                           <span class="dt">releaseProportion=</span><span class="dv">50</span>)</a>
@@ -1214,7 +1212,7 @@ pre {
 <a class="sourceLine" id="cb14-89" data-line-number="89"><span class="co"># This is required because of the stochastic simulations, but doesn't make sense</span></a>
 <a class="sourceLine" id="cb14-90" data-line-number="90"><span class="co">#  in a deterministic simulation.</span></a>
 <a class="sourceLine" id="cb14-91" data-line-number="91">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb14-92" data-line-number="92">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb14-92" data-line-number="92">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
 <a class="sourceLine" id="cb14-93" data-line-number="93">                                     <span class="dt">numPatches=</span>sitesNumber)</a>
 <a class="sourceLine" id="cb14-94" data-line-number="94"></a>
 <a class="sourceLine" id="cb14-95" data-line-number="95"><span class="co">####################</span></a>
@@ -1279,7 +1277,7 @@ pre {
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MGDrivE)</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
 <a class="sourceLine" id="cb16-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co"># Output Folder</span></a>
@@ -1293,14 +1291,14 @@ pre {
 <a class="sourceLine" id="cb16-15" data-line-number="15">tMax &lt;-<span class="st"> </span><span class="dv">365</span><span class="op">*</span><span class="dv">2</span></a>
 <a class="sourceLine" id="cb16-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb16-17" data-line-number="17"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb16-18" data-line-number="18">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
+<a class="sourceLine" id="cb16-18" data-line-number="18">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
 <a class="sourceLine" id="cb16-19" data-line-number="19"></a>
 <a class="sourceLine" id="cb16-20" data-line-number="20"><span class="co"># a 1-node network where mosquitoes do not leave</span></a>
-<a class="sourceLine" id="cb16-21" data-line-number="21">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb16-21" data-line-number="21">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb16-22" data-line-number="22"></a>
 <a class="sourceLine" id="cb16-23" data-line-number="23"><span class="co"># parameters of the population equilibrium</span></a>
 <a class="sourceLine" id="cb16-24" data-line-number="24">adultPopEquilibrium &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb16-25" data-line-number="25">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(moveMat)</a>
+<a class="sourceLine" id="cb16-25" data-line-number="25">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(moveMat)</a>
 <a class="sourceLine" id="cb16-26" data-line-number="26"></a>
 <a class="sourceLine" id="cb16-27" data-line-number="27"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb16-28" data-line-number="28"><span class="co"># Basic Inheritance pattern</span></a>
@@ -1313,15 +1311,15 @@ pre {
 <a class="sourceLine" id="cb16-35" data-line-number="35"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb16-36" data-line-number="36"><span class="co"># set up the empty release vector</span></a>
 <a class="sourceLine" id="cb16-37" data-line-number="37"><span class="co">#  MGDrivE pulls things out by name</span></a>
-<a class="sourceLine" id="cb16-38" data-line-number="38">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
-<a class="sourceLine" id="cb16-39" data-line-number="39">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb16-38" data-line-number="38">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
+<a class="sourceLine" id="cb16-39" data-line-number="39">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb16-40" data-line-number="40">                                      <span class="dt">eggReleases=</span><span class="ot">NULL</span>,<span class="dt">matedFemaleReleases=</span><span class="ot">NULL</span>)},</a>
 <a class="sourceLine" id="cb16-41" data-line-number="41">                           <span class="dt">simplify=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb16-42" data-line-number="42"></a>
 <a class="sourceLine" id="cb16-43" data-line-number="43"><span class="co"># choose release parameters</span></a>
 <a class="sourceLine" id="cb16-44" data-line-number="44"><span class="co">#  Releases start at time 25, occur once a week, for 5 weeks.</span></a>
 <a class="sourceLine" id="cb16-45" data-line-number="45"><span class="co">#  There are 100 mosquitoes released every time.</span></a>
-<a class="sourceLine" id="cb16-46" data-line-number="46">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
+<a class="sourceLine" id="cb16-46" data-line-number="46">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
 <a class="sourceLine" id="cb16-47" data-line-number="47">                          <span class="dt">releasesNumber=</span><span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb16-48" data-line-number="48">                          <span class="dt">releasesInterval=</span><span class="dv">7</span>,</a>
 <a class="sourceLine" id="cb16-49" data-line-number="49">                          <span class="dt">releaseProportion=</span><span class="dv">100</span>)</a>
@@ -1342,7 +1340,7 @@ pre {
 <a class="sourceLine" id="cb16-64" data-line-number="64"><span class="co"># This is required because of the stochastic simulations, but doesn't make sense</span></a>
 <a class="sourceLine" id="cb16-65" data-line-number="65"><span class="co">#  in a deterministic simulation.</span></a>
 <a class="sourceLine" id="cb16-66" data-line-number="66">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb16-67" data-line-number="67">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb16-67" data-line-number="67">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
 <a class="sourceLine" id="cb16-68" data-line-number="68">                                     <span class="dt">numPatches=</span>sitesNumber)</a>
 <a class="sourceLine" id="cb16-69" data-line-number="69"></a>
 <a class="sourceLine" id="cb16-70" data-line-number="70"><span class="co">####################</span></a>
@@ -1395,7 +1393,7 @@ pre {
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MGDrivE)</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
 <a class="sourceLine" id="cb17-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb17-6" data-line-number="6"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb17-7" data-line-number="7"><span class="co"># Output Folder</span></a>
@@ -1409,15 +1407,15 @@ pre {
 <a class="sourceLine" id="cb17-15" data-line-number="15">tMax &lt;-<span class="st"> </span><span class="dv">365</span><span class="op">*</span><span class="dv">2</span></a>
 <a class="sourceLine" id="cb17-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb17-17" data-line-number="17"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb17-18" data-line-number="18">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
+<a class="sourceLine" id="cb17-18" data-line-number="18">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
 <a class="sourceLine" id="cb17-19" data-line-number="19"></a>
 <a class="sourceLine" id="cb17-20" data-line-number="20"><span class="co"># a 1-node network where mosquitoes do not leave</span></a>
-<a class="sourceLine" id="cb17-21" data-line-number="21">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb17-21" data-line-number="21">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb17-22" data-line-number="22"></a>
 <a class="sourceLine" id="cb17-23" data-line-number="23"><span class="co"># parameters of the population equilibrium</span></a>
 <a class="sourceLine" id="cb17-24" data-line-number="24">adultPopEquilibrium &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb17-25" data-line-number="25">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(moveMat)</a>
-<a class="sourceLine" id="cb17-26" data-line-number="26">patchPops &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(adultPopEquilibrium,sitesNumber)</a>
+<a class="sourceLine" id="cb17-25" data-line-number="25">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(moveMat)</a>
+<a class="sourceLine" id="cb17-26" data-line-number="26">patchPops &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(adultPopEquilibrium,sitesNumber)</a>
 <a class="sourceLine" id="cb17-27" data-line-number="27"></a>
 <a class="sourceLine" id="cb17-28" data-line-number="28"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb17-29" data-line-number="29"><span class="co"># Basic Inheritance pattern</span></a>
@@ -1430,15 +1428,15 @@ pre {
 <a class="sourceLine" id="cb17-36" data-line-number="36"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb17-37" data-line-number="37"><span class="co"># set up the empty release vector</span></a>
 <a class="sourceLine" id="cb17-38" data-line-number="38"><span class="co">#  MGDrivE pulls things out by name</span></a>
-<a class="sourceLine" id="cb17-39" data-line-number="39">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
-<a class="sourceLine" id="cb17-40" data-line-number="40">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb17-39" data-line-number="39">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
+<a class="sourceLine" id="cb17-40" data-line-number="40">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb17-41" data-line-number="41">                                      <span class="dt">eggReleases=</span><span class="ot">NULL</span>,<span class="dt">matedFemaleReleases=</span><span class="ot">NULL</span>)},</a>
 <a class="sourceLine" id="cb17-42" data-line-number="42">                           <span class="dt">simplify=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb17-43" data-line-number="43"></a>
 <a class="sourceLine" id="cb17-44" data-line-number="44"><span class="co"># choose release parameters</span></a>
 <a class="sourceLine" id="cb17-45" data-line-number="45"><span class="co">#  Releases start at time 25, occur once a week, for 6 weeks.</span></a>
 <a class="sourceLine" id="cb17-46" data-line-number="46"><span class="co">#  There are 100 mosquitoes released every time.</span></a>
-<a class="sourceLine" id="cb17-47" data-line-number="47">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
+<a class="sourceLine" id="cb17-47" data-line-number="47">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
 <a class="sourceLine" id="cb17-48" data-line-number="48">                          <span class="dt">releasesNumber=</span><span class="dv">6</span>,</a>
 <a class="sourceLine" id="cb17-49" data-line-number="49">                          <span class="dt">releasesInterval=</span><span class="dv">7</span>,</a>
 <a class="sourceLine" id="cb17-50" data-line-number="50">                          <span class="dt">releaseProportion=</span><span class="dv">100</span>)</a>
@@ -1455,7 +1453,7 @@ pre {
 <a class="sourceLine" id="cb17-61" data-line-number="61"><span class="co"># This is required because of the stochastic simulations, but doesn't make sense</span></a>
 <a class="sourceLine" id="cb17-62" data-line-number="62"><span class="co">#  in a deterministic simulation.</span></a>
 <a class="sourceLine" id="cb17-63" data-line-number="63">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb17-64" data-line-number="64">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb17-64" data-line-number="64">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
 <a class="sourceLine" id="cb17-65" data-line-number="65">                                     <span class="dt">numPatches=</span>sitesNumber)</a>
 <a class="sourceLine" id="cb17-66" data-line-number="66"></a>
 <a class="sourceLine" id="cb17-67" data-line-number="67"><span class="co">####################</span></a>
@@ -1508,7 +1506,7 @@ pre {
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2"><span class="co"># Load libraries</span></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co">####################</span></a>
-<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MGDrivE)</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
 <a class="sourceLine" id="cb18-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb18-6" data-line-number="6"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb18-7" data-line-number="7"><span class="co"># Output Folder</span></a>
@@ -1518,7 +1516,7 @@ pre {
 <a class="sourceLine" id="cb18-11" data-line-number="11"><span class="co">#  Here, our base directory is "mgdrive", and the repetition folders are "001","002", etc.</span></a>
 <a class="sourceLine" id="cb18-12" data-line-number="12"><span class="co">#  So, the final structure is "mgdrive/001","mgdrive/002", etc.</span></a>
 <a class="sourceLine" id="cb18-13" data-line-number="13">outFolder &lt;-<span class="st"> "mgdrive"</span></a>
-<a class="sourceLine" id="cb18-14" data-line-number="14"><span class="kw"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span>(<span class="dt">path =</span> outFolder)</a>
+<a class="sourceLine" id="cb18-14" data-line-number="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files2">dir.create</a></span>(<span class="dt">path =</span> outFolder)</a>
 <a class="sourceLine" id="cb18-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb18-16" data-line-number="16"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb18-17" data-line-number="17"><span class="co"># Simulation Parameters</span></a>
@@ -1530,18 +1528,18 @@ pre {
 <a class="sourceLine" id="cb18-23" data-line-number="23">nRep &lt;-<span class="st"> </span><span class="dv">20</span></a>
 <a class="sourceLine" id="cb18-24" data-line-number="24"></a>
 <a class="sourceLine" id="cb18-25" data-line-number="25"><span class="co"># each Monte Carlo iteration gets its own folder</span></a>
-<a class="sourceLine" id="cb18-26" data-line-number="26">folderNames &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(outFolder,</a>
-<a class="sourceLine" id="cb18-27" data-line-number="27">                        <span class="kw"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span>nRep, <span class="dt">width =</span> <span class="dv">3</span>, <span class="dt">format =</span> <span class="st">"d"</span>, <span class="dt">flag =</span> <span class="st">"0"</span>))</a>
+<a class="sourceLine" id="cb18-26" data-line-number="26">folderNames &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(outFolder,</a>
+<a class="sourceLine" id="cb18-27" data-line-number="27">                        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/formatc">formatC</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span>nRep, <span class="dt">width =</span> <span class="dv">3</span>, <span class="dt">format =</span> <span class="st">"d"</span>, <span class="dt">flag =</span> <span class="st">"0"</span>))</a>
 <a class="sourceLine" id="cb18-28" data-line-number="28"></a>
 <a class="sourceLine" id="cb18-29" data-line-number="29"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb18-30" data-line-number="30">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
+<a class="sourceLine" id="cb18-30" data-line-number="30">bioParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">betaK=</span><span class="dv">20</span>, <span class="dt">tEgg=</span><span class="dv">5</span>, <span class="dt">tLarva=</span><span class="dv">6</span>, <span class="dt">tPupa=</span><span class="dv">4</span>, <span class="dt">popGrowth=</span><span class="fl">1.175</span>, <span class="dt">muAd=</span><span class="fl">0.09</span>)</a>
 <a class="sourceLine" id="cb18-31" data-line-number="31"></a>
 <a class="sourceLine" id="cb18-32" data-line-number="32"><span class="co"># a 1-node network where mosquitoes do not leave</span></a>
-<a class="sourceLine" id="cb18-33" data-line-number="33">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb18-33" data-line-number="33">moveMat &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb18-34" data-line-number="34"></a>
 <a class="sourceLine" id="cb18-35" data-line-number="35"><span class="co"># parameters of the population equilibrium</span></a>
 <a class="sourceLine" id="cb18-36" data-line-number="36">adultPopEquilibrium &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb18-37" data-line-number="37">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(moveMat)</a>
+<a class="sourceLine" id="cb18-37" data-line-number="37">sitesNumber &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(moveMat)</a>
 <a class="sourceLine" id="cb18-38" data-line-number="38"></a>
 <a class="sourceLine" id="cb18-39" data-line-number="39"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb18-40" data-line-number="40"><span class="co"># Basic Inheritance pattern</span></a>
@@ -1554,15 +1552,15 @@ pre {
 <a class="sourceLine" id="cb18-47" data-line-number="47"><span class="co">####################</span></a>
 <a class="sourceLine" id="cb18-48" data-line-number="48"><span class="co"># set up the empty release vector</span></a>
 <a class="sourceLine" id="cb18-49" data-line-number="49"><span class="co">#  MGDrivE pulls things out by name</span></a>
-<a class="sourceLine" id="cb18-50" data-line-number="50">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
-<a class="sourceLine" id="cb18-51" data-line-number="51">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb18-50" data-line-number="50">patchReleases &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">replicate</a></span>(<span class="dt">n=</span>sitesNumber,</a>
+<a class="sourceLine" id="cb18-51" data-line-number="51">                           <span class="dt">expr=</span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">maleReleases=</span><span class="ot">NULL</span>,<span class="dt">femaleReleases=</span><span class="ot">NULL</span>,</a>
 <a class="sourceLine" id="cb18-52" data-line-number="52">                                      <span class="dt">eggReleases=</span><span class="ot">NULL</span>,<span class="dt">matedFemaleReleases=</span><span class="ot">NULL</span>)},</a>
 <a class="sourceLine" id="cb18-53" data-line-number="53">                           <span class="dt">simplify=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb18-54" data-line-number="54"></a>
 <a class="sourceLine" id="cb18-55" data-line-number="55"><span class="co"># choose release parameters</span></a>
 <a class="sourceLine" id="cb18-56" data-line-number="56"><span class="co">#  Releases start at time 25, occur once a week, for 6 weeks.</span></a>
 <a class="sourceLine" id="cb18-57" data-line-number="57"><span class="co">#  There are 100 mosquitoes released every time.</span></a>
-<a class="sourceLine" id="cb18-58" data-line-number="58">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
+<a class="sourceLine" id="cb18-58" data-line-number="58">releasesParameters &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">releasesStart=</span><span class="dv">25</span>,</a>
 <a class="sourceLine" id="cb18-59" data-line-number="59">                          <span class="dt">releasesNumber=</span><span class="dv">6</span>,</a>
 <a class="sourceLine" id="cb18-60" data-line-number="60">                          <span class="dt">releasesInterval=</span><span class="dv">7</span>,</a>
 <a class="sourceLine" id="cb18-61" data-line-number="61">                          <span class="dt">releaseProportion=</span><span class="dv">100</span>)</a>
@@ -1583,7 +1581,7 @@ pre {
 <a class="sourceLine" id="cb18-76" data-line-number="76"><span class="co"># This is required because of the stochastic simulations, but doesn't make sense</span></a>
 <a class="sourceLine" id="cb18-77" data-line-number="77"><span class="co">#  in a deterministic simulation.</span></a>
 <a class="sourceLine" id="cb18-78" data-line-number="78">batchMigration &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basicBatchMigration.html">basicBatchMigration</a></span>(<span class="dt">batchProbs=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb18-79" data-line-number="79">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb18-79" data-line-number="79">                                     <span class="dt">sexProbs=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">5</span>,.<span class="dv">5</span>),</a>
 <a class="sourceLine" id="cb18-80" data-line-number="80">                                     <span class="dt">numPatches=</span>sitesNumber)</a>
 <a class="sourceLine" id="cb18-81" data-line-number="81"></a>
 <a class="sourceLine" id="cb18-82" data-line-number="82"><span class="co">####################</span></a>
@@ -1633,7 +1631,7 @@ pre {
 <p><img src="mgdrive_examples_files/figure-html/unnamed-chunk-28-2.png" width="672"></p>
 <p>We perform 20 repetitions of our stochastic simulation. In an experimental setting, we should perform many more repetitions (the number of repetitions is related to the precision of your estimate. 100 repetitions would provide 1% resolution, while our 20 repetitions here only provides 5% resolution), but outcome resolution needs to be balanced against run time.</p>
 <p>First we plot a single repetition. Wild-type (aabb) critters are in orange, and transgenic (AABB) critters are in blue. We see that there is some fluctuation, and then the final result does not match the deterministic simulation. This is a little worrisome, as it means we are so close to the threshold that it is easy to go back under.</p>
-<p>Plotting all 20 repetitions, we see that the results are not as clear as before. We have extended the simulation to 1095 days to allow all of the repetitions to achieve their final trajectory. First, near the critical threshold, stochastic fluctuations dramatically slow the population dynamics. The deterministic simulations were finished in two years, but stochastic simulations took nearly three years for all of the trajectories to reach equilibrium. Second, we notice that not all of the simulations ended with a fully transgenic population. In fact, only 65% of the repetitions ended with a fully transgenic population. More repetitions would provide a more precise answer, but now we know that this set of parameters is only 65 +/-5% effective.</p>
+<p>Plotting all 20 repetitions, we see that the results are not as clear as before. We have extended the simulation to 1095 days to allow all of the repetitions to achieve their final trajectory. First, near the critical threshold, stochastic fluctuations dramatically slow the population dynamics. The deterministic simulations were finished in two years, but stochastic simulations took nearly three years for all of the trajectories to reach equilibrium. Second, we notice that not all of the simulations ended with a fully transgenic population. In fact, only 85% of the repetitions ended with a fully transgenic population. More repetitions would provide a more precise answer, but now we know that this set of parameters is only 85 +/-5% effective.</p>
 </div>
 </div>
 </div>
@@ -1654,20 +1652,17 @@ pre {
 </div>
 
 
-
       <footer><div class="copyright">
   <p>Developed by <a href="https://chipdelmal.github.io">Héctor Manuel Sánchez Castellanos</a>, <a href="https://github.com/GilChrist19">Jared Bennett</a>, <a href="https://slwu89.github.io">Sean Wu</a>, <a href="https://www.marshalllab.com">John M. Marshall</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
 </div>
 
   
-
 
   </body>
 </html>

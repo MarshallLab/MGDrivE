@@ -18,15 +18,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -50,7 +48,6 @@
 <![endif]-->
 
 
-
   </head>
 
   <body>
@@ -67,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
       </span>
     </div>
 
@@ -109,7 +106,6 @@
 </div><!--/.navbar -->
 
       
-
       </header>
 
 <div class="row">
@@ -150,7 +146,7 @@
 </div>
     <div id="mgdrive-1-5-0" class="section level1">
 <h1 class="page-header">
-<a href="#mgdrive-1-5-0" class="anchor"></a>MGDrivE 1.5.0<small> Unreleased </small>
+<a href="#mgdrive-1-5-0" class="anchor"></a>MGDrivE 1.5.0<small> 2020-01-29 </small>
 </h1>
 <div id="major-changes-1" class="section level3">
 <h3 class="hasAnchor">
@@ -160,7 +156,7 @@
 <ul>
 <li>The underlying mathematics are the same, only the implementation has been changed.</li>
 <li>Significant memory reductions.</li>
-<li>Signficant computational reduction.</li>
+<li>Significant computational reduction.</li>
 <li>All internal objects and functions have been updated.</li>
 <li>Most important, the stochastic implementation had a bug in it, which has been resolved.</li>
 <li>All releases are now numeric vectors/matrices indicating the genotype and release number; this is handled internally.</li>
@@ -199,8 +195,39 @@
 <li>Plotting functions have been updated to handle any sampling scheme (i.e., if output is not written every day).</li>
 <li>
 <code><a href="../reference/parameterizeMGDrivE.html">parameterizeMGDrivE()</a></code> had internal loops replaced with vectorized functions.</li>
-<li>Spelling errors and documentaton inconsistencies were addressed.</li>
+<li>Spelling errors and documentation inconsistencies were addressed.</li>
 <li>Citation was updated to reflect publication in <a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13318">Methods in Ecology and Evolution</a>.</li>
+</ul>
+</div>
+</div>
+    <div id="mgdrive-1-6-0" class="section level1">
+<h1 class="page-header">
+<a href="#mgdrive-1-6-0" class="anchor"></a>MGDrivE 1.6.0<small> Unreleased </small>
+</h1>
+<div id="major-changes-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#major-changes-2" class="anchor"></a>Major Changes</h3>
+<ul>
+<li>Rebuild of the Migration Function
+<ul>
+<li>Migration is handled at the Network level now. This removes objects from the Patch class, making the package lighter and more efficient.</li>
+<li>Migration is no longer Dirichlet distributed.</li>
+</ul>
+</li>
+<li>New Inheritance Patterns
+<ul>
+<li>One and Two locus Cleave and Rescue (ClvR) constructs have been made available.</li>
+<li>ERACR/eCHACR constructs have been made available.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="minor-changes-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#minor-changes-2" class="anchor"></a>Minor Changes</h3>
+<ul>
+<li>Spelling checked and errors corrected.</li>
+<li>Function links in the documentation have been updated.</li>
 </ul>
 </div>
 </div>
@@ -212,12 +239,12 @@
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#mgdrive-1-1-0">1.1.0</a></li>
         <li><a href="#mgdrive-1-5-0">1.5.0</a></li>
+        <li><a href="#mgdrive-1-6-0">1.6.0</a></li>
       </ul>
     </div>
   </div>
 
 </div>
-
 
       <footer>
       <div class="copyright">
@@ -225,16 +252,13 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
    </div>
 
   
 
-
   </body>
 </html>
-
 
