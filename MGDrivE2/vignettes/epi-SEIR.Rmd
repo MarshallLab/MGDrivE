@@ -241,7 +241,7 @@ Encouragingly, we see very similar dynamics from this stochastic realization as 
 
 # Metapopulation Network Simulations {#net}
 
-The second section of this vignette describes how to simulate a coupled **SEI-SEIR** mosquito-human model in a metapopulation network. This section largely follows the vignette ["MGDrivE2: Metapopulation Network Epidemiological Dynamics"](epi-network).
+The second section of this vignette describes how to simulate a coupled **SEI-SEIR** mosquito-human model in a metapopulation network. This section largely follows the vignette ["MGDrivE2: Metapopulation Network Epidemiological Dynamics"](epi-network.html).
 
 ## Parameterization {#pars_net}
 

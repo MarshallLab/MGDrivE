@@ -30,7 +30,7 @@ set.seed(10)
 
 ### Preface
 
-There are several vignettes explaining simulation setup, for basic lifecycle simulations [here](lifecycle-node.html) and [here](lifecycle-network.html), as well as for human/mosquito epidemiological studies, [here](epi-node.html) and [here](epi-network.html) for **SEI**/**SIS** models and [here](seir-dynamics.html) for **SEI**/**SEIR** models. However, for actual explorations, many stochastic realizations are needed, as well as summary statistics of those simulations. **MGDrivE2** provides tools for storing output, as well as analyzing and summarizing that output. This vignette will use the [network **SEI**/**SIS**](epi-network.html) simulation as the example simulation to showcase data storage and analysis.
+There are several vignettes explaining simulation setup, for basic lifecycle simulations [here](lifecycle-node.html) and [here](lifecycle-network.html), as well as for human/mosquito epidemiological studies, [here](epi-node.html) and [here](epi-network.html) for **SEI**/**SIS** models and [here](epi-SEIR.html) for **SEI**/**SEIR** models. However, for actual explorations, many stochastic realizations are needed, as well as summary statistics of those simulations. **MGDrivE2** provides tools for storing output, as well as analyzing and summarizing that output. This vignette will use the [network **SEI**/**SIS**](epi-network.html) simulation as the example simulation to showcase data storage and analysis.
 
 We start by loading the **MGDrivE2** package, as well as the **MGDrivE** package for access to inheritance cubes, and **Matrix** for sparse matrices used in migration. We will use the basic cube to simulate Mendelian inheritance for this example.
 
