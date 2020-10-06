@@ -1,0 +1,73 @@
+destination: docs
+
+template:
+  params:
+    bootswatch: simplex
+
+authors:
+  Sean L. Wu:
+    href: http://www.slwu89.com
+  Jared B. Bennett:
+    href: https://github.com/GilChrist19
+  Héctor Manuel Sánchez Castellanos:
+    href: https://chipdelmal.github.io
+  Tomás M. León:
+    href: https://tomasleon.com
+  Andrew J. Dolgert:
+    href: https://biohpc.cornell.edu/staff/drew/
+  John M. Marshall:
+    href: https://www.marshalllab.com
+
+reference:
+- title: Petri net & Hazards
+  desc: >
+    Functions to construct the Petri net, and generate the hazard functions.
+  contents:
+  - '`spn_P_epiSEIR_network`'
+  - '`spn_P_epiSEIR_node`'
+  - '`spn_P_epiSIS_network`'
+  - '`spn_P_epiSIS_node`'
+  - '`spn_P_lifecycle_network`'
+  - '`spn_P_lifecycle_node`'
+  - '`spn_S`'
+  - '`spn_T_epiSEIR_network`'
+  - '`spn_T_epiSEIR_node`'
+  - '`spn_T_epiSIS_network`'
+  - '`spn_T_epiSIS_node`'
+  - '`spn_T_lifecycle_network`'
+  - '`spn_T_lifecycle_node`'
+  - '`spn_hazards`'
+- title: Equilibrium & Parameters
+  desc: >
+    Functions that are helpful to calculate equilibrium solutions as initial conditions or construct parameter sets for simulation.
+  contents:
+  - '`calc_move_rate`'
+  - '`movement_prob2rate`'
+  - '`solve_muAqua`'
+  - '`equilibrium_SEI_SEIR`'
+  - '`equilibrium_SEI_SIS`'
+  - '`equilibrium_lifeycle`'
+- title: Simulation
+  desc: >
+    These are the interfaces for sampling trajectories from a fully constructed Petri net model.
+  contents:
+  - '`sim_trajectory_CSV`'
+  - '`sim_trajectory_R`'
+  - '`track_hinf`'
+- title: Output Processing
+  desc: >
+    These functions help users summarize output, either arrays returned to R or CSV files.
+  contents:
+  - '`split_aggregate_CSV`'
+  - '`summarize_stats_CSV`'
+  - '`summarize_eggs_geno`'
+  - '`summarize_eggs_stage`'
+  - '`summarize_females`'
+  - '`summarize_females_epi`'
+  - '`summarize_humans_epiSEIR`'
+  - '`summarize_humans_epiSIS`'
+  - '`summarize_larvae_geno`'
+  - '`summarize_larvae_stage`'
+  - '`summarize_males`'
+  - '`summarize_pupae_geno`'
+  - '`summarize_pupae_stage`'

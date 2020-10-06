@@ -1,0 +1,425 @@
+---
+title: "MGDrivE2: Data Storage and Analysis"
+#output: pdf_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{data-analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_chunk$set(fig.width=7.2, fig.height=4)
+set.seed(10)
+```
+
+## Table of Contents
+
+  1. [Parameterization](#pars)
+  2. [Initialization of the Petri Net](#init_spn)
+  3. [Equilibrium Conditions and Hazard Functions](#equilibria_haz)
+  4. [Simulation of Fully Specified SPN Model](#sim)
+      1. [Tau-leaping Simulation](#soln_tau)
+      2. [Trace Analysis](#split_agg)
+      3. [Summary Analysis](#summary)
+  5. [References](#ref)
+
+### Preface
+
+There are several vignettes explaining simulation setup, for basic lifecycle simulations [here](lifecycle-node.html) and [here](lifecycle-network.html), as well as for human/mosquito epidemiological studies, [here](epi-node.html) and [here](epi-network.html) for **SEI**/**SIS** models and [here](seir-dynamics.html) for **SEI**/**SEIR** models. However, for actual explorations, many stochastic realizations are needed, as well as summary statistics of those simulations. **MGDrivE2** provides tools for storing output, as well as analyzing and summarizing that output. This vignette will use the [network **SEI**/**SIS**](epi-network.html) simulation as the example simulation to showcase data storage and analysis.
+
+We start by loading the **MGDrivE2** package, as well as the **MGDrivE** package for access to inheritance cubes, and **Matrix** for sparse matrices used in migration. We will use the basic cube to simulate Mendelian inheritance for this example.
+
+```{r}
+# simulation functions
+library(MGDrivE2)
+# inheritance patterns
+library(MGDrivE)
+# sparse migration
+library(Matrix)
+
+# basic inheritance pattern
+cube <- MGDrivE::cubeMendelian()
+```
+
+## Parameterization {#pars}
+
+These are the same parameters found in the [epi-network](epi-network.html) vignette, and are also explained in the [lifecycle-node](lifecycle-node.html) vignette.
+
+We will store output every other day (`dt = 2`), as writing to disk can be slow and this reduces the amount of data to store by half. The rate that one needs to store data will depend on the accuracy of one's parameters - i.e., if your parameters are highly questionable, storing data every other day will not lose much information, but if your parameters are very well defined, daily storage may be necessary for accuracy.
+
+```{r}
+# entomological and epidemiological parameters
+theta <- list(
+  # lifecycle parameters
+  qE = 1/4,
+  nE = 2,
+  qL = 1/3,
+  nL = 3,
+  qP = 1/6,
+  nP = 2,
+  muE = 0.05,
+  muL = 0.15,
+  muP = 0.05,
+  muF = 0.09,
+  muM = 0.09,
+  beta = 16,
+  nu = 1/(4/24),
+  # epidemiological parameters
+  NH = 1000,
+  X = 0.25,
+  f = 1/3,
+  Q = 0.9,
+  b = 0.55,
+  c = 0.15,
+  r = 1/200,
+  muH = 1/(62*365),
+  qEIP = 1/11,
+  nEIP = 2
+)
+
+# simulation parameters
+tmax <- 300
+dt <- 2
+```
+
+Additionally, we augment the cube with transmission efficiencies; see Smith & McKenzie (2004) for an extensive discussion of these parameters.
+
+```{r}
+# augment the cube with RM transmission parameters
+cube$c <- setNames(object = rep(x = theta$c, times = cube$genotypesN), nm = cube$genotypesID)
+cube$b <- c("AA" = theta$b, "Aa" = 0.35, "aa" = 0)
+```
+
+## Initialization of the Petri Net {#init_spn}
+
+With the basic parameters finished, we setup the types of nodes in our network, their movement in relation to each other, and finally the structure of the Petri Net.
+
+```{r}
+# nodetypes
+node_list <- c("m", "b", "h")
+num_nodes <- length(node_list)
+
+# human movement
+h_move <- matrix(data = FALSE, nrow = num_nodes, ncol = num_nodes,
+                 dimnames = list(node_list, node_list))
+h_move[2,3] <- TRUE
+h_move[3,2] <- TRUE
+
+# mosquito movement
+m_move <- matrix(data = FALSE, nrow = num_nodes, ncol = num_nodes,
+                 dimnames = list(node_list, node_list))
+m_move[1,2] <- TRUE
+m_move[2,1] <- TRUE
+
+# Places and transitions
+SPN_P <- spn_P_epiSIS_network(node_list = node_list, params = theta, cube = cube)
+SPN_T <- spn_T_epiSIS_network(node_list = node_list, spn_P = SPN_P, params = theta,
+                              cube = cube, h_move = h_move, m_move = m_move)
+
+# Stoichiometry matrix
+S <- spn_S(spn_P = SPN_P, spn_T = SPN_T)
+```
+
+
+The `spn_P_*` functions (`spn_P_epiSIS_network()` used here) all return length 2 lists.The first index (`ix`) is a list equal to the number of nodes (so here, `length(ix) = ` `r length(SPN_P$ix)`), which returns the uniquely numbered "places" for every life/infection/Erlang stage for the entire network. These correspond to every location in the state vector used during the simulation.
+
+The second item in those lists (`u`) is the name for every "place". It is a combination of genotype and node number for eggs, larvae, pupae, unmated females, and male stages. For females, it is a combination of their genotype, their mate genotype, their infection status, and the node number. For humans, it is just infection status and node number.
+
+The `spn_T_*` functions (`spn_T_epiSIS_network()` used here) returns a length 2 list. The first element (`T`) is a list of parameters for every possible state transition. These are not the rates of transition, just the fact that it is possible and parameters necessary to describe them. The second element (`v`) is the name for each of those transitions.
+
+## Equilibrium Conditions and Hazard Functions {#equilibria_haz}
+
+Remember, these are node-by-node equilibria, not an equilibrium over the entire network. We expect some burn-in at the beginning of the simulation as the network reaches equilibrium.
+
+```{r}
+# SEI mosquitoes and SIS humans equilibrium
+#  outputs required parameters in the named list "params"
+#  outputs intial equilibrium for adv users, "init
+#  outputs properly filled initial markings, "M0"
+initialCons <- equilibrium_SEI_SIS(params = theta, node_list = node_list,
+                                   NF = 500, phi = 0.5, NH = 1000, pop_ratio_H = 0.15,
+                                   log_dd = TRUE, spn_P = SPN_P, cube = cube)
+```
+
+The `equilibrium_*` functions (`equilibrium_SEI_SIS()` used here) return a length 3 list. The first element (`params`) are all of the parameters required for the simulation. These include user-supplied parameters from before (`theta`), as well as derived parameters, such as the density-dependent parameter. The second element is a matrix of equilibrium populations. The rows are nodes, the columns are life stages. Any stage that does not exist in a node (human stages in mosquito-only nodes, mosquito stages in human-only nodes) have `NA` values. The final element is `M0`, the initial marking for the Petri Net. This takes all of the equilibrium values from the second element, and using the places indices, distributes populations to their appropriate location in the Petri Net framework.
+
+Next, we setup the movement rates for mosquitoes and humans, to their respective nodes.
+See the [epi-network](epi-network.html) vignette for a detailed explanation.
+
+```{r}
+# calculate movement rates and movement probabilities
+gam <- calc_move_rate(mu = initialCons$params$muF, P = 0.05)
+
+# set mosquito movement rates/probabilities
+#  mosquitoes exist in nodes 1 and 2, not 3
+mr_mosy <- c(gam, gam, NaN)
+mp_mosy <- Matrix::sparseMatrix(i = c(1,2), j = c(2,1), x = 1, dims = dim(m_move))
+
+# set human movement rates/probabilities
+#  humans exist in nodes 2 and 3, not 1
+mr_human <- c(NaN, 1/7, 1/7)
+mp_human <- Matrix::sparseMatrix(i = c(2,3), j = c(3,2), x = 1, dims = dim(h_move))
+
+# put rates and probs into the parameter list
+initialCons$params$mosquito_move_rates <- mr_mosy
+initialCons$params$mosquito_move_probs <- mp_mosy
+initialCons$params$human_move_rates <- mr_human
+initialCons$params$human_move_probs <- mp_human
+```
+
+Now that all the necessary parameters have been added to the named list `initialCons$params`, we generate the hazard functions, using the function `spn_hazards()`. By specifying `log_dd = TRUE`, we use logistic density dependence for these simulations.
+
+```{r}
+# exact hazards for integer-valued state space
+exact_hazards <- spn_hazards(spn_P = SPN_P, spn_T = SPN_T, cube = cube,
+                             params = initialCons$params, type = "SIS",
+                             log_dd = TRUE, exact = TRUE, tol = NaN,
+                             verbose = FALSE)
+```
+
+The hazard function (`spn_hazards()`) returns a list of functions that define the rates of every transition. It is the same length as the first element of the `SPN_T`, i.e., one rate for every possible transition in the Petri Net.
+
+## Simulation of Fully Specified SPN Model {#sim}
+
+Before running any simulations, we need to create some releases, and then setup the folder structure.
+
+Similar to previous simulations, we will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, starting at day 50, in node 1 (this allows us to see movement from node 1 to node 2, before we see an impact on human disease transmission). Remember, it is critically important that **the event names match a place name** in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in **MGDrivE2** for consistency with solvers in `deSolve`.
+
+```{r}
+# releases
+r_times <- seq(from = 50, length.out = 5, by = 10)
+r_size <- 50
+events <- data.frame("var" = paste0("F_", cube$releaseType, "_", cube$wildType, "_S_1"),
+                     "time" = r_times,
+                     "value" = r_size,
+                     "method" = "add",
+                     stringsAsFactors = FALSE)
+```
+
+Next, we need to setup the file structure for CSV simulations.
+
+We **recommend** setting up a new folder for any simulations. This ensures a clean location, and in the chance someone deletes everything in the folder, there is nothing important there. Inside the main folder (`main_out`), we need three folders, for each stage of the analysis. We generally call these `raw`, `traces`, and `analyzed`, to describe their purpose. The `raw` folder holds all of the raw output from the simulation. It is further divided into repetition folders. These can be named anything, we use a numeric naming scheme that sorts properly in file systems. The `traces` folder holds the first set analysis output. It starts empty, the provided functions setup the necessary folders, and each repetition will be split into the appropriate life-stage and node designation. The final folder, `analyzed`, holds the summary statistics from our simulations.
+
+```{r}
+# main output folder
+main_out <- "mgdrive2"
+
+# folders for each stage of analysis
+analysis_out <- c("raw", "traces", "analyzed")
+
+# repetitions, 3 of them
+rep_out <- formatC(x = 1:3, width=3, format='d', flag='0')
+
+# build analysis folders
+analysis_folders <- file.path(main_out, analysis_out)
+for(i in analysis_folders){ dir.create(path = i, recursive = TRUE) }
+
+# build repetition folders
+rep_folders <- file.path(analysis_folders[1], rep_out)
+for(i in rep_folders){ dir.create(i) }
+```
+
+### Tau-leaping Simulation {#soln_tau}
+
+We start by running the simulations. As explained in the [inhomogeneous](inhomogeneous.html) vignette, there are two ways to perform repetitions - using the internal repetition wrapper, or using a parallel loop. By providing output folders to `sim_trajectory_CSV()`, we can make use of both methods simultaneously. However, for this example, we only use the internal repetitions wrapper.
+
+Additionally, we need to specify what life-stages to store. For this example, we will output all of the stages. However, we recommend only saving the stages necessary for the experiment at hand. Each stage to print has a one-letter designation for the function.
+
+| One-Letter Designation | Stage Name |
+| :--------------------: | :--------- |
+| `E`                    | Egg stage |
+| `L`                    | Larval stage |
+| `P`                    | Pupal stage |
+| `M`                    | Adult male stage |
+| `U`                    | Adult, unmated female stage |
+| `F`                    | Adult, mated female stage |
+| `H`                    | Adult humans |
+
+The mated female stage (`F`) will print infection states to different files. This keeps individual files from becoming too unwieldy.
+
+Finally, we run three stochastic realizations of the simulation, using the `tau` sampler with $\Delta t = 0.1$, approximating 10 jumps per day.
+
+```{r}
+# delta t
+dt_stoch <- 0.1
+
+# run tau-leaping simulation
+sim_trajectory_CSV(x0 = initialCons$M0, t0 = 0, tt = tmax, dt = dt,
+                   dt_stoch = dt_stoch, folders = rep_folders,
+                   stage = c("E", "L", "P", "M", "U", "F", "H"), S = S,
+                   hazards = exact_hazards, events = events, verbose = FALSE)
+```
+
+We can see all of the files returned by the simulation.
+
+```{r}
+# list all files from the first repetition
+list.files(path = rep_folders[1], full.names = FALSE)
+```
+
+Each file begins with the one-letter signifier. Notice that the female stage (`F`) has been expanded into three stages, one for each infection (**SEI**) stage. These names must stay the same, as the following analysis only matches the outputs from `sim_trajectory_CSV()`.
+
+To see how the files are organized, we will open two of them: the egg stage (`E.csv`) and the susceptible female stage (`FS.csv`).
+
+```{r}
+# read the eggs from repetition 1
+egg_stage <- read.csv(file = file.path(rep_folders[1], "E.csv"), header = TRUE)
+
+# read susceptible females from repetition 1
+fs_stage <- read.csv(file = file.path(rep_folders[1], "FS.csv"), header = TRUE)
+```
+
+First, we will look at the dimensions of each file. Everything is printed at the same rate, `dt`, so the length of the files should match, but the number of columns is significantly different.
+
+```{r}
+# eggs
+dim(egg_stage)
+
+# susceptible females
+dim(fs_stage)
+```
+
+Every file begins with a "Time" column, followed by the stage designations. It is these stage designations that explain why female files are so much larger than the rest. As described earlier, the names for each place are a combination of genotypes and node for most stages, but for adult females, places are labeled by 3 designations. The column labels in the egg file are:
+
+```{r}
+colnames(egg_stage)
+```
+
+First column is "Time", and each subsequent column is the Erlang-stage, genotype, and node. These labels correspond to the labels in the `SPN_P$u` list, and the labels on the state vector, `M0`.
+
+Looking at the females output, we see how this state space gets large quickly.
+
+```{r}
+colnames(fs_stage)
+```
+
+Again, the "Time" column is first, followed by female genotypes, mate genotypes, infection stage, and node location. This is why female files have been split into different infection stages.
+
+### Trace Analysis {#split_agg}
+
+The raw analysis is large, and difficult to work with. So, as a first reduction, **MGDrivE2** provides the function `split_aggregate_CSV()` to organize the raw output. This function takes the `raw` folder, duplicates the folder structure in the `traces` folder, and reduces the raw output by several metrics. The aquatic stages are summarized by genotype, with the option to summarize them by Erlang-stage if desired, and split into patches. Adult female stages are summarized by female genotype, summing over male mates, and then split by patch as well. This function expects file names output from the previous function, and by default looks for all of the output. If anything is not found, it is skipped. Additionally, the user can specify subsets of the `raw` output and run different analyses over each.
+
+We designate the folder `traces` because we can plot population traces from the output. These are the individual dynamics of each genotype and each stage for every simulation.
+
+```{r}
+# split everything by patch, aggregate by genotype
+split_aggregate_CSV(read_dir = analysis_folders[1], write_dir = analysis_folders[2],
+                    spn_P = SPN_P, t0 = 0, tt = tmax, dt = dt, verbose = FALSE)
+```
+
+Looking at the `traces` folder, we see the folder structure is identical to the `raw` folder.
+
+```{r}
+# don't list parent directory
+list.dirs(path = analysis_folders[2], recursive = FALSE)
+```
+
+We can look at the output in the first repetition folder.
+
+```{r}
+list.files(path = file.path(analysis_folders[2], rep_out[1]))
+```
+
+Notice, every file begins with our one/two letter stage designation. The number following it is the node number. Remember, our network has 3 nodes, `r node_list`. We expect that mosquito stages are found in nodes one and two, while humans are found in nodes 2 and 3.
+
+We look at the reduced versions of the same two files we opened previously to compare the differences.
+
+```{r}
+# read the eggs from repetition 1
+egg_stage <- read.csv(file = file.path(analysis_folders[2], rep_out[1], "E_0001.csv"),
+                      header = TRUE)
+
+# read susceptible females from repetition 1
+fs_stage <- read.csv(file = file.path(analysis_folders[2], rep_out[1], "FS_0001.csv"),
+                     header = TRUE)
+```
+
+The length of each file is the same, since we need every time point, but the number of columns is significantly less.
+
+```{r}
+# eggs
+dim(egg_stage)
+
+# susceptible females
+dim(fs_stage)
+```
+
+Again, every file begins with a "Time" column, but now all files have the same remaining columns as well, just the genotypes.
+
+```{r}
+# eggs
+colnames(egg_stage)
+
+# females
+colnames(fs_stage)
+```
+
+Since our genotypes stay the same throughout the population, every mosquito file now has the same columns names, "Time" and then genotypes. Humans are still separated by infection stage, since that is the only way we keep track of them.
+
+### Summary Analysis {#summary}
+
+Traces make nice squiggly plots, but are not particularly helpful otherwise. Our final step is calculating summary statistics from the simulations. **MGDrivE2** provides a function (`summarize_stats_CSV()`) to calculate the mean and quantiles over all simulations. It reads the output of `split_aggregate_CSV()`, and returns the desired summaries.
+
+Quantiles are calculated empirically, using algorithm 8 from the built-in quantile function.
+
+```{r}
+# mean and 95% quantiles
+summarize_stats_CSV(read_dir = analysis_folders[2], write_dir = analysis_folders[3],
+                    spn_P = SPN_P, t0 = 0, tt = tmax, dt = dt, mean = TRUE,
+                    quantiles = c(0.025, 0.975), verbose = FALSE)
+```
+
+Since repetitions are summarized, we do not have the same directory structure in the `analyzed` folder, just the summaries.
+
+```{r}
+list.files(path = analysis_folders[3])
+```
+
+Again, the stage designation is at the front of every file name. Next, either `Mean` or `Quantile`. If `Mean`, then the node designation. If `Quantile`, which quantile, and then the node designation.
+
+We will open the egg and susceptible females files, to see the summaries, but the structure of these files is the same as the trace files.
+
+```{r}
+# read the eggs from repetition 1
+egg_stage <- read.csv(file = file.path(analysis_folders[3], "E_Mean_0001.csv"),
+                      header = TRUE)
+
+# read susceptible females from repetition 1
+fs_stage <- read.csv(file = file.path(analysis_folders[3], "FS_Mean_0001.csv"),
+                     header = TRUE)
+
+# eggs
+dim(egg_stage)
+
+# susceptible females
+dim(fs_stage)
+```
+
+The dimensions are the same as the trace files.
+We also see that the column names are the same as well.
+
+```{r}
+# eggs
+colnames(egg_stage)
+
+# females
+colnames(fs_stage)
+```
+
+The plotting utilities provided by **MGDrivE2** do not work on CSV output. Our assumption is that, if one is generating enough data to use the CSV utilities, then there are specific plotting requirements.
+
+
+```{r, echo=FALSE}
+# Cleanup
+unlink(x = main_out, recursive = TRUE)
+```
+
+
+### References {#ref}
+
+* Smith, D. L., & McKenzie, F. E. (2004). Statics and dynamics of malaria infection in Anopheles mosquitoes. Malaria journal, 3(1), 13.
