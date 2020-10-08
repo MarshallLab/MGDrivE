@@ -143,7 +143,7 @@
 <h2 class="hasAnchor">
 <a href="#pars" class="anchor"></a>Parameterization</h2>
 <p>These are the same parameters found in the <a href="epi-network.html">epi-network</a> vignette, and are also explained in the <a href="lifecycle-node.html">lifecycle-node</a> vignette.</p>
-<p>We will store output every other day (<code>dt = 2</code>), as writing to disk can be slow and this reduces the amount of data to store by half. The rate that one needs to store data will depend on the accuracy of one’s parameters - i.e., if your parameters are highly questionable, storing data every other day will not lose much information, but if your parameters are very well defined, daily storage may be necessary for accuracy.</p>
+<p>We will store output every other day (<code>dt = 2</code>), as writing to disk can be slow and this reduces the amount of data to store by half. The rate that one needs to store data will depend on the accuracy of one’s parameters - i.e., if your parameters are highly questionable, storing data every other day will not lose much information, but if your parameters are very well defined, daily storage may be necessary for accuracy. Note we set <code>tmax</code> artifically low in this vignette to reduce build times as the goal of this article is to demonstrate CSV processing capabilities of <strong>MGDrivE2</strong>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># entomological and epidemiological parameters</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">theta &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="co"># lifecycle parameters</span></a>
@@ -174,7 +174,7 @@
 <a class="sourceLine" id="cb2-28" data-line-number="28">)</a>
 <a class="sourceLine" id="cb2-29" data-line-number="29"></a>
 <a class="sourceLine" id="cb2-30" data-line-number="30"><span class="co"># simulation parameters</span></a>
-<a class="sourceLine" id="cb2-31" data-line-number="31">tmax &lt;-<span class="st"> </span><span class="dv">300</span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31">tmax &lt;-<span class="st"> </span><span class="dv">50</span></a>
 <a class="sourceLine" id="cb2-32" data-line-number="32">dt &lt;-<span class="st"> </span><span class="dv">2</span></a></code></pre></div>
 <p>Additionally, we augment the cube with transmission efficiencies; see Smith &amp; McKenzie (2004) for an extensive discussion of these parameters.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># augment the cube with RM transmission parameters</span></a>
@@ -255,9 +255,9 @@
 <h2 class="hasAnchor">
 <a href="#sim" class="anchor"></a>Simulation of Fully Specified SPN Model</h2>
 <p>Before running any simulations, we need to create some releases, and then setup the folder structure.</p>
-<p>Similar to previous simulations, we will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, starting at day 50, in node 1 (this allows us to see movement from node 1 to node 2, before we see an impact on human disease transmission). Remember, it is critically important that <strong>the event names match a place name</strong> in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in <strong>MGDrivE2</strong> for consistency with solvers in <code>deSolve</code>.</p>
+<p>We will release 50 adult females with homozygous recessive alleles 2 times, every 7 days, starting at day 10, in node 1 (this allows us to see movement from node 1 to node 2, before we see an impact on human disease transmission). Remember, it is critically important that <strong>the event names match a place name</strong> in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in <strong>MGDrivE2</strong> for consistency with solvers in <code>deSolve</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># releases</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">50</span>, <span class="dt">length.out =</span> <span class="dv">5</span>, <span class="dt">by =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">10</span>, <span class="dt">length.out =</span> <span class="dv">2</span>, <span class="dt">by =</span> <span class="dv">7</span>)</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">r_size &lt;-<span class="st"> </span><span class="dv">50</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4">events &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"var"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"F_"</span>, cube<span class="op">$</span>releaseType, <span class="st">"_"</span>, cube<span class="op">$</span>wildType, <span class="st">"_S_1"</span>),</a>
 <a class="sourceLine" id="cb8-5" data-line-number="5">                     <span class="st">"time"</span> =<span class="st"> </span>r_times,</a>
@@ -332,7 +332,9 @@
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="kw"><a href="../reference/sim_trajectory_CSV.html">sim_trajectory_CSV</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt,</a>
 <a class="sourceLine" id="cb10-6" data-line-number="6">                   <span class="dt">dt_stoch =</span> dt_stoch, <span class="dt">folders =</span> rep_folders,</a>
 <a class="sourceLine" id="cb10-7" data-line-number="7">                   <span class="dt">stage =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"E"</span>, <span class="st">"L"</span>, <span class="st">"P"</span>, <span class="st">"M"</span>, <span class="st">"U"</span>, <span class="st">"F"</span>, <span class="st">"H"</span>), <span class="dt">S =</span> S,</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">                   <span class="dt">hazards =</span> exact_hazards, <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb10-8" data-line-number="8">                   <span class="dt">hazards =</span> exact_hazards, <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; Warning in base_events(x0 = x0, events = events, dt = dt): event times do not correspond to a multiple of dt.</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; event times will be rounded up to the nearest time-step!</span></a></code></pre></div>
 <p>We can see all of the files returned by the simulation.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># list all files from the first repetition</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list.files">list.files</a></span>(<span class="dt">path =</span> rep_folders[<span class="dv">1</span>], <span class="dt">full.names =</span> <span class="ot">FALSE</span>)</a>
@@ -348,11 +350,11 @@
 <p>First, we will look at the dimensions of each file. Everything is printed at the same rate, <code>dt</code>, so the length of the files should match, but the number of columns is significantly different.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># eggs</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(egg_stage)</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; [1] 151  13</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; [1] 26 13</span></a>
 <a class="sourceLine" id="cb13-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co"># susceptible females</span></a>
 <a class="sourceLine" id="cb13-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(fs_stage)</a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; [1] 151  19</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; [1] 26 19</span></a></code></pre></div>
 <p>Every file begins with a “Time” column, followed by the stage designations. It is these stage designations that explain why female files are so much larger than the rest. As described earlier, the names for each place are a combination of genotypes and node for most stages, but for adult females, places are labeled by 3 designations. The column labels in the egg file are:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(egg_stage)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt;  [1] "Time"    "E1_AA_1" "E2_AA_1" "E1_Aa_1" "E2_Aa_1" "E1_aa_1" "E2_aa_1"</span></a>
@@ -396,11 +398,11 @@
 <p>The length of each file is the same, since we need every time point, but the number of columns is significantly less.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># eggs</span></a>
 <a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(egg_stage)</a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co">#&gt; [1] 151   4</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co">#&gt; [1] 26  4</span></a>
 <a class="sourceLine" id="cb20-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co"># susceptible females</span></a>
 <a class="sourceLine" id="cb20-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(fs_stage)</a>
-<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co">#&gt; [1] 151   4</span></a></code></pre></div>
+<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co">#&gt; [1] 26  4</span></a></code></pre></div>
 <p>Again, every file begins with a “Time” column, but now all files have the same remaining columns as well, just the genotypes.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># eggs</span></a>
 <a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(egg_stage)</a>
@@ -461,11 +463,11 @@
 <a class="sourceLine" id="cb24-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb24-9" data-line-number="9"><span class="co"># eggs</span></a>
 <a class="sourceLine" id="cb24-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(egg_stage)</a>
-<a class="sourceLine" id="cb24-11" data-line-number="11"><span class="co">#&gt; [1] 151   4</span></a>
+<a class="sourceLine" id="cb24-11" data-line-number="11"><span class="co">#&gt; [1] 26  4</span></a>
 <a class="sourceLine" id="cb24-12" data-line-number="12"></a>
 <a class="sourceLine" id="cb24-13" data-line-number="13"><span class="co"># susceptible females</span></a>
 <a class="sourceLine" id="cb24-14" data-line-number="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(fs_stage)</a>
-<a class="sourceLine" id="cb24-15" data-line-number="15"><span class="co">#&gt; [1] 151   4</span></a></code></pre></div>
+<a class="sourceLine" id="cb24-15" data-line-number="15"><span class="co">#&gt; [1] 26  4</span></a></code></pre></div>
 <p>The dimensions are the same as the trace files. We also see that the column names are the same as well.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># eggs</span></a>
 <a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(egg_stage)</a>
