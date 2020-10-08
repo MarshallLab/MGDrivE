@@ -96,7 +96,7 @@ theta <- list(
 )
 
 # simulation parameters
-tmax <- 300
+tmax <- 250
 dt <- 1
 ```
 
@@ -150,11 +150,11 @@ approx_hazards <- spn_hazards(spn_P = SPN_P, spn_T = SPN_T, cube = cube,
 
 ## Simulation of Fully Specified SPN Model {#sim}
 
-Similar to previous simulations, we will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, but starting at day 50. Remember, it is critically important that **the event names match a place name** in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in **MGDrivE2** for consistency with solvers in `deSolve`.
+Similar to previous simulations, we will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, but starting at day 20. Remember, it is critically important that **the event names match a place name** in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in **MGDrivE2** for consistency with solvers in `deSolve`.
 
 ```{r}
 # releases
-r_times <- seq(from = 50, length.out = 5, by = 10)
+r_times <- seq(from = 20, length.out = 5, by = 10)
 r_size <- 50
 events <- data.frame("var" = paste0("F_", cube$releaseType, "_", cube$wildType, "_S"),
                      "time" = r_times,

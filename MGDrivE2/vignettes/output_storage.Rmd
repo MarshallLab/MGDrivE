@@ -50,7 +50,7 @@ cube <- MGDrivE::cubeMendelian()
 
 These are the same parameters found in the [epi-network](epi-network.html) vignette, and are also explained in the [lifecycle-node](lifecycle-node.html) vignette.
 
-We will store output every other day (`dt = 2`), as writing to disk can be slow and this reduces the amount of data to store by half. The rate that one needs to store data will depend on the accuracy of one's parameters - i.e., if your parameters are highly questionable, storing data every other day will not lose much information, but if your parameters are very well defined, daily storage may be necessary for accuracy.
+We will store output every other day (`dt = 2`), as writing to disk can be slow and this reduces the amount of data to store by half. The rate that one needs to store data will depend on the accuracy of one's parameters - i.e., if your parameters are highly questionable, storing data every other day will not lose much information, but if your parameters are very well defined, daily storage may be necessary for accuracy. Note we set `tmax` artifically low in this vignette to reduce build times as the goal of this article is to demonstrate CSV processing capabilities of **MGDrivE2**.
 
 ```{r}
 # entomological and epidemiological parameters
@@ -83,7 +83,7 @@ theta <- list(
 )
 
 # simulation parameters
-tmax <- 300
+tmax <- 50
 dt <- 2
 ```
 
@@ -188,11 +188,11 @@ The hazard function (`spn_hazards()`) returns a list of functions that define th
 
 Before running any simulations, we need to create some releases, and then setup the folder structure.
 
-Similar to previous simulations, we will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, starting at day 50, in node 1 (this allows us to see movement from node 1 to node 2, before we see an impact on human disease transmission). Remember, it is critically important that **the event names match a place name** in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in **MGDrivE2** for consistency with solvers in `deSolve`.
+We will release 50 adult females with homozygous recessive alleles 2 times, every 7 days, starting at day 10, in node 1 (this allows us to see movement from node 1 to node 2, before we see an impact on human disease transmission). Remember, it is critically important that **the event names match a place name** in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in **MGDrivE2** for consistency with solvers in `deSolve`.
 
 ```{r}
 # releases
-r_times <- seq(from = 50, length.out = 5, by = 10)
+r_times <- seq(from = 10, length.out = 2, by = 7)
 r_size <- 50
 events <- data.frame("var" = paste0("F_", cube$releaseType, "_", cube$wildType, "_S_1"),
                      "time" = r_times,

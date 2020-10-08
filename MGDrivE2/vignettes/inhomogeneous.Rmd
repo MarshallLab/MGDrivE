@@ -550,8 +550,25 @@ ODE_female_hom <- summarize_females(out = ODE_out_hom$state, spn_P = SPN_P)
 ODE_male_hom <- summarize_males(out = ODE_out_hom$state)
 
 # combine for plotting later
-ODE_out_hom_melt <- rbind(cbind(ODE_female_hom, "sex" = "F"),
-                          cbind(ODE_male_hom, "sex" = "M") )
+ODE_out_hom_melt <- rbind(
+  cbind(ODE_female_hom, "sex" = "F"),
+  cbind(ODE_male_hom, "sex" = "M")
+)
+
+ODE_out_inhom_melt$death <- "inhomogeneous"
+ODE_out_hom_melt$death <- "homogeneous"
+
+# plot everything together
+ggplot(data = rbind(ODE_out_inhom_melt, ODE_out_hom_melt) ) +
+  geom_path(aes(x = time, y = value,
+                color = death)) +
+  facet_grid(genotype ~ sex, scales = "free_y") +
+  scale_color_manual(values = c("inhomogeneous" = "firebrick3",
+                                "homogeneous" = "dodgerblue3")) +
+  # final formatting
+  theme_bw() +
+  ggtitle("Constant vs Seasonally Time-Varying Mortality Rates") +
+  guides(color = FALSE)
 ```
 
 ## Simulation: CTMC Models {#sim_ctmc}
@@ -560,15 +577,13 @@ We run 10 realizations of the stochastic simulations, to get a better sense of t
 
 We need a few extra parameters for the stochastic realizations, namely the number of realizations and the time-step. We will run 10 repetitions, using a time step equal to one hour.
 
-```{r}
+First we simulate the time-inhomogeneous Markov model, using the built-in repetition wrapper. Please note that this vignette does not run the following simulation code to combat excessive build times; however the code can be run locally after building the Petri net and hazards as done previously in this vignette.
+
+```{r, eval = FALSE}
 # parameters for stochastic simulations
 num_rep <- 10
 dt_stoch <- 1/24
-```
 
-First we simulate the time-inhomogeneous Markov model, using the built-in repetition wrapper.
-
-```{r}
 # run inhomogeneous simulations
 PTS_out_inhom <- sim_trajectory_R(x0 = initialCons$M0, t0 = 0, tt = tmax, dt = dt,
                                   dt_stoch = dt_stoch, S = S, num_reps = num_rep,

@@ -68,7 +68,7 @@ theta <- list(
 )
 
 # simulation parameters
-tmax <- 200
+tmax <- 125
 dt <- 1
 ```
 
@@ -155,11 +155,11 @@ exact_hazards <- spn_hazards(spn_P = SPN_P, spn_T = SPN_T, cube = cube,
 
 ## Simulation of Fully Specified SPN Model {#sim}
 
-Now that the structural elements of the Petri Net have been built, and we have a vector of hazard functions, we can simulate dynamics on the network. First, we will make a `data.frame` to hold information about the releases; We will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, starting at day 25, and only in node 1. It is critically important that **the event names match a place name** in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in **MGDrivE2** for consistency with solvers in `deSolve`.
+Now that the structural elements of the Petri Net have been built, and we have a vector of hazard functions, we can simulate dynamics on the network. First, we will make a `data.frame` to hold information about the releases; We will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, starting at day 20, and only in node 1. It is critically important that **the event names match a place name** in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in **MGDrivE2** for consistency with solvers in `deSolve`.
 
 ```{r}
 # releases
-r_times <- seq(from = 25, length.out = 5, by = 10)
+r_times <- seq(from = 20, length.out = 5, by = 10)
 r_size <- 50
 events <- data.frame("var" = paste0("F_", cube$releaseType, "_", cube$wildType, "_1"),
                      "time" = r_times,

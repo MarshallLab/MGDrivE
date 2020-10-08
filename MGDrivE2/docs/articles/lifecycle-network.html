@@ -161,7 +161,7 @@
 <a class="sourceLine" id="cb2-16" data-line-number="16">)</a>
 <a class="sourceLine" id="cb2-17" data-line-number="17"></a>
 <a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co"># simulation parameters</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">tmax &lt;-<span class="st"> </span><span class="dv">200</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">tmax &lt;-<span class="st"> </span><span class="dv">125</span></a>
 <a class="sourceLine" id="cb2-20" data-line-number="20">dt &lt;-<span class="st"> </span><span class="dv">1</span></a></code></pre></div>
 </div>
 <div id="init_pn" class="section level2">
@@ -230,9 +230,9 @@
 <div id="sim" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sim" class="anchor"></a>Simulation of Fully Specified SPN Model</h2>
-<p>Now that the structural elements of the Petri Net have been built, and we have a vector of hazard functions, we can simulate dynamics on the network. First, we will make a <code>data.frame</code> to hold information about the releases; We will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, starting at day 25, and only in node 1. It is critically important that <strong>the event names match a place name</strong> in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in <strong>MGDrivE2</strong> for consistency with solvers in <code>deSolve</code>.</p>
+<p>Now that the structural elements of the Petri Net have been built, and we have a vector of hazard functions, we can simulate dynamics on the network. First, we will make a <code>data.frame</code> to hold information about the releases; We will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, starting at day 20, and only in node 1. It is critically important that <strong>the event names match a place name</strong> in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in <strong>MGDrivE2</strong> for consistency with solvers in <code>deSolve</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># releases</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">25</span>, <span class="dt">length.out =</span> <span class="dv">5</span>, <span class="dt">by =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">20</span>, <span class="dt">length.out =</span> <span class="dv">5</span>, <span class="dt">by =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">r_size &lt;-<span class="st"> </span><span class="dv">50</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4">events &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"var"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"F_"</span>, cube<span class="op">$</span>releaseType, <span class="st">"_"</span>, cube<span class="op">$</span>wildType, <span class="st">"_1"</span>),</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5">                     <span class="st">"time"</span> =<span class="st"> </span>r_times,</a>

@@ -98,7 +98,7 @@ theta <- list(
 )
 
 # simulation parameters
-tmax <- 300
+tmax <- 250
 dt <- 1
 ```
 
@@ -282,7 +282,7 @@ theta <- list(
 )
 
 # simulation parameters
-tmax <- 300
+tmax <- 250
 dt <- 2
 ```
 

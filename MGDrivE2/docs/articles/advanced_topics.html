@@ -217,7 +217,7 @@
 <a class="sourceLine" id="cb3-19" data-line-number="19">)</a>
 <a class="sourceLine" id="cb3-20" data-line-number="20"></a>
 <a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co"># simulation parameters</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22">tmax &lt;-<span class="st"> </span><span class="dv">200</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">tmax &lt;-<span class="st"> </span><span class="dv">75</span></a>
 <a class="sourceLine" id="cb3-23" data-line-number="23">dt &lt;-<span class="st"> </span><span class="dv">1</span></a></code></pre></div>
 </div>
 <div id="init_pn" class="section level3">
@@ -244,9 +244,9 @@
 <div id="sim" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sim" class="anchor"></a>Simulation of Fully Specified SPN Model</h3>
-<p>We will use the release scheme from the <a href="lifecycle-node.html">one-node</a> vignette for both of our simulations.</p>
+<p>We will use a release scheme similar to the <a href="lifecycle-node.html">one-node</a> vignette for both of our simulations, but with only 3 overall releases.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># releases</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">25</span>, <span class="dt">length.out =</span> <span class="dv">5</span>, <span class="dt">by =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">15</span>, <span class="dt">length.out =</span> <span class="dv">3</span>, <span class="dt">by =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">r_size &lt;-<span class="st"> </span><span class="dv">50</span></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4">events &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"var"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"F_"</span>, cube<span class="op">$</span>releaseType, <span class="st">"_"</span>, cube<span class="op">$</span>wildType),</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5">                     <span class="st">"time"</span> =<span class="st"> </span>r_times,</a>
