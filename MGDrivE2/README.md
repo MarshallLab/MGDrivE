@@ -1,5 +1,9 @@
 # **MGDrivE 2.0**: Mosquito Gene Drive Explorer 2
 
+## Installation
+
+To install **MGDrivE 2.0**, please use `devtools::install_github(repo = "MarshallLab/MGDrivE",subdir = "MGDrivE2")`.
+
 ## Brief Description
 
 **MGDrivE 2.0** is a new simulation platform which extends capabilities from the **MGDrivE** simulation package in a new mathematical and computational framework. For more information about **MGDrivE**, see our [publication](https://doi.org/10.1111/2041-210X.13318). Some of the notable capabilities of **MGDrivE 2.0** include incorporation of human populations, epidemiological dynamics, time-varying parameters, and a continuous-time simulation framework with various sampling algorithms for both deterministic and stochastic interpretations.
