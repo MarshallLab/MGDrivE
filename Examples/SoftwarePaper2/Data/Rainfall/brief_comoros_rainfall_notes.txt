@@ -1,0 +1,12 @@
+km_avg_rainfall_2018.csv: Remote-sensed rainfall data for the Comoros in 2018 by island. Values are normalized mean weekly rainfall (359 values b/c I only pulled rainfall data for a year). Will have to be multiple to scale with some desired carrying capacity value. See Rainfall Method 1 in White et al. 2011, “Modelling the impact of vector control interventions on Anopheles gambiae population 
+dynamics”.
+
+km_precip_2010s_daily.csv:  Remote-sensed daily rainfall data for the Comoros in the 2010s by island.
+
+K_rainfall_white_method.R: Quick R script for generating new K values as needed from data
+
+K_km_v1.csv: K results for 2010s using aforementioned script/method 3 for L_eq = 120000 and constant_frac = 2 / 3
+
+K_km_v2.csv: K results for 2010s using aforementioned script/method 3 for L_eq = 180000 and constant_frac = 8 /18 (same floor of 80000 but ceiling of 180000 instead of 120000)
+
+
