@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@
       <a href="../articles/lifecycle-node.html">MGDrivE2: One Node Lifecycle Dynamics</a>
     </li>
     <li>
-      <a href="../articles/output_storage.html">MGDrivE2: Data Storage and Analysis</a>
+      <a href="../articles/output-storage.html">MGDrivE2: Data Storage and Analysis</a>
     </li>
   </ul>
 </li>
@@ -91,7 +91,7 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
+      </header><script src="advanced_topics_files/jquery-1.11.3/jquery.min.js"></script><script src="advanced_topics_files/elevate-section-attrs-2.0/elevate-section-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>MGDrivE2: Advanced Topics</h1>
@@ -148,32 +148,32 @@
 <p>It is our hope that future development and users will be interested in improving these numerical methods. Therefore, we provide a detailed example showing how to write a new step function. Because we are interested in describing how to interface with the internal <strong>MGDrivE2</strong> API, rather than describing a specific method, we use use a simple <a href="https://en.wikipedia.org/wiki/Euler_method">Euler method</a> for our example.</p>
 <p>The function (factory) is below. It takes two arguments as input. <code>pn</code> is a named list with two elements, the stoichiometry matrix <code>S</code> and the “hazard” vector <code>h</code>, needed to update the state over the time step. Hazard is quoted because, when interpreting the model as describing a set of ODEs, these should be referred to as deterministic rate functions, rather than hazard functions, which have a specific stochastic interpretation. However, we will refer to these as hazard functions with apologies to the pedantic.</p>
 <p>All of the work is done in the returned function object. <code>x</code> is the state vector which will be updated and returned. <code>termt</code> is the right endpoint of the time step, at <span class="math inline">\(t_{0}+\Delta t\)</span>. Until we reach the termination point, the state is updated as a standard Euler scheme, with each internal step of size <code>dt</code>. When the step function returns, note that it returns a named list with the first element <code>x</code>, and second named element <code>NULL</code>. That is for compatibility with the internal simulation functions which allow users to track additional output besides the state vector.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">step_Euler &lt;-<span class="st"> </span><span class="cf">function</span>(pn, <span class="dt">dt =</span> <span class="fl">0.01</span>) {</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stopifnot">stopifnot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all">all</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(pn) <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"S"</span>,<span class="st">"h"</span>)))</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">        <span class="cf">function</span>(x0, t0, deltat){</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">          x =<span class="st"> </span>x0</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">          tNow =<span class="st"> </span>t0</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">          termt =<span class="st"> </span>t0 <span class="op">+</span><span class="st"> </span>deltat</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">          <span class="cf">repeat</span> {</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">            h =<span class="st"> </span>pn<span class="op">$</span><span class="kw">h</span>(x, tNow)</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">            <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/any">any</a></span>(h <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e6</span>)){</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">              <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stop">stop</a></span>(<span class="st">"rates too large, terminating simulation.</span><span class="ch">\n\t</span><span class="st">try reducing dt"</span>)</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">            }</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">            dx =<span class="st"> </span>pn<span class="op">$</span>S <span class="op">%*%</span><span class="st"> </span>(h<span class="op">*</span>dt)</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">            x =<span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(dx)</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">            x[x<span class="op">&lt;</span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># "absorption" at 0</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18">            tNow =<span class="st"> </span>tNow<span class="op">+</span>dt</a>
-<a class="sourceLine" id="cb1-19" data-line-number="19">            <span class="cf">if</span>(tNow <span class="op">&gt;</span><span class="st"> </span>termt){</a>
-<a class="sourceLine" id="cb1-20" data-line-number="20">              <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"x"</span>=x,<span class="st">"o"</span>=<span class="ot">NULL</span>))</a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">            }</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22">          }</a>
-<a class="sourceLine" id="cb1-23" data-line-number="23">        }</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25">  )</a>
-<a class="sourceLine" id="cb1-26" data-line-number="26">}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>step_Euler &lt;-<span class="st"> </span><span class="cf">function</span>(pn, <span class="dt">dt =</span> <span class="fl">0.01</span>) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stopifnot">stopifnot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all">all</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(pn) <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"S"</span>,<span class="st">"h"</span>)))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>        <span class="cf">function</span>(x0, t0, deltat){</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>          x =<span class="st"> </span>x0</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>          tNow =<span class="st"> </span>t0</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>          termt =<span class="st"> </span>t0 <span class="op">+</span><span class="st"> </span>deltat</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>          <span class="cf">repeat</span> {</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>            h =<span class="st"> </span>pn<span class="op">$</span><span class="kw">h</span>(x, tNow)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a>            <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/any">any</a></span>(h <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e6</span>)){</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>              <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stop">stop</a></span>(<span class="st">"rates too large, terminating simulation.</span><span class="ch">\n\t</span><span class="st">try reducing dt"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>            }</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a>            dx =<span class="st"> </span>pn<span class="op">$</span>S <span class="op">%*%</span><span class="st"> </span>(h<span class="op">*</span>dt)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a>            x =<span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(dx)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a>            x[x<span class="op">&lt;</span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># "absorption" at 0</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a>            tNow =<span class="st"> </span>tNow<span class="op">+</span>dt</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a>            <span class="cf">if</span>(tNow <span class="op">&gt;</span><span class="st"> </span>termt){</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a>              <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"x"</span>=x,<span class="st">"o"</span>=<span class="ot">NULL</span>))</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a>            }</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a>          }</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a>        }</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true"></a>  )</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true"></a>}</span></code></pre></div>
 <p>The function <code>step_Euler()</code> implements this first-order explicit Euler scheme just described. All step functions are required to take the three named arguments <code>x0</code>, <code>t0</code>, and <code>deltat</code>, giving the state at the beginning of the time step, the initial time, and the size of the time step, and must return the updated state vector when that time step is over. To test this function, we will setup a simple one-node, lifecycle simulation, given in the <a href="lifecycle-node.html">“MGDrivE2: One Node Lifecycle Dynamics”</a> vignette.</p>
 </div>
 <div id="test_sim" class="section level2">
@@ -181,136 +181,136 @@
 <a href="#test_sim" class="anchor"></a>Test Simulation</h2>
 <p>Because this vignette covers advanced topics it assumes familiarity with <strong>MGDrivE2</strong> and the setup for the one node simulation is given with few comments.</p>
 <p>We start by loading the <strong>MGDrivE2</strong> package, as well as the <strong>MGDrivE</strong> package for access to inheritance cubes and <strong>ggplot2</strong> for graphical analysis. We will use the basic cube to simulate Mendelian inheritance for this example.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># simulation functions</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE2)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; Loading MGDrivE2: Mosquito Gene Drive Explorer Version 2</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># inheritance patterns</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co"># plotting</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co"># basic inheritance pattern</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">cube &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/MGDrivE/topics/cubeMendelian">cubeMendelian</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># simulation functions</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="co">#&gt; Loading MGDrivE2: Mosquito Gene Drive Explorer Version 2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co"># inheritance patterns</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="co"># plotting</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co"># basic inheritance pattern</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>cube &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/MGDrivE/topics/cubeMendelian">cubeMendelian</a></span>()</span></code></pre></div>
 <div id="pars" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pars" class="anchor"></a>Parameterization</h3>
 <p>These are the same parameters as in the <a href="lifecycle-node.html">“MGDrivE2: One Node Lifecycle Dynamics”</a> vignette.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># adule female mosquitoes</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">NF &lt;-<span class="st"> </span><span class="dv">500</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># lifecycle parameters</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">theta &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">  <span class="dt">qE =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="dt">nE =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">  <span class="dt">qL =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">  <span class="dt">nL =</span> <span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">  <span class="dt">qP =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>,</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">  <span class="dt">nP =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">  <span class="dt">muE =</span> <span class="fl">0.05</span>,</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">  <span class="dt">muL =</span> <span class="fl">0.15</span>,</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">  <span class="dt">muP =</span> <span class="fl">0.05</span>,</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">  <span class="dt">muF =</span> <span class="fl">0.09</span>,</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">  <span class="dt">muM =</span> <span class="fl">0.09</span>,</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">  <span class="dt">beta =</span> <span class="dv">16</span>,</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">  <span class="dt">nu =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">24</span>)</a>
-<a class="sourceLine" id="cb3-19" data-line-number="19">)</a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co"># simulation parameters</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22">tmax &lt;-<span class="st"> </span><span class="dv">75</span></a>
-<a class="sourceLine" id="cb3-23" data-line-number="23">dt &lt;-<span class="st"> </span><span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># adule female mosquitoes</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>NF &lt;-<span class="st"> </span><span class="dv">500</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co"># lifecycle parameters</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>theta &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>  <span class="dt">qE =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">4</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>  <span class="dt">nE =</span> <span class="dv">2</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>  <span class="dt">qL =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>  <span class="dt">nL =</span> <span class="dv">3</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>  <span class="dt">qP =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>  <span class="dt">nP =</span> <span class="dv">2</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>  <span class="dt">muE =</span> <span class="fl">0.05</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>  <span class="dt">muL =</span> <span class="fl">0.15</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>  <span class="dt">muP =</span> <span class="fl">0.05</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>  <span class="dt">muF =</span> <span class="fl">0.09</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>  <span class="dt">muM =</span> <span class="fl">0.09</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>  <span class="dt">beta =</span> <span class="dv">16</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>  <span class="dt">nu =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">24</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a><span class="co"># simulation parameters</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a>tmax &lt;-<span class="st"> </span><span class="dv">75</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a>dt &lt;-<span class="st"> </span><span class="dv">1</span></span></code></pre></div>
 </div>
 <div id="init_pn" class="section level3">
 <h3 class="hasAnchor">
 <a href="#init_pn" class="anchor"></a>Initialization of the Petri Net</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Places and transitions</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">SPN_P &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_P_lifecycle_node.html">spn_P_lifecycle_node</a></span>(<span class="dt">params =</span> theta, <span class="dt">cube =</span> cube)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">SPN_T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_T_lifecycle_node.html">spn_T_lifecycle_node</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">params =</span> theta, <span class="dt">cube =</span> cube)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co"># Stoichiometry matrix</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">S &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_S.html">spn_S</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># Places and transitions</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>SPN_P &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_P_lifecycle_node.html">spn_P_lifecycle_node</a></span>(<span class="dt">params =</span> theta, <span class="dt">cube =</span> cube)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>SPN_T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_T_lifecycle_node.html">spn_T_lifecycle_node</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">params =</span> theta, <span class="dt">cube =</span> cube)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co"># Stoichiometry matrix</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>S &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_S.html">spn_S</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T)</span></code></pre></div>
 </div>
 <div id="equilibria_haz" class="section level3">
 <h3 class="hasAnchor">
 <a href="#equilibria_haz" class="anchor"></a>Equilibrium Conditions and Hazard Functions</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># lifecycle equilibrium and initial conditions</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">init &lt;-<span class="st"> </span><span class="kw"><a href="../reference/equilibrium_lifeycle.html">equilibrium_lifeycle</a></span>(<span class="dt">params =</span> theta, <span class="dt">NF =</span> NF, <span class="dt">spn_P=</span>SPN_P, <span class="dt">cube =</span> cube)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># approximate hazards for continous approximation</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">approx_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">                              <span class="dt">params =</span> init<span class="op">$</span>params, <span class="dt">exact =</span> <span class="ot">FALSE</span>, <span class="dt">tol =</span> <span class="fl">1e-8</span>,</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">                              <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># lifecycle equilibrium and initial conditions</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>init &lt;-<span class="st"> </span><span class="kw"><a href="../reference/equilibrium_lifeycle.html">equilibrium_lifeycle</a></span>(<span class="dt">params =</span> theta, <span class="dt">NF =</span> NF, <span class="dt">spn_P=</span>SPN_P, <span class="dt">cube =</span> cube)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="co"># approximate hazards for continous approximation</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>approx_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>                              <span class="dt">params =</span> init<span class="op">$</span>params, <span class="dt">exact =</span> <span class="ot">FALSE</span>, <span class="dt">tol =</span> <span class="fl">1e-8</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>                              <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="sim" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sim" class="anchor"></a>Simulation of Fully Specified SPN Model</h3>
 <p>We will use a release scheme similar to the <a href="lifecycle-node.html">one-node</a> vignette for both of our simulations, but with only 3 overall releases.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># releases</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">15</span>, <span class="dt">length.out =</span> <span class="dv">3</span>, <span class="dt">by =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">r_size &lt;-<span class="st"> </span><span class="dv">50</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">events &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"var"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"F_"</span>, cube<span class="op">$</span>releaseType, <span class="st">"_"</span>, cube<span class="op">$</span>wildType),</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">                     <span class="st">"time"</span> =<span class="st"> </span>r_times,</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">                     <span class="st">"value"</span> =<span class="st"> </span>r_size,</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">                     <span class="st">"method"</span> =<span class="st"> "add"</span>,</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co"># releases</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">15</span>, <span class="dt">length.out =</span> <span class="dv">3</span>, <span class="dt">by =</span> <span class="dv">10</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>r_size &lt;-<span class="st"> </span><span class="dv">50</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>events &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"var"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"F_"</span>, cube<span class="op">$</span>releaseType, <span class="st">"_"</span>, cube<span class="op">$</span>wildType),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>                     <span class="st">"time"</span> =<span class="st"> </span>r_times,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>                     <span class="st">"value"</span> =<span class="st"> </span>r_size,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>                     <span class="st">"method"</span> =<span class="st"> "add"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <div id="euler" class="section level4">
 <h4 class="hasAnchor">
 <a href="#euler" class="anchor"></a>Euler Method Solutions</h4>
 <p>At this point the simulation is almost ready. We will use the internal <strong>MGDrivE2</strong> API to run our custom Euler step function. We will write a function <code>evaluate_haz()</code> that evaluates all of the hazard functions at the given time and state using <code>vapply</code> for speed. Because we are providing a non-standard step function, we have to call the base setup functions from the package, instead of the nice <code><a href="../reference/sim_trajectory_R.html">sim_trajectory_R()</a></code> wrapper.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># function to evaluate</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">evaluate_haz &lt;-<span class="st"> </span><span class="cf">function</span>(M,t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">vapply</a></span>(<span class="dt">X =</span> approx_hazards<span class="op">$</span>hazards,</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">                                     <span class="dt">FUN =</span> <span class="cf">function</span>(h){<span class="kw">h</span>(<span class="dt">t=</span>t, <span class="dt">M=</span>M)},</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">                                     <span class="dt">FUN.VALUE =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(<span class="dv">1</span>), <span class="dt">USE.NAMES =</span> <span class="ot">FALSE</span>) }</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co"># step function for hazard evaluation</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">Euler_stepper &lt;-<span class="st"> </span><span class="kw">step_Euler</span>(<span class="dt">pn =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">S=</span>S, <span class="dt">h=</span>evaluate_haz), <span class="dt">dt =</span> <span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co"># checks for simulation time and events</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">sim_times &lt;-<span class="st"> </span>MGDrivE2<span class="op">:::</span><span class="kw">base_time</span>(<span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt)</a>
-<a class="sourceLine" id="cb7-11" data-line-number="11">events &lt;-<span class="st"> </span>MGDrivE2<span class="op">:::</span><span class="kw">base_events</span>(<span class="dt">x0 =</span> init<span class="op">$</span>M0, <span class="dt">events =</span> events, <span class="dt">dt =</span> dt)</a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co"># fum simulation</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14">euler_out &lt;-<span class="st"> </span>MGDrivE2<span class="op">:::</span><span class="kw"><a href="../reference/sim_trajectory_base_R.html">sim_trajectory_base_R</a></span>(<span class="dt">x0 =</span> init<span class="op">$</span>M0, <span class="dt">times =</span> sim_times,</a>
-<a class="sourceLine" id="cb7-15" data-line-number="15">                                              <span class="dt">dt =</span> dt, <span class="dt">num_reps =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb7-16" data-line-number="16">                                              <span class="dt">stepFun =</span> Euler_stepper,</a>
-<a class="sourceLine" id="cb7-17" data-line-number="17">                                              <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co"># summarize female/male</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20">euler_female_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> euler_out<span class="op">$</span>state,<span class="dt">spn_P =</span> SPN_P)</a>
-<a class="sourceLine" id="cb7-21" data-line-number="21">euler_male_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> euler_out<span class="op">$</span>state)</a>
-<a class="sourceLine" id="cb7-22" data-line-number="22">euler_fm_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(euler_female_out,<span class="st">"sex"</span> =<span class="st"> "F"</span>),</a>
-<a class="sourceLine" id="cb7-23" data-line-number="23">                      <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(euler_male_out, <span class="st">"sex"</span> =<span class="st"> "M"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># function to evaluate</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>evaluate_haz &lt;-<span class="st"> </span><span class="cf">function</span>(M,t){<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">vapply</a></span>(<span class="dt">X =</span> approx_hazards<span class="op">$</span>hazards,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>                                     <span class="dt">FUN =</span> <span class="cf">function</span>(h){<span class="kw">h</span>(<span class="dt">t=</span>t, <span class="dt">M=</span>M)},</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>                                     <span class="dt">FUN.VALUE =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">numeric</a></span>(<span class="dv">1</span>), <span class="dt">USE.NAMES =</span> <span class="ot">FALSE</span>) }</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="co"># step function for hazard evaluation</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>Euler_stepper &lt;-<span class="st"> </span><span class="kw">step_Euler</span>(<span class="dt">pn =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">S=</span>S, <span class="dt">h=</span>evaluate_haz), <span class="dt">dt =</span> <span class="fl">0.1</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="co"># checks for simulation time and events</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>sim_times &lt;-<span class="st"> </span>MGDrivE2<span class="op">:::</span><span class="kw">base_time</span>(<span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>events &lt;-<span class="st"> </span>MGDrivE2<span class="op">:::</span><span class="kw">base_events</span>(<span class="dt">x0 =</span> init<span class="op">$</span>M0, <span class="dt">events =</span> events, <span class="dt">dt =</span> dt)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a><span class="co"># fum simulation</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>euler_out &lt;-<span class="st"> </span>MGDrivE2<span class="op">:::</span><span class="kw"><a href="../reference/sim_trajectory_base_R.html">sim_trajectory_base_R</a></span>(<span class="dt">x0 =</span> init<span class="op">$</span>M0, <span class="dt">times =</span> sim_times,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>                                              <span class="dt">dt =</span> dt, <span class="dt">num_reps =</span> <span class="dv">1</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>                                              <span class="dt">stepFun =</span> Euler_stepper,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a>                                              <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a><span class="co"># summarize female/male</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>euler_female_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> euler_out<span class="op">$</span>state,<span class="dt">spn_P =</span> SPN_P)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a>euler_male_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> euler_out<span class="op">$</span>state)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a>euler_fm_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(euler_female_out,<span class="st">"sex"</span> =<span class="st"> "F"</span>),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a>                      <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(euler_male_out, <span class="st">"sex"</span> =<span class="st"> "M"</span>))</span></code></pre></div>
 </div>
 <div id="ode" class="section level4">
 <h4 class="hasAnchor">
 <a href="#ode" class="anchor"></a>Default ODE Solutions</h4>
 <p>For comparison, we use the default ODE method in <strong>MGDrivE2</strong>. These are numerical integration routines provided by the <code>deSolve</code> package.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># run deterministic simulation</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">ODE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> init<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt, <span class="dt">S =</span> S,</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">                            <span class="dt">hazards =</span> approx_hazards, <span class="dt">sampler =</span> <span class="st">"ode"</span>,</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">                            <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># summarize females/males</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">ODE_female_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8">ODE_male_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state)</a>
-<a class="sourceLine" id="cb8-9" data-line-number="9">ODE_fm_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(ODE_female_out,<span class="st">"sex"</span> =<span class="st"> "F"</span>),</a>
-<a class="sourceLine" id="cb8-10" data-line-number="10">                    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(ODE_male_out, <span class="st">"sex"</span> =<span class="st"> "M"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co"># run deterministic simulation</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>ODE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> init<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt, <span class="dt">S =</span> S,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>                            <span class="dt">hazards =</span> approx_hazards, <span class="dt">sampler =</span> <span class="st">"ode"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>                            <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co"># summarize females/males</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>ODE_female_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>ODE_male_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>ODE_fm_out &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(ODE_female_out,<span class="st">"sex"</span> =<span class="st"> "F"</span>),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>                    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(ODE_male_out, <span class="st">"sex"</span> =<span class="st"> "M"</span>))</span></code></pre></div>
 </div>
 </div>
 <div id="plot" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plot" class="anchor"></a>Analysis</h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># add method for plotting</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">euler_fm_out<span class="op">$</span>method &lt;-<span class="st"> "euler"</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">ODE_fm_out<span class="op">$</span>method &lt;-<span class="st"> "deSolve"</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co"># plot adults</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(euler_fm_out, ODE_fm_out)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype, <span class="dt">linetype =</span> method),</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">            <span class="dt">alpha=</span><span class="fl">0.75</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="dt">facets =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(sex), <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE Solution"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co"># add method for plotting</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>euler_fm_out<span class="op">$</span>method &lt;-<span class="st"> "euler"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>ODE_fm_out<span class="op">$</span>method &lt;-<span class="st"> "deSolve"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="co"># plot adults</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(euler_fm_out, ODE_fm_out)) <span class="op">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype, <span class="dt">linetype =</span> method),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>            <span class="dt">alpha=</span><span class="fl">0.75</span>) <span class="op">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="dt">facets =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(sex), <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE Solution"</span>)</span></code></pre></div>
 <p><img src="advanced_topics_files/figure-html/unnamed-chunk-10-1.png" width="691.2"></p>
 <p>Because this is a relatively “easy” problem for numerical routines, the lines are more or less exactly on top of each other. This is not going to be true in general, especially for time varying parameters or stiff systems.</p>
 </div>
@@ -333,7 +333,8 @@
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#table-of-contents">Table of Contents</a></li>
       <li>
-<a href="#custom_num">Custom Numerical Routines</a><ul class="nav nav-pills nav-stacked">
+<a href="#custom_num">Custom Numerical Routines</a>
+      <ul class="nav nav-pills nav-stacked">
 <li><a href="#step_fn">Step Function</a></li>
       <li><a href="#test_sim">Test Simulation</a></li>
       </ul>

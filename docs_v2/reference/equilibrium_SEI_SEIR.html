@@ -69,7 +69,7 @@ across SEI (Susceptible-Exposed-Infectious) stages, allowing for Erlang distribu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@ across SEI (Susceptible-Exposed-Infectious) stages, allowing for Erlang distribu
       <a href="../articles/lifecycle-node.html">MGDrivE2: One Node Lifecycle Dynamics</a>
     </li>
     <li>
-      <a href="../articles/output_storage.html">MGDrivE2: Data Storage and Analysis</a>
+      <a href="../articles/output-storage.html">MGDrivE2: Data Storage and Analysis</a>
     </li>
   </ul>
 </li>
@@ -299,22 +299,6 @@ the same as lifecycle parameters, or new for the epidemiological equilibrium</p>
 <p>For equilibrium without epidemiological parameters, see <code><a href='equilibrium_lifeycle.html'>equilibrium_lifeycle</a></code>.
 For equilibrium without latent humans (SIS dynamics), see <code><a href='equilibrium_SEI_SIS.html'>equilibrium_SEI_SIS</a></code>.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"># NOT RUN {
-  parameters, see vignette MGDrivE2 SEIR Epidemiological Dynamics
-  theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-                muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-                beta = 16, nu = 1/(4/24), NH = 250, X = c(1,0,0,0), NFX = 500,
-                f = 1/3, Q = 0.9, b = 0.55, c = 0.15, delta = 1/5, r = 1/14,
-                muH = 1/(62*365), qEIP = 1/11, nEIP = 3 )
-
-  # spn_P needs to be setup elsewhere, see vignettes
-
-  eqSEIR <- equilibrium_SEI_SEIR(params = theta, spn_P = spn_P,
-                                 cube = MGDrivE::cubeMendelian() )
-# }
-<div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -322,7 +306,6 @@ For equilibrium without latent humans (SIS dynamics), see <code><a href='equilib
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

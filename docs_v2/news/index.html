@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
       <a href="../articles/lifecycle-node.html">MGDrivE2: One Node Lifecycle Dynamics</a>
     </li>
     <li>
-      <a href="../articles/output_storage.html">MGDrivE2: Data Storage and Analysis</a>
+      <a href="../articles/output-storage.html">MGDrivE2: Data Storage and Analysis</a>
     </li>
   </ul>
 </li>
@@ -134,10 +134,25 @@
       
     </div>
 
-    <div id="mgdrive2-1-0-0" class="section level1">
+    <div id="mgdrive2-101" class="section level1">
 <h1 class="page-header">
-<a href="#mgdrive2-1-0-0" class="anchor"></a>MGDrivE2 1.0.0</h1>
-<p>Initial release</p>
+<a href="#mgdrive2-101" class="anchor"></a>MGDrivE2 1.0.1</h1>
+<p>Small fixes to address CRAN comments:</p>
+<ol>
+<li>
+<code>R/hazard-functions-mosy.R</code>: function <code>make_move_male_haz</code> has a fix such that the origin/destination probability is correctly calculated.</li>
+<li>
+<code>R/equilibrium-lifecycle.R</code>: function <code>basic_eq_life</code> modified to not use the <code>&lt;&lt;-</code> global assignment operator.</li>
+<li>
+<code>vignettes/output-storage.Rmd:</code> replaced absolute path for files with <code><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir()</a></code> to conform to the CRAN standard.</li>
+<li>Edit <code>DESCRIPTION</code> to conform to CRAN standard.</li>
+<li>Remove <code>dontrun</code> code from examples where not necessary and direct users to appropriate vignettes, otherwise run examples.</li>
+</ol>
+</div>
+    <div id="mgdrive2-100" class="section level1">
+<h1 class="page-header">
+<a href="#mgdrive2-100" class="anchor"></a>MGDrivE2 1.0.0</h1>
+<p>Initial release &amp; CRAN submission.</p>
 </div>
   </div>
 
@@ -145,7 +160,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#mgdrive2-1-0-0">1.0.0</a></li>
+        <li><a href="#mgdrive2-101">1.0.1</a></li>
+        <li><a href="#mgdrive2-100">1.0.0</a></li>
       </ul>
     </div>
   </div>

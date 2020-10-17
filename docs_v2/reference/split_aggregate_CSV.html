@@ -69,7 +69,7 @@ aggregated by a given metric. " />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@ aggregated by a given metric. " />
       <a href="../articles/lifecycle-node.html">MGDrivE2: One Node Lifecycle Dynamics</a>
     </li>
     <li>
-      <a href="../articles/output_storage.html">MGDrivE2: Data Storage and Analysis</a>
+      <a href="../articles/output-storage.html">MGDrivE2: Data Storage and Analysis</a>
     </li>
   </ul>
 </li>
@@ -275,22 +275,9 @@ are returned.</p>
 <code><a href='spn_P_epiSEIR_node.html'>spn_P_epiSEIR_node</a></code>, or <code><a href='spn_P_epiSEIR_network.html'>spn_P_epiSEIR_network</a></code>.</p>
 <p><code>t0</code>, <code>tt</code>, <code>dt</code> define the first sampling time, the last sampling
 time, and each sampling time in-between.</p>
+<p>For more details about using this function to process CSV output see:
+<code>vignette("data-analysis", package = "MGDrivE2")</code></p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-  <span class='co'># set paths</span>
-  <span class='no'>read_dir</span> <span class='kw'>&lt;-</span> <span class='st'>'path_to_sim_output'</span>
-  <span class='no'>write_dir</span> <span class='kw'>&lt;-</span> <span class='st'>'path_to_write_output'</span>
-
-  <span class='co'># spn_P needs to be setup previously, see vignettes</span>
-  <span class='co'># t0, tt, dt need to match the simulation parameters</span>
-
-  <span class='co'># no return value</span>
-  <span class='fu'>split_aggregate_CSV</span>(<span class='kw'>read_dir</span> <span class='kw'>=</span> <span class='no'>read_dir</span>, <span class='kw'>write_dir</span> <span class='kw'>=</span> <span class='no'>write_dir</span>,
-                      <span class='kw'>stage</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"M"</span>,<span class='st'>"FS"</span>), <span class='kw'>spn_P</span> <span class='kw'>=</span> <span class='no'>spn_P</span>,
-                      <span class='kw'>t0</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>tt</span> <span class='kw'>=</span> <span class='no'>simTime</span>, <span class='kw'>dt</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -298,7 +285,6 @@ time, and each sampling time in-between.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

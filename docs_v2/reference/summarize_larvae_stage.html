@@ -67,7 +67,7 @@ base_aquatic_stage to do all of the work." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -111,7 +111,7 @@ base_aquatic_stage to do all of the work." />
       <a href="../articles/lifecycle-node.html">MGDrivE2: One Node Lifecycle Dynamics</a>
     </li>
     <li>
-      <a href="../articles/output_storage.html">MGDrivE2: Data Storage and Analysis</a>
+      <a href="../articles/output-storage.html">MGDrivE2: Data Storage and Analysis</a>
     </li>
   </ul>
 </li>
@@ -171,16 +171,9 @@ base_aquatic_stage to do all of the work." />
 then no <code>node</code> designation is returned. If only one repetition was performed,
 no <code>rep</code> designation is returned. Columns always returned include: <code>time</code>,
 <code>Erlang-stage</code>, and <code>value</code>.</p>
+<p>For examples of using this function, see:
+<code><a href='../articles/lifecycle-node.html'>vignette("lifecycle-node", package = "MGDrivE2")</a></code></p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-  <span class='co'># spn_P needs to be setup previously, see vignettes</span>
-  <span class='co'># out is the object returned by sim_trajectory_R, see vignettes</span>
-
-  <span class='co'># this returns a dataframe for ggplot2</span>
-  <span class='no'>lStage</span> <span class='kw'>&lt;-</span> <span class='fu'>summarize_larvae_stage</span>(<span class='kw'>out</span> <span class='kw'>=</span> <span class='no'>simObject</span>, <span class='kw'>spn_P</span> <span class='kw'>=</span> <span class='no'>spn_P</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -188,7 +181,6 @@ no <code>rep</code> designation is returned. Columns always returned include: <c
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
