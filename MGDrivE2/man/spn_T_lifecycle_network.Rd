@@ -42,24 +42,7 @@ initialization for faster sampling of trajectories within a simulation.
 Please note, the movement matrix (\code{m_move}) is NOT a
 stochastic matrices, just a binary matrix that say if i,j can exchange population.
 Diagonal elements must be \code{FALSE}.
-}
-\examples{
-\dontrun{
-  # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
-  theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-                muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-                beta = 16, nu = 1/(4/24) )
 
-  # spn_P needs setup elsewhere, see vignettes
-
-  # setup 2-node allowed migrations
-  #  let node 1 migrate to node 2, but not vice-versa
-  m_move <- matrix(data = FALSE, nrow = 2, ncol = 2)
-  m_move[1,2] <- TRUE
-
-  spn_T <- spn_T_lifecycle_network(spn_P = spn_P, params = theta,
-                                   cube = MGDrivE::cubeMendelian(),
-                                   m_move = m_move )
-}
-
+For examples of using this function, see:
+\code{vignette("lifecycle-network", package = "MGDrivE2")}
 }

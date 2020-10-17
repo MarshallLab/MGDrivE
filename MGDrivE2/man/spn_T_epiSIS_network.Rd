@@ -50,30 +50,7 @@ stochastic matrices, just binary matrices that say if i,j can exchange populatio
 Diagonal elements must be \code{FALSE}, and both matrices are checked for validity; the
 function will stop with errors if the adjacency matrix specifies illegal movement
 rules (e.g.; mosquito movement from a "h" node to a "b" node)
-}
-\examples{
-\dontrun{
-  # parameters, see vignette MGDrivE2: One Node Epidemiological Dynamics
-  theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-                muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-                beta = 16, nu = 1/(4/24), NH = 1e3, X = 0.25, f = 1/3,
-                Q = 0.9, b = 0.55, c = 0.15, r = 1/200, muH = 1/(62*365),
-                qEIP = 1/11, nEIP = 6)
 
-  # spn_P needs setup elsewhere, see vignettes
-
-  # setup a 3-node network
-  node_list <- c("m", "b", "h")
-
-  # setup allowed migration locations
-  m_move <- matrix(data = c(FALSE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE),
-                   nrow = 3, ncol = 3)
-  h_move <- matrix(data = c(FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE),
-                   nrow = 3, ncol = 3)
-
-  spn_T <- spn_T_epiSIS_network(node_list =node_list, spn_P = spn_P, params = theta,
-                                cube = MGDrivE::cubeMendelian(),
-                                h_move = h_move, m_move = m_move)
-}
-
+For examples of using this function, see:
+\code{vignette("epi-network", package = "MGDrivE2")}
 }

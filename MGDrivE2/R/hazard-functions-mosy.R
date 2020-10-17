@@ -982,7 +982,7 @@ make_move_male_haz <- function(trans,u,params,exact=TRUE,tol=1e-8){
 
   # movement parameters
   move_r <- params$mosquito_move_rates[od_pair[[1]] ]
-  move_p <- params$mosquito_move_probs[od_pair[[1]],od_pair[[1]] ]
+  move_p <- params$mosquito_move_probs[od_pair[[1]],od_pair[[2]] ]
 
   # safety check
   if(check_double(move_r) || check_double(move_p)){

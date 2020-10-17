@@ -26,17 +26,7 @@ The \code{params} argument supplies all of the ecological parameters necessary
 to calculate equilibrium values. This function requires the \code{nE},
 \code{nL}, and \code{nP} parameters to be specified. For more details, see
 \code{\link{equilibrium_lifeycle}}
-}
-\examples{
-\dontrun{
-  # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
-  theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-                muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-                beta = 16, nu = 1/(4/24) )
 
-  # setup a 2-node network
-  spn_P <- spn_P_lifecycle_network(num_nodes = 2, params = theta,
-                                   cube = MGDrivE::cubeMendelian() )
-}
-
+For examples of using this function, see:
+\code{vignette("lifecycle-network", package = "MGDrivE2")}
 }

@@ -79,20 +79,6 @@
 #' @return a list with 3 elements: \code{init} a matrix of equilibrium values for every life-cycle stage,
 #' \code{params} a list of parameters for the simulation, \code{M0} a vector of initial conditions
 #'
-#' @examples
-#' \dontrun{
-#'   # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
-#'   theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-#'                 muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-#'                 beta = 16, nu = 1/(4/24) )
-#'
-#'   # spn_P needs to be setup elsewhere, see vignettes
-#'
-#'   eqLife <- equilibrium_lifeycle(params = theta, NF = 500, phi = 0.5,
-#'                                  log_dd = TRUE, spn_P = spn_P,
-#'                                  cube = MGDrivE::cubeMendelian() )
-#' }
-#'
 #' @export
 equilibrium_lifeycle <- function(params,NF,phi=0.5,log_dd=TRUE, spn_P,
                                  pop_ratio_Aq=NULL, pop_ratio_F=NULL,
@@ -156,11 +142,11 @@ equilibrium_lifeycle <- function(params,NF,phi=0.5,log_dd=TRUE, spn_P,
 # used in: equilibrium_lifeycle and equilibrium_SEI_SIS
 basic_eq_life <- function(params,NF,phi,log_dd){
 
-  # setup "global" return list
-  eqList <- list("params"=NULL)
-
   # calculate equilibrium distribution
   with(params,{
+
+    eqList <- list("params"=NULL)
+
     # get number of nodes to setup objects
     nNode <- length(NF)
 
@@ -209,7 +195,7 @@ basic_eq_life <- function(params,NF,phi,log_dd){
       }
 
       # calc eq for K
-      eqList$params$K <<- rowSums(L_eq) / (((qE*nE*E_nE)/(muL*L_eq[ ,1])) - ((qL*nL)/muL) - 1)
+      eqList$params$K <- rowSums(L_eq) / (((qE*nE*E_nE)/(muL*L_eq[ ,1])) - ((qL*nL)/muL) - 1)
 
     } else {
         # LOTKA-VOLTERRA DENSITY DEPENDENCE
@@ -223,19 +209,18 @@ basic_eq_life <- function(params,NF,phi,log_dd){
         }
 
         # calc eq for gamma
-        eqList$params$gamma <<- (((E_eq[ ,nE]*nE*qE) / L_eq[ ,1]) - (muL + (nL*qL))) / rowSums(L_eq)
+        eqList$params$gamma <- (((E_eq[ ,nE]*nE*qE) / L_eq[ ,1]) - (muL + (nL*qL))) / rowSums(L_eq)
 
       }
 
     # initial state for all nodes
-    eqList$init <<- matrix(data = cbind(E_eq,L_eq,P_eq,NM_eq,NF), nrow = nNode, ncol = nE+nL+nP+2,
-                           dimnames = list(1:nNode, c(paste0("E",1:nE),paste0("L",1:nL),paste0("P",1:nP),"NM","NF")))
+    eqList$init <- matrix(
+      data = cbind(E_eq,L_eq,P_eq,NM_eq,NF), nrow = nNode, ncol = nE+nL+nP+2,
+      dimnames = list(1:nNode, c(paste0("E",1:nE),paste0("L",1:nL),paste0("P",1:nP),"NM","NF"))
+    )
 
+    return(eqList)
   })
-
-
-  # return list with initial conditions and density-dependent parameters
-  return(eqList)
 }
 
 

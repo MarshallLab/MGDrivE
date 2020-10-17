@@ -42,6 +42,7 @@
 #' is one of: "life", "SIS", or "SEIR". This must match the \code{params} object
 #' supplied.
 #'
+#' Use of this function is demonstrated in many vignettes, \code{browseVignettes(package = "MGDrivE2")}
 #'
 #' @param spn_P the set of places (P) (see details)
 #' @param spn_T the set of transitions (T) (see details)
@@ -57,20 +58,6 @@
 #' state transition in the model, \code{flag} is a boolean indicating exact or approximate
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
-#'
-#' @examples
-#' \dontrun{
-#'   # basic lifecycle example
-#'   # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
-#'   theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-#'                 muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-#'                 beta = 16, nu = 1/(4/24) )
-#'
-#'   # spn_P and spn_T need setup elsewhere, see vignettes
-#'   exHaz <- spn_hazards(spn_P = spn_P, spn_T = spn_T,
-#'                        cube = MGDrivE::cubeMendelian(), params = theta,
-#'                        type = "life")
-#' }
 #'
 #' @export
 spn_hazards <- function(spn_P,spn_T,cube,params,type="life",

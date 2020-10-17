@@ -95,15 +95,3 @@ human infection events.
 
 To save output as .csv files, see \code{\link{sim_trajectory_CSV}}.
 }
-\examples{
-\dontrun{
-  # hazards need setup elsewhere, see vignettes
-  # S is a stoichiometry matrix, built from spn_P and spn_T, see vignettes
-  # x0 are the initial conditions, setup from the equilibrium functions
-
-  simObject <- sim_trajectory_R(x0 = x0, t0 = 0, tt = 100, dt = 1, dt_stoch = 0.1,
-                                num_reps = 5, S = stochMat, hazards = exHaz,
-                                sampler = "tau", verbose = TRUE)
-}
-
-}

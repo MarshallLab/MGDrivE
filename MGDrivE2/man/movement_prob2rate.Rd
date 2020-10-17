@@ -23,13 +23,11 @@ independent), the rate matrix will return 0 in that row, as there is no movement
 rate that can generate that scenario.
 }
 \examples{
-\dontrun{
   # generate random matrix for example
   #  This represents a 3-node landscape, with random movement between nodes
   moveMat <- matrix(data = runif(n = 9), nrow = 3, ncol = 3)
   moveMat <- moveMat/rowSums(moveMat)
 
   moveRate <- movement_prob2rate(tau = moveMat)
-}
 
 }

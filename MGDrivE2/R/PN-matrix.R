@@ -149,13 +149,6 @@ spn_Post <- function(spn_P,spn_T){
 #'
 #' @importFrom Matrix drop0 t
 #'
-#' @examples
-#' \dontrun{
-#'   # spn_P and spn_T need setup elsewhere, see vignettes
-#'
-#'   stochMat <- spn_S(spn_P = spn_P, spn_T = spn_T)
-#' }
-#'
 #' @export
 spn_S <- function(spn_P,spn_T){
 

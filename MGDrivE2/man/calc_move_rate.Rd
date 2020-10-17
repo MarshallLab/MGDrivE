@@ -20,7 +20,6 @@ the daily mortality rate, calculate the movement rate \code{gamma} to get \code{
 The equation comes from integrating the competing risks and solving for \code{gamma}.
 }
 \examples{
-\dontrun{
   # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
   theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
                 muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
@@ -28,6 +27,5 @@ The equation comes from integrating the competing risks and solving for \code{ga
 
   # lets say a 70\% chance to move over the entire lifespan
   rMoveRate <- calc_move_rate(mu = theta$muF, P = 0.70)
-}
 
 }

@@ -207,7 +207,7 @@ We **recommend** setting up a new folder for any simulations. This ensures a cle
 
 ```{r}
 # main output folder
-main_out <- "mgdrive2"
+main_out <- tempdir()
 
 # folders for each stage of analysis
 analysis_out <- c("raw", "traces", "analyzed")
@@ -414,10 +414,10 @@ colnames(fs_stage)
 The plotting utilities provided by **MGDrivE2** do not work on CSV output. Our assumption is that, if one is generating enough data to use the CSV utilities, then there are specific plotting requirements.
 
 
-```{r, echo=FALSE}
+<!-- ```{r, echo=FALSE}
 # Cleanup
 unlink(x = main_out, recursive = TRUE)
-```
+``` -->
 
 
 ### References {#ref}

@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@
       <a href="../articles/lifecycle-node.html">MGDrivE2: One Node Lifecycle Dynamics</a>
     </li>
     <li>
-      <a href="../articles/output_storage.html">MGDrivE2: Data Storage and Analysis</a>
+      <a href="../articles/output-storage.html">MGDrivE2: Data Storage and Analysis</a>
     </li>
   </ul>
 </li>
@@ -91,7 +91,7 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
+      </header><script src="epi-node_files/jquery-1.11.3/jquery.min.js"></script><script src="epi-node_files/elevate-section-attrs-2.0/elevate-section-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>MGDrivE2: One Node Epidemiological Dynamics</h1>
@@ -125,17 +125,17 @@
 <a href="#preface" class="anchor"></a>Preface</h3>
 <p>In this vignette, we show how to set up and run <strong>MGDrivE2</strong> simulations that utilize the <strong>SEI</strong> (Susceptible-Exposed-Infectious) mosquito model of epidemiological dynamics coupled to the <strong>SIS</strong> (Susceptible-Infectious-Susceptible) human model of epidemiological dynamics. The <strong>SEI</strong> mosquito model uses an Erlang-distributed incubation (<strong>E</strong>) period to approximate general non-exponential dwell times in the <strong>E</strong> state. The <strong>SIS</strong> human model on the other hand, is a deliberate simplifying caricature of infection dynamics in the human population; despite this, it is widely used and provides a useful base case due to analytically tractable dynamics as well as a foundation from which more complex models can be built. This vignette shows examples of transmission dynamics interacting with population genetic dynamics in a single well-mixed node.</p>
 <p>We start by loading the <strong>MGDrivE2</strong> package, as well as the <strong>MGDrivE</strong> package for access to inheritance cubes and <strong>ggplot2</strong> for graphical analysis. We will use the basic cube to simulate Mendelian inheritance for this example.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># simulation functions</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE2)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Loading MGDrivE2: Mosquito Gene Drive Explorer Version 2</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># inheritance patterns</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co"># plotting</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># basic inheritance pattern</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">cube &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/MGDrivE/topics/cubeMendelian">cubeMendelian</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># simulation functions</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">#&gt; Loading MGDrivE2: Mosquito Gene Drive Explorer Version 2</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="co"># inheritance patterns</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co"># plotting</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co"># basic inheritance pattern</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>cube &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/MGDrivE/topics/cubeMendelian">cubeMendelian</a></span>()</span></code></pre></div>
 </div>
 </div>
 <div id="pars" class="section level2">
@@ -196,126 +196,126 @@
 </table>
 <p>Please note that <code>f</code> and <code>Q</code> must be specified; this is because future versions of <strong>MGDrivE2</strong> will include additional vector control methods such as IRS (indoor residual spraying) and ITN (insecticide treated nets). In the presence of ITNs/IRS <code>f</code> will vary independently as a function of time depending on intervention coverage.</p>
 <p>Additionally, we specify a total simulation length of 300 days, with output stored daily.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># entomological and epidemiological parameters</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">theta &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="co"># lifecycle parameters</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="dt">qE =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="dt">nE =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="dt">qL =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="dt">nL =</span> <span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">  <span class="dt">qP =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>,</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">  <span class="dt">nP =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">  <span class="dt">muE =</span> <span class="fl">0.05</span>,</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">  <span class="dt">muL =</span> <span class="fl">0.15</span>,</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">  <span class="dt">muP =</span> <span class="fl">0.05</span>,</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">  <span class="dt">muF =</span> <span class="fl">0.09</span>,</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">  <span class="dt">muM =</span> <span class="fl">0.09</span>,</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">  <span class="dt">beta =</span> <span class="dv">16</span>,</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">  <span class="dt">nu =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">24</span>),</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">  <span class="co"># epidemiological parameters</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">  <span class="dt">NH =</span> <span class="dv">1000</span>,</a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">  <span class="dt">X =</span> <span class="fl">0.25</span>,</a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">  <span class="dt">f =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">  <span class="dt">Q =</span> <span class="fl">0.9</span>,</a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">  <span class="dt">b =</span> <span class="fl">0.55</span>,</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23">  <span class="dt">c =</span> <span class="fl">0.15</span>,</a>
-<a class="sourceLine" id="cb2-24" data-line-number="24">  <span class="dt">r =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">200</span>,</a>
-<a class="sourceLine" id="cb2-25" data-line-number="25">  <span class="dt">muH =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">62</span><span class="op">*</span><span class="dv">365</span>),</a>
-<a class="sourceLine" id="cb2-26" data-line-number="26">  <span class="dt">qEIP =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">11</span>,</a>
-<a class="sourceLine" id="cb2-27" data-line-number="27">  <span class="dt">nEIP =</span> <span class="dv">6</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28">)</a>
-<a class="sourceLine" id="cb2-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="co"># simulation parameters</span></a>
-<a class="sourceLine" id="cb2-31" data-line-number="31">tmax &lt;-<span class="st"> </span><span class="dv">250</span></a>
-<a class="sourceLine" id="cb2-32" data-line-number="32">dt &lt;-<span class="st"> </span><span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># entomological and epidemiological parameters</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>theta &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>  <span class="co"># lifecycle parameters</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>  <span class="dt">qE =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">4</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>  <span class="dt">nE =</span> <span class="dv">2</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>  <span class="dt">qL =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>  <span class="dt">nL =</span> <span class="dv">3</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>  <span class="dt">qP =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>  <span class="dt">nP =</span> <span class="dv">2</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>  <span class="dt">muE =</span> <span class="fl">0.05</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>  <span class="dt">muL =</span> <span class="fl">0.15</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>  <span class="dt">muP =</span> <span class="fl">0.05</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>  <span class="dt">muF =</span> <span class="fl">0.09</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>  <span class="dt">muM =</span> <span class="fl">0.09</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>  <span class="dt">beta =</span> <span class="dv">16</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>  <span class="dt">nu =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">24</span>),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>  <span class="co"># epidemiological parameters</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>  <span class="dt">NH =</span> <span class="dv">1000</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>  <span class="dt">X =</span> <span class="fl">0.25</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>  <span class="dt">f =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a>  <span class="dt">Q =</span> <span class="fl">0.9</span>,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a>  <span class="dt">b =</span> <span class="fl">0.55</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>  <span class="dt">c =</span> <span class="fl">0.15</span>,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>  <span class="dt">r =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">200</span>,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a>  <span class="dt">muH =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">62</span><span class="op">*</span><span class="dv">365</span>),</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a>  <span class="dt">qEIP =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">11</span>,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a>  <span class="dt">nEIP =</span> <span class="dv">6</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a><span class="co"># simulation parameters</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a>tmax &lt;-<span class="st"> </span><span class="dv">250</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a>dt &lt;-<span class="st"> </span><span class="dv">1</span></span></code></pre></div>
 <p>We also need to augment the cube with genotype specific transmission efficiencies; this allows simulations of gene drive systems that confer pathogen-refractory characteristics to mosquitoes depending on genotype. The specific parameters we want to attach to the cube are <code>b</code> and <code>c</code>, the mosquito to human and human to mosquito transmission efficiencies. We assume that transmission from human to mosquito is not impacted in modified mosquitoes, but mosquito to human transmission is significantly reduced in modified mosquitoes. For detailed descriptions of these parameters for modelling malaria transmission, see Smith &amp; McKenzie (2004) for extensive discussion.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># augment the cube with RM transmission parameters</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">cube<span class="op">$</span>c &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/setNames">setNames</a></span>(<span class="dt">object =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dt">x =</span> theta<span class="op">$</span>c, <span class="dt">times =</span> cube<span class="op">$</span>genotypesN), <span class="dt">nm =</span> cube<span class="op">$</span>genotypesID)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">cube<span class="op">$</span>b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AA"</span> =<span class="st"> </span>theta<span class="op">$</span>b, <span class="st">"Aa"</span> =<span class="st"> </span><span class="fl">0.35</span>, <span class="st">"aa"</span> =<span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># augment the cube with RM transmission parameters</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>cube<span class="op">$</span>c &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/setNames">setNames</a></span>(<span class="dt">object =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dt">x =</span> theta<span class="op">$</span>c, <span class="dt">times =</span> cube<span class="op">$</span>genotypesN), <span class="dt">nm =</span> cube<span class="op">$</span>genotypesID)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>cube<span class="op">$</span>b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AA"</span> =<span class="st"> </span>theta<span class="op">$</span>b, <span class="st">"Aa"</span> =<span class="st"> </span><span class="fl">0.35</span>, <span class="st">"aa"</span> =<span class="st"> </span><span class="dv">0</span>)</span></code></pre></div>
 </div>
 <div id="init_pn" class="section level2">
 <h2 class="hasAnchor">
 <a href="#init_pn" class="anchor"></a>Initialization of the Petri Net</h2>
 <p>The <strong>SEI-SIS</strong> disease transmission model sits “on top” of the existing <strong>MGDrivE2</strong> structure, using the default aquatic and male “places”, but expanding adult female “places” to follow an Erlang-distributed pathogen incubation period (called the extrinsic incubation period, <strong>EIP</strong>) and adding <strong>SIS</strong> human states as well. Information on how to choose the proper <strong>EIP</strong> distribution can be found in the help file for <code>?makeQ_SEI()</code>.</p>
 <p>The transitions between states is also expanded, providing transitions for females to progress in infection status, adding human dynamics, and allowing interaction between mosquito and human states. All of these additions are handled internally by <code><a href="../reference/spn_T_epiSIS_node.html">spn_T_epiSIS_node()</a></code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Places and transitions</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">SPN_P &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_P_epiSIS_node.html">spn_P_epiSIS_node</a></span>(<span class="dt">params =</span> theta, <span class="dt">cube =</span> cube)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">SPN_T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_T_epiSIS_node.html">spn_T_epiSIS_node</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">params =</span> theta, <span class="dt">cube =</span> cube)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co"># Stoichiometry matrix</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">S &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_S.html">spn_S</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># Places and transitions</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>SPN_P &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_P_epiSIS_node.html">spn_P_epiSIS_node</a></span>(<span class="dt">params =</span> theta, <span class="dt">cube =</span> cube)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>SPN_T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_T_epiSIS_node.html">spn_T_epiSIS_node</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">params =</span> theta, <span class="dt">cube =</span> cube)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co"># Stoichiometry matrix</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>S &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_S.html">spn_S</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T)</span></code></pre></div>
 </div>
 <div id="equilibria_haz" class="section level2">
 <h2 class="hasAnchor">
 <a href="#equilibria_haz" class="anchor"></a>Equilibrium Conditions and Hazard Functions</h2>
 <p>Now that we have set up the structural properties of the Petri Net, we need to calculate the population distribution at equilibrium and define the initial conditions for the simulation.</p>
 <p>The function <code><a href="../reference/equilibrium_SEI_SIS.html">equilibrium_SEI_SIS()</a></code> calculates the equilibrium distribution of female mosquitoes across <strong>SEI</strong> stages, based on human populations and force-of-infection, then calculates all other equilibria. We set the logistic form for larval density-dependence in these examples by specify <code>log_dd = TRUE</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># SEI mosquitoes and SIS humans equilibrium</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#  outputs required parameters in the named list "params"</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#  outputs initial equilibrium for adv users, "init</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#  outputs properly filled initial markings, "M0"</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">initialCons &lt;-<span class="st"> </span><span class="kw"><a href="../reference/equilibrium_SEI_SIS.html">equilibrium_SEI_SIS</a></span>(<span class="dt">params =</span> theta, <span class="dt">phi =</span> <span class="fl">0.5</span>, <span class="dt">log_dd =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">                                   <span class="dt">spn_P =</span> SPN_P, <span class="dt">cube =</span> cube)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># SEI mosquitoes and SIS humans equilibrium</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co">#  outputs required parameters in the named list "params"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="co">#  outputs initial equilibrium for adv users, "init</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="co">#  outputs properly filled initial markings, "M0"</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>initialCons &lt;-<span class="st"> </span><span class="kw"><a href="../reference/equilibrium_SEI_SIS.html">equilibrium_SEI_SIS</a></span>(<span class="dt">params =</span> theta, <span class="dt">phi =</span> <span class="fl">0.5</span>, <span class="dt">log_dd =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>                                   <span class="dt">spn_P =</span> SPN_P, <span class="dt">cube =</span> cube)</span></code></pre></div>
 <p>With the equilibrium conditions calculated (see <code>?equilibrium_SEI_SIS()</code>), and the list of possible transitions provided by <code><a href="../reference/spn_T_epiSIS_node.html">spn_T_epiSIS_node()</a></code>, we can now calculate the rates of those transitions between states.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># approximate hazards for continous approximation</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">approx_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">                              <span class="dt">params =</span> initialCons<span class="op">$</span>params, <span class="dt">type =</span> <span class="st">"SIS"</span>,</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">                              <span class="dt">log_dd =</span> <span class="ot">TRUE</span>, <span class="dt">exact =</span> <span class="ot">FALSE</span>, <span class="dt">tol =</span> <span class="fl">1e-8</span>,</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">                              <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co"># approximate hazards for continous approximation</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>approx_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>                              <span class="dt">params =</span> initialCons<span class="op">$</span>params, <span class="dt">type =</span> <span class="st">"SIS"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>                              <span class="dt">log_dd =</span> <span class="ot">TRUE</span>, <span class="dt">exact =</span> <span class="ot">FALSE</span>, <span class="dt">tol =</span> <span class="fl">1e-8</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>                              <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="sim" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sim" class="anchor"></a>Simulation of Fully Specified SPN Model</h2>
 <p>Similar to previous simulations, we will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, but starting at day 20. Remember, it is critically important that <strong>the event names match a place name</strong> in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in <strong>MGDrivE2</strong> for consistency with solvers in <code>deSolve</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># releases</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">20</span>, <span class="dt">length.out =</span> <span class="dv">5</span>, <span class="dt">by =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">r_size &lt;-<span class="st"> </span><span class="dv">50</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">events &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"var"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"F_"</span>, cube<span class="op">$</span>releaseType, <span class="st">"_"</span>, cube<span class="op">$</span>wildType, <span class="st">"_S"</span>),</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">                     <span class="st">"time"</span> =<span class="st"> </span>r_times,</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">                     <span class="st">"value"</span> =<span class="st"> </span>r_size,</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">                     <span class="st">"method"</span> =<span class="st"> "add"</span>,</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8">                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># releases</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">20</span>, <span class="dt">length.out =</span> <span class="dv">5</span>, <span class="dt">by =</span> <span class="dv">10</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>r_size &lt;-<span class="st"> </span><span class="dv">50</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>events &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"var"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"F_"</span>, cube<span class="op">$</span>releaseType, <span class="st">"_"</span>, cube<span class="op">$</span>wildType, <span class="st">"_S"</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>                     <span class="st">"time"</span> =<span class="st"> </span>r_times,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>                     <span class="st">"value"</span> =<span class="st"> </span>r_size,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>                     <span class="st">"method"</span> =<span class="st"> "add"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <div id="soln_ode" class="section level3">
 <h3 class="hasAnchor">
 <a href="#soln_ode" class="anchor"></a>Deterministic: ODE Solutions</h3>
 <p>As in the <a href="lifecycle-node.html">“MGDrivE2: One Node Lifecycle Dynamics”</a> vignette, we will first numerically simulate the mean-field ODE approximation to the stochastic trajectory, using the approximate hazards suitable for continuous-state approximation (see <code>?spn_hazards()</code>). Internally, <strong>MGDrivE2</strong> uses the high quality numerical solvers in from <code>deSolve</code> to integrate a mean-field approximation to the stochastic model. We also plot the adult mosquito and human dynamics to see the impact on disease incidence in humans as our released allele spreads through the mosquitoes.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># run deterministic simulation</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">ODE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt, <span class="dt">S =</span> S,</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">                            <span class="dt">hazards =</span> approx_hazards, <span class="dt">sampler =</span> <span class="st">"ode"</span>, <span class="dt">method =</span> <span class="st">"lsoda"</span>,</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">                            <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># summarize females/males by genotype</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">ODE_female &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females_epi.html">summarize_females_epi</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8">ODE_male &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state)</a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co"># add sex for plotting</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11">ODE_female<span class="op">$</span>sex &lt;-<span class="st"> "Female"</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12">ODE_male<span class="op">$</span>sex &lt;-<span class="st"> "Male"</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13">ODE_male<span class="op">$</span>inf &lt;-<span class="st"> "S"</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co"># plot</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(ODE_female, ODE_male)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(inf <span class="op">~</span><span class="st"> </span>sex, <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE solution - Mosquitoes"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co"># run deterministic simulation</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>ODE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt, <span class="dt">S =</span> S,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>                            <span class="dt">hazards =</span> approx_hazards, <span class="dt">sampler =</span> <span class="st">"ode"</span>, <span class="dt">method =</span> <span class="st">"lsoda"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>                            <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co"># summarize females/males by genotype</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>ODE_female &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females_epi.html">summarize_females_epi</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>ODE_male &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="co"># add sex for plotting</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>ODE_female<span class="op">$</span>sex &lt;-<span class="st"> "Female"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>ODE_male<span class="op">$</span>sex &lt;-<span class="st"> "Male"</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a>ODE_male<span class="op">$</span>inf &lt;-<span class="st"> "S"</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a><span class="co"># plot</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(ODE_female, ODE_male)) <span class="op">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(inf <span class="op">~</span><span class="st"> </span>sex, <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE solution - Mosquitoes"</span>)</span></code></pre></div>
 <p><img src="epi-node_files/figure-html/unnamed-chunk-9-1.png" width="691.2"></p>
 <p>The most obvious point of these plots is that males never exhibit latent or infectious stages. As males do not bite humans, and vertical transmission of most diseases is exceedingly rare or unknown, male mosquitoes do not participate in epidemiological dynamics. Looking at the females, we see our releases, starting at day 50, in the susceptible compartment. Notice that it takes a very low proportion of latent/infected female mosquitoes to contribute to disease incidence in humans. However, it is clear that disease incidence is reduced after releases of modified, and thus non-transmitting, mosquitoes.</p>
 <p>Further, we can observe the disease dynamics in female mosquitoes and compare that to what is happening in the human population.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># summarize females/humans by genotype</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">ODE_female &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females_epi.html">summarize_females_epi</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">ODE_humans &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_humans_epiSIS.html">summarize_humans_epiSIS</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state)</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co"># add species for plotting</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">ODE_female<span class="op">$</span>species &lt;-<span class="st"> "Mosquitoes"</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">ODE_humans<span class="op">$</span>species &lt;-<span class="st"> "Humans"</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co"># plot</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(ODE_female,ODE_humans) ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype, <span class="dt">linetype =</span> inf)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(. <span class="op">~</span><span class="st"> </span>species, <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE solution"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co"># summarize females/humans by genotype</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>ODE_female &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females_epi.html">summarize_females_epi</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>ODE_humans &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_humans_epiSIS.html">summarize_humans_epiSIS</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="co"># add species for plotting</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>ODE_female<span class="op">$</span>species &lt;-<span class="st"> "Mosquitoes"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>ODE_humans<span class="op">$</span>species &lt;-<span class="st"> "Humans"</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="co"># plot</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(ODE_female,ODE_humans) ) <span class="op">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype, <span class="dt">linetype =</span> inf)) <span class="op">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(. <span class="op">~</span><span class="st"> </span>species, <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE solution"</span>)</span></code></pre></div>
 <p><img src="epi-node_files/figure-html/unnamed-chunk-10-1.png" width="691.2"></p>
 <p>We see the initial equilibrium of <strong>SEI</strong> mosquitoes and <strong>SIS</strong> humans. Then, as releases are performed, we see disease incidence fall quickly in mosquitoes and that slowly impact incidence in humans.</p>
 </div>
@@ -323,24 +323,24 @@
 <h3 class="hasAnchor">
 <a href="#soln_cle" class="anchor"></a>Stochastic: Chemical Langevin Equation Solutions</h3>
 <p>As a further example, we run a single stochastic realization of the same simulation, using the <code>cle</code> sampler with <span class="math inline">\(\Delta t = 0.1\)</span>, approximating 10 jumps per day. As the adult male mosquitoes do not contribute to infection dynamics, we will only view the adult female mosquito and human dynamics here.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># delta t</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">dt_stoch &lt;-<span class="st"> </span><span class="fl">0.1</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co"># run CLE simulation</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">CLE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt,</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">                            <span class="dt">dt_stoch =</span> dt_stoch, <span class="dt">S =</span> S, <span class="dt">hazards =</span> approx_hazards,</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">                            <span class="dt">sampler =</span> <span class="st">"cle"</span>, <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co"># summarize females/humans by genotype</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10">CLE_female &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females_epi.html">summarize_females_epi</a></span>(<span class="dt">out =</span> CLE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</a>
-<a class="sourceLine" id="cb10-11" data-line-number="11">CLE_humans &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_humans_epiSIS.html">summarize_humans_epiSIS</a></span>(<span class="dt">out =</span> CLE_out<span class="op">$</span>state)</a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co"># plot</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(CLE_female,CLE_humans) ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> inf)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>genotype, <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: CLE Approximation"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co"># delta t</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>dt_stoch &lt;-<span class="st"> </span><span class="fl">0.1</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="co"># run CLE simulation</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>CLE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>                            <span class="dt">dt_stoch =</span> dt_stoch, <span class="dt">S =</span> S, <span class="dt">hazards =</span> approx_hazards,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>                            <span class="dt">sampler =</span> <span class="st">"cle"</span>, <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a><span class="co"># summarize females/humans by genotype</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>CLE_female &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females_epi.html">summarize_females_epi</a></span>(<span class="dt">out =</span> CLE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>CLE_humans &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_humans_epiSIS.html">summarize_humans_epiSIS</a></span>(<span class="dt">out =</span> CLE_out<span class="op">$</span>state)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true"></a><span class="co"># plot</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(CLE_female,CLE_humans) ) <span class="op">+</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> inf)) <span class="op">+</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>genotype, <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: CLE Approximation"</span>)</span></code></pre></div>
 <p><img src="epi-node_files/figure-html/unnamed-chunk-11-1.png" width="691.2"></p>
 <p>Analyzing one stochastic realization of this system, we see some similarities and some striking differences. The releases are clearly visible, lower left-hand plot, and we see that the initial dynamics are similar to the ODE dynamics. However, it is quickly apparent that the releases are not reducing transmission adequately, that in fact, disease incidence is increasing rapidly in human and female mosquitoes. There are two main possibilities for this: first, that the stochastic simulation just happens to drift like this, a visual reminder that there can be significant differences when the well-mixed, mean-field assumptions are relaxed, or that the step size (<span class="math inline">\(\Delta t\)</span>) is too large, and the stochastic simulation is a poor approximation of the ODE solution. Further tests, with <span class="math inline">\(\Delta t = 0.05\)</span> and <span class="math inline">\(\Delta t = 0.15\)</span>, returned similar results, indicating that this is an accurate approximation but still highlighting the importance of testing several values of <span class="math inline">\(\Delta t\)</span> for consistency.</p>
 </div>

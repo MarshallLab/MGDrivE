@@ -24,23 +24,14 @@
 #' \code{nL}, \code{nP}, and \code{nEIP} parameters to be specified. For more details, see
 #' \code{\link{equilibrium_SEI_SEIR}}
 #'
+#' For examples of using this function, see:
+#' \code{vignette("seir-dynamics", package = "MGDrivE2")}
+#'
 #' @param params a named list of parameters (see details)
 #' @param cube an inheritance cube from the \code{MGDrivE} package (e.g. \code{\link[MGDrivE]{cubeMendelian}})
 #'
 #' @return a list with two elements: \code{ix} contains labeled indices of the
 #' places by life stage, \code{u} is the character vector of places (P)
-#'
-#' @examples
-#' \dontrun{
-#'   # parameters, see vignette MGDrivE2 SEIR Epidemiological Dynamics
-#'   theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-#'                 muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-#'                 beta = 16, nu = 1/(4/24), NH = 250, X = c(1,0,0,0), NFX = 500,
-#'                 f = 1/3, Q = 0.9, b = 0.55, c = 0.15, delta = 1/5, r = 1/14,
-#'                 muH = 1/(62*365), qEIP = 1/11, nEIP = 3 )
-#'
-#'   spn_P <- spn_P_epiSEIR_node(params = theta, cube = MGDrivE::cubeMendelian() )
-#' }
 #'
 #' @export
 spn_P_epiSEIR_node <- function(params,cube){

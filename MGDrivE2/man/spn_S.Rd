@@ -28,11 +28,3 @@ The set of transitions (\code{spn_T}) is generated from one of the following:
 \code{\link{spn_T_epiSIS_node}}, \code{\link{spn_T_epiSIS_network}},
 \code{\link{spn_T_epiSEIR_node}}, \code{\link{spn_T_epiSEIR_network}}.
 }
-\examples{
-\dontrun{
-  # spn_P and spn_T need setup elsewhere, see vignettes
-
-  stochMat <- spn_S(spn_P = spn_P, spn_T = spn_T)
-}
-
-}

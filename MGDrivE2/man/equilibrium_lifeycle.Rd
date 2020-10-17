@@ -95,18 +95,3 @@ not required further in the simulations.
 For equilibrium with epidemiological parameters, see \code{\link{equilibrium_SEI_SIS}}.
 For equilibrium with latent humans (SEIR dynamics), see \code{\link{equilibrium_SEI_SEIR}}.
 }
-\examples{
-\dontrun{
-  # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
-  theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-                muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-                beta = 16, nu = 1/(4/24) )
-
-  # spn_P needs to be setup elsewhere, see vignettes
-
-  eqLife <- equilibrium_lifeycle(params = theta, NF = 500, phi = 0.5,
-                                 log_dd = TRUE, spn_P = spn_P,
-                                 cube = MGDrivE::cubeMendelian() )
-}
-
-}

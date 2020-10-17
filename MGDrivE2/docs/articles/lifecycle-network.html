@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@
       <a href="../articles/lifecycle-node.html">MGDrivE2: One Node Lifecycle Dynamics</a>
     </li>
     <li>
-      <a href="../articles/output_storage.html">MGDrivE2: Data Storage and Analysis</a>
+      <a href="../articles/output-storage.html">MGDrivE2: Data Storage and Analysis</a>
     </li>
   </ul>
 </li>
@@ -91,7 +91,7 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
+      </header><script src="lifecycle-network_files/jquery-1.11.3/jquery.min.js"></script><script src="lifecycle-network_files/elevate-section-attrs-2.0/elevate-section-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>MGDrivE2: Metapopulation Network Lifecycle Dynamics</h1>
@@ -124,45 +124,45 @@
 <a href="#preface" class="anchor"></a>Preface</h3>
 <p>This vignette describes how to use the facilities provided by <strong>MGDrivE2</strong> to run simulations of gene drive dynamics on metapopulation networks; a network of mosquito breeding sites where edges represent the directed per-capita rate of migration between nodes. The movement rates are allowed to be asymmetric and to differ between male and female mosquitoes.</p>
 <p>We start by loading the <strong>MGDrivE2</strong> package, as well as the <strong>MGDrivE</strong> package for access to inheritance cubes, <strong>ggplot2</strong> for graphical analysis, and <strong>Matrix</strong> for sparse matrices used in migration. We will use the basic cube to simulate Mendelian inheritance for this example.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># simulation functions</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE2)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Loading MGDrivE2: Mosquito Gene Drive Explorer Version 2</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># inheritance patterns</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co"># plotting</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co"># sparse migration</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(Matrix)</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co"># basic inheritance pattern</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">cube &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/MGDrivE/topics/cubeMendelian">cubeMendelian</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># simulation functions</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">#&gt; Loading MGDrivE2: Mosquito Gene Drive Explorer Version 2</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="co"># inheritance patterns</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co"># plotting</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co"># sparse migration</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(Matrix)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co"># basic inheritance pattern</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>cube &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/MGDrivE/topics/cubeMendelian">cubeMendelian</a></span>()</span></code></pre></div>
 </div>
 </div>
 <div id="pars" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pars" class="anchor"></a>Parameterization</h2>
 <p>We specify biological parameter values and equilibrium population sizes. We will use the same parameter values as in the vignette <a href="lifecycle-node.html">“MGDrivE2: One Node Lifecycle Dynamics”</a>, additionally specifying the total simulation time (<code>tmax</code>) and the timestep to save output (<code>dt</code>).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># entomological parameters</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">theta &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="dt">qE =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="dt">nE =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="dt">qL =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="dt">nL =</span> <span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="dt">qP =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>,</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">  <span class="dt">nP =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">  <span class="dt">muE =</span> <span class="fl">0.05</span>,</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">  <span class="dt">muL =</span> <span class="fl">0.15</span>,</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">  <span class="dt">muP =</span> <span class="fl">0.05</span>,</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">  <span class="dt">muF =</span> <span class="fl">0.09</span>,</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">  <span class="dt">muM =</span> <span class="fl">0.09</span>,</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">  <span class="dt">beta =</span> <span class="dv">16</span>,</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">  <span class="dt">nu =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">24</span>)</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">)</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co"># simulation parameters</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">tmax &lt;-<span class="st"> </span><span class="dv">125</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">dt &lt;-<span class="st"> </span><span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># entomological parameters</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>theta &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>  <span class="dt">qE =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">4</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>  <span class="dt">nE =</span> <span class="dv">2</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>  <span class="dt">qL =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>  <span class="dt">nL =</span> <span class="dv">3</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>  <span class="dt">qP =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>  <span class="dt">nP =</span> <span class="dv">2</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>  <span class="dt">muE =</span> <span class="fl">0.05</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>  <span class="dt">muL =</span> <span class="fl">0.15</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>  <span class="dt">muP =</span> <span class="fl">0.05</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>  <span class="dt">muF =</span> <span class="fl">0.09</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>  <span class="dt">muM =</span> <span class="fl">0.09</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>  <span class="dt">beta =</span> <span class="dv">16</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>  <span class="dt">nu =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">24</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co"># simulation parameters</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>tmax &lt;-<span class="st"> </span><span class="dv">125</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>dt &lt;-<span class="st"> </span><span class="dv">1</span></span></code></pre></div>
 </div>
 <div id="init_pn" class="section level2">
 <h2 class="hasAnchor">
@@ -171,97 +171,97 @@
 <p>Next, we can setup all of the places in the model, provided the entomological parameters above, the inheritance pattern, and the size of the network.</p>
 <p>Then, we create all of the possible transitions between states, given the places in the model and the network adjacency matrix.</p>
 <p>Finally, as not all transitions apply to all “places”, we create a summary of possible transitions to and from each “place”. This is handled by the <code><a href="../reference/spn_S.html">spn_S()</a></code> function.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># adjacency matrix</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#  specify where individuals can migrate</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">adj &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/Matrix/topics/sparseMatrix">sparseMatrix</a></span>(<span class="dt">i =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">j =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">n &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(adj)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co"># Places and transitions</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">SPN_P &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_P_lifecycle_network.html">spn_P_lifecycle_network</a></span>(<span class="dt">num_nodes =</span> n, <span class="dt">params =</span> theta,<span class="dt">cube =</span> cube)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">SPN_T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_T_lifecycle_network.html">spn_T_lifecycle_network</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">params =</span> theta,<span class="dt">cube =</span> cube,<span class="dt">m_move =</span> adj)</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co"># Stoichiometry matrix</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">S &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_S.html">spn_S</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># adjacency matrix</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">#  specify where individuals can migrate</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>adj &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/Matrix/topics/sparseMatrix">sparseMatrix</a></span>(<span class="dt">i =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">j =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(adj)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co"># Places and transitions</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>SPN_P &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_P_lifecycle_network.html">spn_P_lifecycle_network</a></span>(<span class="dt">num_nodes =</span> n, <span class="dt">params =</span> theta,<span class="dt">cube =</span> cube)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>SPN_T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_T_lifecycle_network.html">spn_T_lifecycle_network</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">params =</span> theta,<span class="dt">cube =</span> cube,<span class="dt">m_move =</span> adj)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="co"># Stoichiometry matrix</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>S &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_S.html">spn_S</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T)</span></code></pre></div>
 </div>
 <div id="equilibria_haz" class="section level2">
 <h2 class="hasAnchor">
 <a href="#equilibria_haz" class="anchor"></a>Equilibrium Conditions and Hazard Functions</h2>
 <p>Now that the structural properties of the SPN model have been set up, we will calculate equilibrium population sizes, <code>M0</code>. We will use the same parameter values as in the vignette <a href="lifecycle-node.html">“MGDrivE2 One Node Lifecycle Dynamics”</a>. Note that when setting <code>M0</code> we only set the wild-type populations; the equilibrium calculations assume a wildtype population in equilibrium at <span class="math inline">\(t=0\)</span>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># now that we have a network size, set adult females in each node</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">NF &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dt">x =</span> <span class="dv">500</span>, <span class="dt">times =</span> n)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># calculate equilibrium and setup initial conditions</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#  outputs required parameters in the named list "params"</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#  outputs intial equilibrium for adv users, "init</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#  outputs properly filled initial markings, "M0"</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">initialCons &lt;-<span class="st"> </span><span class="kw"><a href="../reference/equilibrium_lifeycle.html">equilibrium_lifeycle</a></span>(<span class="dt">params =</span> theta, <span class="dt">NF =</span> NF, <span class="dt">phi =</span> <span class="fl">0.5</span>,</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">                                    <span class="dt">log_dd =</span> <span class="ot">TRUE</span>, <span class="dt">spn_P =</span> SPN_P, <span class="dt">cube =</span> cube)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># now that we have a network size, set adult females in each node</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>NF &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dt">x =</span> <span class="dv">500</span>, <span class="dt">times =</span> n)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co"># calculate equilibrium and setup initial conditions</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co">#  outputs required parameters in the named list "params"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">#  outputs intial equilibrium for adv users, "init</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="co">#  outputs properly filled initial markings, "M0"</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>initialCons &lt;-<span class="st"> </span><span class="kw"><a href="../reference/equilibrium_lifeycle.html">equilibrium_lifeycle</a></span>(<span class="dt">params =</span> theta, <span class="dt">NF =</span> NF, <span class="dt">phi =</span> <span class="fl">0.5</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>                                    <span class="dt">log_dd =</span> <span class="ot">TRUE</span>, <span class="dt">spn_P =</span> SPN_P, <span class="dt">cube =</span> cube)</span></code></pre></div>
 <p>Before making the hazard functions and finishing the SPN, we need to calculate movement rates (because in <strong>MGDrivE2</strong>, the movement matrix is a matrix of per-capita movement <em>rates</em> rather than probabilities; matrix exponentiation would give corresponding probabilities over a time interval). We use the helper function <code><a href="../reference/calc_move_rate.html">calc_move_rate()</a></code>, which calculates total per-capita rate of movement out of a node based on mortality rate and the probability to leave that node before dying.</p>
 <p>The vector <code>move_rates</code> is the total rate at which a mosquito leaves a node, and the <code>sparseMatrix</code> object <code>move_probs</code> is the conditional probability of where it goes, given it has chosen to leave; we make movement uniform (although it won’t matter in the 2-node case, leaving node 1 means they will always go to node 2). Finally, we attach these objects to the list of parameters <code>initialCons$params</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># calculate movement rates and movement probabilities</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">gam &lt;-<span class="st"> </span><span class="kw"><a href="../reference/calc_move_rate.html">calc_move_rate</a></span>(<span class="dt">mu =</span> theta<span class="op">$</span>muF, <span class="dt">P =</span> <span class="fl">0.05</span>)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">move_rates &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dt">x =</span> gam, <span class="dt">times =</span> n)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">move_probs &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/Matrix/topics/sparseMatrix">sparseMatrix</a></span>(<span class="dt">i =</span> {}, <span class="dt">j =</span> {},<span class="dt">x =</span> 0L,<span class="dt">dims =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(adj))</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co"># uniform movement probabilities</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">rowprobs &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/Matrix/topics/colSums">rowSums</a></span>(adj)</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(move_probs)){</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">  cols &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw">which</span>(adj[i,])</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">  move_probs[i,cols] &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(rowprobs[i],<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(cols))</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">}</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co"># put rates and probs into the parameter list</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">initialCons<span class="op">$</span>params<span class="op">$</span>mosquito_move_rates &lt;-<span class="st"> </span>move_rates</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">initialCons<span class="op">$</span>params<span class="op">$</span>mosquito_move_probs &lt;-<span class="st"> </span>move_probs</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># calculate movement rates and movement probabilities</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>gam &lt;-<span class="st"> </span><span class="kw"><a href="../reference/calc_move_rate.html">calc_move_rate</a></span>(<span class="dt">mu =</span> theta<span class="op">$</span>muF, <span class="dt">P =</span> <span class="fl">0.05</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>move_rates &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dt">x =</span> gam, <span class="dt">times =</span> n)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>move_probs &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/Matrix/topics/sparseMatrix">sparseMatrix</a></span>(<span class="dt">i =</span> {}, <span class="dt">j =</span> {},<span class="dt">x =</span> 0L,<span class="dt">dims =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dim">dim</a></span>(adj))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="co"># uniform movement probabilities</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>rowprobs &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/Matrix/topics/colSums">rowSums</a></span>(adj)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(move_probs)){</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>  cols &lt;-<span class="st"> </span>Matrix<span class="op">::</span><span class="kw">which</span>(adj[i,])</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>  move_probs[i,cols] &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(rowprobs[i],<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(cols))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>}</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a><span class="co"># put rates and probs into the parameter list</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>initialCons<span class="op">$</span>params<span class="op">$</span>mosquito_move_rates &lt;-<span class="st"> </span>move_rates</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>initialCons<span class="op">$</span>params<span class="op">$</span>mosquito_move_probs &lt;-<span class="st"> </span>move_probs</span></code></pre></div>
 <p>Now that all the necessary parameters have been added to the named list <code>initialCons$params</code>, we can generate the hazard functions. By specifying <code>log_dd = TRUE</code>, we use logistic density dependence for these simulations.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># approximate hazards for continous approximation</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">approx_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">                              <span class="dt">params =</span> initialCons<span class="op">$</span>params, <span class="dt">type =</span> <span class="st">"life"</span>,</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">                              <span class="dt">log_dd =</span> <span class="ot">TRUE</span>, <span class="dt">exact =</span> <span class="ot">FALSE</span>, <span class="dt">tol =</span> <span class="fl">1e-6</span>,</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">                              <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co"># exact hazards for integer-valued state space</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">exact_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">                             <span class="dt">params =</span> initialCons<span class="op">$</span>params, <span class="dt">type =</span> <span class="st">"life"</span>,</a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">                             <span class="dt">log_dd =</span> <span class="ot">TRUE</span>, <span class="dt">exact =</span> <span class="ot">TRUE</span>, <span class="dt">tol =</span> <span class="ot">NaN</span>,</a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">                             <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co"># approximate hazards for continous approximation</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>approx_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>                              <span class="dt">params =</span> initialCons<span class="op">$</span>params, <span class="dt">type =</span> <span class="st">"life"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>                              <span class="dt">log_dd =</span> <span class="ot">TRUE</span>, <span class="dt">exact =</span> <span class="ot">FALSE</span>, <span class="dt">tol =</span> <span class="fl">1e-6</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>                              <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="co"># exact hazards for integer-valued state space</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>exact_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>                             <span class="dt">params =</span> initialCons<span class="op">$</span>params, <span class="dt">type =</span> <span class="st">"life"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>                             <span class="dt">log_dd =</span> <span class="ot">TRUE</span>, <span class="dt">exact =</span> <span class="ot">TRUE</span>, <span class="dt">tol =</span> <span class="ot">NaN</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>                             <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="sim" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sim" class="anchor"></a>Simulation of Fully Specified SPN Model</h2>
 <p>Now that the structural elements of the Petri Net have been built, and we have a vector of hazard functions, we can simulate dynamics on the network. First, we will make a <code>data.frame</code> to hold information about the releases; We will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, starting at day 20, and only in node 1. It is critically important that <strong>the event names match a place name</strong> in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in <strong>MGDrivE2</strong> for consistency with solvers in <code>deSolve</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># releases</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">20</span>, <span class="dt">length.out =</span> <span class="dv">5</span>, <span class="dt">by =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">r_size &lt;-<span class="st"> </span><span class="dv">50</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">events &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"var"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"F_"</span>, cube<span class="op">$</span>releaseType, <span class="st">"_"</span>, cube<span class="op">$</span>wildType, <span class="st">"_1"</span>),</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">                     <span class="st">"time"</span> =<span class="st"> </span>r_times,</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">                     <span class="st">"value"</span> =<span class="st"> </span>r_size,</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">                     <span class="st">"method"</span> =<span class="st"> "add"</span>,</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8">                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># releases</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">20</span>, <span class="dt">length.out =</span> <span class="dv">5</span>, <span class="dt">by =</span> <span class="dv">10</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>r_size &lt;-<span class="st"> </span><span class="dv">50</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>events &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"var"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"F_"</span>, cube<span class="op">$</span>releaseType, <span class="st">"_"</span>, cube<span class="op">$</span>wildType, <span class="st">"_1"</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>                     <span class="st">"time"</span> =<span class="st"> </span>r_times,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>                     <span class="st">"value"</span> =<span class="st"> </span>r_size,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>                     <span class="st">"method"</span> =<span class="st"> "add"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <div id="soln_ode" class="section level3">
 <h3 class="hasAnchor">
 <a href="#soln_ode" class="anchor"></a>Deterministic: ODE Solutions</h3>
 <p>First we run a mean-field approximation of the stochastic model. Internally, <strong>MGDrivE2</strong> uses the high quality numerical solvers in <code>deSolve</code> to integrate a mean-field approximation to the stochastic model. We also plot the adult dynamics for both nodes so we can see how the releases spread through the network.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># run deterministic simulation</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">ODE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt, <span class="dt">S =</span> S,</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">                            <span class="dt">hazards =</span> approx_hazards, <span class="dt">sampler =</span> <span class="st">"ode"</span>, <span class="dt">method =</span> <span class="st">"lsoda"</span>,</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">                            <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># summarize females/males by genotype</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">ODE_female &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8">ODE_male &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state)</a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co"># add sex for plotting</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11">ODE_female<span class="op">$</span>sex &lt;-<span class="st"> "Female"</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12">ODE_male<span class="op">$</span>sex &lt;-<span class="st"> "Male"</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co"># plot</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(ODE_female, ODE_male)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(node <span class="op">~</span><span class="st"> </span>sex, <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE solution"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co"># run deterministic simulation</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>ODE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt, <span class="dt">S =</span> S,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>                            <span class="dt">hazards =</span> approx_hazards, <span class="dt">sampler =</span> <span class="st">"ode"</span>, <span class="dt">method =</span> <span class="st">"lsoda"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>                            <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co"># summarize females/males by genotype</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>ODE_female &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>ODE_male &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="co"># add sex for plotting</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>ODE_female<span class="op">$</span>sex &lt;-<span class="st"> "Female"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>ODE_male<span class="op">$</span>sex &lt;-<span class="st"> "Male"</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="co"># plot</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(ODE_female, ODE_male)) <span class="op">+</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(node <span class="op">~</span><span class="st"> </span>sex, <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE solution"</span>)</span></code></pre></div>
 <p><img src="lifecycle-network_files/figure-html/unnamed-chunk-9-1.png" width="691.2"></p>
 <p>From the plots, we see the initial equilibria in both patches is 500 individuals, the same for each sex, as specified above. We see the releases in node 1 females, and how they quickly spread into the population, becoming evenly spread between females and males. In node 2, we see a much slower introgression of <code>a</code> alleles, all as heterozygous <code>Aa</code>, due to the very low migration rate between nodes. If run long enough, we would eventually see all genotype frequencies reach their equilibrium values in both nodes.</p>
 </div>
@@ -269,28 +269,28 @@
 <h3 class="hasAnchor">
 <a href="#soln_tau" class="anchor"></a>Stochastic: Tau-leaping Solutions</h3>
 <p>As a further example, we run a single stochastic realization of the same network, using a tau-leaping method with <span class="math inline">\(\Delta t = 0.1\)</span>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># delta t</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">dt_stoch &lt;-<span class="st"> </span><span class="fl">0.1</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co"># tau leaping simulation</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">PTS_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt,</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">                            <span class="dt">dt_stoch =</span> dt_stoch, <span class="dt">S =</span> S, <span class="dt">hazards =</span> exact_hazards,</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">                            <span class="dt">sampler =</span> <span class="st">"tau"</span>, <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co"># summarize females/males by genotype</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10">PTS_female &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> PTS_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">PTS_male &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> PTS_out<span class="op">$</span>state)</a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co"># add sex for plotting</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14">PTS_female<span class="op">$</span>sex &lt;-<span class="st"> "Female"</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15">PTS_male<span class="op">$</span>sex &lt;-<span class="st"> "Male"</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co"># plot</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(PTS_female, PTS_male)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(node <span class="op">~</span><span class="st"> </span>sex, <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: Tau-leaping Approximation"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co"># delta t</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>dt_stoch &lt;-<span class="st"> </span><span class="fl">0.1</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="co"># tau leaping simulation</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>PTS_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>                            <span class="dt">dt_stoch =</span> dt_stoch, <span class="dt">S =</span> S, <span class="dt">hazards =</span> exact_hazards,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>                            <span class="dt">sampler =</span> <span class="st">"tau"</span>, <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="co"># summarize females/males by genotype</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>PTS_female &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> PTS_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>PTS_male &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> PTS_out<span class="op">$</span>state)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a><span class="co"># add sex for plotting</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>PTS_female<span class="op">$</span>sex &lt;-<span class="st"> "Female"</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>PTS_male<span class="op">$</span>sex &lt;-<span class="st"> "Male"</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a><span class="co"># plot</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(PTS_female, PTS_male)) <span class="op">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(node <span class="op">~</span><span class="st"> </span>sex, <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: Tau-leaping Approximation"</span>)</span></code></pre></div>
 <p><img src="lifecycle-network_files/figure-html/unnamed-chunk-10-1.png" width="691.2"></p>
 <p>We see a heuristically similar figure as above. This is only 1 stochastic realization, but it closely follows the dynamics from the ODE solver, indicating that a time-step of 0.1 provides and accurate simulation at this level.</p>
 </div>

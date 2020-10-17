@@ -21,24 +21,15 @@
 #' \code{nL}, and \code{nP} parameters to be specified. For more details, see
 #' \code{\link{equilibrium_lifeycle}}
 #'
+#' For examples of using this function, see:
+#' \code{vignette("lifecycle-network", package = "MGDrivE2")}
+#'
 #' @param num_nodes number of nodes in the network
 #' @param params a named list of parameters (see details)
 #' @param cube an inheritance cube from the \code{MGDrivE} package (e.g. \code{\link[MGDrivE]{cubeMendelian}})
 #'
 #' @return a list with two elements: \code{ix} contains labeled indices of the
 #' places by life stage and node_id, \code{u} is the character vector of places (P)
-#'
-#' @examples
-#' \dontrun{
-#'   # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
-#'   theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-#'                 muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-#'                 beta = 16, nu = 1/(4/24) )
-#'
-#'   # setup a 2-node network
-#'   spn_P <- spn_P_lifecycle_network(num_nodes = 2, params = theta,
-#'                                    cube = MGDrivE::cubeMendelian() )
-#' }
 #'
 #' @export
 spn_P_lifecycle_network <- function(num_nodes,params,cube){

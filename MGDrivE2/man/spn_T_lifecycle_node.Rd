@@ -34,18 +34,7 @@ to calculate equilibrium values. This function requires the \code{nE},
 
 While this function produces all structural information related to transitions,
 hazards are produced by a separate function, \code{\link{spn_hazards}}.
-}
-\examples{
-\dontrun{
-  # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
-  theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-                muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-                beta = 16, nu = 1/(4/24) )
 
-  # spn_P needs setup elsewhere, see vignettes
-
-  spn_T <- spn_T_lifecycle_node(spn_P = spn_P, params = theta,
-                                cube = MGDrivE::cubeMendelian() )
-}
-
+For examples of using this function, see:
+\code{vignette("lifecycle-node", package = "MGDrivE2")}
 }

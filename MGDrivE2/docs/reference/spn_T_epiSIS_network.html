@@ -68,7 +68,7 @@ network version of spn_T_epiSIS_node." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@ network version of spn_T_epiSIS_node." />
       <a href="../articles/lifecycle-node.html">MGDrivE2: One Node Lifecycle Dynamics</a>
     </li>
     <li>
-      <a href="../articles/output_storage.html">MGDrivE2: Data Storage and Analysis</a>
+      <a href="../articles/output-storage.html">MGDrivE2: Data Storage and Analysis</a>
     </li>
   </ul>
 </li>
@@ -199,32 +199,9 @@ stochastic matrices, just binary matrices that say if i,j can exchange populatio
 Diagonal elements must be <code>FALSE</code>, and both matrices are checked for validity; the
 function will stop with errors if the adjacency matrix specifies illegal movement
 rules (e.g.; mosquito movement from a "h" node to a "b" node)</p>
+<p>For examples of using this function, see:
+<code><a href='../articles/epi-network.html'>vignette("epi-network", package = "MGDrivE2")</a></code></p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-  <span class='co'># parameters, see vignette MGDrivE2: One Node Epidemiological Dynamics</span>
-  <span class='no'>theta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>qE</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>4</span>, <span class='kw'>nE</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>qL</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>3</span>, <span class='kw'>nL</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>qP</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>6</span>, <span class='kw'>nP</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                <span class='kw'>muE</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>muL</span> <span class='kw'>=</span> <span class='fl'>0.15</span>, <span class='kw'>muP</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>muF</span> <span class='kw'>=</span> <span class='fl'>0.09</span>, <span class='kw'>muM</span> <span class='kw'>=</span> <span class='fl'>0.09</span>,
-                <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>nu</span> <span class='kw'>=</span> <span class='fl'>1</span>/(<span class='fl'>4</span>/<span class='fl'>24</span>), <span class='kw'>NH</span> <span class='kw'>=</span> <span class='fl'>1e3</span>, <span class='kw'>X</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>f</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>3</span>,
-                <span class='kw'>Q</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>0.55</span>, <span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>0.15</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>200</span>, <span class='kw'>muH</span> <span class='kw'>=</span> <span class='fl'>1</span>/(<span class='fl'>62</span>*<span class='fl'>365</span>),
-                <span class='kw'>qEIP</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>11</span>, <span class='kw'>nEIP</span> <span class='kw'>=</span> <span class='fl'>6</span>)
-
-  <span class='co'># spn_P needs setup elsewhere, see vignettes</span>
-
-  <span class='co'># setup a 3-node network</span>
-  <span class='no'>node_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"m"</span>, <span class='st'>"b"</span>, <span class='st'>"h"</span>)
-
-  <span class='co'># setup allowed migration locations</span>
-  <span class='no'>m_move</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>FALSE</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>),
-                   <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-  <span class='no'>h_move</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>FALSE</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>,<span class='fl'>TRUE</span>,<span class='fl'>FALSE</span>),
-                   <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-
-  <span class='no'>spn_T</span> <span class='kw'>&lt;-</span> <span class='fu'>spn_T_epiSIS_network</span>(<span class='kw'>node_list</span> <span class='kw'>=</span><span class='no'>node_list</span>, <span class='kw'>spn_P</span> <span class='kw'>=</span> <span class='no'>spn_P</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='no'>theta</span>,
-                                <span class='kw'>cube</span> <span class='kw'>=</span> <span class='kw pkg'>MGDrivE</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/MGDrivE/topics/cubeMendelian'>cubeMendelian</a></span>(),
-                                <span class='kw'>h_move</span> <span class='kw'>=</span> <span class='no'>h_move</span>, <span class='kw'>m_move</span> <span class='kw'>=</span> <span class='no'>m_move</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -232,7 +209,6 @@ rules (e.g.; mosquito movement from a "h" node to a "b" node)</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

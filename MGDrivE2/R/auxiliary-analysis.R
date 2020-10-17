@@ -74,6 +74,8 @@
 #' \code{t0}, \code{tt}, \code{dt} define the first sampling time, the last sampling
 #' time, and each sampling time in-between.
 #'
+#' For more details about using this function to process CSV output see:
+#' \code{vignette("data-analysis", package = "MGDrivE2")}
 #'
 #' @param read_dir Directory where output was written to
 #' @param write_dir Directory to write output to. Default is read_dir
@@ -93,26 +95,17 @@
 #'
 #' @importFrom utils write.table
 #'
-#' @examples
-#' \dontrun{
-#'   # set paths
-#'   read_dir <- 'path_to_sim_output'
-#'   write_dir <- 'path_to_write_output'
-#'
-#'   # spn_P needs to be setup previously, see vignettes
-#'   # t0, tt, dt need to match the simulation parameters
-#'
-#'   # no return value
-#'   split_aggregate_CSV(read_dir = read_dir, write_dir = write_dir,
-#'                       stage = c("M","FS"), spn_P = spn_P,
-#'                       t0 = 0, tt = simTime, dt = 1)
-#' }
-#'
 #' @export
-split_aggregate_CSV <- function(read_dir, write_dir = read_dir,
-                                stage = c("E","L","P","M","U","FS","FE","FI","H"),
-                                spn_P, t0, tt, dt, erlang = FALSE,sum_fem = FALSE,
-                                rem_file=FALSE, verbose=TRUE){
+split_aggregate_CSV <- function(
+  read_dir,
+  write_dir = read_dir,
+  stage = c("E","L","P","M","U","FS","FE","FI","H"),
+  spn_P, t0, tt, dt,
+  erlang = FALSE,
+  sum_fem = FALSE,
+  rem_file=FALSE,
+  verbose=TRUE
+){
 
   ##########
   # Checks
@@ -805,6 +798,9 @@ base_sum_F <- function(fileList,outList,genos,nGenos,nErlang,times,nTimes,nNodes
 #' Output files are *.csv and contain the mean or quantile in the file name, e.g.
 #' {stage}_Mean_(patchNum).csv and {stage}_Quantile_(quantNum)_(patchNum).csv.
 #'
+#' For more details about using this function to process CSV output see:
+#' \code{vignette("data-analysis", package = "MGDrivE2")}
+#'
 #'
 #' @param read_dir Directory to find repetition folders in
 #' @param write_dir Directory to write output
@@ -818,24 +814,6 @@ base_sum_F <- function(fileList,outList,genos,nGenos,nErlang,times,nTimes,nNodes
 #' @param verbose Chatty? Default is TRUE
 #'
 #' @return Writes output to files in write_dir
-#'
-#' @examples
-#' \dontrun{
-#'   # set paths
-#'   read_dir <- 'path_to_split_aggregate_CSV_output'
-#'   write_dir <- 'path_to_write_output'
-#'
-#'   # spn_P needs to be setup previously, see vignettes
-#'   # t0, tt, dt need to match the simulation parameters
-#'
-#'   # 95% empirical quantiles
-#'   qtiles <- c(0.25,0.975)
-#'
-#'   # no return value
-#'   summarize_stats_CSV(read_dir = read_dir, write_dir = write_dir,
-#'                       mean = TRUE, quantiles = qtiles, spn_P = spn_P,
-#'                       t0 = 0, tt = simTime, dt = 1)
-#' }
 #'
 #' @export
 summarize_stats_CSV <- function(read_dir, write_dir=read_dir, mean=TRUE, quantiles=NULL,

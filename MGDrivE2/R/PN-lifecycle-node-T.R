@@ -29,25 +29,15 @@
 #' While this function produces all structural information related to transitions,
 #' hazards are produced by a separate function, \code{\link{spn_hazards}}.
 #'
+#' For examples of using this function, see:
+#' \code{vignette("lifecycle-node", package = "MGDrivE2")}
+#'
 #' @param spn_P set of places produced by \code{\link{spn_P_lifecycle_node}}
 #' @param params a named list of parameters (see details)
 #' @param cube an inheritance cube from the \code{MGDrivE} package (e.g. \code{\link[MGDrivE]{cubeMendelian}})
 #'
 #' @return a list with two elements: \code{T} contains transitions packets as lists,
 #' \code{v} is the character vector of transitions (T)
-#'
-#' @examples
-#' \dontrun{
-#'   # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
-#'   theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-#'                 muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-#'                 beta = 16, nu = 1/(4/24) )
-#'
-#'   # spn_P needs setup elsewhere, see vignettes
-#'
-#'   spn_T <- spn_T_lifecycle_node(spn_P = spn_P, params = theta,
-#'                                 cube = MGDrivE::cubeMendelian() )
-#' }
 #'
 #' @export
 spn_T_lifecycle_node <- function(spn_P,params,cube){

@@ -69,7 +69,7 @@ handling various exogenous events that may occur during the simulation
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@ handling various exogenous events that may occur during the simulation
       <a href="../articles/lifecycle-node.html">MGDrivE2: One Node Lifecycle Dynamics</a>
     </li>
     <li>
-      <a href="../articles/output_storage.html">MGDrivE2: Data Storage and Analysis</a>
+      <a href="../articles/output-storage.html">MGDrivE2: Data Storage and Analysis</a>
     </li>
   </ul>
 </li>
@@ -268,20 +268,6 @@ The function <code><a href='track_hinf.html'>track_hinf</a></code> is provided, 
 human infection events.</p>
 <p>To return simulations to R for further processing, see <code><a href='sim_trajectory_R.html'>sim_trajectory_R</a></code>.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-  <span class='co'># hazards need setup elsewhere, see vignettes</span>
-  <span class='co'># S is a stoichiometry matrix, built from spn_P and spn_T, see vignettes</span>
-  <span class='co'># x0 are the initial conditions, setup from the equilibrium functions</span>
-
-  <span class='no'>outF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='st'>"~/output"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"rep1"</span>,<span class='st'>"rep2"</span>,<span class='st'>"rep3"</span>))
-
-  <span class='co'># no return value</span>
-  <span class='fu'>sim_trajectory_CSV</span>(<span class='kw'>x0</span> <span class='kw'>=</span> <span class='no'>x0</span>, <span class='kw'>t0</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>tt</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>dt</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>dt_stoch</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-                     <span class='kw'>folders</span> <span class='kw'>=</span> <span class='no'>outF</span>, <span class='kw'>stage</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"M"</span>,<span class='st'>"F"</span>), <span class='kw'>S</span> <span class='kw'>=</span> <span class='no'>S</span>,
-                     <span class='kw'>hazards</span> <span class='kw'>=</span> <span class='no'>exHaz</span>, <span class='kw'>sampler</span> <span class='kw'>=</span> <span class='st'>"tau"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -289,7 +275,6 @@ human infection events.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

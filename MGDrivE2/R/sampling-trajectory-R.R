@@ -71,17 +71,6 @@
 #' @return a list with 2 elements: "state" is the array of returned state values, and "events" will
 #'        return events tracked with \code{Sout} if provided, otherwise is \code{NULL}
 #'
-#' @examples
-#' \dontrun{
-#'   # hazards need setup elsewhere, see vignettes
-#'   # S is a stoichiometry matrix, built from spn_P and spn_T, see vignettes
-#'   # x0 are the initial conditions, setup from the equilibrium functions
-#'
-#'   simObject <- sim_trajectory_R(x0 = x0, t0 = 0, tt = 100, dt = 1, dt_stoch = 0.1,
-#'                                 num_reps = 5, S = stochMat, hazards = exHaz,
-#'                                 sampler = "tau", verbose = TRUE)
-#' }
-#'
 #' @export
 sim_trajectory_R <- function(x0, t0=0, tt=100, dt=1, dt_stoch = 0.1, num_reps=1,
                              S, hazards, Sout = NULL, sampler = "tau", method = "lsoda",
@@ -330,7 +319,9 @@ sim_trajectory_base_R <- function(x0, times, dt=1, num_reps, stepFun, events=NUL
 
       # record output
       retArray[i,-1,r] <- state$x
-      ret_events[i-1,-1,r] <- state$o
+      if(track){
+        ret_events[i-1,-1,r] <- state$o
+      }
 
       # progress bar
       if(verbose){setTxtProgressBar(pb = pbar,value = i)}

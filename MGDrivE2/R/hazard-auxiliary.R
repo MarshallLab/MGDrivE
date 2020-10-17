@@ -23,7 +23,6 @@
 #' @return numeric probability of movement
 #'
 #' @examples
-#' \dontrun{
 #'   # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
 #'   theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
 #'                 muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
@@ -31,7 +30,6 @@
 #'
 #'   # lets say a 70% chance to move over the entire lifespan
 #'   rMoveRate <- calc_move_rate(mu = theta$muF, P = 0.70)
-#' }
 #'
 #' @export
 calc_move_rate <- function(mu,P){ return((P*mu) / (1 - P)) }
@@ -63,14 +61,12 @@ stay_prob2rate <- function(tau){ return(-log(tau)) }
 #' matrix, \code{mat} matrix of row normalized off-diagonal elements
 #'
 #' @examples
-#' \dontrun{
 #'   # generate random matrix for example
 #'   #  This represents a 3-node landscape, with random movement between nodes
 #'   moveMat <- matrix(data = runif(n = 9), nrow = 3, ncol = 3)
 #'   moveMat <- moveMat/rowSums(moveMat)
 #'
 #'   moveRate <- movement_prob2rate(tau = moveMat)
-#' }
 #'
 #' @export
 movement_prob2rate <- function(tau){

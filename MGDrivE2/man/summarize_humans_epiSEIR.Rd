@@ -22,13 +22,7 @@ The return object depends on the data provided. If the simulation was only 1 nod
 then no \code{node} designation is returned. If only one repetition was performed,
 no \code{rep} designation is returned. Columns always returned include: \code{time},
 \code{inf}, \code{genotype}, and \code{value}.
-}
-\examples{
-\dontrun{
-  # out is the object returned by sim_trajectory_R, see vignettes
 
-  # this returns a dataframe for ggplot2
-  hSumSEIR <- summarize_humans_epiSEIR(out = simObject)
-}
-
+For examples of using this function, see:
+\code{vignette("seir-dynamics", package = "MGDrivE2")}
 }

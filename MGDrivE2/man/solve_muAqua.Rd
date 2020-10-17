@@ -38,13 +38,8 @@ This function needs the following parameters in \code{params}:
 }
 }
 \examples{
-\dontrun{
-  # parameters, see vignette MGDrivE2: One Node Lifecycle Dynamics
-  theta <- list(qE = 1/4, nE = 2, qL = 1/3, nL = 3, qP = 1/6, nP = 2,
-                muE = 0.05, muL = 0.15, muP = 0.05, muF = 0.09, muM = 0.09,
-                beta = 16, nu = 1/(4/24) )
-
-  muAqatic <- solve_muAqua(params = theta, rm = 0.09)
-}
+theta <- list(qE = 1/4, nE = 2, qL = 1/5, nL = 3, qP = 1/6, nP = 2, muF = 1/12,
+             beta = 32, phi = 0.5);
+muAqatic <- solve_muAqua(params = theta, rm = 1.096)
 
 }

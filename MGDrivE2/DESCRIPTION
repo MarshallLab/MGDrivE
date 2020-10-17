@@ -1,7 +1,7 @@
 Package: MGDrivE2
 Type: Package
-Title: Mosquito Gene Drive Explorer - 2
-Version: 1.0.0
+Title: Mosquito Gene Drive Explorer 2
+Version: 1.0.1
 Authors@R: c(
     person("Sean L.", "Wu", email = "slwood89@gmail.com", role = c("aut","cre")),
     person("Jared B.", "Bennett", email = "jared_bennett@berkeley.edu ", role = "aut"),
@@ -13,12 +13,14 @@ Authors@R: c(
 Maintainer: Sean L. Wu <slwood89@gmail.com>
 URL: https://marshalllab.github.io/MGDrivE/, https://www.marshalllab.com/
 BugReports: https://github.com/MarshallLab/MGDrivE/issues
-Description: MGDrivE 2.0 is a new simulation platform which significantly extends capabilities from the
-    MGDrivE simulation package in a new mathematical and computational framework based on stochastic Petri nets.
-    For more information about MGDrivE, see our publication: <https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13318>.
-    Some of the notable capabilities of MGDrivE 2.0 include: incorporation of human populations,
+Description: A simulation modeling framework which significantly extends capabilities from the
+    'MGDrivE' simulation package via a new mathematical and computational framework based on stochastic Petri nets.
+    For more information about 'MGDrivE', see our publication: <https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13318>.
+    Some of the notable capabilities of 'MGDrivE2' include: incorporation of human populations,
     epidemiological dynamics, time-varying parameters, and a continuous-time simulation
     framework with various sampling algorithms for both deterministic and stochastic interpretations.
+    'MGDrivE2' relies on the genetic inheritance structures provided in package 'MGDrivE', so we
+    suggest installing that package initially.
 License: GPL-3
 Encoding: UTF-8
 ByteCompile: true

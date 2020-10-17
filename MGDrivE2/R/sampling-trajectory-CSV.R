@@ -78,20 +78,6 @@
 #'
 #' @return NULL - prints output to .csv files
 #'
-#' @examples
-#' \dontrun{
-#'   # hazards need setup elsewhere, see vignettes
-#'   # S is a stoichiometry matrix, built from spn_P and spn_T, see vignettes
-#'   # x0 are the initial conditions, setup from the equilibrium functions
-#'
-#'   outF <- file.path("~/output", c("rep1","rep2","rep3"))
-#'
-#'   # no return value
-#'   sim_trajectory_CSV(x0 = x0, t0 = 0, tt = 100, dt = 1, dt_stoch = 0.1,
-#'                      folders = outF, stage = c("M","F"), S = S,
-#'                      hazards = exHaz, sampler = "tau", verbose = TRUE)
-#' }
-#'
 #' @export
 sim_trajectory_CSV <- function(x0, t0=0, tt=100, dt=1, dt_stoch = 0.1, folders="./",
                                stage=c("M","F"), S, hazards, Sout = NULL, sampler = "tau",

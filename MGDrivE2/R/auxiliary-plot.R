@@ -37,7 +37,6 @@
 #' @param elp stage to summarize, one of: "egg", "larvae", "pupae"
 #'
 #' @return a 3 to 5 column dataframe for plotting with ggplot2
-#'
 base_aquatic_geno <- function(out,spn_P,elp){
 
   # get specific ELP status, remove nulls from human-only nodoes
@@ -121,19 +120,13 @@ base_aquatic_geno <- function(out,spn_P,elp){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{genotype}, and \code{value}.
 #'
+#' For examples of using this function, see:
+#' \code{vignette("lifecycle-node", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #' @param spn_P the places of the SPN, see details
 #'
 #' @return a 3 to 5 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # spn_P needs to be setup previously, see vignettes
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   eSum <- summarize_eggs_geno(out = simObject, spn_P = spn_P)
-#' }
 #'
 #' @export
 summarize_eggs_geno <- function(out,spn_P){
@@ -160,19 +153,13 @@ summarize_eggs_geno <- function(out,spn_P){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{genotype}, and \code{value}.
 #'
+#' For examples of using this function, see:
+#' \code{vignette("lifecycle-node", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #' @param spn_P the places of the SPN, see details
 #'
 #' @return a 3 to 5 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # spn_P needs to be setup previously, see vignettes
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   lSum <- summarize_larvae_geno(out = simObject, spn_P = spn_P)
-#' }
 #'
 #' @export
 summarize_larvae_geno <- function(out,spn_P){
@@ -199,19 +186,13 @@ summarize_larvae_geno <- function(out,spn_P){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{genotype}, and \code{value}.
 #'
+#' For examples of using this function, see:
+#' \code{vignette("lifecycle-node", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #' @param spn_P the places of the SPN, see details
 #'
 #' @return a 3 to 5 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # spn_P needs to be setup previously, see vignettes
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   pSum <- summarize_pupae_geno(out = simObject, spn_P = spn_P)
-#' }
 #'
 #' @export
 summarize_pupae_geno <- function(out,spn_P){
@@ -330,19 +311,13 @@ base_aquatic_stage <- function(out,spn_P,elp){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{Erlang-stage}, and \code{value}.
 #'
+#' For examples of using this function, see:
+#' \code{vignette("lifecycle-node", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #' @param spn_P the places of the SPN, see details
 #'
 #' @return a 3 to 5 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # spn_P needs to be setup previously, see vignettes
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   eStage <- summarize_eggs_stage(out = simObject, spn_P = spn_P)
-#' }
 #'
 #' @export
 summarize_eggs_stage <- function(out,spn_P){
@@ -369,19 +344,13 @@ summarize_eggs_stage <- function(out,spn_P){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{Erlang-stage}, and \code{value}.
 #'
+#' For examples of using this function, see:
+#' \code{vignette("lifecycle-node", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #' @param spn_P the places of the SPN, see details
 #'
 #' @return a 3 to 5 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # spn_P needs to be setup previously, see vignettes
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   lStage <- summarize_larvae_stage(out = simObject, spn_P = spn_P)
-#' }
 #'
 #' @export
 summarize_larvae_stage <- function(out,spn_P){
@@ -408,19 +377,13 @@ summarize_larvae_stage <- function(out,spn_P){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{Erlang-stage}, and \code{value}.
 #'
+#' For examples of using this function, see:
+#' \code{vignette("lifecycle-node", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #' @param spn_P the places of the SPN, see details
 #'
 #' @return a 3 to 5 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # spn_P needs to be setup previously, see vignettes
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   pStage <- summarize_pupae_stage(out = simObject, spn_P = spn_P)
-#' }
 #'
 #' @export
 summarize_pupae_stage <- function(out,spn_P){
@@ -449,19 +412,13 @@ summarize_pupae_stage <- function(out,spn_P){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{genotype}, and \code{value}.
 #'
+#' For examples of using this function, this or any vignette which visualizes output:
+#' \code{vignette("lifecycle-node", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #' @param spn_P the places of the SPN, see details
 #'
 #' @return a 3 to 5 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # spn_P needs to be setup previously, see vignettes
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   fSum <- summarize_females(out = simObject, spn_P = spn_P)
-#' }
 #'
 #' @export
 summarize_females <- function(out,spn_P){
@@ -525,19 +482,13 @@ summarize_females <- function(out,spn_P){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{inf}, \code{genotype}, and \code{value}.
 #'
+#' For examples of using this function, this or any vignette which simulates epi dynamics:
+#' \code{vignette("epi-node", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #' @param spn_P the places of the SPN, see details
 #'
 #' @return a 4 to 6 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # spn_P needs to be setup previously, see vignettes
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   fSumEpi <- summarize_females_epi(out = simObject, spn_P = spn_P)
-#' }
 #'
 #' @export
 summarize_females_epi <- function(out,spn_P){
@@ -628,17 +579,12 @@ summarize_females_epi <- function(out,spn_P){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{genotype}, and \code{value}.
 #'
+#' For examples of using this function, this or any vignette which visualizes output:
+#' \code{vignette("lifecycle-node", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #'
 #' @return a 3 to 5 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   mSum <- summarize_males(out = simObject)
-#' }
 #'
 #' @export
 summarize_males <- function(out){
@@ -758,17 +704,12 @@ base_summarize_humans <- function(out,infState){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{inf}, \code{genotype}, and \code{value}.
 #'
+#' For examples of using this function, see:
+#' \code{vignette("epi-node", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #'
 #' @return a 4 to 6 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   hSumSIS <- summarize_humans_epiSIS(out = simObject)
-#' }
 #'
 #' @export
 summarize_humans_epiSIS <- function(out){
@@ -791,17 +732,12 @@ summarize_humans_epiSIS <- function(out){
 #' no \code{rep} designation is returned. Columns always returned include: \code{time},
 #' \code{inf}, \code{genotype}, and \code{value}.
 #'
+#' For examples of using this function, see:
+#' \code{vignette("seir-dynamics", package = "MGDrivE2")}
+#'
 #' @param out the output of \code{\link[MGDrivE2]{sim_trajectory_R}}
 #'
 #' @return a 4 to 6 column dataframe for plotting with ggplot2
-#'
-#' @examples
-#' \dontrun{
-#'   # out is the object returned by sim_trajectory_R, see vignettes
-#'
-#'   # this returns a dataframe for ggplot2
-#'   hSumSEIR <- summarize_humans_epiSEIR(out = simObject)
-#' }
 #'
 #' @export
 summarize_humans_epiSEIR <- function(out){

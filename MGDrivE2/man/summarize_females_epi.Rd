@@ -29,14 +29,7 @@ The return object depends on the data provided. If the simulation was only 1 nod
 then no \code{node} designation is returned. If only one repetition was performed,
 no \code{rep} designation is returned. Columns always returned include: \code{time},
 \code{inf}, \code{genotype}, and \code{value}.
-}
-\examples{
-\dontrun{
-  # spn_P needs to be setup previously, see vignettes
-  # out is the object returned by sim_trajectory_R, see vignettes
 
-  # this returns a dataframe for ggplot2
-  fSumEpi <- summarize_females_epi(out = simObject, spn_P = spn_P)
-}
-
+For examples of using this function, this or any vignette which simulates epi dynamics:
+\code{vignette("epi-node", package = "MGDrivE2")}
 }

@@ -82,23 +82,7 @@ time, and each sampling time in-between.
 
 Output files are *.csv and contain the mean or quantile in the file name, e.g.
 {stage}\emph{Mean}(patchNum).csv and {stage}\emph{Quantile}(quantNum)_(patchNum).csv.
-}
-\examples{
-\dontrun{
-  # set paths
-  read_dir <- 'path_to_split_aggregate_CSV_output'
-  write_dir <- 'path_to_write_output'
 
-  # spn_P needs to be setup previously, see vignettes
-  # t0, tt, dt need to match the simulation parameters
-
-  # 95\% empirical quantiles
-  qtiles <- c(0.25,0.975)
-
-  # no return value
-  summarize_stats_CSV(read_dir = read_dir, write_dir = write_dir,
-                      mean = TRUE, quantiles = qtiles, spn_P = spn_P,
-                      t0 = 0, tt = simTime, dt = 1)
-}
-
+For more details about using this function to process CSV output see:
+\code{vignette("data-analysis", package = "MGDrivE2")}
 }

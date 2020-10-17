@@ -124,20 +124,7 @@ The places (\code{spn_P}) object is generated from one of the following:
 
 \code{t0}, \code{tt}, \code{dt} define the first sampling time, the last sampling
 time, and each sampling time in-between.
-}
-\examples{
-\dontrun{
-  # set paths
-  read_dir <- 'path_to_sim_output'
-  write_dir <- 'path_to_write_output'
 
-  # spn_P needs to be setup previously, see vignettes
-  # t0, tt, dt need to match the simulation parameters
-
-  # no return value
-  split_aggregate_CSV(read_dir = read_dir, write_dir = write_dir,
-                      stage = c("M","FS"), spn_P = spn_P,
-                      t0 = 0, tt = simTime, dt = 1)
-}
-
+For more details about using this function to process CSV output see:
+\code{vignette("data-analysis", package = "MGDrivE2")}
 }
