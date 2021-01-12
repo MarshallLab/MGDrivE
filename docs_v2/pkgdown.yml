@@ -1,5 +1,5 @@
 pandoc: 2.10.1
-pkgdown: 1.3.0
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   advanced_topics: advanced_topics.html
@@ -10,4 +10,5 @@ articles:
   lifecycle-network: lifecycle-network.html
   lifecycle-node: lifecycle-node.html
   output-storage: output-storage.html
+last_built: 2021-01-12T21:54Z
 

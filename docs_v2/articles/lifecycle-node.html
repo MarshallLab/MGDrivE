@@ -6,18 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MGDrivE2: One Node Lifecycle Dynamics • MGDrivE2</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="MGDrivE2: One Node Lifecycle Dynamics">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="MGDrivE2">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MGDrivE2</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -82,7 +83,14 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/MarshallLab/MGDrivE/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -91,13 +99,15 @@
 <!--/.navbar -->
 
       
-      </header><script src="lifecycle-node_files/jquery-1.11.3/jquery.min.js"></script><script src="lifecycle-node_files/elevate-section-attrs-2.0/elevate-section-attrs.js"></script><div class="row">
+
+      </header><script src="lifecycle-node_files/header-attrs-2.5/header-attrs.js"></script><link href="lifecycle-node_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="lifecycle-node_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>MGDrivE2: One Node Lifecycle Dynamics</h1>
+      <h1 data-toc-skip>MGDrivE2: One Node Lifecycle Dynamics</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/MarshallLab/MGDrivE/blob/master/vignettes/lifecycle-node.Rmd"><code>vignettes/lifecycle-node.Rmd</code></a></small>
       <div class="hidden name"><code>lifecycle-node.Rmd</code></div>
 
     </div>
@@ -147,17 +157,18 @@
 <h1 class="hasAnchor">
 <a href="#ex_log" class="anchor"></a>Example: Logistic Density Dependence</h1>
 <p>We start by loading the <strong>MGDrivE2</strong> package, as well as the <strong>MGDrivE</strong> package for access to inheritance cubes and <strong>ggplot2</strong> for graphical analysis. We will use the basic cube to simulate Mendelian inheritance for this example.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># simulation functions</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE2)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">#&gt; Loading MGDrivE2: Mosquito Gene Drive Explorer Version 2</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="co"># inheritance patterns</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MGDrivE)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co"># plotting</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co"># basic inheritance pattern</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>cube &lt;-<span class="st"> </span>MGDrivE<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/MGDrivE/topics/cubeMendelian">cubeMendelian</a></span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># simulation functions</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://marshalllab.github.io/MGDrivE/">MGDrivE2</a></span><span class="op">)</span>
+<span class="co">#&gt; Loading MGDrivE2: Mosquito Gene Drive Explorer Version 2</span>
+<span class="co"># inheritance patterns</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://marshalllab.github.io/MGDrivE/">MGDrivE</a></span><span class="op">)</span>
+<span class="co">#&gt; Loading MGDrivE: Mosquito Gene Drive Explorer</span>
+<span class="co"># plotting</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+
+<span class="co"># basic inheritance pattern</span>
+<span class="va">cube</span> <span class="op">&lt;-</span> <span class="fu">MGDrivE</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MGDrivE/man/cubeMendelian.html">cubeMendelian</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div id="pars_log" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pars_log" class="anchor"></a>Parameterization</h2>
@@ -224,25 +235,26 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># number of adult female mosquitoes</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>NF &lt;-<span class="st"> </span><span class="dv">500</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co"># entomological parameters</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>theta &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>  <span class="dt">qE =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">4</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>  <span class="dt">nE =</span> <span class="dv">2</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>  <span class="dt">qL =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>  <span class="dt">nL =</span> <span class="dv">3</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>  <span class="dt">qP =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>  <span class="dt">nP =</span> <span class="dv">2</span>,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>  <span class="dt">muE =</span> <span class="fl">0.05</span>,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>  <span class="dt">muL =</span> <span class="fl">0.15</span>,</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>  <span class="dt">muP =</span> <span class="fl">0.05</span>,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>  <span class="dt">muF =</span> <span class="fl">0.09</span>,</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>  <span class="dt">muM =</span> <span class="fl">0.09</span>,</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>  <span class="dt">beta =</span> <span class="dv">16</span>,</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>  <span class="dt">nu =</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">24</span>)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># number of adult female mosquitoes</span>
+<span class="va">NF</span> <span class="op">&lt;-</span> <span class="fl">500</span>
+
+<span class="co"># entomological parameters</span>
+<span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  qE <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">4</span>,
+  nE <span class="op">=</span> <span class="fl">2</span>,
+  qL <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span>,
+  nL <span class="op">=</span> <span class="fl">3</span>,
+  qP <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+  nP <span class="op">=</span> <span class="fl">2</span>,
+  muE <span class="op">=</span> <span class="fl">0.05</span>,
+  muL <span class="op">=</span> <span class="fl">0.15</span>,
+  muP <span class="op">=</span> <span class="fl">0.05</span>,
+  muF <span class="op">=</span> <span class="fl">0.09</span>,
+  muM <span class="op">=</span> <span class="fl">0.09</span>,
+  beta <span class="op">=</span> <span class="fl">16</span>,
+  nu <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="fl">4</span><span class="op">/</span><span class="fl">24</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
 </div>
 <div id="init_pn_log" class="section level2">
 <h2 class="hasAnchor">
@@ -250,89 +262,95 @@
 <p>The next thing we need to do is set up the structural properties of the SPN model (technically just a Petri Net, PN, at this point). First, we set all of the “places” in the model. As this is a compartmental model, “places” are simply distinct life stages (and locations for metapopulation versions). Thus, the “places” include all aquatic stages (number of bins in each egg, larval, and pupal stages), adult males, and adult females (further separated by mate genotype). All of these stages are unique for each genotype as well, so the number of “places” (i.e., compartments) grows with the number of genotypes and Erlang-distributed stage length.</p>
 <p>Once the places for the SPN are setup, we define the transitions between each place. Transitions are how objects move from one compartment to another. These are not the rates that objects change compartments, only whether or not such a move is possible. The rate of movement from one “place” to another are calculated later by the <code><a href="../reference/spn_hazards.html">spn_hazards()</a></code> function.</p>
 <p>Finally, as not all transitions apply to all “places”, we create a summary of possible transitions to and from each “place”. This is handled by the <code><a href="../reference/spn_S.html">spn_S()</a></code> function.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># "Places"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">#  These are defined by Erlang-distributed life stages and genotypes</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>SPN_P &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_P_lifecycle_node.html">spn_P_lifecycle_node</a></span>(<span class="dt">params =</span> theta,<span class="dt">cube =</span> cube)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="co"># Transitions</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co"># This is a list of viable transitions from one "place" to another</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>SPN_T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_T_lifecycle_node.html">spn_T_lifecycle_node</a></span>(<span class="dt">spn_P =</span> SPN_P,<span class="dt">params =</span> theta,<span class="dt">cube =</span> cube)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="co"># Stoichiometry matrix</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="co">#  A sparse matrix representing the effect of each transition on each place</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>S &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_S.html">spn_S</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># "Places"</span>
+<span class="co">#  These are defined by Erlang-distributed life stages and genotypes</span>
+<span class="va">SPN_P</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spn_P_lifecycle_node.html">spn_P_lifecycle_node</a></span><span class="op">(</span>params <span class="op">=</span> <span class="va">theta</span>,cube <span class="op">=</span> <span class="va">cube</span><span class="op">)</span>
+
+<span class="co"># Transitions</span>
+<span class="co"># This is a list of viable transitions from one "place" to another</span>
+<span class="va">SPN_T</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spn_T_lifecycle_node.html">spn_T_lifecycle_node</a></span><span class="op">(</span>spn_P <span class="op">=</span> <span class="va">SPN_P</span>,params <span class="op">=</span> <span class="va">theta</span>,cube <span class="op">=</span> <span class="va">cube</span><span class="op">)</span>
+
+<span class="co"># Stoichiometry matrix</span>
+<span class="co">#  A sparse matrix representing the effect of each transition on each place</span>
+<span class="va">S</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spn_S.html">spn_S</a></span><span class="op">(</span>spn_P <span class="op">=</span> <span class="va">SPN_P</span>, spn_T <span class="op">=</span> <span class="va">SPN_T</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="equilibria_haz_log" class="section level2">
 <h2 class="hasAnchor">
 <a href="#equilibria_haz_log" class="anchor"></a>Equilibrium Conditions and Hazard Functions</h2>
 <p>Once the “places” are defined, we use <code><a href="../reference/equilibrium_lifeycle.html">equilibrium_lifeycle()</a></code> to get initial conditions (<span class="math inline">\(M(0)\)</span>), solved at the dynamic equilibrium for <code>NF</code> number of adult females, as well as the density-dependent constants for larval competition, either <code>K</code> (logistic dependence) or <code>gamma</code> (Lotka-Volterra dependence).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># calculate equilibrium and setup initial conditions</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co">#  outputs required parameters in the named list "params"</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co">#  outputs intial equilibrium for adv users, "init</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co">#  outputs properly filled initial markings, "M0", vectorized over:</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co">#    all patches</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">#    any genotypes( includes XX/XY inheritance patterns)</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="co">#    allows initial ratios to vary</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="co">#    properly mates males/females</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>initialCons &lt;-<span class="st"> </span><span class="kw"><a href="../reference/equilibrium_lifeycle.html">equilibrium_lifeycle</a></span>(<span class="dt">params =</span> theta, <span class="dt">NF =</span> NF, <span class="dt">phi =</span> <span class="fl">0.5</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>                                    <span class="dt">log =</span> <span class="ot">TRUE</span>, <span class="dt">spn_P =</span> SPN_P, <span class="dt">cube =</span> cube)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># calculate equilibrium and setup initial conditions</span>
+<span class="co">#  outputs required parameters in the named list "params"</span>
+<span class="co">#  outputs intial equilibrium for adv users, "init</span>
+<span class="co">#  outputs properly filled initial markings, "M0", vectorized over:</span>
+<span class="co">#    all patches</span>
+<span class="co">#    any genotypes( includes XX/XY inheritance patterns)</span>
+<span class="co">#    allows initial ratios to vary</span>
+<span class="co">#    properly mates males/females</span>
+<span class="va">initialCons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/equilibrium_lifeycle.html">equilibrium_lifeycle</a></span><span class="op">(</span>params <span class="op">=</span> <span class="va">theta</span>, NF <span class="op">=</span> <span class="va">NF</span>, phi <span class="op">=</span> <span class="fl">0.5</span>,
+                                    log <span class="op">=</span> <span class="cn">TRUE</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span>, cube <span class="op">=</span> <span class="va">cube</span><span class="op">)</span></code></pre></div>
 <p>The transitions in our SPN define possible movement from one compartment to another, but they do not define the rate that these changes occur. The rate of change from one compartment to another is called a “hazard”, calculated by the <code><a href="../reference/spn_hazards.html">spn_hazards()</a></code> function. This calculates the rate of change from one compartment to another. Below, we make both a set of exact hazards, for sampling algorithms with integer valued state spaces, and a set of approximate hazards, for algorithms using a continuous approximation.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># approximate hazards for continous approximation</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>approx_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>                              <span class="dt">params =</span> initialCons<span class="op">$</span>params, <span class="dt">type =</span> <span class="st">"life"</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>                              <span class="dt">log =</span> <span class="ot">TRUE</span>, <span class="dt">exact =</span> <span class="ot">FALSE</span>, <span class="dt">tol =</span> <span class="fl">1e-8</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>                              <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="co"># exact hazards for integer-valued state space</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>exact_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>                             <span class="dt">params =</span> initialCons<span class="op">$</span>params, <span class="dt">type =</span> <span class="st">"life"</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>                             <span class="dt">log =</span> <span class="ot">TRUE</span>, <span class="dt">exact =</span> <span class="ot">TRUE</span>, <span class="dt">tol =</span> <span class="ot">NaN</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>                             <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># approximate hazards for continous approximation</span>
+<span class="va">approx_hazards</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spn_hazards.html">spn_hazards</a></span><span class="op">(</span>spn_P <span class="op">=</span> <span class="va">SPN_P</span>, spn_T <span class="op">=</span> <span class="va">SPN_T</span>, cube <span class="op">=</span> <span class="va">cube</span>,
+                              params <span class="op">=</span> <span class="va">initialCons</span><span class="op">$</span><span class="va">params</span>, type <span class="op">=</span> <span class="st">"life"</span>,
+                              log <span class="op">=</span> <span class="cn">TRUE</span>, exact <span class="op">=</span> <span class="cn">FALSE</span>, tol <span class="op">=</span> <span class="fl">1e-8</span>,
+                              verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="co"># exact hazards for integer-valued state space</span>
+<span class="va">exact_hazards</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spn_hazards.html">spn_hazards</a></span><span class="op">(</span>spn_P <span class="op">=</span> <span class="va">SPN_P</span>, spn_T <span class="op">=</span> <span class="va">SPN_T</span>, cube <span class="op">=</span> <span class="va">cube</span>,
+                             params <span class="op">=</span> <span class="va">initialCons</span><span class="op">$</span><span class="va">params</span>, type <span class="op">=</span> <span class="st">"life"</span>,
+                             log <span class="op">=</span> <span class="cn">TRUE</span>, exact <span class="op">=</span> <span class="cn">TRUE</span>, tol <span class="op">=</span> <span class="cn">NaN</span>,
+                             verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="sim_log" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sim_log" class="anchor"></a>Simulation of Fully Specified SPN Model</h2>
 <p>Finally, before we run simulations, we set up a release scheme to generate interesting dynamics. We will release 50 adult females with homozygous recessive alleles 5 times, every 10 days, starting at day 20. Releases are possible at every life-stage, so long as the event name matches the place in the simulation. It is critically important that <strong>the event names match a place name</strong> in the simulation. The simulation function checks this and will throw an error if the event name does not exist as a place in the simulation. This format is used in <strong>MGDrivE2</strong> for consistency with solvers in <code>deSolve</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co"># releases</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>r_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dt">from =</span> <span class="dv">20</span>, <span class="dt">length.out =</span> <span class="dv">5</span>, <span class="dt">by =</span> <span class="dv">10</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>r_size &lt;-<span class="st"> </span><span class="dv">50</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>events &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="st">"var"</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"F_"</span>, cube<span class="op">$</span>releaseType, <span class="st">"_"</span>, cube<span class="op">$</span>wildType),</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>                     <span class="st">"time"</span> =<span class="st"> </span>r_times,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>                     <span class="st">"value"</span> =<span class="st"> </span>r_size,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>                     <span class="st">"method"</span> =<span class="st"> "add"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># releases</span>
+<span class="va">r_times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">20</span>, length.out <span class="op">=</span> <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="va">r_size</span> <span class="op">&lt;-</span> <span class="fl">50</span>
+<span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="st">"var"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"F_"</span>, <span class="va">cube</span><span class="op">$</span><span class="va">releaseType</span>, <span class="st">"_"</span>, <span class="va">cube</span><span class="op">$</span><span class="va">wildType</span><span class="op">)</span>,
+                     <span class="st">"time"</span> <span class="op">=</span> <span class="va">r_times</span>,
+                     <span class="st">"value"</span> <span class="op">=</span> <span class="va">r_size</span>,
+                     <span class="st">"method"</span> <span class="op">=</span> <span class="st">"add"</span>,
+                     stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <div id="det_ode_soln_log" class="section level3">
 <h3 class="hasAnchor">
 <a href="#det_ode_soln_log" class="anchor"></a>Deterministic: ODE Solutions</h3>
 <p>The first simulation we will run is a mean-field deterministic approximation to the full stochastic model. Formally, this is a moment-closure technique where we model the 1st moment and ignore contributions from all higher order moments, so we can expect that the ODEs will approximate the mean of stochastic simulations well only when nonlinear effects and influence of higher order moments are small. For this continuous-state approximation, we need to use the approximate hazards, created by setting the following parameters <code>exact = FALSE, tol = 1e-8</code> (above) in the function <code><a href="../reference/spn_hazards.html">spn_hazards()</a></code>. When used in ODE approximation, the interpretation of hazard functions simplifies to simple rate functions.</p>
 <p>Internally, <strong>MGDrivE2</strong> uses the high quality numerical solvers in from <code>deSolve</code> to integrate a mean-field approximation to the stochastic model. Effectively, it evaluates the ODEs over the interval between time points where the user requested model output, calculating the rate of that hazard, given the current simulation state, multiplied with the stoichiometry matrix. The default method used is <code>lsoda</code>, though for highly variable rates and inhomogeneous systems, consider using <code>rk4</code>.</p>
 <p>Now that the deterministic model is fully specified, let’s run the simulation for 200 days, outputting values of the state variables every day.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># max simulation time</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>tmax &lt;-<span class="st"> </span><span class="dv">125</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="co"># time-step for output return, not the time-step of the sampling algorithm</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>dt &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="co"># run deterministic simulation</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>ODE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt, <span class="dt">S =</span> S,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>                            <span class="dt">hazards =</span> approx_hazards, <span class="dt">sampler =</span> <span class="st">"ode"</span>, <span class="dt">method =</span> <span class="st">"lsoda"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>                            <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># max simulation time</span>
+<span class="va">tmax</span> <span class="op">&lt;-</span> <span class="fl">125</span>
+<span class="co"># time-step for output return, not the time-step of the sampling algorithm</span>
+<span class="va">dt</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+
+<span class="co"># run deterministic simulation</span>
+<span class="va">ODE_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="va">initialCons</span><span class="op">$</span><span class="va">M0</span>, tmax <span class="op">=</span> <span class="va">tmax</span>, dt <span class="op">=</span> <span class="va">dt</span>, S <span class="op">=</span> <span class="va">S</span>,
+                            hazards <span class="op">=</span> <span class="va">approx_hazards</span>, sampler <span class="op">=</span> <span class="st">"ode"</span>, method <span class="op">=</span> <span class="st">"lsoda"</span>,
+                            events <span class="op">=</span> <span class="va">events</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><strong>MGDrivE2</strong> has several helper functions for summarizing simulation data in a nice format for plotting. Here, we will look at the adult male and female data, though there are many more options explored below.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co"># summarize females by genotype</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>ODE_out_f &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co"># summarize males by genotype</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>ODE_out_m &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="co"># add sex for plotting</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>ODE_out_f<span class="op">$</span>sex &lt;-<span class="st"> "Female"</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>ODE_out_m<span class="op">$</span>sex &lt;-<span class="st"> "Male"</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a><span class="co"># plot</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(ODE_out_f, ODE_out_m)) <span class="op">+</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="dt">facets =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(sex), <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE Solution"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># summarize females by genotype</span>
+<span class="va">ODE_out_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_females.html">summarize_females</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">ODE_out</span><span class="op">$</span><span class="va">state</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span><span class="op">)</span>
+
+<span class="co"># summarize males by genotype</span>
+<span class="va">ODE_out_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_males.html">summarize_males</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">ODE_out</span><span class="op">$</span><span class="va">state</span><span class="op">)</span>
+
+<span class="co"># add sex for plotting</span>
+<span class="va">ODE_out_f</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="st">"Female"</span>
+<span class="va">ODE_out_m</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="st">"Male"</span>
+
+<span class="co"># plot</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">ODE_out_f</span>, <span class="va">ODE_out_m</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">value</span>, color <span class="op">=</span> <span class="va">genotype</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">sex</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"SPN: ODE Solution"</span><span class="op">)</span></code></pre></div>
 <p><img src="lifecycle-node_files/figure-html/unnamed-chunk-9-1.png" width="691.2"></p>
 <p>We see the initial equilibrium at 500 females, as was set above, and 500 males, because we defined an equal sex breakdown in the population. At time <code>t = 25</code>, we see the first release of <code>aa</code> females into the population, and then the 4 subsequent releases. Notice that releases only appear in the females, nothing was released into the males. Since there are no fitness costs, we see the <code>aa</code> individuals come to equilibrium predominantly as heterozygotes, i.e. <code>Aa</code>, with a very small fraction of homozygotes, and the majority of the population remaining <code>AA</code>.</p>
 </div>
@@ -341,28 +359,29 @@
 <a href="#stoch_tau_soln_log" class="anchor"></a>Stochastic: Tau-leaping Solutions</h3>
 <p>For stochastic simulations, we generally rely on tau-leaping; this method retains the integer valued state space, thus necessitating the use of exact hazards. The theoretical basis of tau-leaping depends upon realizing that each transition can be represented as a Poisson process; tau-leaping is therefore an Euler-method for solving continuous-time Markov chains where the “tau-leaping” refers to a fixed time-step of size “tau”, where the number of each transition that fires over such a time-step (<span class="math inline">\(\Delta t\)</span>) is approximated by a Poisson random variable with a linear approximation to the cumulative hazard. This is provided as the <code>dt_stoch</code> an argument to the function <code><a href="../reference/sim_trajectory_R.html">sim_trajectory_R()</a></code>.</p>
 <p>We set <code>tau</code> as our sampler type, use the same release events, conditions, and stoichiometry matrix as above, set the exact hazards instead of the approximate, and finally run the simulation and plot the output.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co"># delta t</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>dt_stoch &lt;-<span class="st"> </span><span class="fl">0.1</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="co"># tau sampling</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>PTS_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>                            <span class="dt">dt_stoch =</span> dt_stoch, <span class="dt">S =</span> S, <span class="dt">hazards =</span> exact_hazards,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>                            <span class="dt">sampler =</span> <span class="st">"tau"</span>, <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="co"># summarize females/males</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>PTS_out_f &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> PTS_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>PTS_out_m &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> PTS_out<span class="op">$</span>state)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a><span class="co"># add sex for plotting</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>PTS_out_f<span class="op">$</span>sex &lt;-<span class="st"> "Female"</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>PTS_out_m<span class="op">$</span>sex &lt;-<span class="st"> "Male"</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a><span class="co"># plot adults</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(PTS_out_f, PTS_out_m)) <span class="op">+</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="dt">facets =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(sex), <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: Tau-leaping Approximation"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># delta t</span>
+<span class="va">dt_stoch</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>
+
+<span class="co"># tau sampling</span>
+<span class="va">PTS_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="va">initialCons</span><span class="op">$</span><span class="va">M0</span>, tmax <span class="op">=</span> <span class="va">tmax</span>, dt <span class="op">=</span> <span class="va">dt</span>,
+                            dt_stoch <span class="op">=</span> <span class="va">dt_stoch</span>, S <span class="op">=</span> <span class="va">S</span>, hazards <span class="op">=</span> <span class="va">exact_hazards</span>,
+                            sampler <span class="op">=</span> <span class="st">"tau"</span>, events <span class="op">=</span> <span class="va">events</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="co"># summarize females/males</span>
+<span class="va">PTS_out_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_females.html">summarize_females</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">PTS_out</span><span class="op">$</span><span class="va">state</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span><span class="op">)</span>
+<span class="va">PTS_out_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_males.html">summarize_males</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">PTS_out</span><span class="op">$</span><span class="va">state</span><span class="op">)</span>
+
+<span class="co"># add sex for plotting</span>
+<span class="va">PTS_out_f</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="st">"Female"</span>
+<span class="va">PTS_out_m</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="st">"Male"</span>
+
+<span class="co"># plot adults</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">PTS_out_f</span>, <span class="va">PTS_out_m</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">value</span>, color <span class="op">=</span> <span class="va">genotype</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">sex</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"SPN: Tau-leaping Approximation"</span><span class="op">)</span></code></pre></div>
 <p><img src="lifecycle-node_files/figure-html/unnamed-chunk-10-1.png" width="691.2"></p>
 <p>As Tau-leaping is a stochastic approximation of our system, we should see some variation around the solution provided by the ODE simulation above. These simulations begin at the proper equilibrium amount, 500 individuals of each sex, with releases performed in females and an equilibrium shortly thereafter. The plots are heuristically similar to the ODE solution, which is good, but notice the slow trend of <code>Aa</code> individuals towards extinction. Since there is such a small amount of <code>a</code> alleles in the population, they are steadily being lost through stochastic drift. If we carried the simulations out longer, it is possible that the <code>a</code> allele will be completely lost from the population.</p>
 </div>
@@ -376,22 +395,24 @@
 <h2 class="hasAnchor">
 <a href="#equilibria_haz_lk" class="anchor"></a>Equilibrium Conditions and Hazard Functions</h2>
 <p>To use Lotka-Volterra density dependence, we need to recalculate the equilibrium and then rebuild the hazard functions. The per-capital larval mortality is <span class="math inline">\(\mu_{L} + \gamma L\)</span>, noted by <code>log = FALSE</code> in the options to <code><a href="../reference/equilibrium_lifeycle.html">equilibrium_lifeycle()</a></code>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co"># using the same parameters as above, along with the SPN_P object already created</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="co"># calculate equilibrium for lotka-volterra dynamics</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>initialCons &lt;-<span class="st"> </span><span class="kw"><a href="../reference/equilibrium_lifeycle.html">equilibrium_lifeycle</a></span>(<span class="dt">params =</span> theta, <span class="dt">NF =</span> NF, <span class="dt">phi =</span> <span class="fl">0.5</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>                                    <span class="dt">log =</span> <span class="ot">FALSE</span>, <span class="dt">spn_P =</span> SPN_P,<span class="dt">cube=</span>cube)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># using the same parameters as above, along with the SPN_P object already created</span>
+<span class="co"># calculate equilibrium for lotka-volterra dynamics</span>
+<span class="va">initialCons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/equilibrium_lifeycle.html">equilibrium_lifeycle</a></span><span class="op">(</span>params <span class="op">=</span> <span class="va">theta</span>, NF <span class="op">=</span> <span class="va">NF</span>, phi <span class="op">=</span> <span class="fl">0.5</span>,
+                                    log <span class="op">=</span> <span class="cn">FALSE</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span>,cube<span class="op">=</span><span class="va">cube</span><span class="op">)</span></code></pre></div>
 <p>We now follow the same steps as before to make the vector of hazards (setting <code>log = FALSE</code>).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co"># approximate hazards for continous approximation</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>approx_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>                              <span class="dt">params =</span> initialCons<span class="op">$</span>params, <span class="dt">type =</span> <span class="st">"life"</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>                              <span class="dt">exact =</span> <span class="ot">FALSE</span>, <span class="dt">tol =</span> <span class="fl">1e-8</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>                              <span class="dt">log =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a><span class="co"># exact hazards for integer-valued state space</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>exact_hazards &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spn_hazards.html">spn_hazards</a></span>(<span class="dt">spn_P =</span> SPN_P, <span class="dt">spn_T =</span> SPN_T, <span class="dt">cube =</span> cube,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>                             <span class="dt">params =</span> initialCons<span class="op">$</span>params, <span class="dt">type =</span> <span class="st">"life"</span>,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>                             <span class="dt">exact =</span> <span class="ot">TRUE</span>, <span class="dt">tol =</span> <span class="ot">NaN</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>                             <span class="dt">log =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># approximate hazards for continous approximation</span>
+<span class="va">approx_hazards</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spn_hazards.html">spn_hazards</a></span><span class="op">(</span>spn_P <span class="op">=</span> <span class="va">SPN_P</span>, spn_T <span class="op">=</span> <span class="va">SPN_T</span>, cube <span class="op">=</span> <span class="va">cube</span>,
+                              params <span class="op">=</span> <span class="va">initialCons</span><span class="op">$</span><span class="va">params</span>, type <span class="op">=</span> <span class="st">"life"</span>,
+                              exact <span class="op">=</span> <span class="cn">FALSE</span>, tol <span class="op">=</span> <span class="fl">1e-8</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,
+                              log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="co"># exact hazards for integer-valued state space</span>
+<span class="va">exact_hazards</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spn_hazards.html">spn_hazards</a></span><span class="op">(</span>spn_P <span class="op">=</span> <span class="va">SPN_P</span>, spn_T <span class="op">=</span> <span class="va">SPN_T</span>, cube <span class="op">=</span> <span class="va">cube</span>,
+                             params <span class="op">=</span> <span class="va">initialCons</span><span class="op">$</span><span class="va">params</span>, type <span class="op">=</span> <span class="st">"life"</span>,
+                             exact <span class="op">=</span> <span class="cn">TRUE</span>, tol <span class="op">=</span> <span class="cn">NaN</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,
+                             log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="sim_lk" class="section level2">
 <h2 class="hasAnchor">
@@ -402,63 +423,66 @@
 <h2 class="hasAnchor">
 <a href="#det_ode_soln_lk" class="anchor"></a>Deterministic: ODE Solutions</h2>
 <p>As before, we run an ODE simulation, but this time we will plot the aquatic stages in two ways: looking at their genotypes over time, and looking at the progress through Erlang-distributed stages.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co"># deterministic simulation</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>ODE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt,</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>                            <span class="dt">S =</span> S, <span class="dt">hazards =</span> approx_hazards, <span class="dt">sampler =</span> <span class="st">"ode"</span>,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>                            <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a><span class="co"># summarize aquatic stages by genotype</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>ODE_out_e &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_eggs_geno.html">summarize_eggs_geno</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a>ODE_out_l &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_larvae_geno.html">summarize_larvae_geno</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>ODE_out_p &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_pupae_geno.html">summarize_pupae_geno</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a><span class="co"># add stage name</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a>ODE_out_e<span class="op">$</span>stage &lt;-<span class="st"> "Egg"</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true"></a>ODE_out_l<span class="op">$</span>stage &lt;-<span class="st"> "Larvae"</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true"></a>ODE_out_p<span class="op">$</span>stage &lt;-<span class="st"> "Pupae"</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true"></a><span class="co"># plot by genotype</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(ODE_out_e, ODE_out_l,ODE_out_p)) <span class="op">+</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="dt">facets =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(stage), <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE Solution - Genotypes"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># deterministic simulation</span>
+<span class="va">ODE_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="va">initialCons</span><span class="op">$</span><span class="va">M0</span>, tmax <span class="op">=</span> <span class="va">tmax</span>, dt <span class="op">=</span> <span class="va">dt</span>,
+                            S <span class="op">=</span> <span class="va">S</span>, hazards <span class="op">=</span> <span class="va">approx_hazards</span>, sampler <span class="op">=</span> <span class="st">"ode"</span>,
+                            events <span class="op">=</span> <span class="va">events</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="co"># summarize aquatic stages by genotype</span>
+<span class="va">ODE_out_e</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_eggs_geno.html">summarize_eggs_geno</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">ODE_out</span><span class="op">$</span><span class="va">state</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span><span class="op">)</span>
+<span class="va">ODE_out_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_larvae_geno.html">summarize_larvae_geno</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">ODE_out</span><span class="op">$</span><span class="va">state</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span><span class="op">)</span>
+<span class="va">ODE_out_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_pupae_geno.html">summarize_pupae_geno</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">ODE_out</span><span class="op">$</span><span class="va">state</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span><span class="op">)</span>
+
+<span class="co"># add stage name</span>
+<span class="va">ODE_out_e</span><span class="op">$</span><span class="va">stage</span> <span class="op">&lt;-</span> <span class="st">"Egg"</span>
+<span class="va">ODE_out_l</span><span class="op">$</span><span class="va">stage</span> <span class="op">&lt;-</span> <span class="st">"Larvae"</span>
+<span class="va">ODE_out_p</span><span class="op">$</span><span class="va">stage</span> <span class="op">&lt;-</span> <span class="st">"Pupae"</span>
+
+<span class="co"># plot by genotype</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">ODE_out_e</span>, <span class="va">ODE_out_l</span>,<span class="va">ODE_out_p</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">value</span>, color <span class="op">=</span> <span class="va">genotype</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">stage</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"SPN: ODE Solution - Genotypes"</span><span class="op">)</span></code></pre></div>
 <p><img src="lifecycle-node_files/figure-html/unnamed-chunk-13-1.png" width="691.2"></p>
 <p>Notice the vastly different equilibrium number for the aquatic stages. These values are parameterized from the adult female value, and the death rates at each stage. Notice that the “releases” here appear to be <code>Aa</code> individuals - this is because our released females (<code>aa</code>) mated with wild-type males (<code>AA</code>), and produced heterozygous (<code>Aa</code>) offspring. Also notice how the releases are smoothed out from Egg to Larvae and Larvae to Pupae stages, due to the death in each stage. We can also see a small dip in the pupal stage, stemming from the over-compensation of density-dependent mortality in the larval stage, before returning to equilibrium.</p>
 <p>We can also explore the aquatic stages by dwell time instead of genotype.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co"># summarize aquatic stages by Erlang stage</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>ODE_out_e &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_eggs_stage.html">summarize_eggs_stage</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>ODE_out_l &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_larvae_stage.html">summarize_larvae_stage</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>ODE_out_p &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_pupae_stage.html">summarize_pupae_stage</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a><span class="co"># add stage name</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>ODE_out_e<span class="op">$</span>stage &lt;-<span class="st"> "Egg"</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a>ODE_out_l<span class="op">$</span>stage &lt;-<span class="st"> "Larvae"</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>ODE_out_p<span class="op">$</span>stage &lt;-<span class="st"> "Pupae"</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a><span class="co"># plot by Erlang stage</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(ODE_out_e, ODE_out_l,ODE_out_p)) <span class="op">+</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> <span class="st">`</span><span class="dt">Erlang-stage</span><span class="st">`</span>)) <span class="op">+</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="dt">facets =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(stage), <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE Solution - Erlang Dwell Stage"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># summarize aquatic stages by Erlang stage</span>
+<span class="va">ODE_out_e</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_eggs_stage.html">summarize_eggs_stage</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">ODE_out</span><span class="op">$</span><span class="va">state</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span><span class="op">)</span>
+<span class="va">ODE_out_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_larvae_stage.html">summarize_larvae_stage</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">ODE_out</span><span class="op">$</span><span class="va">state</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span><span class="op">)</span>
+<span class="va">ODE_out_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_pupae_stage.html">summarize_pupae_stage</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">ODE_out</span><span class="op">$</span><span class="va">state</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span><span class="op">)</span>
+
+<span class="co"># add stage name</span>
+<span class="va">ODE_out_e</span><span class="op">$</span><span class="va">stage</span> <span class="op">&lt;-</span> <span class="st">"Egg"</span>
+<span class="va">ODE_out_l</span><span class="op">$</span><span class="va">stage</span> <span class="op">&lt;-</span> <span class="st">"Larvae"</span>
+<span class="va">ODE_out_p</span><span class="op">$</span><span class="va">stage</span> <span class="op">&lt;-</span> <span class="st">"Pupae"</span>
+
+<span class="co"># plot by Erlang stage</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">ODE_out_e</span>, <span class="va">ODE_out_l</span>,<span class="va">ODE_out_p</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">value</span>, color <span class="op">=</span> <span class="va">`Erlang-stage`</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">stage</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"SPN: ODE Solution - Erlang Dwell Stage"</span><span class="op">)</span></code></pre></div>
 <p><img src="lifecycle-node_files/figure-html/unnamed-chunk-14-1.png" width="691.2"></p>
 <p>This plot shows how individuals are moving through each aquatic stage. There are significantly more individuals in the first Erlang-stage, compared to the second Erlang-stage, and we clearly see how the large increase in eggs is attenuated by death through the larval stage, and the effect of density-dependence actually lowering the amount of larvae that make it to the pupal stage.</p>
 <p>Finally, for comparison with the logistic density-dependent dynamics above, and a different stochastic sampler below, we plot the adult stages.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="co"># summarize females/males</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>ODE_out_f &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>ODE_out_m &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> ODE_out<span class="op">$</span>state)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a><span class="co"># add sex for plotting</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>ODE_out_f<span class="op">$</span>sex &lt;-<span class="st"> "Female"</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>ODE_out_m<span class="op">$</span>sex &lt;-<span class="st"> "Male"</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a><span class="co"># plot adults</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(ODE_out_f, ODE_out_m)) <span class="op">+</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="dt">facets =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(sex), <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: ODE Solution - Adult Stages"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># summarize females/males</span>
+<span class="va">ODE_out_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_females.html">summarize_females</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">ODE_out</span><span class="op">$</span><span class="va">state</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span><span class="op">)</span>
+<span class="va">ODE_out_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_males.html">summarize_males</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">ODE_out</span><span class="op">$</span><span class="va">state</span><span class="op">)</span>
+
+<span class="co"># add sex for plotting</span>
+<span class="va">ODE_out_f</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="st">"Female"</span>
+<span class="va">ODE_out_m</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="st">"Male"</span>
+
+<span class="co"># plot adults</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">ODE_out_f</span>, <span class="va">ODE_out_m</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">value</span>, color <span class="op">=</span> <span class="va">genotype</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">sex</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"SPN: ODE Solution - Adult Stages"</span><span class="op">)</span></code></pre></div>
 <p><img src="lifecycle-node_files/figure-html/unnamed-chunk-15-1.png" width="691.2"></p>
 <p>Notice the similarity with the logistic density-dependent solution. Since there are no fitness effects or complex dynamics happening here, the solutions are effectively the same.</p>
 <div id="stoch_sde_soln_lk" class="section level3">
@@ -466,25 +490,26 @@
 <a href="#stoch_sde_soln_lk" class="anchor"></a>Stochastic: CLE Solutions</h3>
 <p>As an alternative to tau-leaping, which is a discrete stochastic approximation, we investigate a continuous stochastic approximation (Chemical Langevin equation) to the full stochastic model. Theoretically, the CLE approximation is a second-order approximation using continuous state; it is the Fokker-Planck approximation to the Master equation (Kolmogorov Forwards Equations) of the integer valued stochastic process. Because we rely on a relatively simple Euler-Maruyama scheme to solve the system of stochastic differential equations, much like tau-leaping, the user must provide a <span class="math inline">\(\Delta t\)</span> to the <code><a href="../reference/sim_trajectory_R.html">sim_trajectory_R()</a></code> function, and specify the <code>cle</code> sampler.</p>
 <p>Note the change in the sampler, to <code>cle</code>, and the use of approximate hazards.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co"># chemical langevin sampler</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>CLE_out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span>(<span class="dt">x0 =</span> initialCons<span class="op">$</span>M0, <span class="dt">t0 =</span> <span class="dv">0</span>, <span class="dt">tt =</span> tmax, <span class="dt">dt =</span> dt,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>                            <span class="dt">dt_stoch =</span> dt_stoch, <span class="dt">S =</span> S, <span class="dt">hazards =</span> approx_hazards,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>                            <span class="dt">sampler =</span> <span class="st">"cle"</span>, <span class="dt">events =</span> events, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a><span class="co"># summarize females/males</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a>CLE_out_f &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_females.html">summarize_females</a></span>(<span class="dt">out =</span> CLE_out<span class="op">$</span>state, <span class="dt">spn_P =</span> SPN_P)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a>CLE_out_m &lt;-<span class="st"> </span><span class="kw"><a href="../reference/summarize_males.html">summarize_males</a></span>(<span class="dt">out =</span> CLE_out<span class="op">$</span>state)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a><span class="co"># add sex for plotting</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a>CLE_out_f<span class="op">$</span>sex &lt;-<span class="st"> "Female"</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true"></a>CLE_out_m<span class="op">$</span>sex &lt;-<span class="st"> "Male"</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true"></a></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true"></a><span class="co"># plot adults</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(CLE_out_f, CLE_out_m)) <span class="op">+</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> time, <span class="dt">y =</span> value, <span class="dt">color =</span> genotype)) <span class="op">+</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="dt">facets =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(sex), <span class="dt">scales =</span> <span class="st">"fixed"</span>) <span class="op">+</span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"SPN: Chemical Langevin Approximation"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># chemical langevin sampler</span>
+<span class="va">CLE_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_trajectory_R.html">sim_trajectory_R</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="va">initialCons</span><span class="op">$</span><span class="va">M0</span>, tmax <span class="op">=</span> <span class="va">tmax</span>, dt <span class="op">=</span> <span class="va">dt</span>,
+                            dt_stoch <span class="op">=</span> <span class="va">dt_stoch</span>, S <span class="op">=</span> <span class="va">S</span>, hazards <span class="op">=</span> <span class="va">approx_hazards</span>,
+                            sampler <span class="op">=</span> <span class="st">"cle"</span>, events <span class="op">=</span> <span class="va">events</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="co"># summarize females/males</span>
+<span class="va">CLE_out_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_females.html">summarize_females</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">CLE_out</span><span class="op">$</span><span class="va">state</span>, spn_P <span class="op">=</span> <span class="va">SPN_P</span><span class="op">)</span>
+<span class="va">CLE_out_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_males.html">summarize_males</a></span><span class="op">(</span>out <span class="op">=</span> <span class="va">CLE_out</span><span class="op">$</span><span class="va">state</span><span class="op">)</span>
+
+<span class="co"># add sex for plotting</span>
+<span class="va">CLE_out_f</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="st">"Female"</span>
+<span class="va">CLE_out_m</span><span class="op">$</span><span class="va">sex</span> <span class="op">&lt;-</span> <span class="st">"Male"</span>
+
+<span class="co"># plot adults</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">CLE_out_f</span>, <span class="va">CLE_out_m</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">value</span>, color <span class="op">=</span> <span class="va">genotype</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span>facets <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">sex</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"SPN: Chemical Langevin Approximation"</span><span class="op">)</span></code></pre></div>
 <p><img src="lifecycle-node_files/figure-html/unnamed-chunk-16-1.png" width="691.2"></p>
 <p>Looking at this final set of plots, we immediately see the similarity with the ODE solution above. This is an indication that the stochastic time-step is sufficient for an accurate approximation.</p>
 </div>
@@ -492,35 +517,14 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#table-of-contents">Table of Contents</a></li>
-      <li>
-<a href="#ex_log">Example: Logistic Density Dependence</a>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#pars_log">Parameterization</a></li>
-      <li><a href="#init_pn_log">Initialization of the Petri Net</a></li>
-      <li><a href="#equilibria_haz_log">Equilibrium Conditions and Hazard Functions</a></li>
-      <li><a href="#sim_log">Simulation of Fully Specified SPN Model</a></li>
-      </ul>
-</li>
-      <li>
-<a href="#ex_lk">Example: Lotka-Volterra Density Dependence</a>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#equilibria_haz_lk">Equilibrium Conditions and Hazard Functions</a></li>
-      <li><a href="#sim_lk">Simulation of Fully Specified SPN Model</a></li>
-      <li><a href="#det_ode_soln_lk">Deterministic: ODE Solutions</a></li>
-      </ul>
-</li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
+
 
 
       <footer><div class="copyright">
@@ -528,12 +532,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
