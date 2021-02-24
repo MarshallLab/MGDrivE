@@ -1,6 +1,7 @@
 # --------------------------------------------------------------------------------
 #
 #   Simulations for MGDrivE2 paper
+#   Paper Revisions (January 2021)
 #   Comoros
 #   September 2020
 #   Sean L. Wu (slwu89@berkeley.edu)
@@ -17,8 +18,7 @@ rm(list=ls());gc()
 COM_pfpr <- 0.3641667
 
 # fitted cube
-source(here::here("Data/cube.R"))
-
+source(here::here("Data/cube-revisions.R"))
 
 # --------------------------------------------------------------------------------
 #   mean/variance for Erlang aquatic stages
@@ -113,7 +113,13 @@ adjustment <- K_eq / K_mean
 K_ts <- carry$Grande_Comore
 K_ts <- K_ts * adjustment
 
-step_K <- stats::stepfun(x = carry$Day,y = c(K_ts[1],K_ts),f = 0,right = FALSE)
+# exaggerated K
+ex_factor <- 2
+K_diff <- diff(K_ts)
+K_ts_ex <- cumsum(c(K_ts[1],K_diff*ex_factor))
+K_ts_ex_adj <- K_ts_ex * (mean(K_ts) / mean(K_ts_ex))
+
+step_K <- stats::stepfun(x = carry$Day,y = c(K_ts_ex_adj[1],K_ts_ex_adj),f = 0,right = FALSE)
 parameters$K <- c(step_K)
 
 # set up time varying mortality
@@ -162,278 +168,7 @@ M0[["H_I"]] <- parameters$NH * COM_pfpr
 #   time varying hazards
 # --------------------------------------------------------------------------------
 
-make_female_mort_haz_inhom <- function(trans, u, cube, params,
-                                       exact = TRUE, tol = 1e-8){
-
-  # mortality is a time-dependent hazard
-  muF <- params$muF
-  if(typeof(muF) != "closure"){
-    stop("Inhomogeneous hazard 'make_female_mort_haz_inhom', ",
-         "'muF' in 'params' list needs to be a function")
-  }
-
-  # which places have input arcs to this transition
-  s <- trans$s
-
-  # weights of those arcs
-  w <- trans$s_w
-
-  # omega is dependent on genotype
-  f_gen <- strsplit(x = u[s], split = "_", fixed = TRUE)[[1]][2]
-  omega <- cube$omega[f_gen]
-
-  # return the hazard function
-  if(exact){
-
-    # EXACT hazards (check enabling degree: for discrete simulation only)
-    return(
-      function(t,M){
-        if(w <= M[s]){
-          # return(mu_ad_mean * omega * M[s])
-          return(muF(t) * omega * M[s])
-        } else {
-          return(0)
-        }
-      }
-    )
-
-  } else {
-
-    # APPROXIMATE hazards (tolerance around zero; for continuous approximation only)
-    return(
-      function(t,M){
-        # haz <- mu_ad_mean * omega * M[s]
-        haz <- muF(t) * omega * M[s]
-        if(haz < tol){
-          return(0)
-        } else {
-          return(haz)
-        }
-      }
-    )
-
-  }
-  # end of function
-}
-
-make_male_mort_haz_inhom <- function(trans, u, cube, params,
-                                     exact = TRUE, tol = 1e-8){
-
-  # mortality is a time-dependent hazard
-  muM <- params$muM
-  if(typeof(muM) != "closure"){
-    stop("Inhomogeneous hazard 'make_male_mort_haz_inhom', ",
-         "value 'muM' in 'params' list needs to be a function")
-  }
-
-  # which places have input arcs to this transition
-  s <- trans$s
-
-  # weights of those arcs
-  w <- trans$s_w
-
-  # omega is dependent on genotype
-  m_gen <- strsplit(x = u[s], split = "_", fixed = TRUE)[[1]][2]
-  omega <- cube$omega[m_gen]
-
-  # return the hazard function
-  if(exact){
-
-    # EXACT hazards (check enabling degree: for discrete simulation only)
-    return(
-      function(t,M){
-        if(w <= M[s]){
-          # return(mu_ad_mean * omega * M[s])
-          return(muM(t) * omega * M[s])
-        } else {
-          return(0)
-        }
-      }
-    )
-
-  } else {
-
-    # APPROXIMATE hazards (tolerance around zero; for continuous approximation only)
-    return(
-      function(t,M){
-        # haz <- mu_ad_mean * omega * M[s]
-        haz <- muM(t) * omega * M[s]
-        if(haz < tol){
-          return(0)
-        } else {
-          return(haz)
-        }
-      }
-    )
-
-  }
-  # end of function
-}
-
-make_larvae_mort_haz_log_inhom <- function(trans,u,l_ix,node,cube,params,exact = TRUE,tol = 1e-8){
-
-  # rate constants
-  muL <- params$muL
-  K <- params$K[[node]]
-  if(typeof(K) != "closure"){
-    stop("Inhomogeneous hazard 'make_larvae_mort_haz_log', ",
-         "value 'K' in 'params' list needs to be a function")
-  }
-
-
-  # which places have input arcs to this transition
-  s <- trans$s
-
-  # weights of those arcs
-  w <- trans$s_w
-
-  # assign here so that each newly generated closure has the right indices
-  l_ix <- l_ix
-
-  # return the hazard function
-  if(exact){
-
-    # EXACT hazards (check enabling degree: for discrete simulation only)
-    return(
-      function(t,M){
-        if(w <= M[s]){
-          L <- sum(M[l_ix])
-          return(muL*(1 + (L/K(t)))*M[s])
-          # return(muL*(1 + (L/K_mean))*M[s])
-        } else {
-          return(0)
-        }
-      }
-    )
-
-  } else {
-
-    # APPROXIMATE hazards (tolerance around zero; for continuous approximation only)
-    return(
-      function(t,M){
-        # get total males
-        L <- sum(M[l_ix])
-        haz <- muL*(1 + (L/K(t)))*M[s]
-        # haz <- muL*(1 + (L/K_mean))*M[s]
-        # check and return
-        if(haz < tol){
-          return(0)
-        } else {
-          return(haz)
-        }
-      }
-    )
-
-  }
-  # end of function
-}
-
-# make hazards by hand
-make_hazards <- function(spn_P,spn_T,cube,par,log_dd=TRUE,exact=TRUE,tol=1e-12,verbose=TRUE){
-
-  if(tol > 1e-6 & !exact){
-    cat("warning: hazard function tolerance ",tol," is large; consider tolerance < 1e-6 for sufficient accuracy\n")
-  }
-
-  if(log_dd){
-    if(!("K" %in% names(par))){
-      stop("if using logistic (carrying capacity) based density-dependent larval mortality, please specify parameter 'K' in par")
-    }
-  } else {
-    if(!("gamma" %in% names(par))){
-      stop("if using Lotka-Volterra based density-dependent larval mortality, please specify parameter 'gamma' in par")
-    }
-  }
-
-  # transitions and places
-  v <- spn_T$v
-  u <- spn_P$u
-
-  n <- length(v)
-  if(verbose){
-    pb <- txtProgressBar(min = 1,max = n,style = 3)
-    pp <- 1
-  }
-
-  # the hazard functions
-  h <- vector("list",n)
-  h <- setNames(h,v)
-
-  # get male and larvae indices
-  l_ix <- as.vector(spn_P$ix[[1]]$larvae)
-  m_ix <- spn_P$ix[[1]]$males
-
-  # human indices
-  h_ix <- spn_P$ix[[1]]$humans
-
-  cat(" --- generating hazard functions for SPN --- \n")
-
-  # make the hazards
-  for(t in 1:n){
-
-    type <- spn_T$T[[t]]$class
-
-    # make the correct type of hazard
-
-    # MOSQUITO HAZARDS
-    if(type == "oviposit"){
-      h[[t]] <- MGDrivE2:::make_oviposit_haz(t = spn_T$T[[t]],u = u,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "egg_adv"){
-      h[[t]] <- MGDrivE2:::make_egg_adv_haz(t = spn_T$T[[t]],u = u,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "egg_mort"){
-      h[[t]] <- MGDrivE2:::make_egg_mort_haz(t = spn_T$T[[t]],u = u,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "larvae_adv"){
-      h[[t]] <- MGDrivE2:::make_larvae_adv_haz(t = spn_T$T[[t]],u = u,cube = cube,par = par,exact = exact,tol = tol)
-    # INHOMOGENEOUS
-    } else if(type == "larvae_mort"){
-      h[[t]] <- make_larvae_mort_haz_log_inhom(t = spn_T$T[[t]],u = u,l_ix = l_ix,node=1,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "pupae_adv"){
-      h[[t]] <- MGDrivE2:::make_pupae_adv_haz(t = spn_T$T[[t]],u = u,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "pupae_mort"){
-      h[[t]] <- MGDrivE2:::make_pupae_mort_haz(t = spn_T$T[[t]],u = u,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "pupae_2m"){
-      h[[t]] <- MGDrivE2:::make_pupae_2male_haz(t = spn_T$T[[t]],u = u,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "pupae_2f"){
-      h[[t]] <- MGDrivE2:::make_pupae_2female_haz(t = spn_T$T[[t]],u = u,m_ix = m_ix,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "pupae_2unmated"){
-      h[[t]] <- MGDrivE2:::make_pupae_2unmated_haz(t = spn_T$T[[t]],u = u,m_ix = m_ix,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "female_unmated_mate"){
-      h[[t]] <- MGDrivE2:::make_unmated_2female_haz(t = spn_T$T[[t]],u = u,m_ix = m_ix,cube = cube,par = par,exact = exact,tol = tol)
-    # INHOMOGENEOUS
-    } else if(type == "male_mort"){
-      h[[t]] <- make_male_mort_haz_inhom(t = spn_T$T[[t]],u = u,cube = cube,par = par,exact = exact,tol = tol)
-    # INHOMOGENEOUS
-    } else if(type %in% c("female_mort","female_unmated_mort")){
-      h[[t]] <- make_female_mort_haz_inhom(t = spn_T$T[[t]],u = u,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "female_inf"){
-      h[[t]] <- MGDrivE2:::make_female_inf_epi_haz(t = spn_T$T[[t]],u = u,h_ix = h_ix,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "female_eip"){
-      h[[t]] <- MGDrivE2:::make_female_eip_epi_haz(t = spn_T$T[[t]],u = u,par = par,exact = exact,tol = tol)
-    } else if(type == "female_inc"){
-      # can reuse above hazard because transition hazard is the same
-      h[[t]] <- MGDrivE2:::make_female_eip_epi_haz(t = spn_T$T[[t]],u = u,par = par,exact = exact,tol = tol)
-      # HUMAN HAZARDS
-    } else if(type == "H_birth"){
-      h[[t]] <- MGDrivE2:::make_human_birth_sis_haz(t = spn_T$T[[t]],u = u,par = par,exact = exact,tol = tol)
-    } else if(type == "H_mort"){
-      h[[t]] <- MGDrivE2:::make_human_death_sis_haz(t = spn_T$T[[t]],u = u,par = par,exact = exact,tol = tol)
-    } else if(type == "H_infection"){
-      h[[t]] <- MGDrivE2:::make_human_inf_sis_haz(t = spn_T$T[[t]],u = u,h_ix = h_ix,cube = cube,par = par,exact = exact,tol = tol)
-    } else if(type == "H_recovery"){
-      h[[t]] <- MGDrivE2:::make_human_rec_sis_haz(t = spn_T$T[[t]],u = u,par = par,exact = exact,tol = tol)
-    } else {
-      stop(paste0("error in making hazard function for unknown class type: ",type))
-    }
-
-    if(verbose){setTxtProgressBar(pb,t)}
-  }
-
-  if(verbose){close(pb)}
-
-  cat(" --- done generating hazard functions for SPN --- \n")
-
-  return(list("hazards"=h,"flag"=exact))
-}
+source(here::here("Data/hazards-revisions.R"))
 
 # hazard vector
 hazards <- make_hazards(
@@ -446,10 +181,10 @@ hazards <- make_hazards(
 #   release strategy
 # --------------------------------------------------------------------------------
 
-# releases
-r_times <- seq(from = 365*3, length.out = 8, by = 7)
-# r_size <- sum(mosy_eq$init[1,c("NM","NF")]) * 0.1
-r_size <- 1e4
+# release scheme from https://elifesciences.org/articles/51701#s2 
+r_times <- seq(from = 365*3, length.out = 5, by = 7)
+r_size <- NF*2 # corresponds to a 1:1 release scheme
+r_size <- 50000
 
 events <- data.frame(
   "var" = paste0("M_", cube$releaseType),
@@ -471,11 +206,11 @@ Sout <- track_hinf(spn_T = SPN_T, S = S)
 tmax <- min(tail(carry$Day,1),tail(ad$Day,1))
 dt <- 1
 
-set.seed(3213L)
+# set.seed(3213L)
 
 system.time(
   sim_out <- sim_trajectory_R(
-    x0 = M0, t0 = 0, tt = tmax, dt = dt, S = S, Sout = Sout,
+    x0 = M0, tmax = tmax, dt = dt, S = S, Sout = Sout,
     hazards = hazards, sampler = "tau", dt_stoch = 0.05,
     events = events, verbose = T,maxhaz = 1e12)
 )
@@ -500,3 +235,67 @@ p3 <- ggplot(data = sim_humans) +
   theme_bw()
 
 grid.arrange(p1,p3,nrow=2)
+
+
+# --------------------------------------------------------------------------------
+#   sweep release ratios
+# --------------------------------------------------------------------------------
+
+library(foreach)
+library(iterators)
+library(doParallel)
+
+release_fracs <- seq(from=1,to=2-0.05,by=0.1)
+
+cl <- parallel::makeCluster(10,outfile = "/home/slwu89/Desktop/outfile.txt")
+doParallel::registerDoParallel(cl)
+
+parallel::clusterSetRNGStream(cl = cl,iseed = 5837192L)
+
+system.time(sweep_out <- foreach(i = 1:length(release_fracs), .export = c("cube","r_times","r_size","M0","tmax","dt","S","hazards","SPN_P"), .packages = "MGDrivE2") %dopar% {
+  
+  r_size <- NF*release_fracs[i] # corresponds to a 1:1 release scheme
+  
+  events <- data.frame(
+    "var" = paste0("M_", cube$releaseType),
+    "time" = r_times,
+    "value" = r_size,
+    "method" = "add",
+    stringsAsFactors = FALSE
+  )
+  
+  sim_out <- sim_trajectory_R(
+    x0 = M0, tmax = tmax, dt = dt, S = S, Sout = NULL,
+    hazards = hazards, sampler = "tau", dt_stoch = 0.05,
+    events = events, verbose = T,maxhaz = 1e12
+  )
+  
+  ret <- list()
+  ret$frac <- release_fracs[i]
+  ret$sim_female <- summarize_females_epi(out = sim_out$state, spn_P = SPN_P)
+  ret$sim_male <- summarize_males(out = sim_out$state)
+  ret$sim_humans <- summarize_humans_epiSIS(out = sim_out$state)
+  
+  return(ret)
+  
+})
+
+parallel::stopCluster(cl)
+
+library(gridExtra)
+
+lapply(X = sweep_out,FUN = function(xx){
+  
+  p1 <- ggplot(data = xx$sim_female) +
+    geom_line(aes(x=time,y=value,color=genotype)) +
+    facet_wrap(. ~ inf, scales = "free_y") +
+    theme_bw()
+
+  p3 <- ggplot(data = xx$sim_humans) +
+    geom_line(aes(x=time,y=value,color=inf)) +
+    theme_bw()
+
+  pp <- grid.arrange(p1,p3,nrow=2)
+  
+  ggsave(filename = paste0(here::here(),"/Figs/sweep",xx$frac,".pdf"),plot = pp,device = "pdf",width = 16,height = 18)
+})
