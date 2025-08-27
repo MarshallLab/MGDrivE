@@ -13,3 +13,4 @@ rDirichlet(migrationPoint)
 Make a single draw from a Dirichlet distribution with the shape parameter
 one.
 }
+\keyword{internal}

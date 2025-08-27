@@ -8,15 +8,17 @@ using namespace Rcpp;
 //' Dirichlet Distribution
 //'
 //' Make a single draw from a Dirichlet distribution with the shape parameter
-//' one. 
+//' one.
 //'
 //' @param migrationPoint Vector of weights for draws. Must be positive.
+//'
+//' @keywords internal
 //'
 // [[Rcpp::export]]
 NumericVector rDirichlet(const NumericVector& migrationPoint){
 
   // This replaces the MCMCpack rDirichlet function, which was wholly written in R.
-  
+
   //set up return things
   NumericVector probs(migrationPoint.length());
 
@@ -45,6 +47,8 @@ NumericVector rDirichlet(const NumericVector& migrationPoint){
 //' It is only designed to work on integer matrices!
 //'
 //' @return Numeric Matrix
+//'
+//' @keywords internal
 //'
 // [[Rcpp::export]]
 NumericMatrix quantileC(const IntegerMatrix& Trials, const NumericVector& Probs){

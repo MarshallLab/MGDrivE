@@ -97,6 +97,11 @@ cubeTGD <- function(cM1=0, cM2=0, cP1=0, cP2=0,
   # # paste together and get unique ones only
   # genotypes <- unique(do.call(what = paste0, args = list(openAlleles[1, ], openAlleles[2, ])))
 
+  # 20210310
+  #  There are paternal and maternal doubles here
+  #  should add grep(pattern = "P.P.|M.M.", x = genotypes, value = TRUE, invert = TRUE)
+  #  to fix this
+
   genotypes <- c("WWWW","PWWW","MWWW","RWWW","BWWW","WGWW","PGWW","MGWW","RGWW",
                  "BGWW","WRWW","PRWW","MRWW","RRWW","BRWW","WBWW","PBWW","MBWW",
                  "RBWW","BBWW","PWPW","MWPW","PWRW","BWPW","PWWG","PGPW","MGPW",
@@ -134,6 +139,12 @@ cubeTGD <- function(cM1=0, cM2=0, cP1=0, cP2=0,
                             "M"=c("M"=1),
                             "R"=c("R"=1),
                             "B"=c("B"=1))
+
+  # 20210310
+  # are these homing rates right?
+  #  ie, we're setting male and female drive rates the same, dependent upon
+  #  parent of inheritance. What if males/females produce differently from each other?
+  #  ie, if maternal alleles in females are different from maternal alleles in males.
 
   fLocus1$paternal <- list("W"=c("W"=1-cP1,
                                  "M"=cP1*hP1,

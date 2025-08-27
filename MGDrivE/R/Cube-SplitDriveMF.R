@@ -17,7 +17,7 @@
 #
 ###############################################################################
 
-#' Inheritance Cube: Split CRISPR drive with 2 Resistance Alleles and male/female specific homing
+#' Inheritance Cube: Split CRISPR Drive with 2 Resistance Alleles and male/female specific homing
 #'
 #' This is a sex-specific version of a split CRISPR drive. At one locus is the Cas9, inherited
 #' in a Mendelian fashion. At a second, unlinked, locus are the gRNAs. When the two loci occur
@@ -89,7 +89,8 @@ cubeSplitDrive <- function(cM = 1.0, chM = 0, crM = 0, ccM = cM, cchM = chM, ccr
 
 
   ## safety checks
-  params <- c(cM, chM, crM, ccM, cchM, ccrM, cF, chF, crF, ccF, cchF, ccrF)
+  params <- c(cM, chM, crM, ccM, cchM, ccrM, cF, chF, crF, ccF, cchF, ccrF,
+              dW, dhW, drW, ddW, ddhW, ddrW)
   if(any(params>1) || any(params<0)){
     stop("Parameters are rates, they must be between 0 and 1.")
   }
@@ -520,8 +521,10 @@ cubeSplitDrive <- function(cM = 1.0, chM = 0, crM = 0, ccM = cM, cchM = chM, ccr
   tMatrix['CCRB', 'WWRB', c('WCRR','WCRB','WCBB')] <- c(0.25,0.5,0.25)
   tMatrix['CCRB', 'WWBB', c('WCRB','WCBB')] <- c(0.5,0.5)
   tMatrix['CCRB', 'WCWW', c('WCWR','WCWB','CCWR','CCWB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCRB', 'WCWR', c('WCWR','WCWB','WCRR','WCRB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCRB', 'WCWB', c('WCWR','WCWB','WCRB','WCBB')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['CCRB', 'WCWR', c('WCWR','WCWB','WCRR','WCRB',
+                            'CCWR','CCWB','CCRR','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
+  tMatrix['CCRB', 'WCWB', c('WCWR','WCWB','WCRB','WCBB',
+                            'CCWR','CCWB','CCRB','CCBB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
   tMatrix['CCRB', 'WCHH', c('WCHR','WCHB','CCHR','CCHB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCRB', 'WCHR', c('WCHR','WCHB','WCRR','WCRB',
                             'CCHR','CCHB','CCRR','CCRB')] <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125)
@@ -545,7 +548,7 @@ cubeSplitDrive <- function(cM = 1.0, chM = 0, crM = 0, ccM = cM, cchM = chM, ccr
   tMatrix['CCBB', 'WWWR', c('WCWB','WCRB')] <- c(0.5,0.5)
   tMatrix['CCBB', 'WWWB', c('WCWB','WCBB')] <- c(0.5,0.5)
   tMatrix['CCBB', 'WWHH', 'WCHB'] <- 1
-  tMatrix['CCBB', 'WWHR', c('WCWB','WCRB')] <- c(0.5,0.5)
+  tMatrix['CCBB', 'WWHR', c('WCHB','WCRB')] <- c(0.5,0.5)
   tMatrix['CCBB', 'WWHB', c('WCHB','WCBB')] <- c(0.5,0.5)
   tMatrix['CCBB', 'WWRR', 'WCRB'] <- 1
   tMatrix['CCBB', 'WWRB', c('WCRB','WCBB')] <- c(0.5,0.5)
@@ -553,9 +556,9 @@ cubeSplitDrive <- function(cM = 1.0, chM = 0, crM = 0, ccM = cM, cchM = chM, ccr
   tMatrix['CCBB', 'WCWW', c('WCWB','CCWB')] <- c(0.5,0.5)
   tMatrix['CCBB', 'WCWR', c('WCWB','WCRB','CCWB','CCRB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCBB', 'WCWB', c('WCWB','WCBB','CCWB','CCBB')] <- c(0.25,0.25,0.25,0.25)
-  tMatrix['CCBB', 'WCHH', 'WCHB'] <- 1
-  tMatrix['CCBB', 'WCHR', c('WCHB','WCRB')] <- c(0.5,0.5)
-  tMatrix['CCBB', 'WCHB', c('WCHB','WCBB')] <- c(0.5,0.5)
+  tMatrix['CCBB', 'WCHH', c('WCHB','CCHB')] <- c(0.5,0.5)
+  tMatrix['CCBB', 'WCHR', c('WCHB','WCRB','CCHB','CCRB')] <- c(0.25,0.25,0.25,0.25)
+  tMatrix['CCBB', 'WCHB', c('WCHB','WCBB','CCHB','CCBB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCBB', 'WCRR', c('WCRB','CCRB')] <- c(0.5,0.5)
   tMatrix['CCBB', 'WCRB', c('WCRB','WCBB','CCRB','CCBB')] <- c(0.25,0.25,0.25,0.25)
   tMatrix['CCBB', 'WCBB', c('WCBB','CCBB')] <- c(0.5,0.5)
@@ -1241,7 +1244,7 @@ cubeSplitDrive <- function(cM = 1.0, chM = 0, crM = 0, ccM = cM, cchM = chM, ccr
   ## genotype-specific modifiers
   modifiers = cubeModifiers(gtype, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)
 
-  ## put everytWing into a labeled list to return
+  ## put everything into a labeled list to return
   return(list(
     ih = tMatrix,
     tau = viabilityMask,

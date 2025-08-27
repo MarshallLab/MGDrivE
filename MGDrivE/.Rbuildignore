@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+DEV-NOTES.txt
+^docs$
+^_pkgdown\.yml$
+^doc$
+^Meta$

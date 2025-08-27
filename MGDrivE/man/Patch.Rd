@@ -5,7 +5,7 @@
 \alias{Patch}
 \title{Patch Class Definition}
 \format{
-An \code{\link{R6Class}} generator object
+An \code{\link[R6]{R6Class}} generator object
 }
 \description{
 A Patch is a single well-mixed population that is the smallest unit of simulation for MGDrivE.

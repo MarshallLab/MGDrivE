@@ -12,3 +12,4 @@ probability is given by \deqn{1-\mu_{aq}}. \eqn{\mu_{aq}} corresponds
 to daily non-density-dependent aquatic mortality. \cr
 See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 }
+\keyword{internal}

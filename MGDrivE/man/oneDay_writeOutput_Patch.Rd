@@ -9,3 +9,4 @@ oneDay_writeOutput_Patch()
 \description{
 Writes output to the text connections specified in the enclosing \code{\link{Network}}.
 }
+\keyword{internal}

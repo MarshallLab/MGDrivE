@@ -16,3 +16,4 @@ get_drivecubeindex_Network(fG = NULL, mG = NULL, oG = NULL)
 \description{
 Return elements or slices of drive cube. If all \code{NULL} return entire cube.
 }
+\keyword{internal}

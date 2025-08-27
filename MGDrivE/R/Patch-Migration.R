@@ -30,6 +30,8 @@
 #' @param maleIn Vector of inbound migration
 #' @param femaleIn Matrix of inbound migration
 #'
+#' @keywords internal
+#'
 oneDay_migrationIn_Patch <- function(maleIn, femaleIn){
   private$popMale[] = maleIn
   private$popFemale[] = femaleIn

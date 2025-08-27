@@ -18,7 +18,7 @@ In this demo, we release 100 mosquitoes homozygous for the CRISPR/Cas-9 homing d
 
 <br>
 <div align="center">
-<a href="https://youtu.be/sZXuUtToszw" target="_blank"><img src="http://img.youtube.com/vi/sZXuUtToszw/0.jpg" width="640" height="480" border="10"/></a>
+<a href="https://youtu.be/sZXuUtToszw" target="_blank"><img src="http://img.youtube.com/vi/sZXuUtToszw/0.jpg" alt="CRISPR/Cas-9 gene drive example, demonstrating spread through a network." width="640" height="480" border="10"/></a>
 </div>
 <br>
 

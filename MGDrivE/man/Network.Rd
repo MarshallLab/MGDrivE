@@ -5,7 +5,7 @@
 \alias{Network}
 \title{Network Class Definition}
 \format{
-An \code{\link{R6Class}} generator object
+An \code{\link[R6]{R6Class}} generator object
 }
 \description{
 A \code{Network} class object stores all the information for a simulation on

@@ -9,3 +9,4 @@ get_phi_Network()
 \description{
 Return genotype-specific sex ratio at emergence
 }
+\keyword{internal}

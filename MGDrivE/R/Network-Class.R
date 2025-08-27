@@ -21,7 +21,7 @@
 #' a defined landscape.
 #'
 #' @docType class
-#' @format An \code{\link{R6Class}} generator object
+#' @format An \code{\link[R6]{R6Class}} generator object
 #' @keywords R6 class
 #'
 #' @section **Constructor**:
@@ -232,6 +232,8 @@ Network <- R6::R6Class(classname = "Network",
 #'
 #' @param stage Character in 'E', 'L', 'P'; if \code{NULL} return total duration
 #'
+#' @keywords internal
+#'
 get_timeAq_Network <- function(stage = NULL){
   if(is.null(stage)){
     return(sum(private$parameters$timeAq))
@@ -248,6 +250,8 @@ Network$set(which = "public",name = "get_timeAq",
 #'
 #' Return size of wild-type egg batch
 #'
+#' @keywords internal
+#'
 get_beta_Network <- function(){return(private$parameters$beta)}
 
 Network$set(which = "public",name = "get_beta",
@@ -258,6 +262,8 @@ Network$set(which = "public",name = "get_beta",
 #'
 #' Return adult mortality
 #'
+#' @keywords internal
+#'
 get_muAd_Network <- function(){return(private$parameters$muAd)}
 
 Network$set(which = "public",name = "get_muAd",
@@ -267,6 +273,8 @@ Network$set(which = "public",name = "get_muAd",
 #' Get muAq
 #'
 #' Return larval mortality, see \code{\link{calcLarvalStageMortalityRate}}
+#'
+#' @keywords internal
 #'
 get_muAq_Network <- function(){return(private$parameters$muAq)}
 
@@ -279,6 +287,8 @@ Network$set(which = "public",name = "get_muAq",
 #' Return density dependent mortality, see \code{\link{calcDensityDependentDeathRate}}
 #'
 #' @param ix Index of patch
+#'
+#' @keywords internal
 #'
 get_alpha_Network <- function(ix){return(private$parameters$alpha[ix])}
 
@@ -298,6 +308,8 @@ Network$set(which = "public",name = "get_alpha",
 #' @param mG Male genotype index
 #' @param oG Offspring genotype index
 #'
+#' @keywords internal
+#'
 get_drivecubeindex_Network <- function(fG=NULL,mG=NULL,oG=NULL){
   if(is.null(fG)){fG = 1:private$driveCube$genotypesN}
   if(is.null(mG)){mG = 1:private$driveCube$genotypesN}
@@ -314,6 +326,8 @@ Network$set(which = "public",name = "get_drivecubeindex",
 #' @param fG Number for which female genotype to get
 #' @param mG Number for which male genotype to get
 #' @param oG Number for which offspring genotype to get
+#'
+#' @keywords internal
 #'
 #' Return matrix
 #'
@@ -332,6 +346,8 @@ Network$set(which = "public",name = "get_tau",
 #'
 #' Return character vector of possible genotypes
 #'
+#' @keywords internal
+#'
 get_genotypesID_Network <- function(){return(private$driveCube$genotypesID)}
 
 Network$set(which = "public",name = "get_genotypesID",
@@ -342,6 +358,8 @@ Network$set(which = "public",name = "get_genotypesID",
 #'
 #' Return number of possible genotypes
 #'
+#' @keywords internal
+#'
 get_genotypesN_Network <- function(){return(private$driveCube$genotypesN)}
 
 Network$set(which = "public",name = "get_genotypesN",
@@ -351,6 +369,8 @@ Network$set(which = "public",name = "get_genotypesN",
 #' Get eta
 #'
 #' @param fIdx Index of female genotype to pull
+#'
+#' @keywords internal
 #'
 #' Return genotype-specific mating fitness
 #'
@@ -364,6 +384,8 @@ Network$set(which = "public",name = "get_eta",
 #'
 #' Return genotype-specific sex ratio at emergence
 #'
+#' @keywords internal
+#'
 get_phi_Network <- function(){return(private$driveCube$phi)}
 
 Network$set(which = "public",name = "get_phi",
@@ -373,6 +395,8 @@ Network$set(which = "public",name = "get_phi",
 #' Get omega
 #'
 #' Return genotype-specific multiplicative modifier of adult mortality
+#'
+#' @keywords internal
 #'
 get_omega_Network <- function(){return(private$driveCube$omega)}
 
@@ -384,6 +408,8 @@ Network$set(which = "public",name = "get_omega",
 #'
 #' Return genotype-specific female pupatory success
 #'
+#' @keywords internal
+#'
 get_xiF_Network <- function(){return(private$driveCube$xiF)}
 
 Network$set(which = "public",name = "get_xiF",
@@ -394,6 +420,8 @@ Network$set(which = "public",name = "get_xiF",
 #'
 #' Return genotype-specific male pupatory success
 #'
+#' @keywords internal
+#'
 get_xiM_Network <- function(){return(private$driveCube$xiM)}
 
 Network$set(which = "public",name = "get_xiM",
@@ -403,6 +431,8 @@ Network$set(which = "public",name = "get_xiM",
 #' Get s
 #'
 #' Return genotype-specific fractional reduction(increase) in fertility
+#'
+#' @keywords internal
 #'
 get_s_Network <- function(){return(private$driveCube$s)}
 
@@ -418,6 +448,8 @@ Network$set(which = "public",name = "get_s",
 #'
 #' Return number of patches
 #'
+#' @keywords internal
+#'
 get_nPatch_Network <- function(){return(private$nPatch)}
 
 Network$set(which = "public",name = "get_nPatch",
@@ -427,6 +459,8 @@ Network$set(which = "public",name = "get_nPatch",
 #' Get conADM
 #'
 #' Return \code{\link[base]{connection}} where adult male dynamics are written to
+#'
+#' @keywords internal
 #'
 get_conM_Network <- function(){return(private$conADM)}
 
@@ -438,6 +472,8 @@ Network$set(which = "public",name = "get_conADM",
 #'
 #' Return \code{\link[base]{connection}} where adult female dynamics are written to
 #'
+#' @keywords internal
+#'
 get_conF_Network <- function(){return(private$conADF)}
 
 Network$set(which = "public",name = "get_conADF",
@@ -447,6 +483,8 @@ Network$set(which = "public",name = "get_conADF",
 #' Get tNow
 #'
 #' Return current simulation time
+#'
+#' @keywords internal
 #'
 get_tNow_Network <- function(){return(private$tNow)}
 
@@ -460,6 +498,8 @@ Network$set(which = "public",name = "get_tNow",
 #'
 #' @param patch Index of patch
 #' @param sex Character in 'M', 'F', 'Egg', 'mF'
+#'
+#' @keywords internal
 #'
 get_patchReleases_Network <- function(patch, sex = "M"){
   switch(sex,

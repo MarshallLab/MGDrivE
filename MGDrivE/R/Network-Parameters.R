@@ -308,6 +308,8 @@ check <- function(x){
 #' @param adultPopSizeEquilibrium Adult population size at equilibrium, \eqn{Ad_{eq}}
 #' @param populationGrowthRate Population growth in absence of density-dependent mortality \eqn{R_{m}}
 #'
+#' @keywords internal
+#'
 calcDensityDependentDeathRate <- function(fertility, thetaAq, tAq,
                                           adultPopSizeEquilibrium, populationGrowthRate){
 
@@ -325,6 +327,8 @@ calcDensityDependentDeathRate <- function(fertility, thetaAq, tAq,
 #' @param stagesDuration Vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}
 #' @param adultMortality Adult mortality rate, \eqn{\mu_{ad}}
 #'
+#' @keywords internal
+#'
 calcAverageGenerationTime <- function(stagesDuration, adultMortality){
   return(sum(stagesDuration) + (1.0 / adultMortality))
 }
@@ -337,6 +341,8 @@ calcAverageGenerationTime <- function(stagesDuration, adultMortality){
 #' @param dailyPopGrowthRate Daily population growth rate, \eqn{r_{m}}
 #' @param averageGenerationTime See \code{\link{calcAverageGenerationTime}}
 #'
+#' @keywords internal
+#'
 calcPopulationGrowthRate <- function(dailyPopGrowthRate, averageGenerationTime){
   return(dailyPopGrowthRate^averageGenerationTime)
 }
@@ -348,6 +354,8 @@ calcPopulationGrowthRate <- function(dailyPopGrowthRate, averageGenerationTime){
 #'
 #' @param mortalityRate Daily mortality probability, \eqn{\mu_{st}}
 #' @param stageDuration Duration of aquatic stage, \eqn{T^{st}}
+#'
+#' @keywords internal
 #'
 calcAquaticStageSurvivalProbability <- function(mortalityRate, stageDuration){
   return((1-mortalityRate)^stageDuration)
@@ -362,6 +370,8 @@ calcAquaticStageSurvivalProbability <- function(mortalityRate, stageDuration){
 #' @param adultMortality Adult mortality rate, \eqn{\mu_{ad}}
 #' @param fertility Number of eggs per oviposition for wild-type females, \eqn{\beta}
 #' @param aquaticStagesDuration Vector of lengths of aquatic stages, \eqn{T_{e}, T_{l}, T_{p}}
+#'
+#' @keywords internal
 #'
 calcLarvalStageMortalityRate <- function(generationPopGrowthRate, adultMortality,
                                          fertility, aquaticStagesDuration){
@@ -379,6 +389,8 @@ calcLarvalStageMortalityRate <- function(generationPopGrowthRate, adultMortality
 #'
 #' @param alpha See \code{\link{calcDensityDependentDeathRate}}
 #' @param Rm See \code{\link{calcPopulationGrowthRate}}
+#'
+#' @keywords internal
 #'
 calcLarvalPopEquilibrium <- function(alpha, Rm){
   return(as.integer(round(alpha * (Rm-1))))

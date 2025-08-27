@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // rDirichlet
 NumericVector rDirichlet(const NumericVector& migrationPoint);
 RcppExport SEXP _MGDrivE_rDirichlet(SEXP migrationPointSEXP) {
@@ -119,15 +124,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // calcHurdleExpKernel
-Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat, const double& rate, const double& p0);
-RcppExport SEXP _MGDrivE_calcHurdleExpKernel(SEXP distMatSEXP, SEXP rateSEXP, SEXP p0SEXP) {
+Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat, const double& rate, const double& p0, const double& eps);
+RcppExport SEXP _MGDrivE_calcHurdleExpKernel(SEXP distMatSEXP, SEXP rateSEXP, SEXP p0SEXP, SEXP epsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type distMat(distMatSEXP);
     Rcpp::traits::input_parameter< const double& >::type rate(rateSEXP);
     Rcpp::traits::input_parameter< const double& >::type p0(p0SEXP);
-    rcpp_result_gen = Rcpp::wrap(calcHurdleExpKernel(distMat, rate, p0));
+    Rcpp::traits::input_parameter< const double& >::type eps(epsSEXP);
+    rcpp_result_gen = Rcpp::wrap(calcHurdleExpKernel(distMat, rate, p0, eps));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -142,7 +148,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MGDrivE_calcLognormalKernel", (DL_FUNC) &_MGDrivE_calcLognormalKernel, 3},
     {"_MGDrivE_calcGammaKernel", (DL_FUNC) &_MGDrivE_calcGammaKernel, 3},
     {"_MGDrivE_calcExpKernel", (DL_FUNC) &_MGDrivE_calcExpKernel, 2},
-    {"_MGDrivE_calcHurdleExpKernel", (DL_FUNC) &_MGDrivE_calcHurdleExpKernel, 3},
+    {"_MGDrivE_calcHurdleExpKernel", (DL_FUNC) &_MGDrivE_calcHurdleExpKernel, 4},
     {NULL, NULL, 0}
 };
 

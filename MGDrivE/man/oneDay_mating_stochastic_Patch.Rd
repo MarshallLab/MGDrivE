@@ -16,3 +16,4 @@ If there are no adult males, the unmated females experience one day of death,
 sampled from a binomial distribution parameterized by \deqn{(1-\mu_{ad}) * \overline{\omega_f}},
 and remain unmated until tomorrow.
 }
+\keyword{internal}

@@ -1,4 +1,11 @@
+url: https://marshalllab.github.io/MGDrivE/docs_v1
+
 destination: docs
+
+template:
+  bootstrap: 5
+  math-rendering: mathjax
+  light-switch: true
 
 authors:
   Héctor Manuel Sánchez Castellanos:
@@ -25,31 +32,53 @@ navbar:
   right:
    - icon: fa-lg fa-github
      href: https://github.com/MarshallLab/MGDrivE
+     aria-label: View on GitHub
 
 reference:
+- title: Software Introduction
+  desc: >
+    Articles which describe key mathematical points and features of the **MGDrivE** simulation.
+  contents:
+  - '`MGDrivE`'
+  - '`MGDrivE-Model`'
+  - '`MGDrivE-Cube`'
 - title: Inheritance Cubes
   desc: >
     A description of the available inheritance cubes for simulation, and some associated helper functions.
   contents:
+  - '`cubeAlleleSail`'
+  - '`cubeASmidler`'
+  - '`cubeCLEAVRMF`'
+  - '`cubeCLEAVRX`'
   - '`cubeClvR`'
   - '`cubeClvR2`'
+  - '`cubeConfinableHoming`'
+  - '`cubeConfinableHomingX`'
+  - '`cubeConfinableHomingJOHN`'
   - '`cubeECHACR`'
   - '`cubeECHACRX`'
   - '`cubeHoming1RA`'
   - '`cubeHomingDrive`'
+  - '`cubeHomingDriveSM`'
+  - '`cubeXHomingDeposition`'
+  - '`cubeImmunizingReversalMF`'
+  - '`cubeImmunizingReversalX`'
   - '`cubeKillerRescue`'
   - '`cubeMEDEA`'
   - '`cubeMendelian`'
-  - '`cubeModifiers`'
+  - '`cubeReciprocalTranslocations`'
+  - '`cubeRIDL`'
+  - '`cubeSplitDrive`'
+  - '`cubeSplitDriveX`'
+  - '`cubeSplitDriveY`'
   - '`cubeOneLocusTA`'
   - '`cubeTwoLocusTA`'
-  - '`cubeRIDL`'
-  - '`cubeReciprocalTranslocations`'
-  - '`cubeWolbachia`'
-  - '`cube2csv`'
-  - '`cubeSplitDrive`'
   - '`cubeTGD`'
   - '`cubeTGDX`'
+  - '`cubeWolbachia`'
+  - '`cubeXShredderMF`'
+  - '`cubeXShredderY`'
+  - '`cube2csv`'
 - title: Kernel & Geographic Distance
   desc: >
     Functions to generate movement matrices based on parameteric dispersal kernels and function to calculate distance matrices between latitude/longitude pairs of points.
@@ -106,3 +135,12 @@ reference:
     The Network object class which is the main object with which to interact with the **MGDrivE** simulation, and manages the metapopulation dynamics upon which the simulation runs.
   contents:
   - '`Network`'
+  - '`oneRun_Network`'
+  - '`multRun_Network`'
+  - '`reset_Network`'
+- title: Patch Class
+  desc: >
+    A Patch is a single well-mixed population that is the smallest unit of simulation for **MGDrivE**.
+  contents:
+  - '`Patch`'
+

@@ -45,18 +45,33 @@ MGDrivE provides the following cubes to model different gene drive systems:
 \itemize{
 \item \code{\link{cubeOneLocusTA}}: 1 Locus Maternal-Toxin/Zygotic-Antidote System
 \item \code{\link{cubeTwoLocusTA}}: 2 Locus Maternal-Toxin/Zygotic-Antidote System
+\item \code{\link{cubeAlleleSail}}: 3 Locus Allele Sail, similar to Oberhofer et. al.
+\item \code{\link{cubeASmidler}}: Split drive design with significant parent-specific impacts
+\item \code{\link{cubeCLEAVRMF}}: Cleave and Rescue
+\item \code{\link{cubeCLEAVRX}}: Cleave and Rescue, X-Linked
 \item \code{\link{cubeClvR}}: 1 Locus Cleave and Rescue (ClvR)
 \item \code{\link{cubeClvR2}}: 2 Locus Cleave and Rescue (ClvR)
+\item \code{\link{cubeConfinableHoming}}: Confinable Homing
+\item \code{\link{cubeConfinableHomingX}}: Confinable Homing, X-Linked
 \item \code{\link{cubeHoming1RA}}: Homing Drive with 1 Resistance Allele
 \item \code{\link{cubeHomingDrive}}: CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Allele
-\item \code{\link{cubeECHACR}}: ERACR-CHACR
-\item \code{\link{cubeECHACRX}}: ECHACR, X-Linked
+\item \code{\link{cubeHomingDriveSM}}: CRISPR with Small-Molecule Induction
+\item \code{\link{cubeXHomingDeposition}}: CRISPR, X-Linked
+\item \code{\link{cubeECHACR}}: 2 Locus Eraser/Chaser Construct, Autosomal
+\item \code{\link{cubeECHACRX}}: 2 Locus Eraser/Chaser Construct, X-Linked
+\item \code{\link{cubeImmunizingReversalMF}}: Immunizing Reversal/Basic Reversal
+\item \code{\link{cubeImmunizingReversalX}}: Immunizing Reversal
+\item \code{\link{cubeConfinableHomingJOHN}}: Original Cube Design (We DO NOT recommend using this)
 \item \code{\link{cubeKillerRescue}}: Killer-Rescue System
 \item \code{\link{cubeMEDEA}}: MEDEA (Maternal Effect Dominant Embryonic Arrest)
 \item \code{\link{cubeReciprocalTranslocations}}: Reciprocal Translocation
 \item \code{\link{cubeRIDL}}: RIDL (Release of Insects with Dominant Lethality)
+\item \code{\link{cubeXShredderMF}}: X-Shredder, Autosomal
+\item \code{\link{cubeXShredderY}}: X-Shredder, Y-Linked
 \item \code{\link{cubeMendelian}}: Mendelian
-\item \code{\link{cubeSplitDrive}}: Split CRISPR drive
+\item \code{\link{cubeSplitDrive}}: Split CRISPR Drive
+\item \code{\link{cubeSplitDriveX}}: Split CRISTPR Drive, X-Linked
+\item \code{\link{cubeSplitDriveY}}: Split CRISTPR Drive, Y-Linked
 \item \code{\link{cubeTGD}}: trans-complementing Gene Drive
 \item \code{\link{cubeTGDX}}: trans-complementing Gene Drive, X-Linked
 \item \code{\link{cubeWolbachia}}: Wolbachia

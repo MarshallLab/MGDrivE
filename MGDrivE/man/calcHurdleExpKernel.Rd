@@ -4,7 +4,7 @@
 \alias{calcHurdleExpKernel}
 \title{Calculate Zero-inflated Exponential Stochastic Matrix}
 \usage{
-calcHurdleExpKernel(distMat, rate, p0)
+calcHurdleExpKernel(distMat, rate, p0, eps = 1e-20)
 }
 \arguments{
 \item{distMat}{Distance matrix from \code{\link[MGDrivE]{calcVinEll}}}
@@ -12,6 +12,8 @@ calcHurdleExpKernel(distMat, rate, p0)
 \item{rate}{Rate parameter of \code{\link[stats]{Exponential}} distribution}
 
 \item{p0}{Point mass at zero}
+
+\item{eps}{Cutoff for extremely small probabilities, default is 1e-20}
 }
 \description{
 Given a distance matrix from \code{\link[MGDrivE]{calcVinEll}}, calculate a

@@ -9,3 +9,4 @@ get_malePop_Patch()
 \description{
 Return males (nGenotypes vector)
 }
+\keyword{internal}

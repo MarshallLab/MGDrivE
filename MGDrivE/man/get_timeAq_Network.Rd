@@ -12,3 +12,4 @@ get_timeAq_Network(stage = NULL)
 \description{
 Return duration of aquatic stages.
 }
+\keyword{internal}

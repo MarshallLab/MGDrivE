@@ -12,3 +12,4 @@ Calculate the number of eggs oviposited by female mosquitoes following:
 The deterministic result for number of eggs is used as the mean of a Poisson-distributed
 number of actual eggs oviposited.
 }
+\keyword{internal}

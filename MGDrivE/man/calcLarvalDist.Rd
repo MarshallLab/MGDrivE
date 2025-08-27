@@ -18,3 +18,4 @@ stationary distribution. As the only aquatic population known for initializing
 MGDrivE is the equilibrium larval population, this acts as an anchor from which
 to calculate the egg and pupae distributions from (see \code{\link{set_initialPopulation_Patch}}).
 }
+\keyword{internal}

@@ -9,3 +9,4 @@ get_conM_Network()
 \description{
 Return \code{\link[base]{connection}} where adult male dynamics are written to
 }
+\keyword{internal}

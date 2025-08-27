@@ -14,3 +14,4 @@ calcAverageGenerationTime(stagesDuration, adultMortality)
 \description{
 Calculate \eqn{g}, average generation time, given by: \deqn{g=T_e+T_l+T_p+\frac{1}{\mu_{ad}}}
 }
+\keyword{internal}

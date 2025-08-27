@@ -11,3 +11,4 @@ Daily adult survival is calculated according to \deqn{\overline{\overline{Af_{[t
 where \eqn{\mu_{ad}} corresponds to adult mortality rate and \eqn{\overline{\omega_{m/f}}}
 corresponds to genotype-specific male/female mortality effects.
 }
+\keyword{internal}

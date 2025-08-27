@@ -163,6 +163,8 @@ Network$set(which = "public",name = "multRun",
 #' Runs a single day of simulation on a \code{\link{Network}} object, handling
 #' population dynamics, migration, population update, and output.
 #'
+#' @keywords internal
+#'
 oneDay_Network <- function(){
 
   # intra-patch population dynamics

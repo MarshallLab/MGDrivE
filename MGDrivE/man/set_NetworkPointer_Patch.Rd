@@ -12,3 +12,4 @@ set_NetworkPointer_Patch(NetworkPointer)
 \description{
 Set a reference to the enclosing \code{\link{Network}} object
 }
+\keyword{internal}

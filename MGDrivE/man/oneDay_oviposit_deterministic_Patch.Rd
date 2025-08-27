@@ -10,3 +10,4 @@ oneDay_oviposit_deterministic_Patch()
 Calculate the number of eggs oviposited by female mosquitoes following:
 \deqn{\overline{O(T_x)} = \sum_{j=1}^{n} \Bigg( \bigg( (\beta*\overline{s} * \overline{ \overline{Af_{[t]}}}) * \overline{\overline{\overline{Ih}}} \bigg) * \Lambda \Bigg)^{\top}_{ij}}
 }
+\keyword{internal}

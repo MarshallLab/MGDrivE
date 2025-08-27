@@ -24,6 +24,8 @@
 #'
 #' @importFrom grDevices hcl
 #'
+#' @keywords internal
+#'
 ggColUtility <- function(n, alpha = .75) {
   # equally spaced intervals
   hues = seq(15, 375, length = n + 1)

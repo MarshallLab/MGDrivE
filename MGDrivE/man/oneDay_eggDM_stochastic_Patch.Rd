@@ -13,3 +13,4 @@ to daily non-density-dependent aquatic mortality. \cr
 Eggs transition into larvae at the end of \eqn{T_e}. \cr
 See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 }
+\keyword{internal}

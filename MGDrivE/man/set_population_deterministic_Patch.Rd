@@ -36,3 +36,4 @@ set_population_deterministic_Patch(
 Calls \code{\link{set_initialPopulation_Patch}} to initialize a steady-state
 population distribution.
 }
+\keyword{internal}

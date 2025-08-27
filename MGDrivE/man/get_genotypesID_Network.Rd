@@ -9,3 +9,4 @@ get_genotypesID_Network()
 \description{
 Return character vector of possible genotypes
 }
+\keyword{internal}

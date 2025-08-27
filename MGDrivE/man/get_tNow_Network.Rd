@@ -9,3 +9,4 @@ get_tNow_Network()
 \description{
 Return current simulation time
 }
+\keyword{internal}

@@ -23,6 +23,8 @@
 #' @param mu Double, death rate
 #' @param t Integer, stage time
 #'
+#' @keywords internal
+#'
 calcLarvalDist <- function(mu, t){
   # treat the world as a Markov chain, solve for the stable distribution
   # set diagonals to 1
@@ -105,6 +107,8 @@ calcLarvalDist <- function(mu, t){
 #' @param muAq Aquatic death rate
 #' @param alpha Density-dependent centering parameter
 #'
+#' @keywords internal
+#'
 set_initialPopulation_Patch <- function(adultEQ = adultEQ, larvalEQ = larvalEQ,
                                         adultRatioF = adultRatioF, adultRatioM = adultRatioM,
                                         larvalRatio = larvalRatio,
@@ -175,6 +179,8 @@ set_initialPopulation_Patch <- function(adultEQ = adultEQ, larvalEQ = larvalEQ,
 #' @param muAq Aquatic death rate
 #' @param alpha Density-dependent centering parameter
 #'
+#' @keywords internal
+#'
 set_population_deterministic_Patch <- function(adultEQ = adultEQ, larvalEQ = larvalEQ,
                                          adultRatioF = adultRatioF, adultRatioM = adultRatioM,
                                          larvalRatio = larvalRatio,
@@ -200,6 +206,8 @@ set_population_deterministic_Patch <- function(adultEQ = adultEQ, larvalEQ = lar
 #' @param timeAq Time for each aquatic stage
 #' @param muAq Aquatic death rate
 #' @param alpha Density-dependent centering parameter
+#'
+#' @keywords internal
 #'
 set_population_stochastic_Patch <- function(adultEQ = adultEQ, larvalEQ = larvalEQ,
                                            adultRatioF = adultRatioF, adultRatioM = adultRatioM,
@@ -228,6 +236,8 @@ set_population_stochastic_Patch <- function(adultEQ = adultEQ, larvalEQ = larval
 #'
 #' @param verbose Chatty? Default is TRUE
 #'
+#' @keywords internal
+#'
 reset_Patch <- function(verbose = TRUE){
 
   if(verbose){cat("reset patch ",private$patchID,"\n",sep="")}
@@ -248,6 +258,8 @@ reset_Patch <- function(verbose = TRUE){
 #' Initialize Output from Focal Patch
 #'
 #' Writes output to the text connections specified in the enclosing \code{\link{Network}}.
+#'
+#' @keywords internal
 #'
 oneDay_initOutput_Patch <- function(){
 
@@ -281,6 +293,8 @@ oneDay_initOutput_Patch <- function(){
 #' Write Output from Focal Patch
 #'
 #' Writes output to the text connections specified in the enclosing \code{\link{Network}}.
+#'
+#' @keywords internal
 #'
 oneDay_writeOutput_Patch <- function(){
 

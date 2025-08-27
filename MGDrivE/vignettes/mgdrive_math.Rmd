@@ -1,7 +1,10 @@
 ---
 title: "MGDrivE Mathematical Description"
 #output: rmarkdown::pdf_document
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    self_contained: false
+    lib_dir: libs
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{MGDrivE-Math}
@@ -81,18 +84,32 @@ stratified by male and female parent genotypes. **MGDrivE** provides the followi
 
 * [1 Locus Maternal-Toxin/Zygotic-Antidote System](../reference/cubeOneLocusTA.html)
 * [2 Locus Maternal-Toxin/Zygotic-Antidote System](../reference/cubeTwoLocusTA.html)
+* [Allele Sail](../reference/cubeAlleleSail.html)
+* [Split Drive with Parental-Specific Impacts](../reference/cubeASmidler.html)
+* [DsX-based Cleave and Rescue (ClvR) - Akbari Lab](../reference/cubeCLEAVRMF.html)
+* [X-Linked Cleave and Rescue (ClvR)](../reference/cubeCLEAVRX.html)
 * [1 Locus Cleave and Rescue (ClvR)](../reference/cubeClvR.html)
 * [2 Locus Cleave and Rescue (ClvR)](../reference/cubeClvR2.html)
+* [2 Locus Confinable Homing](../reference/cubeConfinableHoming.html)
+* [X-Linked Confinable Homing](../reference/cubeConfinableHomingX.html)
 * [Homing Drive with 1 Resistance Allele](../reference/cubeHoming1RA.html)
-* [CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Alleles and maternal deposition](../reference/cubeHomingDrive.html)
+* [CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Alleles and Maternal Deposition](../reference/cubeHomingDrive.html)
+* [Small-Molecule Induced CRISPR](../reference/cubeHomingDriveSM.html)
+* [X-Linked CRISPR](../reference/cubeXHomingDeposition.html)
 * [Autosomal ECHACR](../reference/cubeECHACR.html)
 * [X-Linked ECHACR](../reference/cubeECHACRX.html)
+* [Autosomal Immunizing Reversal System](/reference/cubeImmunizingReversalMF.html)
+* [X-Linked Autosomal Immunizing Reversal System](../reference/Cube_ImmunizingReversalX.html)
 * [Killer-Rescue System](../reference/cubeKillerRescue.html)
 * [MEDEA (Maternal Effect Dominant Embryonic Arrest)](../reference/cubeMEDEA.html)
 * [Reciprocal Translocations](../reference/cubeReciprocalTranslocations.html)
 * [RIDL (Release of Insects with Dominant Lethality)](../reference/cubeRIDL.html)
+* [Autosomal X-Shredder](../reference/cubeXShredderMF.html)
+* [Y-Linked X-Shredder](../reference/cubeXShredderY.html)
 * [Mendelian](../reference/cubeMendelian.html)
-* [Split-Drive](../reference/cubeSplitDrive.html)
+* [Autosomal Split-Drive](../reference/cubeSplitDrive.html)
+* [X-Linked Split-Drive](../reference/cubeSplitDriveX.html)
+* [Y-Linked Split-Drive](../reference/cubeSplitDriveY.html)
 * [trans-Complementing Gene Drive](../reference/cubeTGD.html)
 * [X-Linked trans-Complementing Gene Drive](../reference/cubeTGDX.html)
 * [Wolbachia](../reference/cubeWolbachia.html)
@@ -116,6 +133,7 @@ D(\theta_l,T_x) = \left\{
              \theta_{l[0]}^{'}=\theta_l 								& \quad i = 0 \\
              \theta_{l[i+1]}^{'} = \theta_{l[i]}^{'} *F(\overline{L_{[t-i-T_x]}})	& \quad i \leq T_l
          \end{array}
+         \right.
 $$
 
 In addition to this, we need the larval mortality ($\mu_{l}$):

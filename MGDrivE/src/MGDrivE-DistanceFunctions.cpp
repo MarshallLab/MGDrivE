@@ -506,4 +506,3 @@ Rcpp::NumericMatrix calcVinEll(const Rcpp::NumericMatrix& latLongs, const double
 
 }// end function
 
-

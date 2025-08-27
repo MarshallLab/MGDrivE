@@ -14,3 +14,4 @@ get_patchReleases_Network(patch, sex = "M")
 \description{
 Return the release schedule for a patch for male or female
 }
+\keyword{internal}

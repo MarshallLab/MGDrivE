@@ -9,3 +9,4 @@ get_muAq_Network()
 \description{
 Return larval mortality, see \code{\link{calcLarvalStageMortalityRate}}
 }
+\keyword{internal}

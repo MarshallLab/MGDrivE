@@ -9,3 +9,4 @@ get_muAd_Network()
 \description{
 Return adult mortality
 }
+\keyword{internal}

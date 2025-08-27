@@ -4,9 +4,11 @@
 #' Dirichlet Distribution
 #'
 #' Make a single draw from a Dirichlet distribution with the shape parameter
-#' one. 
+#' one.
 #'
 #' @param migrationPoint Vector of weights for draws. Must be positive.
+#'
+#' @keywords internal
 #'
 rDirichlet <- function(migrationPoint) {
     .Call('_MGDrivE_rDirichlet', PACKAGE = 'MGDrivE', migrationPoint)
@@ -27,6 +29,8 @@ rDirichlet <- function(migrationPoint) {
 #' It is only designed to work on integer matrices!
 #'
 #' @return Numeric Matrix
+#'
+#' @keywords internal
 #'
 quantileC <- function(Trials, Probs) {
     .Call('_MGDrivE_quantileC', PACKAGE = 'MGDrivE', Trials, Probs)
@@ -252,6 +256,7 @@ calcExpKernel <- function(distMat, rate) {
 #' @param distMat Distance matrix from \code{\link[MGDrivE]{calcVinEll}}
 #' @param rate Rate parameter of \code{\link[stats]{Exponential}} distribution
 #' @param p0 Point mass at zero
+#' @param eps Cutoff for extremely small probabilities, default is 1e-20
 #'
 #' @examples
 #' # setup distance matrix
@@ -267,7 +272,7 @@ calcExpKernel <- function(distMat, rate) {
 #' kernMat = calcHurdleExpKernel(distMat = distMat, rate = 1/1e6, p0 = 0.1)
 #'
 #' @export
-calcHurdleExpKernel <- function(distMat, rate, p0) {
-    .Call('_MGDrivE_calcHurdleExpKernel', PACKAGE = 'MGDrivE', distMat, rate, p0)
+calcHurdleExpKernel <- function(distMat, rate, p0, eps = 1.0e-20) {
+    .Call('_MGDrivE_calcHurdleExpKernel', PACKAGE = 'MGDrivE', distMat, rate, p0, eps)
 }
 

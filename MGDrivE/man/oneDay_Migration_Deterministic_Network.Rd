@@ -19,3 +19,4 @@ Batch migration is not used in the deterministic model.
 This function handles outbound and inbound migration. See \code{\link{MGDrivE-Model}},
 'Migration' section for more details on how inter-patch migration is handled.
 }
+\keyword{internal}

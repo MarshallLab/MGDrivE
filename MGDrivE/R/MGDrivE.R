@@ -145,11 +145,12 @@ NULL
 #' because the density dependent processes necessary for equilibrium trajectories
 #' to be calculated occur here. This calculation is performed with the following equation:
 #' \deqn{
-#' D(\theta_l,T_x) =
+#' D(\theta_l,T_x) = \left\{
 #'         \begin{array}{ll}
 #'             \theta_{l[0]}^{'}=\theta_l 								& \quad i = 0 \\
 #'             \theta_{l[i+1]}^{'} = \theta_{l[i]}^{'} *F(\overline{L_{[t-i-T_x]}})	& \quad i \leq T_l
 #'         \end{array}
+#'	   \right.
 #' }
 #' In addition to this, we need the larval mortality (\eqn{\mu_{l}}):
 #' \deqn{

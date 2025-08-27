@@ -1,7 +1,7 @@
 Package: MGDrivE
 Type: Package
 Title: Mosquito Gene Drive Explorer
-Version: 1.6.0
+Version: 1.6.2
 Authors@R: c(
     person("Héctor Manuel", "Sánchez Castellanos", email = "sanchez.hmsc@berkeley.edu", role = c("aut","cre")),
     person("Jared", "Bennett", email = "jared_bennett@berkeley.edu ", role = "aut"),
@@ -9,7 +9,7 @@ Authors@R: c(
     person("John M.", "Marshall", email = "john.marshall@berkeley.edu", role = "aut")
     )
 Maintainer: Héctor Manuel Sánchez Castellanos <sanchez.hmsc@berkeley.edu>
-URL: https://marshalllab.github.io/MGDrivE/, https://www.marshalllab.com/
+URL: https://marshalllab.github.io/MGDrivE/, https://www.marshalllab.com/, https://marshalllab.github.io/MGDrivE/docs_v1
 BugReports: https://github.com/MarshallLab/MGDrivE/issues
 Description: Provides a model designed to be a reliable testbed where various gene 
     drive interventions for mosquito-borne diseases control. It is being developed to 
@@ -27,7 +27,7 @@ LinkingTo: Rcpp
 Depends: R (>= 2.10)
 ByteCompile: true
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE, r6 = FALSE)
-Suggests: knitr, rmarkdown
+Suggests: knitr, rmarkdown, markdown
 VignetteBuilder: knitr

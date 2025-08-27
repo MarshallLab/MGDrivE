@@ -7,10 +7,13 @@
 get_eta_Network(fIdx)
 }
 \arguments{
-\item{fIdx}{Index of female genotype to pull
-
-Return genotype-specific mating fitness}
+\item{fIdx}{Index of female genotype to pull}
 }
 \description{
 Get eta
 }
+\keyword{Return}
+\keyword{fitness}
+\keyword{genotype-specific}
+\keyword{internal}
+\keyword{mating}

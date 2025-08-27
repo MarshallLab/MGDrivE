@@ -29,6 +29,8 @@
 #' Lay Eggs: \code{\link{oneDay_oviposit_deterministic_Patch}} or \code{\link{oneDay_oviposit_stochastic_Patch}} \cr
 #' Release Eggs: \code{\link{oneDay_eggReleases_Patch}} \cr
 #'
+#' @keywords internal
+#'
 oneDay_PopDynamics_Patch <- function(){
 
   ##################
@@ -75,6 +77,8 @@ oneDay_PopDynamics_Patch <- function(){
 #' where \eqn{\mu_{ad}} corresponds to adult mortality rate and \eqn{\overline{\omega_{m/f}}}
 #' corresponds to genotype-specific male/female mortality effects.
 #'
+#' @keywords internal
+#'
 oneDay_adultDeath_deterministic_Patch <- function(){
 
   # probability of survival
@@ -96,6 +100,8 @@ oneDay_adultDeath_deterministic_Patch <- function(){
 #' probability is given by \deqn{(1-\mu_{ad}) * \overline{\omega_m/f}}.
 #' \eqn{\mu_{ad}} corresponds to adult mortality rate and \eqn{\overline{\omega_m/f}}
 #' corresponds to genotype-specific mortality effects.
+#'
+#' @keywords internal
 #'
 oneDay_adultDeath_stochastic_Patch <- function(){
 
@@ -125,6 +131,8 @@ oneDay_adultDeath_stochastic_Patch <- function(){
 #' where \eqn{\mu_{aq}} corresponds to daily non-density-dependent aquatic mortality. \cr
 #' See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 #'
+#' @keywords internal
+#'
 oneDay_pupaDM_deterministic_Patch <- function(){
 
   # things to reuse
@@ -153,6 +161,8 @@ oneDay_pupaDM_deterministic_Patch <- function(){
 #' probability is given by \deqn{1-\mu_{aq}}. \eqn{\mu_{aq}} corresponds
 #' to daily non-density-dependent aquatic mortality. \cr
 #' See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
+#'
+#' @keywords internal
 #'
 oneDay_pupaDM_stochastic_Patch <- function(){
 
@@ -193,6 +203,8 @@ oneDay_pupaDM_stochastic_Patch <- function(){
 #' See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 #' Pupation has no parameters, so the final day of larvae naturally enter the pupal state.
 #'
+#' @keywords internal
+#'
 oneDay_larvaDM_deterministic_Patch <- function(){
 
   # things to reuse
@@ -222,6 +234,8 @@ oneDay_larvaDM_deterministic_Patch <- function(){
 #' is calculated as \deqn{F(L[t])=\Bigg(\frac{\alpha}{\alpha+\sum{\overline{L[t]}}}\Bigg)^{1/T_l}}.
 #' See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 #' Pupation has no parameters, so the final day of larvae naturally enter the pupal state.
+#'
+#' @keywords internal
 #'
 oneDay_larvaDM_stochastic_Patch <- function(){
 
@@ -259,6 +273,8 @@ oneDay_larvaDM_stochastic_Patch <- function(){
 #' Eggs transition into larvae at the end of \eqn{T_e}. \cr
 #' See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 #'
+#' @keywords internal
+#'
 oneDay_eggDM_deterministic_Patch <- function(){
 
   # things to reuse
@@ -279,6 +295,8 @@ oneDay_eggDM_deterministic_Patch <- function(){
 #' to daily non-density-dependent aquatic mortality. \cr
 #' Eggs transition into larvae at the end of \eqn{T_e}. \cr
 #' See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
+#'
+#' @keywords internal
 #'
 oneDay_eggDM_stochastic_Patch <- function(){
 
@@ -309,6 +327,8 @@ oneDay_eggDM_stochastic_Patch <- function(){
 #' Then, pupation into adult males is calculated as \deqn{(1-\overline{\phi}) * \overline{P_{[t]}}}
 #' and into adult females as \deqn{\overline{\phi} * \overline{P_{[t]}}}
 #'
+#' @keywords internal
+#'
 oneDay_pupation_deterministic_Patch <- function(){
 
   # one extra death to match continuous time math
@@ -333,6 +353,8 @@ oneDay_pupation_deterministic_Patch <- function(){
 #' Then, pupation is sampled from a binomial, where \eqn{(1-\overline{\phi})} is
 #' the genotype-specific probability of becoming male, and \eqn{\overline{\phi}}
 #' is the genotype-specific of becoming female.
+#'
+#' @keywords internal
 #'
 oneDay_pupation_stochastic_Patch <- function(){
 
@@ -369,6 +391,8 @@ oneDay_pupation_stochastic_Patch <- function(){
 #'
 #' Based on this patch's release schedule, \code{\link{generateReleaseVector}},
 #' this function handles daily releases.
+#'
+#' @keywords internal
 #'
 oneDay_releases_Patch <- function(){
 
@@ -418,6 +442,8 @@ oneDay_releases_Patch <- function(){
 #' Based on this patch's release schedule, \code{\link{generateReleaseVector}},
 #' this function handles daily egg releases.
 #'
+#' @keywords internal
+#'
 oneDay_eggReleases_Patch <- function(){
 
   # things to reuse
@@ -452,28 +478,38 @@ oneDay_eggReleases_Patch <- function(){
 #' calculated as \deqn{\overline{Af_t} * (1-\mu_{ad}) * \overline{\omega_f}}, and
 #' remain unmated until tomorrow.
 #'
+#' @keywords internal
+#'
 oneDay_mating_deterministic_Patch <- function(){
 
-  # Check if there are males
-  if(sum(private$popMale) > 0){
-    # mate females with males normalized by their mating ability
-    #  add to current females
+  # things to reuse
+  nGeno = private$NetworkPointer$get_genotypesN()
+  mProb = numeric(length = nGeno)
+  mort = (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$get_omega()
 
-    # things to reuse
-    nGeno = private$NetworkPointer$get_genotypesN()
+  # loop over each female genotype, mate with available males
+  for(i in 1:nGeno){
 
-    # step through each female genotype to mate.
-    for(i in 1:nGeno){
-      private$popFemale[i, ] = private$popFemale[i, ] + private$popUnmated[i] *
-        normalise(private$popMale * private$NetworkPointer$get_eta(i))
-    }
+    # check if there are females to mate, skip if not
+    if(private$popUnmated[i] > 0){
+      # get mating prob for males for each female genotype
+      mProb[] <- normalise(private$popMale * private$NetworkPointer$get_eta(i))
 
-    # clear unmated vector
-    private$popUnmated[] = 0
-  } else {
-    # females don't mate, make them die, don't clear vector
-    private$popUnmated[] = private$popUnmated * (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$get_omega()
-  }
+      # check if males have a chance of mating these females, if not then skip
+      if(sum(mProb) > 0){
+        # mate
+        private$popFemale[i, ] = private$popFemale[i, ] + private$popUnmated[i] * mProb
+
+        # clear unmated vector
+        private$popUnmated[i] = 0
+      } else {
+        # male probs are 0, females experience death
+        # females don't mate, make them die, don't clear vector
+        private$popUnmated[i] = private$popUnmated[i] * mort[i]
+
+      } # end male check
+    } # end female check
+  } # end mating loop
 
 }
 
@@ -488,42 +524,40 @@ oneDay_mating_deterministic_Patch <- function(){
 #' sampled from a binomial distribution parameterized by \deqn{(1-\mu_{ad}) * \overline{\omega_f}},
 #' and remain unmated until tomorrow.
 #'
+#' @keywords internal
+#'
 oneDay_mating_stochastic_Patch <- function(){
 
   # things to reuse
   nGeno = private$NetworkPointer$get_genotypesN()
+  mProb = numeric(length = nGeno)
+  mort = (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$get_omega()
 
-  # check if there are males
-  if(sum(private$popMale) > 0){
-    # mating probs for males
-    mProb = numeric(length = nGeno)
+  # loop over each female genotype, mate with available males
+  for(i in 1:nGeno){
 
-    # loop over each female genotype, mate with available males
-    for(i in 1:nGeno){
+    # check if there are females to mate, skip if not
+    if(private$popUnmated[i] > 0){
       # get mating prob for males for each female genotype
       mProb[] <- normalise(private$popMale * private$NetworkPointer$get_eta(i))
 
-      # check if there are females to mate, skip if not
       # check if males have a chance of mating these females, if not then skip
-      #  This serves 2 purposes:
-      #    1 - skip drawing a multinomial if all probs are zero
-      #    2 - the multinomial fails if all probs are 0
-      if( (private$popUnmated[i] > 0) && (sum(mProb) != 0) ){
+      if(sum(mProb) > 0){
+        # mate
         private$popFemale[i, ] = private$popFemale[i, ] + rmultinom(n = 1,
                                                                     size = private$popUnmated[i],
                                                                     prob = mProb)
-      }
-    } # end mating loop
 
-    # clear unmated vector
-    private$popUnmated[] = 0
-  } else {
-    # females don't mate, make them die, don't clear vector
-    private$popUnmated[] = rbinom(n = nGeno,
-                                  size = private$popUnmated,
-                                  prob = (1-private$NetworkPointer$get_muAd()) * private$NetworkPointer$get_omega())
+        # clear unmated vector
+        private$popUnmated[i] = 0
+      } else {
+        # male probs are 0, females experience death
+        # females don't mate, make them die, don't clear vector
+        private$popUnmated[i] = rbinom(n = 1, size = private$popUnmated[i], prob = mort[i])
 
-  }
+      } # end male check
+    } # end female check
+  } # end mating loop
 
 }
 
@@ -536,6 +570,8 @@ oneDay_mating_stochastic_Patch <- function(){
 #'
 #' Calculate the number of eggs oviposited by female mosquitoes following:
 #' \deqn{\overline{O(T_x)} = \sum_{j=1}^{n} \Bigg( \bigg( (\beta*\overline{s} * \overline{ \overline{Af_{[t]}}}) * \overline{\overline{\overline{Ih}}} \bigg) * \Lambda \Bigg)^{\top}_{ij}}
+#'
+#' @keywords internal
 #'
 oneDay_oviposit_deterministic_Patch <- function(){
 
@@ -560,6 +596,8 @@ oneDay_oviposit_deterministic_Patch <- function(){
 #' \deqn{\overline{O(T_x)} = \sum_{j=1}^{n} \Bigg( \bigg( (\beta*\overline{s} * \overline{ \overline{Af_{[t]}}}) * \overline{\overline{\overline{Ih}}} \bigg) * \Lambda  \Bigg)^{\top}_{ij}}
 #' The deterministic result for number of eggs is used as the mean of a Poisson-distributed
 #' number of actual eggs oviposited.
+#'
+#' @keywords internal
 #'
 oneDay_oviposit_stochastic_Patch <- function(){
 

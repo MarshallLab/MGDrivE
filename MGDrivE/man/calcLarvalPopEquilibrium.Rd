@@ -14,3 +14,4 @@ calcLarvalPopEquilibrium(alpha, Rm)
 \description{
 Equilibrium larval population size to sustain adult population.
 }
+\keyword{internal}

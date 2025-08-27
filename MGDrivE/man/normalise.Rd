@@ -12,3 +12,4 @@ normalise(vector)
 \description{
 Normalise a numeric vector to sum to one
 }
+\keyword{internal}

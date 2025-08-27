@@ -24,6 +24,9 @@
 #' @param releaseInterval Interval between releases
 #' @param releaseMatrix Numeric matrix specifying the genotype and release amount
 #'
+#'
+#' @keywords internal
+#'
 #' @examples
 #' \dontrun{
 #' # Setup for 3 patches but only release in the first with a defined release

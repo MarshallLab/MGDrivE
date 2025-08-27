@@ -9,3 +9,4 @@ get_s_Network()
 \description{
 Return genotype-specific fractional reduction(increase) in fertility
 }
+\keyword{internal}

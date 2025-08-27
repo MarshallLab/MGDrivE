@@ -14,3 +14,4 @@ ggColUtility(n, alpha = 0.75)
 \description{
 Sample at equally spaced intervals along the color wheel
 }
+\keyword{internal}

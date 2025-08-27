@@ -10,3 +10,4 @@ oneDay_releases_Patch()
 Based on this patch's release schedule, \code{\link{generateReleaseVector}},
 this function handles daily releases.
 }
+\keyword{internal}

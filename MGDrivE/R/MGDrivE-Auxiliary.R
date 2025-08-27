@@ -23,8 +23,6 @@
 #' @param lifespanReduction Target reduced lifespan, between 0 and 1
 #' (target average lifespan will be \eqn{\frac{1}{\mu_{Ad}} \times lifespanReduction})
 #'
-#' @importFrom stats uniroot
-#'
 #' @examples
 #' # reduce lifespan by 10%
 #' #  Example mu is an average for Aedes
@@ -33,19 +31,31 @@
 #' @export
 calcOmega <- function(mu, lifespanReduction){
 
+  ## Notes
+  # The expected lifespan is 1/mu
+  # The reduced lifespan is (1/mu)*lifespanReduction
+  # Since mu is a daily death rate, and omega is a probability of life, to find
+  #  the new omega, we need to use (1-mu)*omega.
+  # Then, to convert back to our new expected lifespan, we have to subtract from
+  #  1 again, so our new expected lifespan is 1/(1-(1-mu)*omega)
+  # Thus, we solve (1/mu)*lifespanReduction = 1/(1-(1-mu)*omega) for omega
+
+  # The mu lower bound is because of the series convergence used to derive
+  #  1/mu as the expecte lifespan.
+  # The upper bound may not exist.
+  #  We require (1-mu)*omega <= 1, for probabilities to work within the simulation.
+  #  Substituting our solution for omega and solving for lifespanReduction, we
+  #  get that there is no bound.
+
+  # Mapping lifespanReduction on [0,1) to [mu,inf) is an exercise left to the readers.
+
   # safety check
-  if(lifespanReduction > 1 | lifespanReduction < 0){
-    stop("parameter 'lifespanReduction' must be in interval [0,1]")
+  if(lifespanReduction > 1 | lifespanReduction < mu){
+    stop("parameter 'lifespanReduction' must be in interval [mu,1]")
   }
 
-  lifespan <- (1/mu) * lifespanReduction
-
-  calcOmega_f <- function(omega, mu, lifespan){
-    (1/(1-omega+(omega*mu)))-lifespan
-  }
-
-  return(uniroot(f=calcOmega_f, interval=c(0,1), lifespan=lifespan,
-                 mu=mu,maxiter=1e4)$root)
+  # Calculate and return
+  return( (lifespanReduction-mu)/(lifespanReduction*(1.0-mu)) )
 }
 
 #######################################
@@ -99,6 +109,8 @@ eraseDirectory <- function(directory, verbose = TRUE){
 #' Normalise a numeric vector to sum to one
 #'
 #' @param vector Numeric vector
+#'
+#' @keywords internal
 #'
 normalise <- function(vector){
   if(all(vector==0)){
@@ -536,7 +548,7 @@ retrieveOutput <- function(readDir, verbose=TRUE){
 #'    * ... \cr
 #'
 #' Output files are *.csv contain the mean or quantile in the file name, i.e.
-#' {M/F}_Mean_(patchNum).csv and {M/F}_Quantile_(quantNum)_(patchNum).csv.
+#' \{M/F\}_Mean_(patchNum).csv and \{M/F\}_Quantile_(quantNum)_(patchNum).csv.
 #'
 #' @param readDir Directory to find repetition folders in
 #' @param writeDir Directory to write output

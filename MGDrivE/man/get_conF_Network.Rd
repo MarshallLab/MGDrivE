@@ -9,3 +9,4 @@ get_conF_Network()
 \description{
 Return \code{\link[base]{connection}} where adult female dynamics are written to
 }
+\keyword{internal}

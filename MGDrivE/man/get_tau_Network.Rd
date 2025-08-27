@@ -11,10 +11,11 @@ get_tau_Network(fG = NULL, mG = NULL, oG = NULL)
 
 \item{mG}{Number for which male genotype to get}
 
-\item{oG}{Number for which offspring genotype to get
-
-Return matrix}
+\item{oG}{Number for which offspring genotype to get}
 }
 \description{
 Get Female Viability Mask (tau)
 }
+\keyword{Return}
+\keyword{internal}
+\keyword{matrix}

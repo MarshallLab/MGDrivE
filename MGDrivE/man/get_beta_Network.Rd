@@ -9,3 +9,4 @@ get_beta_Network()
 \description{
 Return size of wild-type egg batch
 }
+\keyword{internal}

@@ -25,3 +25,4 @@ that migrations is sampled from \code{\link[stats]{rbinom}}, parameterized by
 This function handles outbound and inbound migration. See \code{\link{MGDrivE-Model}},
 'Migration' section for more details on how inter-patch migration is handled.
 }
+\keyword{internal}

@@ -9,3 +9,4 @@ get_genotypesN_Network()
 \description{
 Return number of possible genotypes
 }
+\keyword{internal}

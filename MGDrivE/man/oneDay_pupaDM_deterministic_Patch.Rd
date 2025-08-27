@@ -11,3 +11,4 @@ Daily pupa survival is calculated according to \deqn{\overline{P_{[t-1]}} * (1-\
 where \eqn{\mu_{aq}} corresponds to daily non-density-dependent aquatic mortality. \cr
 See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 }
+\keyword{internal}

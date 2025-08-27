@@ -15,3 +15,4 @@ calcAquaticStageSurvivalProbability(mortalityRate, stageDuration)
 Calculate \eqn{\theta_{st}}, density-independent survival probability, given
 by: \deqn{\theta_{st}=(1-\mu_{st})^{T_{st}}}
 }
+\keyword{internal}

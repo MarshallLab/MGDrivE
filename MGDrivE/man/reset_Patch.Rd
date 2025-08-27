@@ -13,3 +13,4 @@ reset_Patch(verbose = TRUE)
 Resets a patch to its initial configuration so that a new one does not have
 to be created and allocated in the network (for Monte Carlo simulation).
 }
+\keyword{internal}

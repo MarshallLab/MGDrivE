@@ -27,3 +27,4 @@ calcDensityDependentDeathRate(
 Calculate \eqn{\alpha}, the strength of density-dependent mortality during the
 larval stage, given by: \deqn{\alpha=\Bigg( \frac{1/2 * \beta * \theta_e * Ad_{eq}}{R_m-1} \Bigg) * \Bigg( \frac{1-(\theta_l / R_m)}{1-(\theta_l / R_m)^{1/T_l}} \Bigg)}
 }
+\keyword{internal}

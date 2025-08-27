@@ -218,13 +218,13 @@ cubeClvR2 <- function(cF = 1, crF = 0, ccF = cF, ccrF = crF,
                       "R"=c("R"=1),
                       "B"=c("B"=1))
   mLocus3$oneOne <- list("W"=c("W"=(1-cM)*(1-dW),
-                                "R"=cM*crM + dW*drW,
-                                "B"=cM*(1-crM) + dW*(1-drW)),
+                                "R"=cM*crM + (1-cM)*dW*drW,
+                                "B"=cM*(1-crM) + (1-cM)*dW*(1-drW)),
                          "R"=c("R"=1),
                          "B"=c("B"=1))
   mLocus3$oneTwo <- list("W"=c("W"=(1-cM)*(1-ddW),
-                               "R"=cM*crM + ddW*ddrW,
-                               "B"=cM*(1-crM) + ddW*(1-ddrW)),
+                               "R"=cM*crM + (1-cM)*ddW*ddrW,
+                               "B"=cM*(1-crM) + (1-cM)*ddW*(1-ddrW)),
                          "R"=c("R"=1),
                          "B"=c("B"=1))
 
@@ -234,13 +234,13 @@ cubeClvR2 <- function(cF = 1, crF = 0, ccF = cF, ccrF = crF,
                       "R"=c("R"=1),
                       "B"=c("B"=1))
   mLocus3$twoOne <- list("W"=c("W"=(1-ccM)*(1-dW),
-                               "R"=ccM*ccrM + dW*drW,
-                               "B"=ccM*(1-ccrM) + dW*(1-drW)),
+                               "R"=ccM*ccrM + (1-ccM)*dW*drW,
+                               "B"=ccM*(1-ccrM) + (1-ccM)*dW*(1-drW)),
                          "R"=c("R"=1),
                          "B"=c("B"=1))
   mLocus3$twoTwo <- list("W"=c("W"=(1-ccM)*(1-ddW),
-                               "R"=ccM*ccrM + ddW*ddrW,
-                               "B"=ccM*(1-ccrM) + ddW*(1-ddrW)),
+                               "R"=ccM*ccrM + (1-ccM)*ddW*ddrW,
+                               "B"=ccM*(1-ccrM) + (1-ccM)*ddW*(1-ddrW)),
                          "R"=c("R"=1),
                          "B"=c("B"=1))
 

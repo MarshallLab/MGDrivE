@@ -232,6 +232,7 @@ Rcpp::NumericMatrix calcExpKernel(const Rcpp::NumericMatrix& distMat, const doub
 //' @param distMat Distance matrix from \code{\link[MGDrivE]{calcVinEll}}
 //' @param rate Rate parameter of \code{\link[stats]{Exponential}} distribution
 //' @param p0 Point mass at zero
+//' @param eps Cutoff for extremely small probabilities, default is 1e-20
 //'
 //' @examples
 //' # setup distance matrix
@@ -249,24 +250,125 @@ Rcpp::NumericMatrix calcExpKernel(const Rcpp::NumericMatrix& distMat, const doub
 //' @export
 // [[Rcpp::export]]
 Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat,
-                                        const double& rate, const double& p0){
+                                        const double& rate, const double& p0,
+                                        const double& eps = 1.0e-20){
+  // This is the third hurdle exponential function
+  // It protects against numerically 0 probabilities
+  // It uses a simplified exponential draw, instead of the truncated version
+  //  These are almost numerically identical, unless the distances are beneath
+  //  the lower truncation bound
 
-  const double a = 1.0e-10; /* lower truncation bound */
+  const double scale(1.0/rate); /* convert rate to scale for R::dexp() */
+  const double oneMP0(1.0-p0); /* one minus p0, since it doesn't change */
 
-  size_t n = distMat.nrow();
-  Rcpp::NumericMatrix kernMat(n,n);
+  double holdVal(0.0), sumVal(0.0); /* values for loop */
 
-  for(size_t i=0; i<n; i++){
-    for(size_t j=0; j<n; j++){
-      if(i==j){
-        kernMat(i,j) = 0;
-      } else {
-        kernMat(i,j) = dtruncExp(distMat(i,j),rate,a,inf_pos); /* truncated density */
-      }
+  const size_t n = distMat.nrow(); /* dimensions */
+  Rcpp::NumericMatrix kernMat(n,n); /* initialize return matrix */
+
+  for(size_t i=0; i<n; i++){ /* loop over rows */
+    for(size_t j=0; j<n; j++){ /* loop over columns */
+      if(i != j){ /* skip diagonal */
+
+        // draw exponential density
+        holdVal = R::dexp(distMat(i,j),scale,false);
+
+        // safety, make sure the probability is large enough
+        if(holdVal > eps){
+          kernMat(i,j) = holdVal;
+          sumVal += holdVal;
+        }
+
+      } /* end diagonal check */
+    } /* end column loop */
+
+    // normalize
+    if(sumVal > eps){
+      kernMat(i,_) = (kernMat(i,_) / sumVal) * oneMP0; /* normalize density */
+      kernMat(i,i) = p0; /* point mass at zero */
+      sumVal = 0.0; /* reset sum */
+    } else {
+      kernMat(i,i) = 1.0; /* all mass at zero */
     }
-    kernMat(i,_) = (kernMat(i,_) / Rcpp::sum(kernMat(i,_))) *(1-p0); /* normalize density */
-    kernMat(i,i) = p0; /* point mass at zero */
-  }
+
+  } // end row loop
 
   return kernMat;
 }
+
+
+// This is the original hurdle exponential function
+// It is fine for all normal values
+// It returns NaNs if all of the probabilities are 0
+//  the probs are 0, then renormalization is a divide by 0, then NaNs
+// Rcpp::NumericMatrix calcHurdleExpKernelOLD(const Rcpp::NumericMatrix& distMat,
+//                                         const double& rate, const double& p0){
+//
+//   const double a = 1.0e-10; /* lower truncation bound */
+//
+//   size_t n = distMat.nrow();
+//   Rcpp::NumericMatrix kernMat(n,n);
+//
+//   for(size_t i=0; i<n; i++){
+//     for(size_t j=0; j<n; j++){
+//       if(i==j){
+//         kernMat(i,j) = 0;
+//       } else {
+//         kernMat(i,j) = dtruncExp(distMat(i,j),rate,a,inf_pos); /* truncated density */
+//       }
+//     }
+//     kernMat(i,_) = (kernMat(i,_) / Rcpp::sum(kernMat(i,_))) *(1-p0); /* normalize density */
+//     kernMat(i,i) = p0; /* point mass at zero */
+//   }
+//
+//   return kernMat;
+// }
+
+
+// This is the second hurdle exponential function
+// It protects against numerically 0 probabilities, so instead of returning NaNs,
+//  it will converge to an identity matrix
+// Rcpp::NumericMatrix calcHurdleExpKernel(const Rcpp::NumericMatrix& distMat,
+//                                         const double& rate, const double& p0){
+//
+//   const double a = 1.0e-10; /* lower truncation bound */
+//   const double b = 1.0e-20; /* numerical lower bound, "randomly" chosen, no reason*/
+//
+//   double holdVal(0.0), sumVal(0.0); /* values for loop */
+//
+//   size_t n = distMat.nrow();
+//   Rcpp::NumericMatrix kernMat(n,n);
+//
+//   for(size_t i=0; i<n; i++){
+//     for(size_t j=0; j<n; j++){
+//       // skip diagonal
+//       if(i != j){
+//
+//         holdVal = dtruncExp(distMat(i,j),rate,a,inf_pos); /* truncated density */
+//
+//         // safety, make sure the probability is large enough
+//         if(holdVal > b){
+//           kernMat(i,j) = holdVal;
+//           sumVal += holdVal;
+//         }
+//
+//       } // end diagonal check
+//     } // end column loop
+//
+//     // normalize
+//     if(sumVal > b){
+//       kernMat(i,_) = (kernMat(i,_) / sumVal) * (1.0-p0); /* normalize density */
+//       kernMat(i,i) = p0; /* point mass at zero */
+//       sumVal = 0.0; /* reset sum */
+//     } else {
+//       kernMat(i,i) = 1.0; /* all mass at zero */
+//     }
+//
+//   } // end row loop
+//
+//   return kernMat;
+// }
+
+
+
+

@@ -19,3 +19,4 @@ Mating: \code{\link{oneDay_mating_deterministic_Patch}} or \code{\link{oneDay_ma
 Lay Eggs: \code{\link{oneDay_oviposit_deterministic_Patch}} or \code{\link{oneDay_oviposit_stochastic_Patch}} \cr
 Release Eggs: \code{\link{oneDay_eggReleases_Patch}} \cr
 }
+\keyword{internal}

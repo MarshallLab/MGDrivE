@@ -49,18 +49,33 @@
 #' MGDrivE provides the following cubes to model different gene drive systems:
 #'  * \code{\link{cubeOneLocusTA}}: 1 Locus Maternal-Toxin/Zygotic-Antidote System
 #'  * \code{\link{cubeTwoLocusTA}}: 2 Locus Maternal-Toxin/Zygotic-Antidote System
+#'  * \code{\link{cubeAlleleSail}}: 3 Locus Allele Sail, similar to Oberhofer et. al.
+#'  * \code{\link{cubeASmidler}}: Split drive design with significant parent-specific impacts
+#'  * \code{\link{cubeCLEAVRMF}}: Cleave and Rescue
+#'  * \code{\link{cubeCLEAVRX}}: Cleave and Rescue, X-Linked
 #'  * \code{\link{cubeClvR}}: 1 Locus Cleave and Rescue (ClvR)
 #'  * \code{\link{cubeClvR2}}: 2 Locus Cleave and Rescue (ClvR)
+#'  * \code{\link{cubeConfinableHoming}}: Confinable Homing
+#'  * \code{\link{cubeConfinableHomingX}}: Confinable Homing, X-Linked
 #'  * \code{\link{cubeHoming1RA}}: Homing Drive with 1 Resistance Allele
 #'  * \code{\link{cubeHomingDrive}}: CRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) with 2 Resistance Allele
-#'  * \code{\link{cubeECHACR}}: ERACR-CHACR
-#'  * \code{\link{cubeECHACRX}}: ECHACR, X-Linked
+#'  * \code{\link{cubeHomingDriveSM}}: CRISPR with Small-Molecule Induction
+#'  * \code{\link{cubeXHomingDeposition}}: CRISPR, X-Linked
+#'  * \code{\link{cubeECHACR}}: 2 Locus Eraser/Chaser Construct, Autosomal
+#'  * \code{\link{cubeECHACRX}}: 2 Locus Eraser/Chaser Construct, X-Linked
+#'  * \code{\link{cubeImmunizingReversalMF}}: Immunizing Reversal/Basic Reversal
+#'  * \code{\link{cubeImmunizingReversalX}}: Immunizing Reversal
+#'  * \code{\link{cubeConfinableHomingJOHN}}: Original Cube Design (We DO NOT recommend using this)
 #'  * \code{\link{cubeKillerRescue}}: Killer-Rescue System
 #'  * \code{\link{cubeMEDEA}}: MEDEA (Maternal Effect Dominant Embryonic Arrest)
 #'  * \code{\link{cubeReciprocalTranslocations}}: Reciprocal Translocation
 #'  * \code{\link{cubeRIDL}}: RIDL (Release of Insects with Dominant Lethality)
+#'  * \code{\link{cubeXShredderMF}}: X-Shredder, Autosomal
+#'  * \code{\link{cubeXShredderY}}: X-Shredder, Y-Linked
 #'  * \code{\link{cubeMendelian}}: Mendelian
-#'  * \code{\link{cubeSplitDrive}}: Split CRISPR drive
+#'  * \code{\link{cubeSplitDrive}}: Split CRISPR Drive
+#'  * \code{\link{cubeSplitDriveX}}: Split CRISTPR Drive, X-Linked
+#'  * \code{\link{cubeSplitDriveY}}: Split CRISTPR Drive, Y-Linked
 #'  * \code{\link{cubeTGD}}: trans-complementing Gene Drive
 #'  * \code{\link{cubeTGDX}}: trans-complementing Gene Drive, X-Linked
 #'  * \code{\link{cubeWolbachia}}: Wolbachia
@@ -134,17 +149,18 @@ cube2csv <- function(cube, directory, digits = 3){
 #' @param xiF genotype-specific female pupatory success
 #' @param xiM genotype-specific male pupatory success
 #' @param s genotype-specific fractional reduction(increase) in fertility
+#' @keywords internal
 #'
 cubeModifiers <- function(gtype, eta = NULL, phi = NULL, omega = NULL,
                           xiF = NULL, xiM = NULL, s = NULL){
 
   # check all numeric arguments to have proper bounds
-#  if(any(eta < 0)) stop("eta values must be positive [X>0]")
+  # if(any(eta < 0)) stop("eta values must be positive [X>0]")
   if(any(phi > 1) || any(phi < 0)) stop("phi values must be between [0,1]")
   if(any(omega < 0)) stop("omega values must be positive [X>0]")
   if(any(xiF > 1) || any(xiF < 0)) stop("xiF values must be between [0,1]")
   if(any(xiM > 1) || any(xiM < 0)) stop("xiM values must be between [0,1]")
-  if(any(s < 0)) stop("s values must be positive [X>0]")
+  # if(any(s < 0)) stop("s values must be positive [X>0]")
 
   # add parameters in the right place
   set <- function(gtype,vector,vectorNew){

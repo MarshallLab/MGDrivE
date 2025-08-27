@@ -15,3 +15,4 @@ calcPopulationGrowthRate(dailyPopGrowthRate, averageGenerationTime)
 Calculate \eqn{R_{m}}, population growth in absence of density-dependent mortality,
 given by: \deqn{(r_{m})^{g}}
 }
+\keyword{internal}

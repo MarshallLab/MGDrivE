@@ -15,3 +15,4 @@ Then, pupation is sampled from a binomial, where \eqn{(1-\overline{\phi})} is
 the genotype-specific probability of becoming male, and \eqn{\overline{\phi}}
 is the genotype-specific of becoming female.
 }
+\keyword{internal}

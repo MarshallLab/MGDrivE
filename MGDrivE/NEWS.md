@@ -50,6 +50,7 @@
 * Citation was updated to reflect publication in [Methods in Ecology and Evolution](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13318).
 
 
+
 # MGDrivE 1.6.0
 
 ### Major Changes
@@ -61,10 +62,40 @@
   * One and Two locus Cleave and Rescue (ClvR) constructs have been made available.
   * ERACR/eCHACR constructs have been made available.
 
-
-
 ### Minor Changes
 
 * Spelling checked and errors corrected.
 * Function links in the documentation have been updated.
 
+
+
+# MGDrivE 1.6.1
+
+### Major Changes
+
+* Rebuild of `oneDay_mating_deterministic_Patch()` and `oneDay_mating_stochastic_Patch()`. They properly account for zero probabilities with males and the associated female deaths.
+  * This fixes a bug introduced when `eta()` was turned into a matrix object, allowing selective mating.
+  * `omega()` is supposed to be a matrix, and change for each node. That isn't implemented here, and I don't know why not.
+
+### Minor Changes
+
+* `calcOmega()` has been updated internally.
+  * A closed-form expression was derived, and the `stats::uniroot()` dependency is removed.
+  * This does not actually fix the issue found, which is in the bounds for `mu`.
+  * Better bounds-checking was introduced, with a more clear error message, to warn users when they encounter this error.
+
+
+
+# MGDrivE 1.6.2
+
+### Major Changes
+
+* None
+
+### Minor Changes
+
+* Fixed deposition issues in `cubeClvR2()` - Thank you Dr. Leftwich.
+* Updated internal documentation - per CRAN requests.
+* Exported several new inheritance patterns that have been in development. 
+* Updated website documentation, switched to the current version of `pkgdown`.
+* Updated vignette options to reduce package size. 

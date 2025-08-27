@@ -9,3 +9,4 @@ get_xiM_Network()
 \description{
 Return genotype-specific male pupatory success
 }
+\keyword{internal}

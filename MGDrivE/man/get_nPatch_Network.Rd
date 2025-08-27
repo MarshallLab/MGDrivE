@@ -9,3 +9,4 @@ get_nPatch_Network()
 \description{
 Return number of patches
 }
+\keyword{internal}

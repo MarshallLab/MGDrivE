@@ -17,7 +17,7 @@
 #' A Patch is a single well-mixed population that is the smallest unit of simulation for MGDrivE.
 #'
 #' @docType class
-#' @format An \code{\link{R6Class}} generator object
+#' @format An \code{\link[R6]{R6Class}} generator object
 #' @keywords R6 class
 #'
 #' @importFrom stats rbinom rmultinom rpois
@@ -176,6 +176,8 @@ Patch <- R6::R6Class(classname = "Patch",
 #'
 #' @param NetworkPointer A \code{\link{Network}} object
 #'
+#' @keywords internal
+#'
 set_NetworkPointer_Patch <- function(NetworkPointer){private$NetworkPointer = NetworkPointer}
 
 Patch$set(which = "public",name = "set_NetworkPointer",
@@ -186,6 +188,8 @@ Patch$set(which = "public",name = "set_NetworkPointer",
 #'
 #' Return males (nGenotypes vector)
 #'
+#' @keywords internal
+#'
 get_malePop_Patch <- function(){return(private$popMale)}
 
 Patch$set(which = "public",name = "get_malePopulation",
@@ -195,6 +199,8 @@ Patch$set(which = "public",name = "get_malePopulation",
 #' Get female Population
 #'
 #' Return  females (nGenotypes X nGenotypes matrix)
+#'
+#' @keywords internal
 #'
 get_femalePop_Patch <- function(){return(private$popFemale)}
 

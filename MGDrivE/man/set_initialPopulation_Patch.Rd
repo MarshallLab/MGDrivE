@@ -40,3 +40,4 @@ appropriately split amongst the initial population genotypes (see \code{\link{pa
 It internally calls \code{\link{calcLarvalDist}} to determine the distribution
 of larvae before setting the eggs and pupa from that.
 }
+\keyword{internal}

@@ -12,3 +12,4 @@ get_alpha_Network(ix)
 \description{
 Return density dependent mortality, see \code{\link{calcDensityDependentDeathRate}}
 }
+\keyword{internal}

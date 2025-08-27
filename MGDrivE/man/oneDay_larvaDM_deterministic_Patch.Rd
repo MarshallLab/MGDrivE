@@ -13,3 +13,4 @@ is calculated as \deqn{F(L[t])=\Bigg(\frac{\alpha}{\alpha+\sum{\overline{L[t]}}}
 See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 Pupation has no parameters, so the final day of larvae naturally enter the pupal state.
 }
+\keyword{internal}

@@ -32,3 +32,4 @@ cubeModifiers(
 \description{
 This is an internal function for cubes.
 }
+\keyword{internal}

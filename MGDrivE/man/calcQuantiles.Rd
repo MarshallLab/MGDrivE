@@ -49,7 +49,7 @@ Given the readDir, this function assumes the follow file structure: \cr
 }
 
 Output files are *.csv contain the mean or quantile in the file name, i.e.
-{M/F}\emph{Mean}(patchNum).csv and {M/F}\emph{Quantile}(quantNum)_(patchNum).csv.
+\{M/F\}\emph{Mean}(patchNum).csv and \{M/F\}\emph{Quantile}(quantNum)_(patchNum).csv.
 }
 \examples{
 \dontrun{

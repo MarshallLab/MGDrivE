@@ -13,3 +13,4 @@ in the original Hancock paper this model is derived from). \cr
 Then, pupation into adult males is calculated as \deqn{(1-\overline{\phi}) * \overline{P_{[t]}}}
 and into adult females as \deqn{\overline{\phi} * \overline{P_{[t]}}}
 }
+\keyword{internal}

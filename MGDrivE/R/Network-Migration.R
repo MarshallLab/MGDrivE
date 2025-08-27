@@ -28,6 +28,8 @@
 #' This function handles outbound and inbound migration. See \code{\link{MGDrivE-Model}},
 #' 'Migration' section for more details on how inter-patch migration is handled.
 #'
+#' @keywords internal
+#'
 oneDay_Migration_Deterministic_Network <- function(){
 
   ######################################
@@ -86,6 +88,8 @@ oneDay_Migration_Deterministic_Network <- function(){
 #'
 #' This function handles outbound and inbound migration. See \code{\link{MGDrivE-Model}},
 #' 'Migration' section for more details on how inter-patch migration is handled.
+#'
+#' @keywords internal
 #'
 oneDay_Migration_Stochastic_Network <- function(){
 

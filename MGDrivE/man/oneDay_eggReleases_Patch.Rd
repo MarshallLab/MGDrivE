@@ -10,3 +10,4 @@ oneDay_eggReleases_Patch()
 Based on this patch's release schedule, \code{\link{generateReleaseVector}},
 this function handles daily egg releases.
 }
+\keyword{internal}

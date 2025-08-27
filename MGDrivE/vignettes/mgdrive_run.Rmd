@@ -1,7 +1,10 @@
 ---
 title: "MGDrivE Run Example"
 #output: rmarkdown::pdf_document
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    self_contained: false
+    lib_dir: libs
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{MGDrivE-Run}
@@ -200,7 +203,6 @@ plotMGDrivEMult(readDir=outFolder,lwd=0.35,alpha=0.75)
 # Load libraries
 ####################
 library(MGDrivE)
-
 ```
 
 Step one, load *MGDrivE*.
@@ -213,7 +215,6 @@ Step one, load *MGDrivE*.
 ####################
 outFolder <- "mgdrive"
 dir.create(path = outFolder)
-
 ```
 
 Here, we setup the folder for simulation data. Since this is a local folder, it doesn't exist, and needs to be created. If you already have a folder prepared, make sure it is empty. *MGDrivE* gives a warning if there are other things in the folder (to prevent overwriting of data), but will run fine if the folder is not empty.
@@ -318,6 +319,7 @@ For this experiment, we use simple Mendelian inheritance. *MGDrivE* has several 
   * `cubeReciprocalTranslocations()`: Reciprocal Translocations  
   * `cubeHomingDrive()`: CRISPR-based homing drive, with two resistance alleles  
   * `cubeMEDEA()`: Maternal Effect Dominant Embryonic Arrest  
+  * See [MGDrivE Mathematical Description](mgdrive_math.html) for a complete list
 
 While we use the default parameters, there are several fitness costs that can be applied. Every cost is applied in a genotype-specific manner. The optional fitness costs are:  
 
@@ -569,7 +571,7 @@ The same goes for the "aaAA" and "aaaa" columns in the first and the "aa" column
 *MGDrivE* comes with two built-in plot functions, `plotMGDrivESingle()` and `plotMGDrivEMult()`.  
 `plotMGDrivESingle()` takes the name of one repetition folder, and plots all of the patches in it for both males and females. 
 
-```{r}
+```{r, fig.alt="Example of how to plot a single repetition from a set of simulations."}
 # plot the first repetition
 plotMGDrivESingle(readDir=folderNames[1],totalPop = TRUE,lwd=3.5,alpha=1)
 ```
@@ -577,7 +579,7 @@ plotMGDrivESingle(readDir=folderNames[1],totalPop = TRUE,lwd=3.5,alpha=1)
 The left Y-axis is population size, the right Y-axis is patch number, and the X-axis is time. We can see the releases in the first patch, equal for males and females, and follow their migration down the plots from patch 1 to patch 5. The total population remains around 250 individuals for males and females, which gives the expected equilibrium value of 500.  
 We can also plot all of our repetitions using `plotMGDrivEMult()`.  
 
-```{r}
+```{r, fig.alt="Example of how to plot all repetitions from a set of simulations."}
 # plot all 5 repetitions together
 plotMGDrivEMult(readDir=outFolder,lwd=0.35,alpha=0.75)
 ```

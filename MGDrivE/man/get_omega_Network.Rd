@@ -9,3 +9,4 @@ get_omega_Network()
 \description{
 Return genotype-specific multiplicative modifier of adult mortality
 }
+\keyword{internal}

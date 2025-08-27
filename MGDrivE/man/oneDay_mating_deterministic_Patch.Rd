@@ -15,3 +15,4 @@ If there are no adult males, the unmated females experience one day of death,
 calculated as \deqn{\overline{Af_t} * (1-\mu_{ad}) * \overline{\omega_f}}, and
 remain unmated until tomorrow.
 }
+\keyword{internal}

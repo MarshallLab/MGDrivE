@@ -12,3 +12,4 @@ where \eqn{\mu_{aq}} corresponds to daily non-density-dependent aquatic mortalit
 Eggs transition into larvae at the end of \eqn{T_e}. \cr
 See \code{\link{parameterizeMGDrivE}} for how these parameters are derived.
 }
+\keyword{internal}

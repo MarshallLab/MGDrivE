@@ -36,3 +36,4 @@ set_population_stochastic_Patch(
 Calls \code{\link{set_initialPopulation_Patch}} to initialize a steady-state
 population distribution. Populations are then rounded to integer values.
 }
+\keyword{internal}

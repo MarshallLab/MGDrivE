@@ -24,3 +24,4 @@ calcLarvalStageMortalityRate(
 Calculate \eqn{\mu_{l}}, the larval mortality, given by
 \deqn{\mu_l=1-\Bigg( \frac{R_m * \mu_{ad}}{1/2 * \beta * (1-\mu_m)} \Bigg)^{\frac{1}{T_e+T_l+T_p}}}
 }
+\keyword{internal}

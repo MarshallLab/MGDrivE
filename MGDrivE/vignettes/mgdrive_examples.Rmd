@@ -1,7 +1,10 @@
 ---
 title: "MGDrivE Examples"
 #output: rmarkdown::pdf_document
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    self_contained: false
+    lib_dir: libs
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{MGDrivE-Examples}
@@ -181,7 +184,7 @@ A useful benchmark of population models that include genetic inheritance is to s
 
 First, we show an example running a deterministic *MGDrivE* simulation under Mendelian inheritance in a single node; that is, a non-spatial model. The population is 100% _AA_ (homozygous dominant) individuals at time 0. At day 25, 10 female and 10 male _aa_ (homozygous recessive) individuals enter the population.
 
-```{r}
+```{r, fig.alt="Example of a deterministic simulation under Mendelian inheritance, in a single node and without fitness costs."}
 ####################
 # Load libraries
 ####################
@@ -297,7 +300,6 @@ plotMGDrivESingle(readDir = outFolder, totalPop = TRUE, lwd = 3.5, alpha = 1)
 ####################
 # Theory Comparison
 ####################
-
 # read in simulation files
 totPop <- read.csv(file = file.path(outFolder, "M_Run001_Patch001.csv"),
                    header = TRUE, sep = ",")[ ,-1] +
@@ -369,7 +371,7 @@ rm(list=ls())
 
 Now that we have shown a basic Mendelian simulation, we will expand it a little by including a fitness cost on certain genotypes. In the following simulation, the homozygotes, _AA_ and _aa_, are only 60% as fit as the heterozygote over their adult lifetime. This is an example of a heterozygote advantage, and we should see the population become primarily heterozygous. We will increase the size and number of releases and perform them a little bit later, to see the effects of the fitness cost and then speed up the equilibration process, but everything else will remain the same, i.e., one population and a deterministic simulation.
 
-```{r}
+```{r, fig.alt="Example of a deterministic simulation under Mendelian inheritance, in a single node, with fitness costs."}
 ####################
 # Load libraries
 ####################
@@ -501,12 +503,11 @@ plotMGDrivESingle(readDir = outFolder, totalPop = TRUE, lwd = 3.5, alpha = 1)
 ####################
 # Theory Comparison
 ####################
-
 # read in simulation files
 totPop <- read.csv(file = file.path(outFolder, "M_Run001_Patch001.csv"),
                    header = TRUE, sep = ",")[ ,-1] +
-  read.csv(file = file.path(outFolder, "F_Aggregate_Run001_Patch001.csv"),
-           header = TRUE, sep = ",")[ ,-1]
+read.csv(file = file.path(outFolder, "F_Aggregate_Run001_Patch001.csv"),
+         header = TRUE, sep = ",")[ ,-1]
 ```
 
 Again, we plot the females on the left, the males on the right, with the population size on the Y-axis and simulation time along the X-axis. We see the total population size starts at 250 males and females, a total of 500 individuals, but quickly drops to `r totPop[90,1]`. This is because of the fitness cost applied to the _AA_ individuals that make up the population. As we applied an 60% fitness cost, we expect the total population to be 60% of the desired population. 60% of 500 individuals, assuming HWE applies, is 300, which is close to the simulated population size prior to the releases. This discrepancy can be accounted for by the presence of density-dependence during larval maturation.
@@ -521,13 +522,11 @@ After releases of _aa_ individuals are performed, we see the population quickly 
 Checking at the end of our simulation, we find that the empirical genotype amounts are:
 
   * _AA_: `r round(x = totPop[tMax, 1], digits = 2)`
-* _Aa_: `r round(x = totPop[tMax, 2], digits = 2)`
-* _aa_: `r round(x = totPop[tMax, 3], digits = 2)`
-* Total: `r round(x = sum(totPop[tMax, ]), digits = 2)`
+  * _Aa_: `r round(x = totPop[tMax, 2], digits = 2)`
+  * _aa_: `r round(x = totPop[tMax, 3], digits = 2)`
+  * Total: `r round(x = sum(totPop[tMax, ]), digits = 2)`
 
 This closely matches our simulated population, differing because HWE assumes discrete generations.
-
-
 
 ```{r, echo=FALSE}
 ####################
@@ -544,7 +543,7 @@ The processes of birth, death, mating, and inheritance are inherently probabilis
 
 We now use the same simulation parameters as the previous example but run the stochastic version of the model. To view variability in sampled trajectories, we run 50 repetitions. For realistic applications, large ensembles of simulations (>100) should be run and statistically analyzed to characterize quantities of interest.
 
-```{r}
+```{r, fig.alt=c("Example of a single, stochastic simulation under Mendelian inheritance, in a single node, with fitness costs.", "Example of 50 repetitions from a stochastic simulation under MEndelian inheritance, in a single node with fitness costs.")}
 ####################
 # Load libraries
 ####################
@@ -704,7 +703,7 @@ Single, panmictic populations are simple to analyze but rarely encountered in na
 
 #### Deterministic, No Migration
 
-```{r}
+```{r, fig.alt="An example of a two-node, deterministic simulation where each node is completely independent."}
 ####################
 # Load libraries
 ####################
@@ -827,7 +826,7 @@ rm(list=ls())
 
 Now, if we increase the migration to 1% per day between the populations, we should see heterozygous individuals appear in patch 2, even though we only perform releases in patch 1. (We repeat the entire code for users' benefit.)
 
-```{r}
+```{r, fig.alt="An example of a two-node, deterministic simulation where each node is connected by a 1% daily migration rate."}
 ####################
 # Load libraries
 ####################
@@ -955,7 +954,7 @@ rm(list=ls())
 
 With very small migration rates, it is interesting to see how a scenario changes using a stochastic simulation. Some  repetitions should take significantly longer for heterozygotes to migrate from patch 1 to patch 2. So, we keep all of the parameters the same as above, but run 25 stochastic repetitions instead of a deterministic simulation.
 
-```{r}
+```{r, fig.alt=c("A single example of a two-node, stochastic simulation where each node is connected by a 1% daily migration rate.", "25 repetitions of a two-node, stochastic simulation where each node is connected by a 1% daily migration rate.")}
 ####################
 # Load libraries
 ####################
@@ -1095,7 +1094,7 @@ rm(list=ls())
 
 As a final example, we perform a stochastic, two-population simulation with the same fitness cost explored previously, i.e., a 60% reduction in lifetime on _AA_ and _aa_ individuals. We first explored this in a single, panmictic population using a deterministic simulation, then explored the effect of stochasticity on the results. Here, we extend our analysis to a two-population setting, to explore how population structure might affect our results.
 
-```{r}
+```{r, fig.alt=c("A single example of a two-node, stochastic simulation where each node is connected by a 1% daily migration rate and includes fitness costs.", "25 repetitions of a two-node, stochastic simulation where each node is connected by a 1% daily migration rate and includes fitness costs.")}
 ####################
 # Load libraries
 ####################
@@ -1259,7 +1258,7 @@ rm(list=ls())
 
 We maintain the same theoretical fitness cost, namely, that possession of only 1 copy of a reciprocal chromosome is always fatal. We perform 5 releases of transgenic critters, both male and female, every 7 days starting at day 25. This is not enough to make the population 50% transgenic, and therefore the transgenic critters should die out.
 
-```{r}
+```{r, fig.alt="A deterministic simulation of a reciprocal translocation in a single, panmictic population, where the gene frequency remains below the fitness threshold."}
 ####################
 # Load libraries
 ####################
@@ -1385,7 +1384,7 @@ rm(list=ls())
 
 Now, we perform the same simulation as above, but increase the number of releases by one, from 5 releases to 6. This is enough to get over the critical threshold, so we should see the population turn entirely into transgenic individuals.
 
-```{r}
+```{r, fig.alt="A deterministic simulation of a reciprocal translocation in a single, panmictic population, where the gene frequency crosses the critical threshold and spreads."}
 ####################
 # Load libraries
 ####################
@@ -1433,9 +1432,9 @@ patchReleases <- replicate(n=sitesNumber,
 #  Releases start at time 25, occur once a week, for 6 weeks.
 #  There are 100 mosquitoes released every time.
 releasesParameters <- list(releasesStart=25,
-                          releasesNumber=6,
-                          releasesInterval=7,
-                          releaseProportion=100)
+                           releasesNumber=6,
+                           releasesInterval=7,
+                           releaseProportion=100)
 
 # generate release vector
 releasesVector <- generateReleaseVector(driveCube=cube,
@@ -1449,8 +1448,8 @@ patchReleases[[1]]$femaleReleases <- releasesVector
 # This is required because of the stochastic simulations, but doesn't make sense
 #  in a deterministic simulation.
 batchMigration <- basicBatchMigration(batchProbs=0,
-                                     sexProbs=c(.5,.5),
-                                     numPatches=sitesNumber)
+                                      sexProbs=c(.5,.5),
+                                      numPatches=sitesNumber)
 
 ####################
 # Combine parameters and run!
@@ -1461,20 +1460,20 @@ setupMGDrivE(stochasticityON = FALSE, verbose = FALSE)
 # setup parameters for the network. This builds a list of parameters required for
 #  every population in the network. In ths case, we have a network of 1 population.
 netPar <- parameterizeMGDrivE(runID=1, simTime=tMax, nPatch=sitesNumber,
-                             beta=bioParameters$betaK, muAd=bioParameters$muAd,
-                             popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
-                             tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
-                             AdPopEQ=patchPops, inheritanceCube = cube)
+                              beta=bioParameters$betaK, muAd=bioParameters$muAd,
+                              popGrowth=bioParameters$popGrowth, tEgg=bioParameters$tEgg,
+                              tLarva=bioParameters$tLarva, tPupa=bioParameters$tPupa,
+                              AdPopEQ=patchPops, inheritanceCube = cube)
 
 # build network prior to run
 MGDrivESim <- Network$new(params=netPar,
-                         driveCube=cube,
-                         patchReleases=patchReleases,
-                         migrationMale=moveMat,
-                         migrationFemale=moveMat,
-                         migrationBatch=batchMigration,
-                         directory=outFolder,
-                         verbose = FALSE)
+                          driveCube=cube,
+                          patchReleases=patchReleases,
+                          migrationMale=moveMat,
+                          migrationFemale=moveMat,
+                          migrationBatch=batchMigration,
+                          directory=outFolder,
+                          verbose = FALSE)
 # run simulation
 MGDrivESim$oneRun(verbose = FALSE)
 
@@ -1509,7 +1508,7 @@ rm(list=ls())
 
 The preceding two simulations show dramatically different results with the addition of a single release. This implies that we are near the critical threshold but gives a false impression of how distinct or certain we are of the outcome. Stochastic fluctuations can quickly push us across a threshold, even when deterministic simulations implied we had passed/not passed it. Using stochastic simulations, we can put a probability on an outcome, given that we are near the threshold. Thus, we perform the same simulation as above, 6 releases, that we think puts us over the critical threshold. However, as we will see below, this is not entirely the case.
 
-```{r}
+```{r, fig.alt=c("A stochastic simulation of a reciprocal translocation in a single, panmictic population.", "20 stochastic repetitions simulating a reciprocal translocation in a single, panmictic population.")}
 ####################
 # Load libraries
 ####################

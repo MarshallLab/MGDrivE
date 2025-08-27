@@ -1,0 +1,352 @@
+###############################################################################
+#      ______      __
+#     / ____/_  __/ /_  ___
+#    / /   / / / / __ \/ _ \
+#   / /___/ /_/ / /_/ /  __/
+#   \____/\__,_/_.___/\___/
+#
+#   MGDrivE: Mosquito Gene Drive Explorer
+#   Confinable Homing: X-Linked
+#   Héctor Sanchez, Jared Bennett, Sean Wu, John Marshall
+#   jared_bennett@berkeley.edu
+#   August 2017
+#   December 2018
+#    Update to reflect cutting, homing, resistance generation rate definitions
+#    Not sure this ever actually worked, the code was wrong.
+#    It should be correct now, both in code and in theory
+#    Did not add deposition from females or males
+#
+###############################################################################
+
+#' Inheritance Cube: Confinable Homing, X-Linked
+#'
+#' This function creates an X-linked confinable homing construct, it has 5 alleles at the first locus
+#' and 4 alleles at the second. No crossovers or homing occurs into the y chromosome
+#'  * W: Wild-type
+#'  * H: Homing allele
+#'  * A: Antidote allele
+#'  * R: No-cost resistance allele
+#'  * B: Detrimental resistance allele
+#'  * Y: Male allele
+#'
+#' @param cF Cutting efficiency of drive allele at locus 1 in females
+#' @param chF Homing efficiency of drive allele at locus 1 in females
+#' @param crF Resistance allele generation rate at locus 1 in females
+#' @param dR Background mutation rate from W and H into R allele in males and females
+#' @param dB Background mutation rate from A into B allele in males and females
+#' @param crossF Female crossover rate.
+#' @param eta Genotype-specific mating fitness
+#' @param phi Genotype-specific sex ratio at emergence
+#' @param omega Genotype-specific multiplicative modifier of adult mortality
+#' @param xiF Genotype-specific female pupatory success
+#' @param xiM Genotype-specific male pupatory success
+#' @param s Genotype-specific fractional reduction(increase) in fertility
+#'
+#' @return Named list containing the inheritance cube, transition matrix, genotypes, wild-type allele,
+#' and all genotype-specific parameters.
+#' @export
+cubeConfinableHomingX <- function(cF=1.0, chF=0, crF=0, dR=0, dB=0, crossF=0,
+                                   eta=NULL, phi=NULL,omega=NULL, xiF=NULL, xiM=NULL, s=NULL){
+
+  ## safety checks
+  if(any(c(cF,chF,crF,dR,dB,crossF)>1) || any(c(cF,chF,crF,dR,dB,crossF)<0)){
+    stop("Parameters are rates.
+         0 <= x <= 1")
+  }
+
+
+  #############################################################################
+  ## generate all genotypes, set up vectors and matrices
+  #############################################################################
+
+  #list of possible alleles at each locus
+  #the first locus has the drive, and can be erased
+  # the second locus is the "CHACR" element. No drive, but eracing piece
+  #gTypes <- list(c("W", "H", "R", "B"), c("W", "A", "B"))
+
+  # this generates genotypes from gTypes. Only needed done once.
+  # #get all combinations of locus 1 and locus 2
+  # alleles <- expand.grid(gTypes,KEEP.OUT.ATTRS = FALSE,
+  #                        stringsAsFactors = FALSE)
+  # #paste them together. Add male allele. Only occurs in YY formate
+  # alleles <- do.call(what = paste0, args = list(alleles[,1], alleles[,2]))
+  # alleles <- c(alleles, "YY")
+  # #expand all combinations of alleles with locus 1 and locus 2
+  # hold <- expand.grid(alleles,alleles,KEEP.OUT.ATTRS = FALSE,
+  #                     stringsAsFactors = FALSE)
+  # #sort, because order of alleles doesn't matter, paste, and keep unique
+  # genotypes <- unique(vapply(X = 1:dim(hold)[1],
+  #                            FUN = function(x){
+  #                              paste0(sort(x = hold[x, ]), collapse = "")},
+  #                            FUN.VALUE = character(1)
+  # ))
+  # #remove YYYY, not viable
+  # genotypes <- genotypes[!genotypes=="YYYY"]
+  #
+  # #separate male/female genotypes, since this is sex specific now
+  # index <- grepl(pattern = "YY", x = genotypes)
+  # maleGen <- genotypes[index]
+  # femaleGen <- genotypes[!index]
+
+  maleGen <- c("WWYY","HWYY","RWYY","BWYY","WAYY","HAYY","RAYY","BAYY","WBYY",
+               "HBYY","RBYY","BBYY")
+  femaleGen <- c("WWWW","HWWW","RWWW","BWWW","WAWW","HAWW","RAWW","BAWW","WBWW",
+                 "HBWW","RBWW","BBWW","HWHW","HWRW","BWHW","HWWA","HAHW","HWRA",
+                 "BAHW","HWWB","HBHW","HWRB","BBHW","RWRW","BWRW","RWWA","HARW",
+                 "RARW","BARW","RWWB","HBRW","RBRW","BBRW","BWBW","BWWA","BWHA",
+                 "BWRA","BABW","BWWB","BWHB","BWRB","BBBW","WAWA","HAWA","RAWA",
+                 "BAWA","WAWB","HBWA","RBWA","BBWA","HAHA","HARA","BAHA","HAWB",
+                 "HAHB","HARB","BBHA","RARA","BARA","RAWB","HBRA","RARB","BBRA",
+                 "BABA","BAWB","BAHB","BARB","BABB","WBWB","HBWB","RBWB","BBWB",
+                 "HBHB","HBRB","BBHB","RBRB","BBRB","BBBB")
+  genotypes <- c(femaleGen,maleGen)
+  size <- length(genotypes)
+
+
+  #############################################################################
+  ## setup all probability lists
+  #############################################################################
+
+  #set probabilities for the first locus, the Homing and Erasing element
+  locus1Probs <- list()
+
+  locus1Probs$mendelian <- list("W"=c("W"=1-dR,"R"=dR),
+                                "H"=c("H"=1-dR,"R"=dR),
+                                "R"=c("R"=1),
+                                "B"=c("B"=1))
+
+  locus1Probs$homingF <- list("W"=c("W"=(1-dR)*(1-cF),
+                                    "H"=(1-dR)*cF*chF,
+                                    "R"=(1-dR)*cF*(1-chF)*crF + dR,
+                                    "B"=(1-dR)*cF*(1-chF)*(1-crF)),
+                              "H"=c("H"=1-dR,"R"=dR),
+                              "R"=c("R"=1),
+                              "B"=c("B"=1))
+
+  #set probabilities for the second locus, the CHACR element
+  locus2Probs <- list("W"=c("W"=1),
+                      "A"=c("A"=1-dB,"B"=dB),
+                      "B"=c("B"=1))
+
+
+  #############################################################################
+  ## fill transition matrix
+  #############################################################################
+
+  #use this many times down below
+  numGen <- 90
+  #number of alleles, set score lists
+  numAlleles <- 2
+
+  #create transition matrix to fill
+  tMatrix <- array(data = 0,
+                   dim = c(numGen,numGen,numGen),
+                   dimnames = list(genotypes,genotypes,genotypes))
+
+
+  #############################################################################
+  ## loop over all matings, female outer loop
+  #############################################################################
+  for (fi in 1:length(femaleGen)){
+    #do female stuff here
+    #This splits all characters.
+    fSplit <- strsplit(x = femaleGen[fi], split = "")[[1]]
+    #make a list of each allele at every locus. This list is length nmPlex, and each
+    # sublist has length 2
+    momAlleles <- list(fSplit[1:2], fSplit[3:4])
+    #Score for H in either allele, always at locus 1 though
+    fScore <- grepl(pattern = "H", x = femaleGen[fi], fixed = TRUE)
+    #setup offspring allele lists
+    fAllele <- rep(x = list(vector(mode = "list", 2)), numAlleles)
+    fProbs <- rep(x = list(vector(mode = "list", 2)), numAlleles)
+
+
+    #set mother alleles
+    if(fScore){
+      #homing in females
+      #lists of allele letter and probabilities
+      for (i in 1:numAlleles){
+
+        #female locus 1
+        fProbs[[i]][[1]] <- locus1Probs$homingF[[ momAlleles[[i]][[1]] ]]
+        fAllele[[i]][[1]] <- names(fProbs[[i]][[1]])
+
+        #female locus 2
+        fProbs[[i]][[2]] <- locus2Probs[[ momAlleles[[i]][[2]] ]]
+        fAllele[[i]][[2]] <- names(fProbs[[i]][[2]])
+
+      }#end loop over alleles
+    } else {
+      #no homing in females
+      #lists of allele letter and probabilities
+      for (i in 1:numAlleles){
+
+        #female locus 1
+        fProbs[[i]][[1]] <- locus1Probs$mendelian[[momAlleles[[i]][[1]] ]]
+        fAllele[[i]][[1]] <- names(fProbs[[i]][[1]])
+
+        #female locus 2
+        fProbs[[i]][[2]] <- locus2Probs[[ momAlleles[[i]][[2]] ]]
+        fAllele[[i]][[2]] <- names(fProbs[[i]][[2]])
+
+      }#end loop over alleles
+    }#end female check
+
+
+
+    #perform female crossover
+    #because this is done recursively, I need to hold the value out
+    holdA <- fAllele[[1]][[2]]
+    holdP <- fProbs[[1]][[2]]
+
+    #swap allele 2's in both
+    fAllele[[1]][[2]] <- c(holdA, fAllele[[2]][[2]])
+    fAllele[[2]][[2]] <- c(fAllele[[2]][[2]], holdA)
+
+    #set the probs for the new allele 2's in both
+    fProbs[[1]][[2]] <- c(holdP*(1-crossF), fProbs[[2]][[2]]*crossF)
+    fProbs[[2]][[2]] <- c(fProbs[[2]][[2]]*(1-crossF), holdP*crossF)
+
+
+
+    #combine loci for each female allele.
+    # This requires looping through each locus, getting all combinations of
+    fLociA <- fLociP <- vector(mode = "list", length = numAlleles)
+
+    for( i in 1:numAlleles){
+
+      #get all combinations of loci for each allele, keep male/female separate still
+      holdAllF <- expand.grid(fAllele[[i]], KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+      holdProbF <- expand.grid(fProbs[[i]], KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+
+      #paste alleles together and store in list
+      fLociA[[i]] <- do.call(what = "paste0", list(holdAllF[ ,1], holdAllF[ ,2]))
+      fLociP[[i]] <- holdProbF[ ,1]*holdProbF[ ,2]
+    }
+
+
+
+    ###########################################################################
+    ## loop over male mate. This is the inner loop
+    ###########################################################################
+    for (mi in 1:length(maleGen)){
+      #do male stuff here
+      #split male genotype
+      #This splits all characters.
+      mSplit <- strsplit(x = maleGen[mi], split = "")[[1]]
+
+      #make a list of each allele at every locus. This list is length nmPlex, and each
+      # sublist has length 2
+      dadAlleles <- list(mSplit[1:2], mSplit[3:4])
+
+      #setup offspring allele lists
+      mAllele <- rep(x = list(vector(mode = "list", 2)), numAlleles)
+      mProbs <- rep(x = list(vector(mode = "list", 2)), numAlleles)
+
+
+      #set father alleles
+      # do it like this to avoid the loop, and because it never changes
+      # allele 1
+        #male locus 1
+        mProbs[[1]][[1]] <- locus1Probs$mendelian[[ dadAlleles[[1]][[1]] ]]
+        mAllele[[1]][[1]] <- names(mProbs[[1]][[1]])
+
+        #male locus 2
+        mProbs[[1]][[2]] <- locus2Probs[[ dadAlleles[[1]][[2]] ]]
+        mAllele[[1]][[2]] <- names(mProbs[[1]][[2]])
+
+      # allele 2
+        #male locus 1
+        mProbs[[2]][[1]] <- c("Y"=1)
+        mAllele[[2]][[1]] <- "Y"
+
+        #male locus 2
+        mProbs[[2]][[2]] <- c("Y"=1)
+        mAllele[[2]][[2]] <- "Y"
+
+
+
+      #males can't crossover. No interaction with the Y chromosome.
+
+
+
+
+      #########################################################################
+      ## Get combinations and put them in the tMatrix. This must be done
+      ##  inside the inner loop
+      #########################################################################
+
+      #combine loci for each male allele.
+      # This requires looping through each locus, getting all combinations of
+      mLociA <- mLociP <- vector(mode = "list", length = numAlleles)
+
+      for( i in 1:numAlleles){
+        #get all combinations of loci for each allele, keep male/female separate still
+        holdAllM <- expand.grid(mAllele[[i]], KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+        holdProbM <- expand.grid(mProbs[[i]], KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+
+        #paste alleles together and store in list
+        mLociA[[i]] <- do.call(what = "paste0", list(holdAllM[ ,1], holdAllM[ ,2]))
+        mLociP[[i]] <- holdProbM[ ,1]*holdProbM[ ,2]
+      }
+
+
+      #combine each Allele into single lists, so that alleles within one parent can't
+      # be combined with each other, but do get combined with alleles for the
+      # other parent
+      # ie, unlist the parent alleles, then combine with the other parent
+      holdAllOne <- expand.grid(unlist(fLociA), unlist(mLociA), KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+      holdProbOne <- expand.grid(unlist(fLociP), unlist(mLociP), KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+
+      #sort each combination so they are the same.
+      holdAllOne <- apply(X = holdAllOne, MARGIN = 1, FUN = sort, method = 'radix')
+
+      #paste alleles togheter
+      holdAllTwo <- do.call(what = "paste0", list(holdAllOne[1, ], holdAllOne[2, ]))
+      holdProbTwo <- holdProbOne[ ,1]*holdProbOne[ ,2]
+
+      #aggregate and return
+      aggregateHold <- vapply(X = unique(holdAllTwo), FUN = function(x){
+        sum(holdProbTwo[holdAllTwo==x])},
+        FUN.VALUE = numeric(length = 1L))
+
+      #normalize
+      if(!sum(aggregateHold)==0){
+        aggregateHold <- aggregateHold/sum(aggregateHold)
+      }
+
+      #set values in tMatrix
+      tMatrix[femaleGen[fi],maleGen[mi], names(aggregateHold) ] <- aggregateHold
+
+    }# end male loop
+  }# end female loop
+
+
+
+  ## protection from underflow errors
+  tMatrix[tMatrix < .Machine$double.eps] <- 0
+
+  ## initialize viability mask. No mother-specific death.
+  viabilityMask <- array(data = 1, dim = c(size,size,size), dimnames = list(genotypes, genotypes, genotypes))
+
+  ## genotype-specific modifiers
+  modifiers = cubeModifiers(genotypes, eta = eta, phi = phi, omega = omega, xiF = xiF, xiM = xiM, s = s)
+  modifiers$phi[maleGen] <- 0 #all these genotypes must be male. The rest are female
+  modifiers$phi[femaleGen] <- 1
+
+  ## put everything into a labeled list to return
+  return(list(
+    ih = tMatrix,
+    tau = viabilityMask,
+    genotypesID = genotypes,
+    genotypesN = numGen,
+    wildType = c("WWWW","WWYY"),
+    eta = modifiers$eta,
+    phi = modifiers$phi,
+    omega = modifiers$omega,
+    xiF = modifiers$xiF,
+    xiM = modifiers$xiM,
+    s = modifiers$s,
+    releaseType = "HAYY"
+  ))
+}
