@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -61,6 +61,9 @@
     </li>
     <li>
       <a href="../articles/epi-network.html">MGDrivE2: Metapopulation Network Epidemiological Dynamics</a>
+    </li>
+    <li>
+      <a href="../articles/epi-node-SIS-decoupled.html">MGDrivE2: One Node Epidemiological Dynamics - Decoupled SIS Sampling</a>
     </li>
     <li>
       <a href="../articles/epi-node.html">MGDrivE2: One Node Epidemiological Dynamics</a>
@@ -86,7 +89,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/MarshallLab/MGDrivE/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -100,8 +103,7 @@
 
       
 
-      </header><script src="output-storage_files/header-attrs-2.5/header-attrs.js"></script><link href="output-storage_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="output-storage_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="output-storage_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>MGDrivE2: Data Storage and Analysis</h1>
@@ -406,9 +408,8 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># don't list parent directory</span>
 <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.dirs</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">analysis_folders</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; [1] "/var/folders/qv/y1wxv5g94gsgkt5dm8c08vy00000gn/T//RtmpXSwVNI/traces/001"</span>
-<span class="co">#&gt; [2] "/var/folders/qv/y1wxv5g94gsgkt5dm8c08vy00000gn/T//RtmpXSwVNI/traces/002"</span>
-<span class="co">#&gt; [3] "/var/folders/qv/y1wxv5g94gsgkt5dm8c08vy00000gn/T//RtmpXSwVNI/traces/003"</span></code></pre></div>
+<span class="co">#&gt; [1] "/tmp/Rtmpjcf4n2/traces/001" "/tmp/Rtmpjcf4n2/traces/002"</span>
+<span class="co">#&gt; [3] "/tmp/Rtmpjcf4n2/traces/003"</span></code></pre></div>
 <p>We can look at the output in the first repetition folder.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">analysis_folders</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="va">rep_out</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
