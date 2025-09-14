@@ -1074,8 +1074,7 @@ base_sum_F <- function(fileList,outList,genos,nGenos,nErlang,times,nTimes,nNodes
 #' \code{t0}, \code{tt}, \code{dt} define the first sampling time, the last sampling
 #' time, and each sampling time in-between.
 #'
-#' Output files are *.csv and contain the mean or quantile in the file name, e.g.
-#' \{stage\}_Mean_(patchNum).csv and \{stage\}_Quantile_(quantNum)_(patchNum).csv.
+#' Output files are *.csv and contain the mean or quantile in the file name.
 #'
 #' For more details about using this function to process CSV output see:
 #' \code{vignette("data-analysis", package = "MGDrivE2")}
@@ -1289,8 +1288,7 @@ summarize_stats_CSV <- function(
 #' \code{t0}, \code{tt}, \code{dt} define the first sampling time, the last sampling
 #' time, and each sampling time in-between.
 #'
-#' Output files are *.csv and contain the mean or quantile in the file name, e.g.
-#' \{stage\}_Mean_(patchNum).csv and \{stage\}_Quantile_(quantNum)_(patchNum).csv.
+#' Output files are *.csv and contain the mean or quantile in the file name.
 #'
 #' For more details about using this function to process CSV output see:
 #' \code{vignette("data-analysis", package = "MGDrivE2")}

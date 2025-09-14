@@ -44,5 +44,41 @@ the mean, quantiles, or both. User chooses the quantiles, up to 4 decimal places
 and enters them as a vector. Quantiles are calculated empirically. (order does not matter)  \cr
 }
 \details{
+Given the read_dir, this function assumes the follow file structure: \cr
+\itemize{
+\item read_dir
+\itemize{
+\item repetition 1
+\itemize{
+\item M_0001.csv
+\item M_0002.csv
+\item FS_0001.csv
+\item FS_0001.csv
+\item ... \cr
+}
+\item repetition 2
+\itemize{
+\item M_0001.csv
+\item M_0002.csv
+\item FS_0001.csv
+\item FS_0001.csv
+\item ... \cr
+}
+\item repetition 3
+\item ... \cr
+}
+}
 
+The places (\code{spn_P}) object is generated from one of the following:
+\code{\link{spn_P_lifecycle_node}}, \code{\link{spn_P_lifecycle_network}},
+\code{\link{spn_P_epiSIS_node}}, \code{\link{spn_P_epiSIS_network}},
+\code{\link{spn_P_epiSEIR_node}}, or \code{\link{spn_P_epiSEIR_network}}.
+
+\code{t0}, \code{tt}, \code{dt} define the first sampling time, the last sampling
+time, and each sampling time in-between.
+
+Output files are *.csv and contain the mean or quantile in the file name.
+
+For more details about using this function to process CSV output see:
+\code{vignette("data-analysis", package = "MGDrivE2")}
 }

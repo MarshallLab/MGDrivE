@@ -80,8 +80,7 @@ The places (\code{spn_P}) object is generated from one of the following:
 \code{t0}, \code{tt}, \code{dt} define the first sampling time, the last sampling
 time, and each sampling time in-between.
 
-Output files are *.csv and contain the mean or quantile in the file name, e.g.
-\{stage\}\emph{Mean}(patchNum).csv and \{stage\}\emph{Quantile}(quantNum)_(patchNum).csv.
+Output files are *.csv and contain the mean or quantile in the file name.
 
 For more details about using this function to process CSV output see:
 \code{vignette("data-analysis", package = "MGDrivE2")}
