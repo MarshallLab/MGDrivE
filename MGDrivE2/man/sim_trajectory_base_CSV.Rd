@@ -7,11 +7,11 @@
 sim_trajectory_base_CSV(
   x0,
   times,
-  dt = 1,
   stepFun,
   folders,
   stage,
   events0 = NULL,
+  batch = NULL,
   Sout = NULL,
   verbose = TRUE
 )
@@ -20,8 +20,6 @@ sim_trajectory_base_CSV(
 \item{x0}{the initial marking of the SPN (initial state)}
 
 \item{times}{sequence of sampling times}
-
-\item{dt}{the time-step at which to return output (\strong{not} the time-step of the sampling algorithm)}
 
 \item{stepFun}{a sampling function}
 
@@ -32,6 +30,8 @@ sim_trajectory_base_CSV(
 \item{events0}{a \code{data.frame} of events (uses the same format as required
 in package \code{deSolve} for consistency, see \code{\link[deSolve]{events}}
 for more information)}
+
+\item{batch}{a \code{list} of batch migration events, created from \code{\link[MGDrivE2]{batch_migration}}, may be set to \code{NULL} if not used}
 
 \item{Sout}{an optional matrix to track event firings}
 

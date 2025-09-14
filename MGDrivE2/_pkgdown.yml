@@ -1,8 +1,11 @@
+url: https://marshalllab.github.io/MGDrivE/docs_v2
+
 destination: docs
 
 template:
   params:
     bootswatch: simplex
+  bootstrap: 5
 
 authors:
   Sean L. Wu:
@@ -29,14 +32,19 @@ reference:
   - '`spn_P_epiSIS_node`'
   - '`spn_P_lifecycle_network`'
   - '`spn_P_lifecycle_node`'
+  - '`spn_P_epi_decoupled_node`'
   - '`spn_S`'
   - '`spn_T_epiSEIR_network`'
   - '`spn_T_epiSEIR_node`'
   - '`spn_T_epiSIS_network`'
   - '`spn_T_epiSIS_node`'
+  - '`spn_T_epi_decoupled_node`'
   - '`spn_T_lifecycle_network`'
   - '`spn_T_lifecycle_node`'
   - '`spn_hazards`'
+  - '`spn_hazards_decoupled`'
+  - '`spn_Post`'
+  - '`spn_Pre`'
 - title: Equilibrium & Parameters
   desc: >
     Functions that are helpful to calculate equilibrium solutions as initial conditions or construct parameter sets for simulation.
@@ -44,28 +52,62 @@ reference:
   - '`calc_move_rate`'
   - '`movement_prob2rate`'
   - '`solve_muAqua`'
+  - '`get_shape`'
+  - '`imperial_model_param_list_create`'
+  - '`make_Q_SEI`'
+  - '`make_Q_Imperial`'
   - '`equilibrium_SEI_SEIR`'
   - '`equilibrium_SEI_SIS`'
+  - '`equilibrium_SEI_Imperial`'
+  - '`equilibrium_SEI_decoupled_human`'
+  - '`equilibrium_Imperial_decoupled`'
+  - '`equilibrium_Imperial_decoupled_human`'
+  - '`equilibrium_SEI_decoupled_mosy`'
   - '`equilibrium_lifeycle`'
+  - '`convert_prevalence_to_eir`'
+  - '`batch_migration`'
+  - '`mu_ts`'
+- title: Interventions
+  desc: >
+    These are functions useful for setting up interventions.
+  contents:
+  - '`add_interventions`'
 - title: Simulation
   desc: >
-    These are the interfaces for sampling trajectories from a fully constructed Petri net model.
+    These are the interfaces for sampling trajectories or constructing time stepping functions from a fully constructed Petri net model.
   contents:
+  - '`step_PTS`'
+  - '`step_PTS_decoupled`'
+  - '`step_ODE`'
+  - '`step_ODE_decoupled`'
+  - '`step_DM`'
+  - '`step_CLE`'
   - '`sim_trajectory_CSV`'
   - '`sim_trajectory_R`'
+  - '`sim_trajectory_CSV_decoupled`'
+  - '`sim_trajectory_R_decoupled`'
+  - '`sim_trajectory_base_CSV`'
+  - '`sim_trajectory_base_CSV_decoupled`'
+  - '`sim_trajectory_base_R`'
+  - '`sim_trajectory_base_R_decoupled_Imperial`'
+  - '`sim_trajectory_base_R_decoupled_SIS`'
+  - '`human_Imperial_ODE`'
   - '`track_hinf`'
 - title: Output Processing
   desc: >
     These functions help users summarize output, either arrays returned to R or CSV files.
   contents:
   - '`split_aggregate_CSV`'
+  - '`split_aggregate_CSV_decoupled`'
   - '`summarize_stats_CSV`'
+  - '`summarize_stats_CSV_decoupled`'
   - '`summarize_eggs_geno`'
   - '`summarize_eggs_stage`'
   - '`summarize_females`'
   - '`summarize_females_epi`'
   - '`summarize_humans_epiSEIR`'
   - '`summarize_humans_epiSIS`'
+  - '`summarize_humans_epiImperial`'
   - '`summarize_larvae_geno`'
   - '`summarize_larvae_stage`'
   - '`summarize_males`'

@@ -34,32 +34,46 @@
 #'
 #' @importFrom Matrix sparseMatrix
 #'
-spn_Pre <- function(spn_P,spn_T){
+#'
+spn_Pre <- function(spn_P, spn_T){
 
   u <- spn_P$u # dimension of the places
   v <- spn_T$v # dimension of the transitions
 
-  Pre <- sparseMatrix(i = {},j = {},x = c(0L),dims=c(length(v),length(u)),dimnames=list(v,u))
+  ix <- lapply(X = spn_T$T, FUN = "[[", "vix")
+  s <- lapply(X = spn_T$T, FUN = "[[", "s")
+  s_w <- lapply(X = spn_T$T, FUN = "[[", "s_w")
 
-  # fill in the Pre matrix
-  for(i in 1:length(spn_T$T)){
+  # for transitions with multiple input arcs
+  s_len <- vapply(X = s, FUN = length, FUN.VALUE = integer(1))
 
-    # index into v (rows)
-    ix <- spn_T$T[[i]]$vix
+  # replicate the elements of the ix (transition index) that number of times
+  ix[which(s_len > 1)] <- mapply(FUN = function(ixv, num){
+    rep(x = ixv, times = num)
+  }, ixv = ix[which(s_len > 1)], num = s_len[which(s_len > 1)],
+  SIMPLIFY = FALSE, USE.NAMES = FALSE
+  )
 
-    # input arcs and weights
-    s <- spn_T$T[[i]]$s
-    s_w <- spn_T$T[[i]]$s_w
+  # ignore transitions that are always on (if any)
+  null_idx <- vapply(X = spn_T$T, FUN = function(v){
+    all(is.nan(v$s)) | all(is.nan(v$s_w))
+  }, FUN.VALUE = logical(1))
 
-    # skip null stuff (in this case, transitions that are always on)
-    if(all(is.nan(s)) || all(is.nan(s_w))){
-      next
-    }
+  ix <- ix[!null_idx]
+  s <- s[!null_idx]
+  s_w <- s_w[!null_idx]
 
-    # input arcs go into the matrix
-    Pre[ix,s] <- as.integer(s_w)
-  }
+  ix <- unlist(ix)
+  s <- unlist(s)
+  s_w <- unlist(s_w)
 
+  Pre <- sparseMatrix(
+    i = as.integer(ix),
+    j = as.integer(s),
+    x = as.integer(s_w),
+    dims = c(length(v), length(u)),
+    dimnames = list(v, u)
+  )
 
   return(Pre)
 }
@@ -88,33 +102,49 @@ spn_Pre <- function(spn_P,spn_T){
 #' @param spn_P set of places (P) (see details)
 #' @param spn_T set of transitions (T) (see details)
 #'
+#' @importFrom Matrix sparseMatrix
+#'
 #' @return a matrix of type \code{\link[Matrix]{dgCMatrix-class}}
 #'
-spn_Post <- function(spn_P,spn_T){
+spn_Post <- function(spn_P, spn_T){
 
   u <- spn_P$u # dimension of the places
   v <- spn_T$v # dimension of the transitions
 
-  Post <- sparseMatrix(i = {},j = {},x = c(0L),dims=c(length(v),length(u)),dimnames=list(v,u))
+  ix <- lapply(X = spn_T$T, FUN = "[[", "vix")
+  o <- lapply(X = spn_T$T, FUN = "[[", "o")
+  o_w <- lapply(X = spn_T$T, FUN = "[[", "o_w")
 
-  # fill in the Post matrix
-  for(i in 1:length(spn_T$T)){
+  # for transitions with multiple output arcs
+  o_len <- vapply(X = o, FUN = length, FUN.VALUE = integer(1))
 
-    # index into v (rows)
-    ix <- spn_T$T[[i]]$vix
+  # replicate the elements of the ix (transition index) that number of times
+  ix[which(o_len > 1)] <- mapply(FUN = function(ixv, num){
+    rep(x = ixv, times = num)
+  }, ixv = ix[which(o_len > 1)], num = o_len[which(o_len > 1)],
+  SIMPLIFY = FALSE, USE.NAMES = FALSE
+  )
 
-    # output arcs and weights
-    o <- spn_T$T[[i]]$o
-    o_w <- spn_T$T[[i]]$o_w
+  # ignore transitions that do not produce tokens
+  null_idx <- vapply(X = spn_T$T, FUN = function(v){
+    all(is.nan(v$o)) | all(is.nan(v$o_w))
+  }, FUN.VALUE = logical(1))
 
-    # skip null stuff (in this case, transitions that only consume tokens)
-    if(all(is.nan(o)) || all(is.nan(o_w))){
-      next
-    }
+  ix <- ix[!null_idx]
+  o <- o[!null_idx]
+  o_w <- o_w[!null_idx]
 
-    # output arcs go into the matrix
-    Post[ix,o] <- as.integer(o_w)
-  }
+  ix <- unlist(ix)
+  o <- unlist(o)
+  o_w <- unlist(o_w)
+
+  Post <- sparseMatrix(
+    i = as.integer(ix),
+    j = as.integer(o),
+    x = as.integer(o_w),
+    dims = c(length(v), length(u)),
+    dimnames = list(v, u)
+  )
 
   return(Post)
 }
@@ -146,9 +176,9 @@ spn_Post <- function(spn_P,spn_T){
 #'
 #' @param spn_P set of places (P) (see details)
 #' @param spn_T set of transitions (T) (see details)
-#'
+#' @return stoichiometry matrix representing the net effect of a transition in the SPN state model.
 #' @importFrom Matrix drop0 t
-#'
+#' 
 #' @export
 spn_S <- function(spn_P,spn_T){
 

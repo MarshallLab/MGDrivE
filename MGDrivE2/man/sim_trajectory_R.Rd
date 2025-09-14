@@ -6,8 +6,7 @@
 \usage{
 sim_trajectory_R(
   x0,
-  t0 = 0,
-  tt = 100,
+  tmax,
   dt = 1,
   dt_stoch = 0.1,
   num_reps = 1,
@@ -17,6 +16,7 @@ sim_trajectory_R(
   sampler = "tau",
   method = "lsoda",
   events = NULL,
+  batch = NULL,
   verbose = TRUE,
   ...
 )
@@ -24,9 +24,7 @@ sim_trajectory_R(
 \arguments{
 \item{x0}{the initial marking of the SPN (initial state, M0)}
 
-\item{t0}{initial time to begin simulation}
-
-\item{tt}{the final time to end simulation}
+\item{tmax}{the final time to end simulation (all simulations start at 0)}
 
 \item{dt}{the time-step at which to return output (\strong{not} the time-step of the sampling algorithm)}
 
@@ -44,7 +42,9 @@ sim_trajectory_R(
 
 \item{method}{if \code{sampler} is "ode", the solver to use, from \code{deSolve}}
 
-\item{events}{a \code{data.frame} of events}
+\item{events}{a \code{data.frame} of events, may be set to \code{NULL} if not used}
+
+\item{batch}{a \code{list} of batch migration events, created from \code{\link[MGDrivE2]{batch_migration}}, may be set to \code{NULL} if not used}
 
 \item{verbose}{print a progress bar?}
 

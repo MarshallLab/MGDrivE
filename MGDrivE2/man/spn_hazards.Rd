@@ -13,7 +13,8 @@ spn_hazards(
   log_dd = TRUE,
   exact = TRUE,
   tol = 1e-12,
-  verbose = TRUE
+  verbose = TRUE,
+  trap_idx = NULL
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ spn_hazards(
 \item{tol}{if \code{exact=FALSE}, the value of hazard below which it is clipped to 0}
 
 \item{verbose}{display a progress bar when making hazards?}
+
+\item{trap_idx}{Vector of indices corresponding to trap nodes.}
 }
 \value{
 list of length 2: \code{hazards} is a list of named closures for every

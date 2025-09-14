@@ -178,14 +178,16 @@ evaluate_haz <- function(M,t){vapply(X = approx_hazards$hazards,
 Euler_stepper <- step_Euler(pn = list(S=S, h=evaluate_haz), dt = 0.1)
 
 # checks for simulation time and events
-sim_times <- MGDrivE2:::base_time(t0 = 0, tt = tmax, dt = dt)
+sim_times <- MGDrivE2:::base_time(tt = tmax, dt = dt)
 events <- MGDrivE2:::base_events(x0 = init$M0, events = events, dt = dt)
 
 # fum simulation
-euler_out <- MGDrivE2:::sim_trajectory_base_R(x0 = init$M0, times = sim_times,
-                                              dt = dt, num_reps = 1,
-                                              stepFun = Euler_stepper,
-                                              events = events, verbose = FALSE)
+euler_out <- MGDrivE2:::sim_trajectory_base_R(
+  x0 = init$M0, times = sim_times,
+  num_reps = 1,
+  stepFun = Euler_stepper,
+  events = events, verbose = FALSE
+)
 
 # summarize female/male
 euler_female_out <- summarize_females(out = euler_out$state,spn_P = SPN_P)
@@ -200,9 +202,11 @@ For comparison, we use the default ODE method in **MGDrivE2**. These are numeric
 
 ```{r}
 # run deterministic simulation
-ODE_out <- sim_trajectory_R(x0 = init$M0, t0 = 0, tt = tmax, dt = dt, S = S,
-                            hazards = approx_hazards, sampler = "ode",
-                            events = events, verbose = FALSE)
+ODE_out <- sim_trajectory_R(
+  x0 = init$M0, tmax = tmax, dt = dt, S = S,
+  hazards = approx_hazards, sampler = "ode",
+  events = events, verbose = FALSE
+)
 
 # summarize females/males
 ODE_female_out <- summarize_females(out = ODE_out$state, spn_P = SPN_P)

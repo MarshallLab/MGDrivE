@@ -119,3 +119,60 @@ check_params_SEIR <- function(params){
   }
 
 }
+
+# used in decoupled sampling to aggregate the number
+# of infectious mosquitoes per genotype and total number of SEI
+# female mosquitoes to pass to the human model.
+# similar to summarize_females_epi but this function
+# is called at every time step to send to the human model.
+# can probably consolidate the two functions later
+# also only works with one node for now
+aggregate_female_SEI <- function(spn_P, state) {
+  f_idx <- lapply(X = spn_P$ix, '[[', 'females')
+  f_idx[vapply(X = f_idx, FUN = is.null, FUN.VALUE = logical(length = 1))] <- NULL
+  # get genotype names
+  genotypes <- rownames(f_idx[[1]][,,"I"])
+
+  # sum over mated genotypes to obtain aggregated number of females per genotype
+  infectious_mosquitoes <- rep(0, length(genotypes))
+  for(i in 1:length(genotypes)) {
+    infectious_mosquitoes[i] <- sum(state[f_idx[[1]][,,"I"][genotypes[i],]])
+  }
+  
+  names(infectious_mosquitoes) <- genotypes
+  total_mosquitoes <- sum(state[f_idx[[1]]])
+
+  return(list(I_V = infectious_mosquitoes, N_V = total_mosquitoes))
+}
+
+
+# internal formatting of CSV output labels for simulation
+# pipeline analysis
+generate_Imperial_human_state_labels <- function(na) { 
+  # get 0-indexed indices
+  indices <- 0:(na-1)
+  # get labels in the form of <lower index>_<higher_index>
+  labels <- paste(
+    formatC(indices, width=2, flag="0"), 
+    formatC((indices+1), width=2, flag="0"),
+    sep="_"
+  )
+  
+  # add state labels
+  human_state_labels <- c(
+    paste0("S", labels),
+    paste0("T", labels),
+    paste0("D", labels),
+    paste0("A", labels),
+    paste0("U", labels),
+    paste0("P", labels),
+    paste0("ICA", labels),
+    paste0("IB", labels),
+    paste0("ID", labels),
+    paste0("IVA", labels),
+    paste0("clin_inc", labels),
+    paste0("mort", labels)
+  )
+
+  return(human_state_labels)
+}

@@ -53,7 +53,7 @@
 #' or cumulative intensity (for continuous stochastic simulations), or the rate function of
 #' particular events for ODE simulation. The matrix must have number of columns equal to
 #' number of events in the system (the number of hazard functions), and a row for each tracking
-#' variable. If \code{Sout} is provided, it output an additional csv, "events.csv".
+#' variable. If \code{Sout} is provided, it outputs an additional csv, "Tracking.csv".
 #' The function \code{\link{track_hinf}} is provided, which builds a matrix to track
 #' human infection events.
 #'
@@ -61,8 +61,7 @@
 #'
 #'
 #' @param x0 the initial marking of the SPN (initial state, M0)
-#' @param t0 initial time to begin simulation
-#' @param tt the final time to end simulation
+#' @param tmax the final time to end simulation
 #' @param dt the time-step at which to return output (\strong{not} the time-step of the sampling algorithm)
 #' @param dt_stoch time-step used for approximation of hazards
 #' @param folders vector of folders to write output
@@ -73,22 +72,33 @@
 #' @param sampler determines sampling algorithm, one of; "ode", "tau", "cle", or "dm"
 #' @param method if \code{sampler} is "ode", the solver to use, from \code{deSolve}
 #' @param events a \code{data.frame} of events
+#' @param batch a \code{list} of batch migration events, created from \code{\link[MGDrivE2]{batch_migration}}, may be set to \code{NULL} if not used
 #' @param verbose print a progress bar?
 #' @param ... further named arguments passed to the step function
 #'
 #' @return NULL - prints output to .csv files
 #'
+#' @importFrom stats rbinom
+#'
 #' @export
-sim_trajectory_CSV <- function(x0, t0=0, tt=100, dt=1, dt_stoch = 0.1, folders="./",
-                               stage=c("M","F"), S, hazards, Sout = NULL, sampler = "tau",
-                               method = "lsoda", events = NULL, verbose = TRUE, ...){
+sim_trajectory_CSV <- function(
+  x0, tmax, dt=1, dt_stoch = 0.1, folders="./",
+  stage=c("M","F"), S, hazards, Sout = NULL, sampler = "tau",
+  method = "lsoda", events = NULL, batch = NULL, verbose = TRUE, ...
+){
+
+  if(sampler == "ode" & !is.null(batch)){
+    stop("batch migration is incompatible with deterministic simulations")
+  }
 
   # check/setup step function
-  stepFun <- base_stepFunc(sampler = sampler,S = S,hazards = hazards, Sout = Sout,
-                           dt_stoch = dt_stoch,method = method,...)
+  stepFun <- base_stepFunc(
+    sampler = sampler,S = S,hazards = hazards, Sout = Sout,
+    dt_stoch = dt_stoch,method = method,...
+  )
 
   # check/setup simulation time
-  simTimes <- base_time(t0 = t0,tt = tt,dt = dt)
+  simTimes <- base_time(tt = tmax,dt = dt)
 
   # check/organize events and x0
   events <- base_events(x0 = x0, events = events, dt = dt)
@@ -102,10 +112,12 @@ sim_trajectory_CSV <- function(x0, t0=0, tt=100, dt=1, dt_stoch = 0.1, folders="
 
 
   # pass everything down to base function
-  sim_trajectory_base_CSV(x0 = switch(EXPR = sampler, "ode" = x0, round(x0)),
-                          times = simTimes,dt = dt, stepFun = stepFun,
-                          folders = folders, stage = stage,
-                          events0 = events, Sout = Sout, verbose = verbose)
+  sim_trajectory_base_CSV(
+    x0 = switch(EXPR = sampler, "ode" = x0, round(x0)),
+    times = simTimes, stepFun = stepFun,
+    folders = folders, stage = stage,
+    events0 = events, batch = batch, Sout = Sout, verbose = verbose
+  )
 
   # no return
 }
@@ -122,19 +134,22 @@ sim_trajectory_CSV <- function(x0, t0=0, tt=100, dt=1, dt_stoch = 0.1, folders="
 #'
 #' @param x0 the initial marking of the SPN (initial state)
 #' @param times sequence of sampling times
-#' @param dt the time-step at which to return output (\strong{not} the time-step of the sampling algorithm)
 #' @param stepFun a sampling function
 #' @param folders vector of folders to write output
 #' @param stage vector of life-stages to print
 #' @param events0 a \code{data.frame} of events (uses the same format as required
 #' in package \code{deSolve} for consistency, see \code{\link[deSolve]{events}}
 #' for more information)
+#' @param batch a \code{list} of batch migration events, created from \code{\link[MGDrivE2]{batch_migration}}, may be set to \code{NULL} if not used
 #' @param Sout an optional matrix to track event firings
 #' @param verbose print a progress bar?
 #'
 #' @return no return, prints .csv files into provided folders
-sim_trajectory_base_CSV <- function(x0, times, dt=1, stepFun, folders,
-                                    stage, events0=NULL, Sout = NULL, verbose=TRUE){
+sim_trajectory_base_CSV <- function(
+  x0, times, stepFun, folders,
+  stage, events0=NULL, batch = NULL,
+  Sout = NULL, verbose=TRUE
+){
 
   # stuff for later
   xNames <- names(x0)
@@ -165,6 +180,7 @@ sim_trajectory_base_CSV <- function(x0, times, dt=1, stepFun, folders,
 
     # reset at the beginning of every simulation
     events <- events0
+    repBatch <- batch
     state <- list("x"=NULL,"o"=NULL)
     state$x <- x0
 
@@ -185,11 +201,11 @@ sim_trajectory_base_CSV <- function(x0, times, dt=1, stepFun, folders,
     # tracking rates/event firing
     if(track){
       event_con <- file(
-        description = paste0(folders[num_reps],.Platform$file.sep,"events.csv"),
+        description = paste0(folders[num_reps],.Platform$file.sep,"Tracking.csv"),
         open = "wt"
       )
       writeLines(
-        text = paste0(c("time",rownames(Sout)),collapse = ","),
+        text = paste0(c("Time",rownames(Sout)),collapse = ","),
         con = event_con, sep = "\n"
       )
     }
@@ -198,8 +214,11 @@ sim_trajectory_base_CSV <- function(x0, times, dt=1, stepFun, folders,
     for(i in 2:nTime){
 
       # iterate the step function until this delta t is over
-      tNow <- times[i]
-      state <- stepFun(state$x,tNow,dt)
+      t0 <- times[i-1]
+      t1 <- times[i]
+      dt <- t1-t0
+      # tNow <- times[i]
+      state <- stepFun(state$x,t0,dt)
 
       if(all(fequal(state$x,0))){
         if(verbose){close(pbar)}
@@ -225,24 +244,34 @@ sim_trajectory_base_CSV <- function(x0, times, dt=1, stepFun, folders,
       }
 
       # add the event to the state vector
-      #  would it be better to get times of events, then add them in at times
-      #  instead of checking every day if there are events, and then if it isthe day
       if(!is.null(events)){
-        while((nrow(events) > 0) && fequal(events[1,"time"],tNow)){
+        while((nrow(events) > 0) && events[1,"time"] <= t1){
           state$x[events[1,"var_id"]] <- state$x[events[1,"var_id"]] + events[1,"value"]
           events <- events[-1,]
         }
       }
 
+      # batch migration?
+      if(!is.null(repBatch)){
+        while(length(repBatch) > 0 && repBatch[[1]]$time <= t1){
+          # how many go?
+          moving <- stats::rbinom(n = length(repBatch[[1]]$from), size = as.integer(state$x[repBatch[[1]]$from]), prob = repBatch[[1]]$prob)
+          # update the state
+          state$x[repBatch[[1]]$from] <- state$x[repBatch[[1]]$from] - moving
+          state$x[repBatch[[1]]$to] <- state$x[repBatch[[1]]$to] + moving
+          repBatch <- repBatch[-1]
+        }
+      }
+
       # record output
       for(curS in 1:lenPS){
-        writeLines(text = paste0(c(tNow,state$x[pList[[curS]] ]),collapse = ","),
+        writeLines(text = paste0(c(t1,state$x[pList[[curS]] ]),collapse = ","),
                    con = fileCons[[curS]], sep = "\n")
       }
       # tracking rates/event firing
       if(track){
         writeLines(
-          text = paste0(c(tNow,state$o),collapse = ","),
+          text = paste0(c(t1,state$o),collapse = ","),
           con = event_con, sep = "\n"
         )
       }

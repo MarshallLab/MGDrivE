@@ -33,7 +33,7 @@
 #' @param maxhaz maximum allowable hazard
 #'
 #' @return function closure for use in \code{\link{sim_trajectory_R}} or \code{\link{sim_trajectory_CSV}}
-#'
+#' @export
 #' @importFrom stats rpois
 step_PTS <- function(S,Sout,haz,dt=0.01,maxhaz=1e6){
 

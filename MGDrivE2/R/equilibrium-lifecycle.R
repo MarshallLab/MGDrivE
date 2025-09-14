@@ -128,7 +128,7 @@ equilibrium_lifeycle <- function(params,NF,phi=0.5,log_dd=TRUE, spn_P,
                                                                           FUN = "*")
   }
 
-  # return everythingc
+  # return everything
   return(c(mosyList,list("M0"=M0)))
 }
 

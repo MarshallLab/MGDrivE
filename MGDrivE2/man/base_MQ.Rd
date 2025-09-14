@@ -54,3 +54,4 @@ None
 This function does the actual calculations for \code{\link{summarize_stats_CSV}}.
 It calculates mean and quantiles, writing output to the appropriate folder.
 }
+\keyword{internal}

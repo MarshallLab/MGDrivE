@@ -91,3 +91,20 @@ movement_prob2rate <- function(tau){
   return(list("gamma"=gamma,
               "mat"=tau))
 }
+
+
+#' Calculate Erlang shape parameter
+#'
+#' @param cv coefficient of variation (CV) between mean and standard deviation of dwell times,
+#' smaller values of CV correspond to distributions less dispersed around their mean and larger
+#' value to more dispersed distributions.
+#' @param q inverse of mean dwell time
+#' @return integer value representing the coefficient of variation in Erlang-distributed life stages.
+#' @export
+get_shape <- function(cv,q){
+  stopifnot(cv >= 1e-3)
+  stopifnot(q >= 2e-16)
+  mu <- 1/q
+  n <- 1 / ((q^2) * ((mu*cv)^2))
+  return(as.integer(round(n)))
+}

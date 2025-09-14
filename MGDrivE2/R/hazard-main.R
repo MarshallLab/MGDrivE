@@ -53,6 +53,7 @@
 #' @param exact boolean, make exact (integer input) hazards? Default is TRUE
 #' @param tol if \code{exact=FALSE}, the value of hazard below which it is clipped to 0
 #' @param verbose display a progress bar when making hazards?
+#' @param trap_idx Vector of indices corresponding to trap nodes.
 #'
 #' @return list of length 2: \code{hazards} is a list of named closures for every
 #' state transition in the model, \code{flag} is a boolean indicating exact or approximate
@@ -61,7 +62,7 @@
 #'
 #' @export
 spn_hazards <- function(spn_P,spn_T,cube,params,type="life",
-                        log_dd=TRUE,exact=TRUE,tol=1e-12,verbose=TRUE){
+                        log_dd=TRUE,exact=TRUE,tol=1e-12,verbose=TRUE, trap_idx = NULL){
 
   # approx vs exact
   check_approx(tol = tol, exact = exact)
@@ -141,7 +142,12 @@ spn_hazards <- function(spn_P,spn_T,cube,params,type="life",
 
     # make the correct type of hazard
     if(type %in% classNames){
-      h[[cT]] <- funcs[[type]](trans = spn_T$T[[cT]],u = u,cube = cube,params = params,exact = exact,tol = tol)
+      # need to pass the trap indices into female/male mortality hazards
+      if(type %in% c("male_mort", "female_mort", "female_unmated_mort")) {
+        h[[cT]] <- funcs[[type]](trans = spn_T$T[[cT]],u = u,cube = cube,params = params,exact = exact,tol = tol, trap_idx = trap_idx)
+      } else {
+        h[[cT]] <- funcs[[type]](trans = spn_T$T[[cT]],u = u,cube = cube,params = params,exact = exact,tol = tol)
+      }
     } else if(type == "larvae_mort"){
       # get larvae indices
       #  don't we know the pattern of this?

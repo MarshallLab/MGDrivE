@@ -31,7 +31,7 @@
 #' @param maxhaz maximum allowable hazard
 #'
 #' @return function closure for use in \code{\link{sim_trajectory_R}} or \code{\link{sim_trajectory_CSV}}
-#'
+#' @export
 #' @importFrom stats rexp
 step_DM <- function(S,Sout,haz,maxhaz=1e6){
 

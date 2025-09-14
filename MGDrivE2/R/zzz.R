@@ -1,5 +1,6 @@
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage("Loading MGDrivE2: Mosquito Gene Drive Explorer Version 2")
+  options(rmarkdown.html_vignette.check_title = FALSE)
 }
 
 #' @importFrom utils globalVariables
@@ -19,7 +20,8 @@ if(getRversion() >= "2.15.1"){
       "mosyList",
       "mPopAq",
       "mPopF",
-      "mPopM"
+      "mPopM",
+      "fImperial"
     )
   )
 }

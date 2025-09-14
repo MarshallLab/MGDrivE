@@ -11,6 +11,9 @@ spn_S(spn_P, spn_T)
 
 \item{spn_T}{set of transitions (T) (see details)}
 }
+\value{
+stoichiometry matrix representing the net effect of a transition in the SPN state model.
+}
 \description{
 Generate the stoichiometry (|u| by |v|) matrix for the SPN.
 Each column gives the net effect of that transition firing upon the state

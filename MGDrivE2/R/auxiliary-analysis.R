@@ -71,7 +71,7 @@
 #' \code{\link{spn_P_epiSIS_node}}, \code{\link{spn_P_epiSIS_network}},
 #' \code{\link{spn_P_epiSEIR_node}}, or \code{\link{spn_P_epiSEIR_network}}.
 #'
-#' \code{t0}, \code{tt}, \code{dt} define the first sampling time, the last sampling
+#' \code{tmax}, \code{dt} define the last sampling
 #' time, and each sampling time in-between.
 #'
 #' For more details about using this function to process CSV output see:
@@ -81,8 +81,7 @@
 #' @param write_dir Directory to write output to. Default is read_dir
 #' @param stage Life stage to print, see details
 #' @param spn_P Places object, see details
-#' @param t0 Initial time to begin simulation
-#' @param tt The final time to end simulation
+#' @param tmax The final time to end simulation
 #' @param dt The time-step at which to return output (\strong{not} the time-step of the sampling algorithm)
 #' @param erlang Boolean, default is FALSE, to return summaries by genotype
 #' @param sum_fem if \code{TRUE}, in addition to FS, FE, FI output by node and repetition, output an
@@ -100,7 +99,7 @@ split_aggregate_CSV <- function(
   read_dir,
   write_dir = read_dir,
   stage = c("E","L","P","M","U","FS","FE","FI","H"),
-  spn_P, t0, tt, dt,
+  spn_P, tmax, dt,
   erlang = FALSE,
   sum_fem = FALSE,
   rem_file=FALSE,
@@ -111,9 +110,11 @@ split_aggregate_CSV <- function(
   # Checks
   ##########
   # required parameters
-  if(any(c(missing(read_dir),missing(spn_P),missing(t0),missing(tt),missing(dt)))){
-    stop("Please provide 'read_dir', 'spn_P', 't0', 'tt', and 'dt'.")
+  if(any(c(missing(read_dir),missing(spn_P),missing(tmax),missing(dt)))){
+    stop("Please provide 'read_dir', 'spn_P', 'tmax', and 'dt'.")
   }
+  t0 <- 0
+  tt <- tmax
 
   # check read_dir
   if(!dir.exists(read_dir)){
@@ -210,7 +211,7 @@ split_aggregate_CSV <- function(
   ##########
   if(verbose){
     # what we're doing
-    cat("Analyzing", numStage, "directories.\n")
+    cat("Analyzing", numStage, "stages.\n")
 
     # whether or not we remove files
     if(rem_file){
@@ -233,7 +234,7 @@ split_aggregate_CSV <- function(
 
     # indication that something is working
     if(verbose){
-      cat("Starting analysis", analysis, "of", numStage, " ...  ")
+      cat("Starting analysis", analysis, "of", numStage, " ...  \n")
     }
 
 
@@ -323,6 +324,282 @@ split_aggregate_CSV <- function(
 
 } # end function
 
+#' Split CSV output for decoupled sampling with Imperial malaria model
+#'
+#' This function reads in the output files from \code{\link{sim_trajectory_CSV}}
+#' and splits them into smaller files. The files are output by patch, with the
+#' appropriate patch numbers for mosquitoes or humans, and specific stages are
+#' aggregated by a given metric. \cr
+#'
+#' Given the \code{read_dir}, this function assumes the follow file structure: \cr
+#'  * read_dir
+#'    * repetition 1
+#'      * M.csv
+#'      * FS.csv
+#'      * ... \cr
+#'    * repetition 2
+#'      * M.csv
+#'      * FS.csv
+#'      * ... \cr
+#'    * repetition 3
+#'    * ... \cr
+#'
+#' This function expects the \code{write_dir} to be empty, and it sets up the
+#' same file structure as the \code{read_dir}. For a 2-node simulation, the output
+#' will be organized similar to: \cr
+#'  * write_dir
+#'    * repetition 1
+#'      * M_0001.csv
+#'      * M_0002.csv
+#'      * FS_0001.csv
+#'      * FS_0001.csv
+#'      * ... \cr
+#'    * repetition 2
+#'      * M_0001.csv
+#'      * M_0002.csv
+#'      * FS_0001.csv
+#'      * FS_0001.csv
+#'      * ... \cr
+#'    * repetition 3
+#'    * ... \cr
+#'
+#'
+#' The places (\code{spn_P}) object is generated from one of the following:
+#' \code{\link{spn_P_lifecycle_node}}, \code{\link{spn_P_lifecycle_network}},
+#' \code{\link{spn_P_epiSIS_node}}, \code{\link{spn_P_epiSIS_network}},
+#' \code{\link{spn_P_epiSEIR_node}}, or \code{\link{spn_P_epiSEIR_network}}.
+#'
+#' \code{tmax}, \code{dt} define the last sampling
+#' time, and each sampling time in-between.
+#'
+#' For more details about using this function to process CSV output see:
+#' \code{vignette("data-analysis", package = "MGDrivE2")}
+#'
+#' @param read_dir Directory where output was written to
+#' @param write_dir Directory to write output to. Default is read_dir
+#' @param spn_P Places object, see details
+#' @param tmax The final time to end simulation
+#' @param dt The time-step at which to return output (\strong{not} the time-step of the sampling algorithm)
+#' @param sum_fem if \code{TRUE}, in addition to FS, FE, FI output by node and repetition, output an
+#'                additional file F which sums over infection states (S,E,I). Does nothing if the
+#'                simulation did not include epi dynamics.
+#' @param rem_file Remove original output? Default is FALSE
+#' @param verbose Chatty? Default is TRUE
+#' @param human_states human state distribution
+#' @param erlang erlang distributed states
+#'
+#' @return Writes output to files in write_dir
+#'
+#' @importFrom utils write.table
+#'
+#' @export
+split_aggregate_CSV_decoupled <- function(
+  read_dir,
+  write_dir = read_dir,
+  spn_P, tmax, dt, human_states,
+  sum_fem = FALSE,
+  rem_file=FALSE,
+  verbose=TRUE,
+  erlang=FALSE
+){
+
+  ##########
+  # Checks
+  ##########
+  # required parameters
+  if(any(c(missing(read_dir),missing(spn_P),missing(tmax),missing(dt)))){
+    stop("Please provide 'read_dir', 'spn_P', 'tmax', and 'dt'.")
+  }
+  t0 <- 0
+  tt <- tmax
+
+  # check read_dir
+  if(!dir.exists(read_dir)){
+    stop("The 'read_dir' does not exist.")
+  }
+
+  # check write_dir
+  if(!dir.exists(paths = write_dir)){
+    stop("The 'write_dir' does not exist, please create it.")
+  }
+
+  # summarize mosquito states
+  stage <- c("FI", "FE", "FS", "M", "H")
+
+
+  ##########
+  # Input and Output Setup
+  ##########
+  # setup output directories
+  repDirs <- file.path(write_dir, list.dirs(path = read_dir, recursive = FALSE, full.names = FALSE))
+  for(wDir in repDirs){dir.create(path = wDir, showWarnings = FALSE, recursive = FALSE)}
+
+  # get all files to work on, sorted by type
+  fileList <- lapply(X = stage, FUN = function(x){
+                      list.files(path = read_dir, pattern = paste0("^",x),
+                                 full.names = TRUE, recursive = TRUE)
+                     })
+  # check for things that aren't there, remove them
+  zeroIdx <- which(!lengths(x = fileList))
+  if(length(zeroIdx)>0){
+    # warning
+    warning(stage[zeroIdx], " was/were not output by the simulation, ",
+            "and will be removed from the analysis.\n")
+    # remove things
+    fileList[zeroIdx] <- NULL
+    stage <- stage[-zeroIdx]
+  }
+
+
+  ##########
+  # Derived Parameters
+  ##########
+  # get nodes
+  #  Since some simulations have humans, mosquitoes, and mixed nodes, use the
+  #  places object to determine those numbers.
+  #  use of "egg" was a choice, any of the mosquito life stages would be fine
+  mosyNodes <- which(x = vapply(X = spn_P$ix,
+                                FUN = function(x){!is.null(x$egg)},
+                                FUN.VALUE = logical(length = 1)) )
+  numMosyNodes <- length(mosyNodes)
+
+  # get genotype info
+  mosyGenos <- colnames(spn_P$ix[[mosyNodes[1]]]$egg)
+  numMosyGenos <- length(mosyGenos)
+
+  # numEIP is female latent stages, if there isn't infection, there is only 1 "stage"
+  #  if there is infection, there is >=3 states, S, E...., I, so numEIP subtract 2 for S and  I
+  numEIP <- ifelse(dim(spn_P$ix[[mosyNodes[1]]]$females)[3] == 1, 1, dim(spn_P$ix[[mosyNodes[1]]]$females)[3]-2)
+
+  # if there's no epi dynamics, rename FS -> F
+  if(numEIP == 1){
+    stage[which(stage == "FS")] <- "F"
+  }
+
+  # sampling times, and number of samples in files (ie, number of rows)
+  times <- seq(from=t0,to=tt,by=dt)
+  nTimes <- length(times)
+
+  numStage <- length(stage)
+
+  # node names for output
+  mosyNodeNames <- formatC(x = mosyNodes, width = 4, format = "d", flag = "0")
+
+
+  ##########
+  # Initialize Text
+  ##########
+  if(verbose){
+    # what we're doing
+    cat("Analyzing", numStage, "stages.\n")
+
+    # whether or not we remove files
+    if(rem_file){
+      cat("\tRemoving original files.\n\n")
+    } else {
+      cat("\tNot removing original files.\n\n")
+    }
+  }
+
+
+  ##########
+  # Dispatch Loop
+  ##########
+  for(analysis in 1:numStage){
+
+    # generic file names that work for most things here
+    #  need to redefine for humans and erlang female summaries
+    outputNames <- lapply(X = repDirs, FUN = function(x){
+                          file.path(x,file.path(stage[analysis],"_",mosyNodeNames,".csv",fsep = ""))})
+
+    # indication that something is working
+    if(verbose){
+      cat("Starting analysis", analysis, "of", numStage, " ...  \n")
+    }
+
+    if(stage[analysis] %in% c("FS","FI","F")){
+      # check for erlang or geno summary
+      if(erlang){
+        if(verbose){
+          cat("Skip\n")
+        }
+        next
+      } else {
+        base_gen(fileVec = fileList[[analysis]], outList = outputNames,
+                 genos = mosyGenos, nGenos = numMosyGenos, nIDX1 = numMosyGenos,
+                 times = times, nTimes = nTimes, nNodes = numMosyNodes)
+      }
+
+    } else if(stage[analysis] == "FE"){
+      if(erlang){
+        # need all 3 female files, so get index for them
+        fIDX <- match(x = c("FS","FE","FI"), table = stage)
+        if(any(is.na(fIDX))){
+          warning("\nErlang summary of adult females requires 'FS', 'FE', and 'FI' files.\n",
+                  c("FS","FE","FI")[is.na(fIDX)], " files were not found.\n",
+                  "\t Skipping Erlang summary of adult females.")
+          next
+        }
+
+        base_erlang_F(fileList = fileList[fIDX],
+                      outList = lapply(X = repDirs, FUN = function(x){file.path(x,file.path("FSEI_",mosyNodeNames,".csv",fsep = ""))}),
+                      nGenos = numMosyGenos, nErlang = numEIP, times = times,
+                      nTimes = nTimes, nNodes = numMosyNodes)
+
+      } else {
+        base_gen_FE(fileVec = fileList[[analysis]], outList = outputNames,
+                    genos = mosyGenos, nGenos = numMosyGenos, nIDX1 = numEIP,
+                    times = times, nTimes = nTimes, nNodes = numMosyNodes)
+      }
+
+    } else if (stage[analysis] == "H") {
+      # copy over H files from `raw` - keep as is. Only 1 node for now!
+      hNodeNames <- c("0001")
+      base_MUH(
+        fileVec = fileList[[analysis]],
+        outList = lapply(X = repDirs, FUN = function(x){file.path(x,file.path("H_",hNodeNames,".csv",fsep = ""))}),
+        genos = human_states,
+        nGenos = length(human_states),
+        nTimes = nTimes,
+        nNodes = 1
+      )
+    } else if(stage[analysis] %in% c("M","U")){
+        base_MUH(
+          fileVec = fileList[[analysis]],
+          outList = outputNames,
+          genos = mosyGenos,
+          nGenos = numMosyGenos,
+          nTimes = nTimes,
+          nNodes = numMosyNodes)
+    }
+  } # end analysis loop
+
+  # check if we need to sum all females (SEI)
+  if(sum_fem & (numEIP != 1)){
+    fIDX <- match(x = c("FS","FE","FI"), table = stage)
+    if(any(is.na(fIDX))){
+      warning("\nSumming of adult females requires 'FS', 'FE', and 'FI' files.\n",
+              c("FS","FE","FI")[is.na(fIDX)], " files were not found.\n",
+              "\t Skipping summary of adult females.")
+    } else {
+      base_sum_F(fileList = fileList[fIDX],
+                    outList = lapply(X = repDirs, FUN = function(x){file.path(x,file.path("F_",mosyNodeNames,".csv",fsep = ""))}),
+                    genos = mosyGenos,nGenos = numMosyGenos, nErlang = numEIP, times = times,
+                    nTimes = nTimes, nNodes = numMosyNodes)
+    }
+  }
+
+  # done with analysis
+  if(verbose){
+    cat("Done\n")
+  }
+
+  # check if removing original output
+  if(rem_file){file.remove(unlist(fileList))}
+
+} # end function
+
+
 
 ################################################################################
 # Base Split-Aggregate Functions
@@ -346,6 +623,7 @@ split_aggregate_CSV <- function(
 #' @param nTimes Number of sampled times
 #' @param nNodes Number of nodes in the network
 #'
+#' @keywords internal
 #' @return None
 #'
 base_MUH <- function(fileVec,outList,genos,nGenos,nTimes,nNodes){
@@ -407,7 +685,7 @@ base_MUH <- function(fileVec,outList,genos,nGenos,nTimes,nNodes){
 #' @param nNodes Number of nodes in the network
 #'
 #' @return None
-#'
+#' @keywords internal
 base_gen <- function(fileVec,outList,genos,nGenos,nIDX1,times,nTimes,nNodes){
 
   # indexing
@@ -471,7 +749,7 @@ base_gen <- function(fileVec,outList,genos,nGenos,nIDX1,times,nTimes,nNodes){
 #' @param nNodes Number of nodes in the network
 #'
 #' @return None
-#'
+#' @keywords internal
 base_gen_FE <- function(fileVec,outList,genos,nGenos,nIDX1,times,nTimes,nNodes){
 
   # indexing
@@ -536,7 +814,7 @@ base_gen_FE <- function(fileVec,outList,genos,nGenos,nIDX1,times,nTimes,nNodes){
 #' @param nNodes Number of nodes in the network
 #'
 #' @return None
-#'
+#' @keywords internal
 base_erlang <- function(fileVec,outList,genos,nGenos,nErlang,times,nTimes,nNodes){
 
   # indexing
@@ -599,7 +877,7 @@ base_erlang <- function(fileVec,outList,genos,nGenos,nErlang,times,nTimes,nNodes
 #' @param nNodes Number of nodes in the network
 #'
 #' @return None
-#'
+#' @keywords internal
 base_erlang_F <- function(fileList,outList,nGenos,nErlang,times,nTimes,nNodes){
 
   # indexing
@@ -672,7 +950,7 @@ base_erlang_F <- function(fileList,outList,nGenos,nErlang,times,nTimes,nNodes){
 # Sum all Adult Females (S,E,I) -> F
 #######################################
 
-#' Base Summary of Erlang Stages for Adult Females
+#' Base Summary of Infection (SEI) Stages for Adult Females
 #'
 #' This function takes ALL of the adult female stages and summarized them by
 #' Erlang-distributed latent infection, writing output to provided folders.
@@ -689,6 +967,7 @@ base_erlang_F <- function(fileList,outList,nGenos,nErlang,times,nTimes,nNodes){
 #' @param nNodes Number of nodes in the network
 #'
 #' @return None
+#' @keywords internal
 base_sum_F <- function(fileList,outList,genos,nGenos,nErlang,times,nTimes,nNodes){
 
   # indexing
@@ -796,7 +1075,7 @@ base_sum_F <- function(fileList,outList,genos,nGenos,nErlang,times,nTimes,nNodes
 #' time, and each sampling time in-between.
 #'
 #' Output files are *.csv and contain the mean or quantile in the file name, e.g.
-#' {stage}_Mean_(patchNum).csv and {stage}_Quantile_(quantNum)_(patchNum).csv.
+#' \{stage\}_Mean_(patchNum).csv and \{stage\}_Quantile_(quantNum)_(patchNum).csv.
 #'
 #' For more details about using this function to process CSV output see:
 #' \code{vignette("data-analysis", package = "MGDrivE2")}
@@ -807,8 +1086,7 @@ base_sum_F <- function(fileList,outList,genos,nGenos,nErlang,times,nTimes,nNodes
 #' @param mean Boolean, calculate mean or not. Default is TRUE
 #' @param quantiles Vector of quantiles to calculate. Default is NULL
 #' @param spn_P Places object, see details
-#' @param t0 Initial time to begin simulation
-#' @param tt The final time to end simulation
+#' @param tmax The final time to end simulation
 #' @param dt The time-step at which to return output (\strong{not} the time-step of the sampling algorithm)
 #' @param rem_file Remove original output? Default is FALSE
 #' @param verbose Chatty? Default is TRUE
@@ -816,16 +1094,20 @@ base_sum_F <- function(fileList,outList,genos,nGenos,nErlang,times,nTimes,nNodes
 #' @return Writes output to files in write_dir
 #'
 #' @export
-summarize_stats_CSV <- function(read_dir, write_dir=read_dir, mean=TRUE, quantiles=NULL,
-                                spn_P, t0, tt, dt, rem_file=FALSE, verbose=TRUE){
+summarize_stats_CSV <- function(
+  read_dir, write_dir=read_dir, mean=TRUE, quantiles=NULL,
+  spn_P, tmax, dt, rem_file=FALSE, verbose=TRUE
+){
 
   ##########
   # Checks
   ##########
   # required parameters
-  if(any(c(missing(read_dir),missing(spn_P),missing(t0),missing(tt),missing(dt)))){
-    stop("Please provide 'read_dir', 'spn_P', 't0', 'tt', and 'dt'.")
+  if(any(c(missing(read_dir),missing(spn_P),missing(tmax),missing(dt)))){
+    stop("Please provide 'read_dir', 'spn_P', 'tmax', and 'dt'.")
   }
+  t0 <- 0
+  tt <- tmax
 
   # check read_dir
   if(!dir.exists(read_dir)){
@@ -847,10 +1129,10 @@ summarize_stats_CSV <- function(read_dir, write_dir=read_dir, mean=TRUE, quantil
   # Input and Output Setup
   ##########
   # get all files to work on, sorted by type
-  stage = c("E","L","P","M","U","FS","FE","FI","H",  "EE","LE","PE","FSEI")
+  stage = c("E","L","P","M","U","FS","FE","FI","H","EE","LE","PE","FSEI","F")
   repDirs <- list.dirs(path = read_dir, recursive = FALSE, full.names = TRUE)
   fileList <- lapply(X = stage, FUN = function(x){
-                                lapply(X = repDirs, FUN = list.files, pattern = paste0("^",x),
+                                lapply(X = repDirs, FUN = list.files, pattern = paste0("^",x,"_"),
                                        full.names = TRUE, recursive = FALSE)
                      })
 
@@ -912,7 +1194,7 @@ summarize_stats_CSV <- function(read_dir, write_dir=read_dir, mean=TRUE, quantil
   ##########
   if(verbose){
     # what we're doing
-    cat("Analyzing", numStage, "directories.\n")
+    cat("Analyzing", numStage, "stages.\n")
 
     # whether or not we remove files
     if(rem_file){
@@ -929,12 +1211,12 @@ summarize_stats_CSV <- function(read_dir, write_dir=read_dir, mean=TRUE, quantil
   for(analysis in 1:numStage){
 
     # indication that something is working
-      if(verbose){
-        cat("Starting analysis", analysis, "of", numStage, " ...  ")
-      }
+    if(verbose){
+      cat("Starting analysis", analysis, "of", numStage, " ...  \n")
+    }
 
     # begin logic tree
-    if(stage[analysis] %in% c("E","L","P","M","U","FS","FE","FI")){
+    if(stage[analysis] %in% c("E","L","P","M","U","FS","FE","FI","F")){
       base_MQ(fList = fileList[[analysis]],oDir = write_dir,sName = stage[analysis],
               nodeNames = mosyNodeNames,nNodes = numMosyNodes,genos = mosyGenos,
               nGenos = numMosyGenos,times = times,nTimes = nTimes,num_repss = numReps,
@@ -954,6 +1236,206 @@ summarize_stats_CSV <- function(read_dir, write_dir=read_dir, mean=TRUE, quantil
               nodeNames = mosyNodeNames,nNodes = numMosyNodes,
               genos = 1:holdELP,nGenos = holdELP,
               times = times,nTimes = nTimes,num_repss = numReps,
+              mean = mean,quantiles = quantiles,oDepth = outDepth)
+
+    } else if(stage[analysis] == "FSEI"){
+      base_MQ(fList = fileList[[analysis]],oDir = write_dir,sName = stage[analysis],
+              nodeNames = mosyNodeNames,nNodes = numMosyNodes,
+              genos = c("S",paste0("E",1:nEIP),"I"),
+              nGenos = nEIP+2,
+              times = times,nTimes = nTimes,num_repss = numReps,
+              mean = mean,quantiles = quantiles,oDepth = outDepth)
+    } # end if tree
+
+    if(verbose){
+      cat("Done\n")
+    }
+
+  } # end analysis loop
+
+  # check if removing original output
+  if(rem_file){file.remove(unlist(fileList))}
+
+} # end function
+
+#' Summary Statistics for MGDrivE2 - Decoupled samples
+#'
+#' This function reads in all repetitions for each patch and calculates either
+#' the mean, quantiles, or both. User chooses the quantiles, up to 4 decimal places,
+#' and enters them as a vector. Quantiles are calculated empirically. (order does not matter)  \cr
+#'
+#' Given the read_dir, this function assumes the follow file structure: \cr
+#'  * read_dir
+#'    * repetition 1
+#'      * M_0001.csv
+#'      * M_0002.csv
+#'      * FS_0001.csv
+#'      * FS_0001.csv
+#'      * ... \cr
+#'    * repetition 2
+#'      * M_0001.csv
+#'      * M_0002.csv
+#'      * FS_0001.csv
+#'      * FS_0001.csv
+#'      * ... \cr
+#'    * repetition 3
+#'    * ... \cr
+#'
+#' The places (\code{spn_P}) object is generated from one of the following:
+#' \code{\link{spn_P_lifecycle_node}}, \code{\link{spn_P_lifecycle_network}},
+#' \code{\link{spn_P_epiSIS_node}}, \code{\link{spn_P_epiSIS_network}},
+#' \code{\link{spn_P_epiSEIR_node}}, or \code{\link{spn_P_epiSEIR_network}}.
+#'
+#' \code{t0}, \code{tt}, \code{dt} define the first sampling time, the last sampling
+#' time, and each sampling time in-between.
+#'
+#' Output files are *.csv and contain the mean or quantile in the file name, e.g.
+#' \{stage\}_Mean_(patchNum).csv and \{stage\}_Quantile_(quantNum)_(patchNum).csv.
+#'
+#' For more details about using this function to process CSV output see:
+#' \code{vignette("data-analysis", package = "MGDrivE2")}
+#'
+#'
+#' @param read_dir Directory to find repetition folders in
+#' @param write_dir Directory to write output
+#' @param mean Boolean, calculate mean or not. Default is TRUE
+#' @param quantiles Vector of quantiles to calculate. Default is NULL
+#' @param spn_P Places object, see details
+#' @param tmax The final time to end simulation
+#' @param dt The time-step at which to return output (\strong{not} the time-step of the sampling algorithm)
+#' @param rem_file Remove original output? Default is FALSE
+#' @param verbose Chatty? Default is TRUE
+#' @param human_states human state distribution
+#'
+#' @return Writes output to files in write_dir
+#'
+#' @export
+summarize_stats_CSV_decoupled <- function(
+  read_dir, write_dir=read_dir, mean=TRUE, quantiles=NULL,
+  spn_P, tmax, dt, human_states, rem_file=FALSE, verbose=TRUE
+){
+
+  ##########
+  # Checks
+  ##########
+  # required parameters
+  if(any(c(missing(read_dir),missing(spn_P),missing(tmax),missing(dt)))){
+    stop("Please provide 'read_dir', 'spn_P', 'tmax', and 'dt'.")
+  }
+  t0 <- 0
+  tt <- tmax
+
+  # check read_dir
+  if(!dir.exists(read_dir)){
+    stop("The 'read_dir' does not exist.")
+  }
+
+  # check write_dir
+  if(!dir.exists(paths = write_dir)){
+    stop("The 'write_dir' does not exist, please create it.")
+  }
+
+  # what analysis to do
+  if(!mean && is.null(quantiles)){
+    stop("User needs to specify the mean or which quantiles to calculate. ")
+  }
+
+
+  ##########
+  # Input and Output Setup
+  ##########
+  # get all files to work on, sorted by type
+  stage = c("M","FS","FE","FI","H","FSEI","F")
+  repDirs <- list.dirs(path = read_dir, recursive = FALSE, full.names = TRUE)
+  fileList <- lapply(X = stage, FUN = function(x){
+                                lapply(X = repDirs, FUN = list.files, pattern = paste0("^",x,"_"),
+                                       full.names = TRUE, recursive = FALSE)
+                     })
+
+  # check for things that aren't there, remove them
+  zeroIdx <- which(!vapply(X = lapply(X = fileList, FUN = lengths),
+                           FUN = sum, FUN.VALUE = numeric(length = 1)))
+  fileList[zeroIdx] <- NULL
+  stage <- stage[-zeroIdx]
+
+
+  ##########
+  # Derived Parameters
+  ##########
+  # get nodes
+  #  Since some simulations have humans, mosquitoes, and mixed nodes, use the
+  #  places object to determine those numbers.
+  #  use of "egg" was a choice, any of the mosquito life stages would be fine
+  mosyNodes <- which(x = vapply(X = spn_P$ix,
+                                FUN = function(x){!is.null(x$egg)},
+                                FUN.VALUE = logical(length = 1)) )
+  numMosyNodes <- length(mosyNodes)
+
+  # get genotype info
+  mosyGenos <- colnames(spn_P$ix[[mosyNodes[1]]]$egg)
+  numMosyGenos <- length(mosyGenos)
+  hGenos <- human_states
+  numHGenos <- length(hGenos)
+
+  # nEIP is female latent stages, if there isn't infection, there is only 1 "stage"
+  #  if there is infection, there is >=3 states, S, E...., I, so nEIP subtract 2 for S and  I
+  nEIP <- ifelse(dim(spn_P$ix[[mosyNodes[1]]]$females)[3] == 1, 1, dim(spn_P$ix[[mosyNodes[1]]]$females)[3]-2)
+
+  # sampling times, and number of samples in files (ie, number of rows)
+  times <- seq(from=t0,to=tt,by=dt)
+  nTimes <- length(times)
+
+  # node names for output
+  mosyNodeNames <- formatC(x = mosyNodes, width = 4, format = "d", flag = "0")
+
+  # only 1 human node for now!
+  hNodeNames <- c("0001")
+  numHNodes <- length(hNodeNames)
+
+
+  # derived parameters specific to this function
+  numStage <- length(stage)
+  numReps <- length(fileList[[1]])
+  outDepth <- max(length(quantiles),1)
+
+
+  ##########
+  # Initialize Text
+  ##########
+  if(verbose){
+    # what we're doing
+    cat("Analyzing", numStage, "stages.\n")
+
+    # whether or not we remove files
+    if(rem_file){
+      cat("\tRemoving original files.\n\n")
+    } else {
+      cat("\tNot removing original files.\n\n")
+    }
+  }
+
+
+  ##########
+  # Dispatch Loop
+  ##########
+  for(analysis in 1:numStage){
+
+    # indication that something is working
+    if(verbose){
+      cat("Starting analysis", analysis, "of", numStage, " ...  \n")
+    }
+
+    # begin logic tree
+    if(stage[analysis] %in% c("M","FS","FE","FI","F")){
+      base_MQ(fList = fileList[[analysis]],oDir = write_dir,sName = stage[analysis],
+              nodeNames = mosyNodeNames,nNodes = numMosyNodes,genos = mosyGenos,
+              nGenos = numMosyGenos,times = times,nTimes = nTimes,num_repss = numReps,
+              mean = mean,quantiles = quantiles,oDepth = outDepth)
+
+    } else if(stage[analysis] == "H"){
+      base_MQ(fList = fileList[[analysis]],oDir = write_dir,sName = stage[analysis],
+              nodeNames = hNodeNames,nNodes = numHNodes,genos = hGenos,
+              nGenos = numHGenos,times = times,nTimes = nTimes,num_repss = numReps,
               mean = mean,quantiles = quantiles,oDepth = outDepth)
 
     } else if(stage[analysis] == "FSEI"){
@@ -1002,7 +1484,7 @@ summarize_stats_CSV <- function(read_dir, write_dir=read_dir, mean=TRUE, quantil
 #' @param oDepth Max(1, number of quantiles)
 #'
 #' @return None
-#'
+#' @keywords internal
 #' @importFrom stats quantile
 #'
 base_MQ <- function(fList,oDir,sName,nodeNames,nNodes,

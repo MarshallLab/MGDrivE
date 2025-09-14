@@ -7,10 +7,10 @@
 sim_trajectory_base_R(
   x0,
   times,
-  dt = 1,
   num_reps,
   stepFun,
   events = NULL,
+  batch = NULL,
   Sout = NULL,
   verbose = TRUE
 )
@@ -20,13 +20,13 @@ sim_trajectory_base_R(
 
 \item{times}{sequence of sampling times}
 
-\item{dt}{the time-step at which to return output (\strong{not} the time-step of the sampling algorithm)}
-
 \item{num_reps}{number of repetitions to run}
 
 \item{stepFun}{a sampling function}
 
 \item{events}{a \code{data.frame} of events (uses the same format as required in package \code{deSolve} for consistency, see \code{\link[deSolve]{events}} for more information)}
+
+\item{batch}{a \code{list} of batch migration events, created from \code{\link[MGDrivE2]{batch_migration}}, may be set to \code{NULL} if not used}
 
 \item{Sout}{an optional matrix to track event firings}
 

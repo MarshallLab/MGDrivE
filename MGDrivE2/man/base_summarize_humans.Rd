@@ -27,3 +27,4 @@ then no \code{node} designation is returned. If only one repetition was performe
 no \code{rep} designation is returned. Columns always returned include: \code{time},
 \code{inf}, \code{genotype}, and \code{value}.
 }
+\keyword{internal}

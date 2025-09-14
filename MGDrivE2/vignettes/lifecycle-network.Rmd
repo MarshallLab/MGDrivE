@@ -174,7 +174,7 @@ First we run a mean-field approximation of the stochastic model. Internally, **M
 
 ```{r}
 # run deterministic simulation
-ODE_out <- sim_trajectory_R(x0 = initialCons$M0, t0 = 0, tt = tmax, dt = dt, S = S,
+ODE_out <- sim_trajectory_R(x0 = initialCons$M0, tmax = tmax, dt = dt, S = S,
                             hazards = approx_hazards, sampler = "ode", method = "lsoda",
                             events = events, verbose = FALSE)
 
@@ -205,7 +205,7 @@ As a further example, we run a single stochastic realization of the same network
 dt_stoch <- 0.1
 
 # tau leaping simulation
-PTS_out <- sim_trajectory_R(x0 = initialCons$M0, t0 = 0, tt = tmax, dt = dt,
+PTS_out <- sim_trajectory_R(x0 = initialCons$M0, tmax = tmax, dt = dt,
                             dt_stoch = dt_stoch, S = S, hazards = exact_hazards,
                             sampler = "tau", events = events, verbose = FALSE)
 

@@ -413,11 +413,11 @@ base_female_SIS <- function(params){
     # number of infectious mosquitos required to sustain transmission
     IV <- (IH*NH*(r + muH)) / (a*b*SH)
 
+
     # setup female pops for return
     nNode <- length(NH)
     femPop <- matrix(data = 0, nrow = nNode, ncol = nEIP+2,
                      dimnames = list(1:nNode,c("S",paste0("E",1:nEIP),"I")))
-
     # loop over all nodes and compute!
     for(node in 1:nNode){
       # check if there are any infected humans
@@ -432,7 +432,6 @@ base_female_SIS <- function(params){
         # ttd <- D0inv[1,]
         ttd <- solve(-D0)[1,]
         ttd <- ttd/sum(ttd)
-
         # total number of mosquitos
         NV <- IV[node] / tail(ttd,1)
 
@@ -476,7 +475,7 @@ base_female_SIS <- function(params){
 #' @return rate matrix for a single (emergence) cohort of SEI mosquito
 #'
 #' @importFrom Matrix Matrix
-#'
+#' @export
 make_Q_SEI <- function(q, n, mu, c, a, x){
 
   # check nEIP is at least 1
@@ -489,7 +488,6 @@ make_Q_SEI <- function(q, n, mu, c, a, x){
 
   # FOI
   lambda <- a*c*x
-
   # Sv
   Q[1,2] <- lambda
   Q[1,D] <- mu

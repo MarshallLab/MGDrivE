@@ -36,7 +36,7 @@
 #' @param maxhaz maximum allowable hazard
 #'
 #' @return function closure for use in \code{\link{sim_trajectory_R}} or \code{\link{sim_trajectory_CSV}}
-#'
+#' @export
 #' @importFrom stats rnorm
 step_CLE <- function(S,Sout,haz,dt=0.01,maxhaz=1e6){
 

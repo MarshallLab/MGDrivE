@@ -6,8 +6,7 @@
 \usage{
 sim_trajectory_CSV(
   x0,
-  t0 = 0,
-  tt = 100,
+  tmax,
   dt = 1,
   dt_stoch = 0.1,
   folders = "./",
@@ -18,6 +17,7 @@ sim_trajectory_CSV(
   sampler = "tau",
   method = "lsoda",
   events = NULL,
+  batch = NULL,
   verbose = TRUE,
   ...
 )
@@ -25,9 +25,7 @@ sim_trajectory_CSV(
 \arguments{
 \item{x0}{the initial marking of the SPN (initial state, M0)}
 
-\item{t0}{initial time to begin simulation}
-
-\item{tt}{the final time to end simulation}
+\item{tmax}{the final time to end simulation}
 
 \item{dt}{the time-step at which to return output (\strong{not} the time-step of the sampling algorithm)}
 
@@ -48,6 +46,8 @@ sim_trajectory_CSV(
 \item{method}{if \code{sampler} is "ode", the solver to use, from \code{deSolve}}
 
 \item{events}{a \code{data.frame} of events}
+
+\item{batch}{a \code{list} of batch migration events, created from \code{\link[MGDrivE2]{batch_migration}}, may be set to \code{NULL} if not used}
 
 \item{verbose}{print a progress bar?}
 
@@ -98,7 +98,7 @@ can be provided to track number of event firings each time step (for discrete st
 or cumulative intensity (for continuous stochastic simulations), or the rate function of
 particular events for ODE simulation. The matrix must have number of columns equal to
 number of events in the system (the number of hazard functions), and a row for each tracking
-variable. If \code{Sout} is provided, it output an additional csv, "events.csv".
+variable. If \code{Sout} is provided, it outputs an additional csv, "Tracking.csv".
 The function \code{\link{track_hinf}} is provided, which builds a matrix to track
 human infection events.
 

@@ -16,15 +16,16 @@ knitr::opts_chunk$set(
 knitr::opts_chunk$set(fig.width=7.2, fig.height=4)
 set.seed(10)
 ```
+
 ## Table of Contents
 
-  1. [Parameterization](#pars)
-  2. [Initialization of the Petri Net](#init_pn)
-  3. [Equilibrium Conditions and Hazard Functions](#equilibria_haz)
-  4. [Simulation of Fully Specified SPN Model](#sim)
-      1. [Deterministic: ODE Solutions](#soln_ode)
-      2. [Stochastic: CLE Solutions](#soln_cle)
-  5. [References](#ref)
+1. [Parameterization](#pars)
+2. [Initialization of the Petri Net](#init_pn)
+3. [Equilibrium Conditions and Hazard Functions](#equilibria_haz)
+4. [Simulation of Fully Specified SPN Model](#sim)
+   1. [Deterministic: ODE Solutions](#soln_ode)
+   2. [Stochastic: CLE Solutions](#soln_cle)
+5. [References](#ref)
 
 ### Preface
 
@@ -48,18 +49,18 @@ cube <- MGDrivE::cubeMendelian()
 
 Several parameters are necessary to setup the structural properties of the Petri Net, as well as calculate the population distribution at equilibrium, setup initial conditions, and calculate hazards. Again, we specify all entomological parameters as for the mosquito-only simulation (see ["MGDrivE2: One Node Lifecycle Dynamics"](lifecycle-node.html)) as well as additional parameters for the **SEI-SIS** dynamics. Like the aquatic stages, $\frac{1}{q_{\mathit{EIP}}}$ will give the mean dwell time for incubating mosquitoes, and variance by $\frac{1}{n_{\mathit{EIP}} \cdot q_{\mathit{EIP}}^{2}}$. The model requires `muH`, mortality rate in humans, because equilibrium dynamics are simulated (that is, human populations follow an "open cohort" with equal birth and death rates). A table of (case-sensitive) epidemiological parameters the user needs to specify is given below. Note that all parameters must be specified as a rate per day. For a detailed discussion of these parameters in the context of malaria models, see Smith and McKenzie (2004).
 
-| Parameter | Description  |
-|:---------:|:-------------|
-| `NH`      | total human population size |
-| `X`       | equilibrium prevalence of disease in humans |
-| `f`       | mosquito feeding rate |
-| `Q`       | proportion of blood meals taken on humans (human blood index in field literature) |
-| `b`       | mosquito to human transmission efficiency |
-| `c`       | human to mosquito transmission efficiency |
-| `r`       | rate of recovery in humans |
-| `muH`     | mortality rate in humans |
-| `qEIP`    | inverse of mean duration of EIP |
-| `nEIP`    | shape parameter of Erlang-distributed EIP |
+| Parameter | Description                                                                       |
+| :-------: | :-------------------------------------------------------------------------------- |
+|   `NH`    | total human population size                                                       |
+|    `X`    | equilibrium prevalence of disease in humans                                       |
+|    `f`    | mosquito feeding rate                                                             |
+|    `Q`    | proportion of blood meals taken on humans (human blood index in field literature) |
+|    `b`    | mosquito to human transmission efficiency                                         |
+|    `c`    | human to mosquito transmission efficiency                                         |
+|    `r`    | rate of recovery in humans                                                        |
+|   `muH`   | mortality rate in humans                                                          |
+|  `qEIP`   | inverse of mean duration of EIP                                                   |
+|  `nEIP`   | shape parameter of Erlang-distributed EIP                                         |
 
 Please note that `f` and `Q` must be specified; this is because future versions of **MGDrivE2** will include additional vector control methods such as IRS (indoor residual spraying) and ITN (insecticide treated nets). In the presence of ITNs/IRS `f` will vary independently as a function of time depending on intervention coverage.
 
@@ -141,7 +142,7 @@ initialCons <- equilibrium_SEI_SIS(params = theta, phi = 0.5, log_dd = TRUE,
 With the equilibrium conditions calculated (see `?equilibrium_SEI_SIS()`), and the list of possible transitions provided by `spn_T_epiSIS_node()`, we can now calculate the rates of those transitions between states.
 
 ```{r}
-# approximate hazards for continous approximation
+# approximate hazards for continuous approximation
 approx_hazards <- spn_hazards(spn_P = SPN_P, spn_T = SPN_T, cube = cube,
                               params = initialCons$params, type = "SIS",
                               log_dd = TRUE, exact = FALSE, tol = 1e-8,
@@ -169,7 +170,7 @@ As in the ["MGDrivE2: One Node Lifecycle Dynamics"](lifecycle-node.html) vignett
 
 ```{r}
 # run deterministic simulation
-ODE_out <- sim_trajectory_R(x0 = initialCons$M0, t0 = 0, tt = tmax, dt = dt, S = S,
+ODE_out <- sim_trajectory_R(x0 = initialCons$M0, tmax = tmax, dt = dt, S = S,
                             hazards = approx_hazards, sampler = "ode", method = "lsoda",
                             events = events, verbose = FALSE)
 
@@ -222,7 +223,7 @@ As a further example, we run a single stochastic realization of the same simulat
 dt_stoch <- 0.1
 
 # run CLE simulation
-CLE_out <- sim_trajectory_R(x0 = initialCons$M0, t0 = 0, tt = tmax, dt = dt,
+CLE_out <- sim_trajectory_R(x0 = initialCons$M0, tmax = tmax, dt = dt,
                             dt_stoch = dt_stoch, S = S, hazards = approx_hazards,
                             sampler = "cle", events = events, verbose = FALSE)
 
@@ -242,4 +243,4 @@ Analyzing one stochastic realization of this system, we see some similarities an
 
 ### References {#ref}
 
-* Smith, D. L., & McKenzie, F. E. (2004). Statics and dynamics of malaria infection in Anopheles mosquitoes. Malaria journal, 3(1), 13.
+- Smith, D. L., & McKenzie, F. E. (2004). Statics and dynamics of malaria infection in Anopheles mosquitoes. Malaria journal, 3(1), 13.

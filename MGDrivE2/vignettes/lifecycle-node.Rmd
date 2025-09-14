@@ -182,7 +182,7 @@ tmax <- 125
 dt <- 1
 
 # run deterministic simulation
-ODE_out <- sim_trajectory_R(x0 = initialCons$M0, t0 = 0, tt = tmax, dt = dt, S = S,
+ODE_out <- sim_trajectory_R(x0 = initialCons$M0, tmax = tmax, dt = dt, S = S,
                             hazards = approx_hazards, sampler = "ode", method = "lsoda",
                             events = events, verbose = FALSE)
 ```
@@ -221,7 +221,7 @@ We set `tau` as our sampler type, use the same release events, conditions, and s
 dt_stoch <- 0.1
 
 # tau sampling
-PTS_out <- sim_trajectory_R(x0 = initialCons$M0, t0 = 0, tt = tmax, dt = dt,
+PTS_out <- sim_trajectory_R(x0 = initialCons$M0, tmax = tmax, dt = dt,
                             dt_stoch = dt_stoch, S = S, hazards = exact_hazards,
                             sampler = "tau", events = events, verbose = FALSE)
 
@@ -284,7 +284,7 @@ As before, we run an ODE simulation, but this time we will plot the aquatic stag
 
 ```{r}
 # deterministic simulation
-ODE_out <- sim_trajectory_R(x0 = initialCons$M0, t0 = 0, tt = tmax, dt = dt,
+ODE_out <- sim_trajectory_R(x0 = initialCons$M0, tmax = tmax, dt = dt,
                             S = S, hazards = approx_hazards, sampler = "ode",
                             events = events, verbose = FALSE)
 
@@ -361,7 +361,7 @@ Note the change in the sampler, to `cle`, and the use of approximate hazards.
 
 ```{r}
 # chemical langevin sampler
-CLE_out <- sim_trajectory_R(x0 = initialCons$M0, t0 = 0, tt = tmax, dt = dt,
+CLE_out <- sim_trajectory_R(x0 = initialCons$M0, tmax = tmax, dt = dt,
                             dt_stoch = dt_stoch, S = S, hazards = approx_hazards,
                             sampler = "cle", events = events, verbose = FALSE)
 

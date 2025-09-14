@@ -433,6 +433,9 @@ make_transition_male_mort <- function(T_index,u,m_gen,node=NULL){
   # class of the transition
   t$class <- "male_mort"
 
+  # keep track of node for traps
+  t$node <- node 
+
   # return the transition
   return(t)
 }
@@ -468,6 +471,9 @@ make_transition_female_mort_epi <- function(T_index,u,f_gen,m_gen,inf=NULL,node=
   # class of the transition
   t$class <- "female_mort"
 
+  # keep track of node for traps
+  t$node <- node 
+
   # return the transition
   return(t)
 }
@@ -495,6 +501,9 @@ make_transition_female_unmated_mort <- function(T_index,u,f_gen,node=NULL){
 
   # class of the transition
   t$class <- "female_unmated_mort"
+
+  # keep track of node for traps
+  t$node <- node 
 
   # return the transition
   return(t)

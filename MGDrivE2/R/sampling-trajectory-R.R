@@ -54,8 +54,7 @@
 #'
 #'
 #' @param x0 the initial marking of the SPN (initial state, M0)
-#' @param t0 initial time to begin simulation
-#' @param tt the final time to end simulation
+#' @param tmax the final time to end simulation (all simulations start at 0)
 #' @param dt the time-step at which to return output (\strong{not} the time-step of the sampling algorithm)
 #' @param dt_stoch time-step used for approximation of hazards
 #' @param num_reps number of repetitions to run, default is 1.
@@ -64,33 +63,46 @@
 #' @param Sout an optional matrix to track event firings
 #' @param sampler determines sampling algorithm, one of; "ode", "tau", "cle", or "dm"
 #' @param method if \code{sampler} is "ode", the solver to use, from \code{deSolve}
-#' @param events a \code{data.frame} of events
+#' @param events a \code{data.frame} of events, may be set to \code{NULL} if not used
+#' @param batch a \code{list} of batch migration events, created from \code{\link[MGDrivE2]{batch_migration}}, may be set to \code{NULL} if not used
 #' @param verbose print a progress bar?
 #' @param ... further named arguments passed to the step function
 #'
 #' @return a list with 2 elements: "state" is the array of returned state values, and "events" will
 #'        return events tracked with \code{Sout} if provided, otherwise is \code{NULL}
 #'
+#' @importFrom stats rbinom
+#'
 #' @export
-sim_trajectory_R <- function(x0, t0=0, tt=100, dt=1, dt_stoch = 0.1, num_reps=1,
-                             S, hazards, Sout = NULL, sampler = "tau", method = "lsoda",
-                             events = NULL, verbose = TRUE,...){
+sim_trajectory_R <- function(
+  x0, tmax, dt=1, dt_stoch = 0.1, num_reps=1,
+  S, hazards, Sout = NULL, sampler = "tau", method = "lsoda",
+  events = NULL, batch = NULL, verbose = TRUE,...
+){
+
+  if(sampler == "ode" & !is.null(batch)){
+    stop("batch migration is incompatible with deterministic simulations")
+  }
 
   # check/setup step function
-  stepFun <- base_stepFunc(sampler = sampler,S = S,hazards = hazards,Sout = Sout,
-                           dt_stoch = dt_stoch,method = method,...)
+  stepFun <- base_stepFunc(
+    sampler = sampler,S = S,hazards = hazards,Sout = Sout,
+    dt_stoch = dt_stoch,method = method,...
+  )
 
   # check/setup simulation time
-  simTimes <- base_time(t0 = t0,tt = tt,dt = dt)
+  simTimes <- base_time(tt = tmax,dt = dt)
 
   # check/organize events and x0
   events <- base_events(x0 = x0, events = events, dt = dt)
 
   # pass everything down to base function
   #  base function does return
-  sim_trajectory_base_R(x0 = switch(EXPR = sampler, "ode" = x0, round(x0)),
-                        times = simTimes,dt = dt, num_reps = num_reps, stepFun = stepFun,
-                        events = events, Sout = Sout, verbose = verbose)
+  sim_trajectory_base_R(
+    x0 = switch(EXPR = sampler, "ode" = x0, round(x0)),
+    times = simTimes, num_reps = num_reps, stepFun = stepFun,
+    events = events, batch = batch, Sout = Sout, verbose = verbose
+  )
 }
 
 
@@ -98,7 +110,7 @@ sim_trajectory_R <- function(x0, t0=0, tt=100, dt=1, dt_stoch = 0.1, num_reps=1,
 # Base Functions
 ################################################################################
 #######################################
-# Step Funtion
+# Step Function
 #######################################
 
 # This sets up the step function for sampling
@@ -134,27 +146,22 @@ base_stepFunc <- function(sampler,S,hazards,Sout = NULL,dt_stoch,method,...){
   ##########
   # setup step function!
   #########
-  #  do the deterministic, then stochastic
-  if(sampler == "ode"){
-    stepFun <- step_ODE(S=S, Sout = Sout, haz = hazards$hazards, method = method, ...)
+  hazFunc <- function(M,t){
+    vapply(X = hazards$hazards,FUN = function(h){h(t=t,M=M)}, FUN.VALUE = numeric(1), USE.NAMES = FALSE)
+  }
 
+  # generate stepFun
+  if(sampler == "tau"){
+    stepFun <- step_PTS(S=S, Sout = Sout, haz=hazFunc, dt = dt_stoch, ...)
+  } else if(sampler == "cle"){
+    stepFun <- step_CLE(S=S, Sout = Sout, haz=hazFunc, dt = dt_stoch, ...)
+  } else if(sampler == "dm"){
+    stepFun <- step_DM(S=S, Sout = Sout, haz=hazFunc, ...)
+  } else if(sampler == "ode"){
+    stepFun <- step_ODE(S=S, Sout = Sout, haz=hazFunc, method = method, ...)
   } else {
-    # setup hazard function for stochastic things, deterministic one has it's own thing
-    hazFunc <- function(M,t){vapply(X = hazards$hazards,FUN = function(h){h(t=t,M=M)},
-                                    FUN.VALUE = numeric(1),USE.NAMES = FALSE) }
-
-    # generate stepFun
-    if(sampler == "tau"){
-      stepFun <- step_PTS(S=S, Sout = Sout, haz=hazFunc, dt = dt_stoch, ...)
-    } else if(sampler == "cle"){
-      stepFun <- step_CLE(S=S, Sout = Sout, haz=hazFunc, dt = dt_stoch, ...)
-    } else if(sampler == "dm"){
-      stepFun <- step_DM(S=S, Sout = Sout, haz=hazFunc, ...)
-    } else {
-      stop("option 'sampler' must be one of 'tau', 'cle', 'dm', 'ode'")
-    }
-
-  } # end stepFun setup
+    stop("option 'sampler' must be one of 'tau', 'cle', 'dm', 'ode'")
+  }
 
   # return step function
   return(stepFun)
@@ -170,13 +177,11 @@ base_stepFunc <- function(sampler,S,hazards,Sout = NULL,dt_stoch,method,...){
 # tt = the final time to end simulation
 # dt = the time-step at which to return output
 #
-base_time <- function(t0,tt,dt){
+base_time <- function(t0 = 0,tt,dt){
 
-  # number of steps we need to take
-  n <- (tt-t0) %/% dt + 1
   times <- seq(from=t0,to=tt,by=dt)
 
-  if(length(times) != n){
+  if(!all(fequal(diff(times), dt))){
     stop("error in sequence of times; make sure tt is evenly divisible by dt")
   }
 
@@ -251,15 +256,15 @@ base_events <- function(x0, events, dt){
 #'
 #' @param x0 the initial marking of the SPN (initial state)
 #' @param times sequence of sampling times
-#' @param dt the time-step at which to return output (\strong{not} the time-step of the sampling algorithm)
 #' @param num_reps number of repetitions to run
 #' @param stepFun a sampling function
 #' @param events a \code{data.frame} of events (uses the same format as required in package \code{deSolve} for consistency, see \code{\link[deSolve]{events}} for more information)
+#' @param batch a \code{list} of batch migration events, created from \code{\link[MGDrivE2]{batch_migration}}, may be set to \code{NULL} if not used
 #' @param Sout an optional matrix to track event firings
 #' @param verbose print a progress bar?
 #'
 #' @return matrix of sampled values
-sim_trajectory_base_R <- function(x0, times, dt=1, num_reps, stepFun, events=NULL, Sout = NULL, verbose=TRUE){
+sim_trajectory_base_R <- function(x0, times, num_reps, stepFun, events = NULL, batch = NULL, Sout = NULL, verbose = TRUE){
 
   # setup return array
   nTime <- length(times)
@@ -283,10 +288,11 @@ sim_trajectory_base_R <- function(x0, times, dt=1, num_reps, stepFun, events=NUL
   # loop over num_reps, calling base function
   for(r in 1:num_reps){
 
-    # set things for reseting later
     state <- list("x"=NULL,"o"=NULL)
     state$x <- x0
+
     repEvents <- events
+    repBatch <- batch
 
     # progress bar
     if(verbose){
@@ -298,9 +304,12 @@ sim_trajectory_base_R <- function(x0, times, dt=1, num_reps, stepFun, events=NUL
     for(i in 2:nTime){
 
       # iterate the step function until this delta t is over
-      tNow <- times[i]
-      state <- stepFun(state$x,tNow,dt)
+      t0 <- times[i-1]
+      t1 <- times[i]
+      dt <- t1-t0
 
+      # tNow <- times[i]
+      state <- stepFun(state$x,t0,dt)
       if(all(fequal(state$x,0))){
         if(verbose){close(pbar)}
         warning(" --- marking of net is zero; terminating simulation early --- \n")
@@ -311,9 +320,21 @@ sim_trajectory_base_R <- function(x0, times, dt=1, num_reps, stepFun, events=NUL
       #  would it be better to get times of events, then add them in at times
       #  instead of checking every day if there are events, and then if it isthe day
       if(!is.null(repEvents)){
-        while((nrow(repEvents) > 0) && fequal(repEvents[1,"time"],tNow)){
+        while((nrow(repEvents) > 0) && repEvents[1,"time"] <= t1){
           state$x[repEvents[1,"var_id"]] <- state$x[repEvents[1,"var_id"]] + repEvents[1,"value"]
           repEvents <- repEvents[-1,]
+        }
+      }
+
+      # batch migration?
+      if(!is.null(repBatch)){
+        while(length(repBatch) > 0 && repBatch[[1]]$time <= t1){
+          # how many go?
+          moving <- stats::rbinom(n = length(repBatch[[1]]$from), size = as.integer(state$x[repBatch[[1]]$from]), prob = repBatch[[1]]$prob)
+          # update the state
+          state$x[repBatch[[1]]$from] <- state$x[repBatch[[1]]$from] - moving
+          state$x[repBatch[[1]]$to] <- state$x[repBatch[[1]]$to] + moving
+          repBatch <- repBatch[-1]
         }
       }
 

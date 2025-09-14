@@ -4,7 +4,7 @@
 \alias{spn_T_lifecycle_network}
 \title{Make Transitions (T) For a Network (Mosquitoes only)}
 \usage{
-spn_T_lifecycle_network(spn_P, params, cube, m_move)
+spn_T_lifecycle_network(spn_P, params, cube, n = NULL, m_move = NULL)
 }
 \arguments{
 \item{spn_P}{set of places produced by \code{\link{spn_P_lifecycle_network}}}
@@ -12,6 +12,8 @@ spn_T_lifecycle_network(spn_P, params, cube, m_move)
 \item{params}{a named list of parameters (see details)}
 
 \item{cube}{an inheritance cube from the \code{MGDrivE} package (e.g. \code{\link[MGDrivE]{cubeMendelian}})}
+
+\item{n}{an integer giving the number of nodes}
 
 \item{m_move}{binary adjacency matrix indicating if movement of mosquitoes between nodes is possible or not}
 }
@@ -42,6 +44,9 @@ initialization for faster sampling of trajectories within a simulation.
 Please note, the movement matrix (\code{m_move}) is NOT a
 stochastic matrices, just a binary matrix that say if i,j can exchange population.
 Diagonal elements must be \code{FALSE}.
+
+At least one of the arguments \code{n} and \code{m_move} must be provided. If both are provided
+\code{n} is ignored.
 
 For examples of using this function, see:
 \code{vignette("lifecycle-network", package = "MGDrivE2")}

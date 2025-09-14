@@ -9,8 +9,7 @@ split_aggregate_CSV(
   write_dir = read_dir,
   stage = c("E", "L", "P", "M", "U", "FS", "FE", "FI", "H"),
   spn_P,
-  t0,
-  tt,
+  tmax,
   dt,
   erlang = FALSE,
   sum_fem = FALSE,
@@ -27,9 +26,7 @@ split_aggregate_CSV(
 
 \item{spn_P}{Places object, see details}
 
-\item{t0}{Initial time to begin simulation}
-
-\item{tt}{The final time to end simulation}
+\item{tmax}{The final time to end simulation}
 
 \item{dt}{The time-step at which to return output (\strong{not} the time-step of the sampling algorithm)}
 
@@ -122,7 +119,7 @@ The places (\code{spn_P}) object is generated from one of the following:
 \code{\link{spn_P_epiSIS_node}}, \code{\link{spn_P_epiSIS_network}},
 \code{\link{spn_P_epiSEIR_node}}, or \code{\link{spn_P_epiSEIR_network}}.
 
-\code{t0}, \code{tt}, \code{dt} define the first sampling time, the last sampling
+\code{tmax}, \code{dt} define the last sampling
 time, and each sampling time in-between.
 
 For more details about using this function to process CSV output see:

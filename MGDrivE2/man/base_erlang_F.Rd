@@ -31,3 +31,4 @@ Erlang-distributed latent infection, writing output to provided folders.
 \details{
 This function is a base function used in \code{\link{split_aggregate_CSV}}.
 }
+\keyword{internal}
